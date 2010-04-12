@@ -1,0 +1,148 @@
+.x-osdn-no-border-left .x-panel-body,
+.x-osdn-no-border-left .x-panel-bbar .x-toolbar,
+.x-osdn-no-border-left .x-panel-header {
+    border-left: 0pt none !important;
+}
+
+.x-osdn-no-border-right .x-panel-body,
+.x-osdn-no-border-left .x-panel-bbar .x-toolbar,
+.x-osdn-no-border-left .x-panel-header {
+    border-right: 0pt none !important;
+}
+
+.x-osdn-no-border-top .x-panel-body {
+    border-top: 0pt none !important;
+}
+
+.x-osdn-no-border-bottom .x-panel-body {
+    border-bottom: 0pt none !important;
+}
+
+.x-osdn-transparent .x-panel-body {
+    background: none !important;
+}
+
+.x-osdn-border-top {
+    border-top: 1px solid #99BBE8 !important;
+}
+
+.x-osdn-border-bottom {
+    border-bottom: 1px solid #99BBE8 !important;
+}
+
+.x-osdn-border-left {
+    border-left: 1px solid #99BBE8 !important;
+}
+
+.x-osdn-border-right {
+    border-right: 1px solid #99BBE8 !important;
+}
+
+.osdn-x-row-yellow {
+    background: #FFFF00;
+}
+
+.osdn-x-row-green {
+    background: #00FF00;
+}
+
+.osdn-x-row-violet {
+    background: #E48FFF;
+}
+
+.osdn-x-row-red {
+    background: #FF0000;
+}
+
+.x-grid3-hd-row td.ux-filtered-column {   
+    font-style: italic;  
+    font-weight: bold;
+}
+
+.x-tab-strip .yellow-notes .x-tab-right,
+.x-tab-strip .yellow-notes .x-tab-left,
+.x-tab-strip .yellow-notes .x-tab-strip-inner {
+    background-image: url(../images/tabs-sprite-yellow.gif);
+}
+
+.x-tab-strip .yellow-notes a.x-tab-strip-close {
+    background-image: url(../images/tab-close-yellow.gif) !important;
+}
+
+/*for multiple calendar*/
+.x-date-right, .x-date-left {
+    height:16px;
+}
+
+.x-date-right a {
+    float:right;
+} 
+
+.x-form-field-dirty {
+    background: #FEFFBF !important;
+}
+
+/*for make visual hours in calendar (week planning)*/
+.x-date-inner .x-date-planned-1 a {
+    background:#ccfbaf !important;
+}
+.x-date-inner .x-date-planned-2 a {
+    background:#9ef46a !important;
+}
+.x-date-inner .x-date-planned-3 a {
+    background:#56d907 !important;
+}
+.msg .x-box-mc {
+    font-size:14px;
+}
+#msg-div {
+    position:absolute;
+    left:35%;
+    top:10px;
+    width:250px;
+    z-index:20000;
+}
+
+.x-hide-absoluteoffsets {
+	position: absolute;
+	left:-1000px;
+	top:-1000px;
+	visibility: visible;
+	display: block;
+}
+
+
+/* form style like grid (font size and color and field height) */
+.x-ca-form-field .x-form-field,
+.x-ca-form-field .ext-strict .x-form-text{
+	font-size: 11px !important;
+	height: 14px !important;
+}
+.x-ca-form-field .x-form-textarea{
+	height: 60px !important;
+}
+.x-ca-form-field .x-item-disabled{
+	color: #303030;
+}
+.x-ca-form-field .x-form-item{
+	font-size: 11px !important;
+}
+.x-ca-form-field .x-form-field-wrap .x-form-trigger{
+	height: 17px !important;
+}
+
+/* for OSDN.form.PasswordField */
+.x-form-warning-icon {
+    width: 16px;
+    height: 18px;
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    background: transparent url(../images/warning.gif) no-repeat 0 2px;
+}
+
+.x-small-editor .x-form-text {
+	vertical-align: top !important;
+}

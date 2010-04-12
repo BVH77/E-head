@@ -1,0 +1,123 @@
+<xml>
+    <data>
+        <style href="/js/Library/extjs/framework/resources/css/ext-all.css"/>
+        <script src="/js/Library/extjs/framework/adapter/ext/ext-base.js"/>
+        <script src="/js/Library/extjs/framework/ext-all.js"/>
+        
+        <style href="/css/new-pms-icons.css"/>
+
+        <style href="/css/icons.css"/>
+        <style href="/css/system.css"/>
+        <style href="/css/start.css"/>
+        
+        <script src="/js/Library/OSDN/OSDN.js"/>
+        <script src="/js/Library/OSDN/Translation.js"/>
+        
+        <script src="/js/Library/OSDN/acl/Manager.js"/>
+        <script src="/js/common.js"/>
+        
+        <!-- Plugins -->
+        <style href="/js/Library/extjs/plugins/grid/RowActions/Ext.ux.grid.RowActions.css"/>
+        <script src="/js/Library/extjs/plugins/grid/RowActions/Ext.ux.grid.RowActions.js"/>
+        <style href="/js/Library/extjs/plugins/grid/CheckColumn/CheckColumn.css"/>
+        <script src="/js/Library/extjs/plugins/grid/CheckColumn/CheckColumn.js"/>
+        <script src="/js/Library/extjs/plugins/grid/RowExpander.js"/>
+        <script src="/js/Library/extjs/plugins/grid/Actions.js"/>
+        <script src="/js/Library/extjs/plugins/grid/GridFiltering/menu/EditableItem.js"/>
+        <script src="/js/Library/extjs/plugins/grid/GridFiltering/menu/RangeMenu.js"/>
+        <script src="/js/Library/extjs/plugins/grid/GridFiltering/GridFilters.js"/>
+        <script src="/js/Library/extjs/plugins/grid/GridFiltering/filter/Filter.js"/>
+        <script src="/js/Library/extjs/plugins/grid/GridFiltering/filter/StringFilter.js"/>
+        <script src="/js/Library/extjs/plugins/grid/GridFiltering/filter/DateFilter.js"/>
+        <script src="/js/Library/extjs/plugins/grid/GridFiltering/filter/ListFilter.js"/>
+        <script src="/js/Library/extjs/plugins/grid/GridFiltering/filter/NumericFilter.js"/>
+        <script src="/js/Library/extjs/plugins/grid/GridFiltering/filter/BooleanFilter.js"/>
+        <style href="/js/Library/extjs/plugins/tree/ColumnTree/column-tree.css"/>
+        <script src="/js/Library/extjs/plugins/tree/ColumnTree/ColumnNodeUI.js"/>
+        <script src="/js/Library/extjs/plugins/pPageSize.js"/>
+        <style href="/js/Library/extjs/plugins/DataView/data-view.css"/>
+        <script src="/js/Library/extjs/plugins/DataView/data-view-plugins.js"/>
+        <!-- Plugins -->
+        
+        <!-- ux -->
+        <style href="/js/Library/extjs/ux/UploadDialog/css/Ext.ux.UploadDialog.css"/>
+        <script src="/js/Library/extjs/ux/UploadDialog/Ext.ux.UploadDialog.js"/>
+        <!-- ux -->
+        
+        <!-- osdn -->
+        <script src="/js/Library/OSDN/util/Format.js"/>
+        <script src="/js/Library/OSDN/form/BasicForm.js"/>
+        <script src="/js/Library/OSDN/form/FormPanel.js"/>
+        <script src="/js/Library/OSDN/form/VTypes.js"/>
+        <script src="/js/Library/OSDN/form/ComboBox.js"/>
+        <script src="/js/Library/OSDN/form/Textarea.js"/>
+        <style src="/js/Library/OSDN/css/form/Textarea.css"/>
+        <script src="/js/Library/OSDN/form/PasswordField.js"/>
+        
+        <style href="/js/Library/OSDN/css/form/ComboTrigger.css"/>
+        <script src="/js/Library/OSDN/form/ComboTrigger.js"/>
+        
+        <script src="/js/Library/OSDN/form/DateField.js"/>
+        <script src="/js/Library/OSDN/form/SearchField.js"/>
+        
+        <script src="/js/Library/OSDN/form/GroupComboBox/GroupComboBox.js"/>
+        <script src="/js/Library/OSDN/form/GroupComboBox/GroupDataView.js"/>
+        
+        <script src="/js/Library/OSDN/grid/CheckColumn.js"/>
+        <script src="/js/Library/OSDN/grid/Viewer.js"/>
+        <style src="/js/Library/OSDN/css/grid/Viewer.css"/>
+        
+        <script src="/js/Library/OSDN/grid/plugin/Filter.js"/>
+        
+        <script src="/js/Library/OSDN/window/ModalContainer.js"/>
+        <script src="/js/Library/OSDN/window/Printer.js"/>
+        <script src="/js/Library/OSDN/Window.js"/>
+        
+        <script src="/js/Library/OSDN/Msg.js"/>
+        <script src="/js/Library/OSDN/Layout.js"/>
+        <script src="/js/Library/OSDN/tree/TreePanel.js"/>
+        <script src="/js/Library/OSDN/PagingToolbar.js"/>
+        
+        <style href="/js/Library/OSDN/Legend/Item.css"/>
+        <script src="/js/Library/OSDN/Legend/Item.js"/>
+        <script src="/js/Library/OSDN/Legend/Plugin.js"/>
+ 
+        <!-- Widgets -->
+         
+        <script src="/js/Library/extjs/widgets/Acl/Permission/Tree.js"/>
+        <script src="/js/Library/extjs/widgets/Acl/Permission/TreeManager.js"/>
+        <script src="/js/Library/extjs/widgets/Acl/Accounts/Form.js"/>
+        <script src="/js/Library/extjs/widgets/Acl/Accounts/List.js"/>
+        <script src="/js/Library/extjs/widgets/Acl/Roles/Tree.js"/>
+        <script src="/js/Library/extjs/widgets/Acl/Layout.js"/>
+       
+        <!-- Widgets -->
+        
+        <!-- Modules -->
+        
+        <script src="/js/PMS/Orders/Layout.js"/>
+        <script src="/js/PMS/Orders/List.js"/>
+        <script src="/js/PMS/Orders/Archive.js"/>
+        <script src="/js/PMS/Orders/Info.js"/>
+        <script src="/js/PMS/Orders/Photos.js"/>
+        <script src="/js/PMS/Orders/Edit.js"/>
+        <script src="/js/PMS/Orders/Edit/Info.js"/>
+        <script src="/js/PMS/Orders/Edit/Abstract.js"/>
+        <script src="/js/PMS/Orders/Files.js"/>
+        <script src="/js/PMS/Orders/Edit/Notes.js"/>
+        
+        <script src="/js/PMS/Customers/Combo.js"/>
+        
+        <script src="/js/PMS/ContragentsListAbstract.js"/>
+        <script src="/js/PMS/ContragentsFormAbstract.js"/>
+
+        <!-- Modules -->
+        
+        
+        <script src="/js/start.js"/>
+        
+        <!-- I18n -->
+        <script src="/js/Library/extjs/framework/ext-lang-ru.js"/>
+        <!-- I18n -->
+    </data>
+</xml>

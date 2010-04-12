@@ -1,0 +1,36 @@
+@CHARSET "UTF-8";
+
+textarea.x-osdn-form-textarea-enum, textarea.x-osdn-form-textarea-enum-noborder {
+    display: block;
+    z-index: 0;
+    margin: 0;
+    background: none;
+    background-color: #DFE8F6;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    text-align: right;
+    padding-right: 0.2em;
+    width: 32px;
+}
+
+.ext-ie textarea.x-osdn-form-textarea-enum {
+    margin-top: 0.5px;
+}
+
+textarea.x-osdn-form-textarea-enum-noborder {
+    border: 0pt none;
+    border-right: 1px solid #B5B8C8;
+    width: 31px;
+}
+
+textarea.x-osdn-form-textarea-enumerable {
+    margin-left: 37px !important;
+    padding-left: 3px;
+    z-index: 1;
+    position: relative;
+}
+
+textarea.x-osdn-form-textarea-noborder {
+    border: 0pt none;
+}

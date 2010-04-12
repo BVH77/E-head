@@ -1,0 +1,52 @@
+@CHARSET "UTF-8";
+
+.x-osdn-toolbar {
+    background: #D0DEF0 repeat-x scroll left top !important;
+}
+
+.x-osdn-toolbar .x-btn-bigicon .x-btn-center .x-btn-text {
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 36px;
+    width: 75px;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 0;
+}
+
+.x-osdn-toolbar .x-btn-bigicon .x-btn-menu-arrow-wrap .x-btn-center button {
+    height: 36px;
+}
+
+.x-osdn-toolbar .x-btn-bigicon.x-btn-over .x-btn-menu-arrow-wrap .x-btn-center button {
+}
+
+.x-osdn-toolbar .x-btn-over.x-btn-bigicon .x-btn-left {
+    background: transparent url(../images/tbar-hover-left.gif);
+    background-repeat: no-repeat;
+}
+
+.x-osdn-toolbar .x-btn-over.x-btn-bigicon .x-btn-right {
+    background: transparent url(../images/tbar-hover-right.gif);
+    background-repeat: no-repeat;
+}
+
+.x-osdn-toolbar .x-btn-over.x-btn-bigicon .x-btn-center {
+    background: transparent url(../images/tbar-hover.gif);
+    background-repeat: repeat-x;
+}
+
+.x-osdn-toolbar .x-btn-click.x-btn-bigicon .x-btn-left, .x-osdn-toolbar .x-btn-bigicon .x-btn-click .x-btn-left, .x-osdn-toolbar .x-btn-pressed.x-btn-bigicon .x-btn-left, .x-osdn-toolbar .x-btn-menu-active.x-btn-bigicon .x-btn-left {
+    background: transparent url(../images/tbar-pressed-left.gif);
+    background-repeat: no-repeat;
+}
+
+.x-osdn-toolbar .x-btn-click.x-btn-bigicon .x-btn-right, .x-osdn-toolbar .x-btn-bigicon .x-btn-click .x-btn-right, .x-osdn-toolbar .x-btn-pressed.x-btn-bigicon .x-btn-right, .x-osdn-toolbar .x-btn-menu-active.x-btn-bigicon .x-btn-right {
+    background: transparent url(../images/tbar-pressed-right.gif);
+    background-repeat: no-repeat;
+}
+
+.x-osdn-toolbar .x-btn-click.x-btn-bigicon .x-btn-center, .x-osdn-toolbar .x-btn-bigicon .x-btn-click .x-btn-center, .x-osdn-toolbar .x-btn-pressed.x-btn-bigicon .x-btn-center, .x-osdn-toolbar .x-btn-menu-active.x-btn-bigicon .x-btn-center {
+    background: transparent url(../images/tbar-pressed.gif);
+    background-repeat: repeat-x;
+}

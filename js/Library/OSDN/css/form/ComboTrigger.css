@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+
+.x-form-twin-triggers .osdn-add {
+    background-image: url(add.gif) !important;
+    background-position: center right !important;  
+    border: 0pt none !important;
+}
+
+.x-form-osdn-trigger.x-form-trigger-over,
+.x-trigger-wrap-focus .x-form-osdn-trigger {
+	background-position: 0% 50% !important;
+}
+
+.x-form-twin-triggers .no-border-bottom {
+	border-bottom: 0pt none !important;
+}
+
+.x-form-twin-triggers .x-form-osdn-trigger {
+	background-position: 0px 50%;
+}

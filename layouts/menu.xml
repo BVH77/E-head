@@ -1,0 +1,73 @@
+<menudata>
+    <name>Menu</name>
+    <version>1.0</version>
+    <enable>true</enable>
+    <description>menu content</description>
+    <menu>
+        <item name="Orders" allowed="true">
+        	<leaf>true</leaf>
+			<iconCls>osdn-templates</iconCls>
+			<text>Заказы</text>
+			<handler>
+				OSDN.System.Layout.getTabPanel().add({
+				    iconCls: 'osdn-templates',
+                    xtype: 'PMS.Orders.Layout',
+                    id: 'PMS.Orders.Layout'
+                });
+			</handler>
+        </item>
+        <item name="Suppliers" resource="suppliers">
+        	<leaf>true</leaf>
+			<iconCls>osdn-teachers</iconCls>
+			<text>Поставщики</text>
+			<handler>
+				OSDN.System.Layout.getTabPanel().add({
+				    iconCls: 'osdn-teachers',
+                    xtype: 'PMS.Suppliers.List',
+                    id: 'PMS.Suppliers.List'
+                });
+			</handler>
+        </item>
+        <item name="Subcontractors" resource="subcontractors">
+        	<leaf>true</leaf>
+			<iconCls>osdn-students</iconCls>
+			<text>Субподрядчики</text>
+			<handler>
+				OSDN.System.Layout.getTabPanel().add({
+				    iconCls: 'osdn-students',
+                    xtype: 'PMS.Subcontractors.List',
+                    id: 'PMS.Subcontractors.List'
+                });
+			</handler>
+        </item>
+		<item resource="admin">
+			<leaf>true</leaf>
+			<iconCls>osdn-acl</iconCls>
+			<text>Менеджер доступа</text>
+			<qtip>Менеджер доступа</qtip>
+			<handler>
+				OSDN.System.Layout.getTabPanel().add({
+				    iconCls: 'osdn-acl',
+                    xtype: 'osdn.acl.layout',
+                    id: 'osdn.acl.layout'
+                });
+			</handler>
+		</item>
+		<item name="Logout" resource="" allowed="true">
+        	<leaf>true</leaf>
+			<iconCls>osdn-logout</iconCls>
+			<text>Выход</text>
+			<qtip>Выход</qtip>
+			<handler>
+                var cb = function(){
+                    window.location.href = '/default/authenticate/logout';
+                };
+                if (typeof Ext.state.Manager.getProvider().saveState == 'function') {
+				    Ext.state.Manager.getProvider().saveState(cb);
+                } else {
+                    cb();
+                }
+			</handler>
+        </item>
+    </menu>
+</menudata>

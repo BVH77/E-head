@@ -1,0 +1,21 @@
+<center><h3>
+График работ по <?php if ($this->data['type'] == 'mount'): ?>МОНТАЖУ
+<?php elseif ($this->data['type'] == 'production'):?> ПРОИЗВОДСТВУ
+<?php endif;?> на&nbsp;&nbsp;&nbsp;&nbsp;<?=date_format($this->data['date'], 'd-m-Y');?>
+</h3></center>
+<?php foreach ($this->data['orders'] as $order) :?>
+    <div style="float: left; padding: 10px; height: 350px;">
+    <table cellspacing="0" cellpadding="5" border="1" width="300px">
+        <tr><td colspan="2">Заказчик: <b><?=$order['customer']?></b></td></tr>
+        <tr><td colspan="2">Адрес заказа: <b><?=$order['address']?></b></td></tr>
+        <tr valign="top"><td colspan="2" height="200px">Вид работ:</td></tr>
+        <tr><td colspan="2">Ответственный: <b><?=$order['creator_name']?></b></td></tr>
+        <tr><td>Автомобиль:&nbsp;</td><td width="100%"></td></tr>
+    </table>
+    </div>
+<?php endforeach;?>
+<div style="clear: both;">
+<pre>
+<?php //print_r($this->data['orders']);?>
+<?php //print_r($this->data['debug']);?>
+</pre>

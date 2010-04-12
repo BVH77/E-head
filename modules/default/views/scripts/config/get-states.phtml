@@ -1,0 +1,4 @@
+if ('object' != typeof OSDN) {
+	OSDN = {};
+}
+OSDN.States = <?=Zend_Json::encode($this->rows); ?> || [];

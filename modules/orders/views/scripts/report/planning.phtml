@@ -1,0 +1,55 @@
+<style>
+body {
+    font-size: 10pt;
+}
+
+.planning_production {
+    background-color: #33CCCC;
+}
+
+.planning_mount {
+    background-color: red;
+}
+</style>
+<center>
+<h3>План проектов на <?=$this->data['date']?></h3>
+</center>
+<?php foreach ($this->data['data'] as $monthNumber => $month) :?>
+    <center><?=$month['name']?></center><br/>
+    <table cellspacing="0" cellpadding="5" border="1">
+        <tr valign="bottom">
+            <td><b>№</b></td>
+            <td><b>Заказчик</b></td>
+            <td><b>Адрес монтажа</b></td>
+            <td><b>Ответственный</b></td>
+            <?php foreach ($month['days'] as $number => $day) :?>
+                <td align="center"><?=$day?><br/><b><?=$number?></b></td>
+            <?php endforeach;?>    
+        </tr>
+		<?php foreach ($month['orders'] as $order) :?>
+	        <tr>
+                <td><?=$order['id']?></td>
+                <td><nobr><?=$order['customer']?></nobr></td>
+                <td><?=$order['address']?></td>
+                <td><nobr><?=$order['creator_name']?></nobr></td>
+                <?php foreach ($order['days'] as $day) :?>
+	                <td align="center" class="<?=$day?>">&nbsp</td>
+                <?php endforeach;?>
+           </tr>
+		<?php endforeach;?>
+	    </table><br/><br/>
+<?php endforeach;?>
+
+<table cellspacing="0" cellpadding="5" border="1" style="border: none;">
+    <tr>
+        <td class="planning_production" style="width: 20px;"></td>
+        <td style="border: none;">- производство</td>
+        <td class="planning_mount" style="width: 20px;"></td>
+        <td style="border: none;">- монтаж</td>
+    </tr>
+</table>
+
+<pre>
+<?php //print_r($this->data);?>
+<?php //print_r($this->data['debug']);?>
+</pre>

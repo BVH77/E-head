@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+
+.x-osdn-grid-viewer {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.x-osdn-grid-viewer tr td, .x-osdn-grid-viewer tr th {
+   border: 1px solid #EDEDED;
+   padding-left: 3px;
+   vertical-align: top;
+   white-space: normal;
+}
+
+.x-osdn-grid-viewer .x-grid3-row .x-osdn-grid-viewer-property {
+    font-weight: bold;
+    width: 50%;
+    vertical-align: top;
+}

@@ -1,0 +1,39 @@
+// Ext.ns('OSDN.Acl');
+
+if ('object' != typeof OSDN) {
+    OSDN = {};
+}
+
+if ('object' != typeof OSDN.Acl) {
+    OSDN.Acl = {};
+}
+
+OSDN.Acl.Storage = function() {
+
+    var permissions = <?=Zend_Json::encode($this->acl); ?> || [];
+    var privileges = <?=Zend_Json::encode($this->privileges); ?> || {};
+    var resources = <?=Zend_Json::encode($this->resources); ?> || {};
+    var workflowPermissions = <?=Zend_Json::encode($this->workflowPermissions); ?> || {};
+    
+    return {
+        getPermissions: function() {
+            return permissions;
+        },
+        
+        getResources: function() {
+            return resources;
+        },
+        
+        getPrivileges: function() {
+            return privileges;
+        },
+        
+        isSuperAdministrator: function() {
+            return <?=$this->isSuperAdministrator ? 'true' : 'false'; ?>;
+        },
+        
+        getWorkflowPermissions: function() {
+            return workflowPermissions;
+        }
+    };
+}();

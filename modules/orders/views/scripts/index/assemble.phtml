@@ -1,0 +1,24 @@
+var id = parseInt(<?=$this->id;?>);
+var ordersList = OSDN.System.Layout.getTabPanel().add({
+    iconCls: 'osdn-templates',
+    xtype: 'PMS.Orders.Layout',
+    id: 'PMS.Orders.Layout'
+});
+var editForm = new PMS.Orders.Edit({orderId: id})
+editForm.on('render', function() {
+    this.form.getForm().load({
+        url: this.loadURL,
+        params: {id: this.orderId} 
+    });
+    this.suppliers.getStore().load({});
+    this.subcontractors.getStore().load();
+    this.photos.view.store.load({params: {orderId: this.orderId}});
+}, editForm, {delay: 50});
+editForm.showInWindow({
+    listeners: {
+        close: function() {
+            ordersList.listPanel.onCloseEditWin(id);
+        },
+        scope: ordersList.listPanel
+    }
+});

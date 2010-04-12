@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+
+/*
+ Predefined css class for buttons with only icon. Add this class (x-btn-icon) and a class with a background-image
+ to your button for a button with just an icon.
+ e.g.
+ .my-class .x-btn-text { background-image: url(foo.gif); }
+ */
+ 
+.x-osdn-btn-red .x-btn-left{
+    background:url(../images/button/btn-sprite.gif) no-repeat 0 0;
+}
+
+.x-osdn-btn-red .x-btn-right{
+    background:url(../images/button/btn-sprite.gif) no-repeat 0 -21px;
+}
+
+.x-osdn-btn-red .x-btn-center{
+    background:url(../images/button/btn-sprite.gif) repeat-x 0 -42px;
+}
+
+.x-osdn-btn-red .x-btn-menu-arrow-wrap .x-btn-center button {
+    background:transparent url(../images/button/btn-arrow.gif) no-repeat left 3px;
+}
+
+.x-osdn-btn-red .x-btn-with-menu  .x-btn-center em {
+    background:transparent url(../images/toolbar/btn-arrow.gif) no-repeat right 0;
+}
+
+.x-osdn-btn-red .x-btn-text-icon .x-btn-with-menu .x-btn-center em {
+    background:transparent url(../images/toolbar/btn-arrow.gif) no-repeat right 3px;
+}
+
+.x-osdn-btn-red .x-btn-pressed .x-btn-left{
+    background: url(../images/button/btn-sprite.gif) no-repeat 0 -63px;
+}
+.x-osdn-btn-red .x-btn-pressed .x-btn-right{
+    background: url(../images/button/btn-sprite.gif) no-repeat 0 -84px;
+}
+.x-osdn-btn-red .x-btn-pressed .x-btn-center{
+    background: url(../images/button/btn-sprite.gif) repeat-x 0 -126px;
+}
