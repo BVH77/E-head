@@ -197,7 +197,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                 items: [{
                     xtype: 'osdn.legend.item',
                     color: '#00FF00',
-                    text: lang('Выполненные')
+                    text: 'Выполненные'
                 }, {
                     xtype: 'osdn.legend.item',
                     color: '#FFFF00',
