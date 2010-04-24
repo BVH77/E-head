@@ -36,62 +36,6 @@ OSDN.Layout.TabPanel = Ext.extend(Ext.TabPanel, {
 	}   
     	
 });
-
-//OSDN.Layout.Tree = Ext.extend(Ext.tree.TreePanel, {
-//    
-//    title: 'Меню',
-//    
-//    rootVisible: false,
-//     
-//    autoHide: true,
-//    
-//    initComponent: function() {
-//        
-//        this.loader = new Ext.tree.TreeLoader({
-//            url: link('default', 'index', 'get-menu'),
-//            baseAttrs: {
-//                singleClickExpand: true
-//            }
-//        });
-//        
-//        this.root = new Ext.tree.AsyncTreeNode({
-//            expanded: true,
-//            singleClickExpand: true
-//        });
-//        this.tools = [{
-//            id: 'refresh',
-//            qtip: lang('Refresh'),
-//            handler: function(event, toolEl, panel){
-//                panel.getRootNode().reload();
-//            }
-//        }];
-//        
-//        OSDN.Layout.Tree.superclass.initComponent.apply(this, arguments);
-//        this.on({
-//            click: this.onNodeClick.createDelegate(this),
-//            beforeload: function(node) {
-//                this.getEl().mask(lang('Loading data'));
-//            },
-//            load: function() {
-//                this.getEl().unmask();
-//            },
-//            scope: this
-//        });
-//    },
-//    
-//    onNodeClick: function(node, e) {
-//        if (!node.isLeaf()) {
-//            return;
-//        }
-//        
-//        e.stopEvent();
-//        if (!node.attributes.disabled) {
-//            eval(node.attributes.handler);
-//        }
-//    }
-//
-//});
-
                     
 OSDN.Layout.Workspace = Ext.extend(Ext.Viewport, {
  
@@ -103,15 +47,6 @@ OSDN.Layout.Workspace = Ext.extend(Ext.Viewport, {
     
     initComponent: function() {
         
-//        this.tree = new OSDN.Layout.Tree({
-//            region: 'west',
-//            width: 160,
-//            margins: '1 0 1 1',
-//            cmargins: '1 5 1 1',
-//            split: true,
-//            collapsible: true   
-//        });
-
         this.menuToolbar = new Ext.Toolbar({
             region: 'north',
             height: 30,
@@ -120,29 +55,18 @@ OSDN.Layout.Workspace = Ext.extend(Ext.Viewport, {
                 autoEl: {
                     tag: 'div',
                     style: 'cursor: pointer;',
-                    qtip: 'quarant.ru',
-                    cls: 'logo_garant'
+                    qtip: 'e-head.ru',
+                    cls: 'e-head-logo'
                 },
                 listeners: {
                     render: function(box) {
                         box.el.on('click', function() {
-                            window.open('http://quarant.ru/');
+                            window.open('http://e-head.ru/');
                         })
                     }
                 }
             }, ' ', '-', {
-                text: 'Заказы',
-                iconCls: 'orders-icon',
-                hidden: !acl.isView('orders'),
-                handler: function() {
-                    OSDN.System.Layout.getTabPanel().add({
-                        iconCls: 'orders-icon',
-                        xtype: 'PMS.Orders.Layout',
-                        id: 'PMS.Orders.Layout'
-                    });
-                }
-            }, {
-                text: 'Архив',
+                text: 'Архив заказов',
                 iconCls: 'archive-icon',
                 hidden: !acl.isView('archive'),
                 handler: function() {
@@ -153,44 +77,48 @@ OSDN.Layout.Workspace = Ext.extend(Ext.Viewport, {
                     });
                 }
             }, {
-                text: 'Заказчики',
+                text: 'Контрагенты',
                 iconCls: 'customers-icon',
-                hidden: !acl.isView('customers'),
-                handler: function() {
-                    OSDN.System.Layout.getTabPanel().add({
-                        title: 'Заказчики',
-                        iconCls: 'customers-icon',
-                        entity: 'customers',
-                        xtype: 'PMS.ContragentsListAbstract',
-                        id: 'PMS.Customers.List'
-                    });
-                }
-            }, {
-                text: 'Поставщики',
-                iconCls: 'suppliers-icon',
-                hidden: !acl.isView('suppliers'),
-                handler: function() {
-                    OSDN.System.Layout.getTabPanel().add({
-                        title: 'Поставщики',
-                        iconCls: 'suppliers-icon',
-                        entity: 'suppliers',
-                        xtype: 'PMS.ContragentsListAbstract',
-                        id: 'PMS.Suppliers.List'
-                    });
-                }
-            }, {
-                text: 'Субподрядчики',
-                iconCls: 'subcontractors-icon',
-                hidden: !acl.isView('subcontractors'),
-                handler: function() {
-                    OSDN.System.Layout.getTabPanel().add({
-                        title: 'Субподрядчики',
-                        iconCls: 'subcontractors-icon',
-                        entity: 'subcontractors',
-                        xtype: 'PMS.ContragentsListAbstract',
-                        id: 'PMS.Subcontractors.List'
-                    });
-                }
+                menu: [{
+                    text: 'Заказчики',
+                    iconCls: 'customers-icon',
+                    hidden: !acl.isView('customers'),
+                    handler: function() {
+                        OSDN.System.Layout.getTabPanel().add({
+                            title: 'Заказчики',
+                            iconCls: 'customers-icon',
+                            entity: 'customers',
+                            xtype: 'PMS.ContragentsListAbstract',
+                            id: 'PMS.Customers.List'
+                        });
+                    }
+                }, {
+                    text: 'Поставщики',
+                    iconCls: 'suppliers-icon',
+                    hidden: !acl.isView('suppliers'),
+                    handler: function() {
+                        OSDN.System.Layout.getTabPanel().add({
+                            title: 'Поставщики',
+                            iconCls: 'suppliers-icon',
+                            entity: 'suppliers',
+                            xtype: 'PMS.ContragentsListAbstract',
+                            id: 'PMS.Suppliers.List'
+                        });
+                    }
+                }, {
+                    text: 'Субподрядчики',
+                    iconCls: 'subcontractors-icon',
+                    hidden: !acl.isView('subcontractors'),
+                    handler: function() {
+                        OSDN.System.Layout.getTabPanel().add({
+                            title: 'Субподрядчики',
+                            iconCls: 'subcontractors-icon',
+                            entity: 'subcontractors',
+                            xtype: 'PMS.ContragentsListAbstract',
+                            id: 'PMS.Subcontractors.List'
+                        });
+                    }
+                }]
             }, {
                 text: 'Менеджер доступа',
                 iconCls: 'accounts_manager-icon',
@@ -203,31 +131,35 @@ OSDN.Layout.Workspace = Ext.extend(Ext.Viewport, {
                     });
                 }
             }, '-', {
-                text: 'График производства',
+                text: 'Графики',
                 iconCls: 'prod_schd-icon',
-                hidden: !acl.isView('admin'),
-                handler: function() {
-                    window.open(OSDN.ABSOLUTE_PATH + '/orders/report/schedule-production');
-                }
-            }, {
-                text: 'График монтажа',
-                iconCls: 'mount_schd-icon',
-                hidden: !acl.isView('admin'),
-                handler: function() {
-                    window.open(OSDN.ABSOLUTE_PATH + '/orders/report/schedule-mount');
-                }
-            }, {
-                text: 'План работ',
-                iconCls: 'work_schd-icon',
-                hidden: !acl.isView('admin'),
-                handler: function() {
-                    window.open(OSDN.ABSOLUTE_PATH + '/orders/report/planning');
-                }
+                menu: [{
+                    text: 'График производства',
+                    iconCls: 'prod_schd-icon',
+                    hidden: !acl.isView('admin'),
+                    handler: function() {
+                        window.open(OSDN.ABSOLUTE_PATH + '/orders/report/schedule-production');
+                    }
+                }, {
+                    text: 'График монтажа',
+                    iconCls: 'mount_schd-icon',
+                    hidden: !acl.isView('admin'),
+                    handler: function() {
+                        window.open(OSDN.ABSOLUTE_PATH + '/orders/report/schedule-mount');
+                    }
+                }, {
+                    text: 'План работ',
+                    iconCls: 'work_schd-icon',
+                    hidden: !acl.isView('admin'),
+                    handler: function() {
+                        window.open(OSDN.ABSOLUTE_PATH + '/orders/report/planning');
+                    }
+                }]
             }, '->', '-', this.username + ' (' + this.rolename + ')', {
                 text: 'Выход',
                 iconCls: 'exit-icon',
                 handler: function() {
-                    window.location.href = '/default/authenticate/logout';
+                    window.location.href = '/index/logout';
                 }
             }] 
         });

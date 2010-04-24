@@ -32,13 +32,13 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             var mep = record.get('mount_end_planned');
             var mef = record.get('mount_end_fact');
             if (Ext.isDate(sdf)) {
-                return 'osdn-x-row-green';
+                return 'x-row-success';
             }
             if (psp > sdp || pep > sdp || msp > sdp || mep > sdp) {
-                return 'osdn-x-row-red';
+                return 'x-row-error';
             }
             if (Ext.isDate(sdp) && sdp < today) {
-                return 'osdn-x-row-yellow';
+                return 'x-row-expired';
             }
         }
     },
@@ -196,15 +196,15 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             plugins: [new OSDN.Legend.Plugin({
                 items: [{
                     xtype: 'osdn.legend.item',
-                    color: '#00FF00',
+                    color: '#99FF99',
                     text: 'Выполненные'
                 }, {
                     xtype: 'osdn.legend.item',
-                    color: '#FFFF00',
+                    color: '#FFFF99',
                     text: 'Просроченные'
                 }, {
                     xtype: 'osdn.legend.item',
-                    color: '#FF0000',
+                    color: '#FF9999',
                     text: 'Конфликт'
                 }]
             })],

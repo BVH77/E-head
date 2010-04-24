@@ -1,3 +1,20 @@
+.e-head-logo {
+    background-image: url('../images/e-head-logo.png');
+    background-repeat: no-repeat;
+    height: 24px;
+    width: 75px;
+}
+
+.x-row-expired {
+    background: #FFFF99;
+}
+.x-row-success {
+    background: #99FF99;
+}
+.x-row-error {
+    background: #FF9999;
+}
+
 .x-osdn-no-border-left .x-panel-body,
 .x-osdn-no-border-left .x-panel-bbar .x-toolbar,
 .x-osdn-no-border-left .x-panel-header {
@@ -36,22 +53,6 @@
 
 .x-osdn-border-right {
     border-right: 1px solid #99BBE8 !important;
-}
-
-.osdn-x-row-yellow {
-    background: #FFFF00;
-}
-
-.osdn-x-row-green {
-    background: #00FF00;
-}
-
-.osdn-x-row-violet {
-    background: #E48FFF;
-}
-
-.osdn-x-row-red {
-    background: #FF0000;
 }
 
 .x-grid3-hd-row td.ux-filtered-column {   
