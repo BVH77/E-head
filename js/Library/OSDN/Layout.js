@@ -50,9 +50,9 @@ OSDN.Layout.Workspace = Ext.extend(Ext.Viewport, {
 		this.menuToolbar = new Ext.Toolbar({
         	region: 'north',
             height: 30,
-            items: PMS.Menu || [] 
+            items: PMS.Menu || []
         });
-        this.menuToolbar.add({
+        this.menuToolbar.add('->', {
             text: 'Выход - <i>' + this.username + ' (' + this.rolename + ')</i>',
             iconCls: 'exit-icon',
             handler: function() {

@@ -105,4 +105,4 @@ PMS.Menu = [{
             window.open(OSDN.ABSOLUTE_PATH + '/orders/report/planning');
         }
     }]
-}, '->', '-']; 
+}]; 
