@@ -58,8 +58,7 @@ OSDN.Layout.Workspace = Ext.extend(Ext.Viewport, {
             handler: function() {
                 window.location.href = '/index/logout';
             }
-        })
-		
+        });
 		
         this.tp = new OSDN.Layout.TabPanel({
             region: 'center',
