@@ -24,13 +24,13 @@
     <?if($this->packjavascript): ?>
         <script src="<?=$this->link('default','index', 'get-js-content');?>" type="text/javascript" ></script>
 	<?else: ?>
-	    <?php echo $this->IncludeJs($this->layoutPath . '/jsCss.xml'); ?>
+	    <?=$this->IncludeJs($this->layoutPath . '/jsCss.xml'); ?>
     <?endif; ?>
     <?php if ($this->assemble): ?>
         <script type="text/javascript">
             OSDN.onReady(function() {
                 try {
-                    <?php echo $this->assemble; echo "\n"; ?>
+                    <?=$this->assemble . "\n"; ?>
                 } catch(e) {
                     OSDN.Msg.error('Ошибка запроса');
                 }
