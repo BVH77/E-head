@@ -1,7 +1,7 @@
 /**
  * This namespace should be in another file but I dicided to put it here for consistancy.
  */
-Ext.namespace('Ext.ux.Utils');
+Ext.ns('Ext.ux.Utils');
 
 /**
  * This class implements event queue behaviour.
