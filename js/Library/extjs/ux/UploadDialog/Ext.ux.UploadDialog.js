@@ -238,54 +238,49 @@ Ext.ux.UploadDialog.BrowseButton = Ext.extend(Ext.Button, {
     /**
      * @access private
      */
-    createInputFile: function(){
-        var button_container = this.el.child('.x-btn-center');
-        button_container.position('relative');
-        this.input_file = Ext.DomHelper.append(button_container, {
-            tag: 'input',
-            type: 'file',
-            size: 1,
-            name: this.input_name || Ext.id(this.el),
-            style: 'position: absolute; display: block; border: none; cursor: pointer'
-        }, true);
-        
-        var button_box = button_container.getBox();
-        this.input_file.setStyle('font-size', (button_box.width * 0.5) + 'px');
-        
-        var input_box = this.input_file.getBox();
-        var adj = {
-            x: 3,
-            y: 3
-        };
-        if (Ext.isIE) {
-            adj = {
-                x: 0,
-                y: 3
-            };
+    createInputFile : function()
+    {
+      var button_container = this.el.child('tbody' /* JYJ '.x-btn-center'*/);
+          button_container.position('relative');
+         this.wrap = this.el.wrap({cls:'tbody'});    
+         this.input_file = this.wrap.createChild({
+             tag: 'input',
+              type: 'file',
+              size: 1,
+              name: this.input_name || Ext.id(this.el),
+              style: "position: absolute; display: block; border: none; cursor: pointer"
+          });
+          this.input_file.setOpacity(0.0);
+      
+      var button_box = button_container.getBox();
+      this.input_file.setStyle('font-size', (button_box.width * 0.5) + 'px');
+
+      var input_box = this.input_file.getBox();
+      var adj = {x: 3, y: 3}
+      if (Ext.isIE) {
+        adj = {x: 0, y: 3}
+      }
+      
+      this.input_file.setLeft(button_box.width - input_box.width + adj.x + 'px');
+      this.input_file.setTop(button_box.height - input_box.height + adj.y + 'px');
+      this.input_file.setOpacity(0.0);
+          
+      if (this.handleMouseEvents) {
+        this.input_file.on('mouseover', this.onMouseOver, this);
+          this.input_file.on('mousedown', this.onMouseDown, this);
+      }
+      
+      if(this.tooltip){
+        if(typeof this.tooltip == 'object'){
+          Ext.QuickTips.register(Ext.apply({target: this.input_file}, this.tooltip));
+        } 
+        else {
+          this.input_file.dom[this.tooltipType] = this.tooltip;
+          }
         }
-        this.input_file.setLeft(button_box.width - input_box.width + adj.x + 'px');
-        this.input_file.setTop(button_box.height - input_box.height + adj.y + 'px');
-        this.input_file.setOpacity(0.0);
-        
-        if (this.handleMouseEvents) {
-            this.input_file.on('mouseover', this.onMouseOver, this);
-            this.input_file.on('mousedown', this.onMouseDown, this);
-        }
-        
-        if (this.tooltip) {
-            if (typeof this.tooltip == 'object') {
-                Ext.QuickTips.register(Ext.apply({
-                    target: this.input_file
-                }, this.tooltip));
-            } else {
-                this.input_file.dom[this.tooltipType] = this.tooltip;
-            }
-        }
-        
-        this.input_file.on('change', this.onInputFileChange, this);
-        this.input_file.on('click', function(e){
-            e.stopPropagation();
-        });
+      
+      this.input_file.on('change', this.onInputFileChange, this);
+      this.input_file.on('click', function(e) { e.stopPropagation(); }); 
     },
     
     /**
