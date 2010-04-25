@@ -104,7 +104,7 @@ Ext.ux.albeva.LoginDialog = function (config)
         vtype       : this.usernameVtype,
         allowBlank  : false
     }, {
-        xtype       : 'osdnpasswordfield',
+        xtype       : 'xlib.form.passwordfield',
         id          : this.passwordId,
         name        : this.passwordField,
         fieldLabel  : this.passwordLabel,

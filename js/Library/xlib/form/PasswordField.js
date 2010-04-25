@@ -1,13 +1,13 @@
-Ext.ns('OSDN.form');
+Ext.ns('xlib.form');
 
-OSDN.form.PasswordField = Ext.extend(Ext.form.TextField, {
+xlib.form.PasswordField = Ext.extend(Ext.form.TextField, {
 
 	inputType: 'password',
 	
 	enableKeyEvents: true,
 	
     initComponent: function() {
-        OSDN.form.PasswordField.superclass.initComponent.apply(this, arguments);
+		xlib.form.PasswordField.superclass.initComponent.apply(this, arguments);
         this.on('keydown', this.detectCaps, this);
         this.on('keypress', this.detectCaps, this);
         this.on('render', function() {
@@ -46,4 +46,4 @@ OSDN.form.PasswordField = Ext.extend(Ext.form.TextField, {
     
 });
 
-Ext.reg('osdnpasswordfield', OSDN.form.PasswordField);
+Ext.reg('xlib.form.passwordfield', xlib.form.PasswordField);

@@ -52,7 +52,6 @@
         <script src="/js/Library/OSDN/form/ComboBox.js"/>
         <script src="/js/Library/OSDN/form/Textarea.js"/>
         <style src="/js/Library/OSDN/css/form/Textarea.css"/>
-        <script src="/js/Library/OSDN/form/PasswordField.js"/>
         
         <style href="/js/Library/OSDN/css/form/ComboTrigger.css"/>
         <script src="/js/Library/OSDN/form/ComboTrigger.js"/>
