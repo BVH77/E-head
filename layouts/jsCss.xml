@@ -40,7 +40,7 @@
         <!-- Plugins -->
         
         <!-- ux -->
-        <style href="/js/Library/extjs/ux/UploadDialog/css/Ext.ux.UploadDialog.css"/>
+        <style href="/js/Library/extjs/ux/UploadDialog/Ext.ux.UploadDialog.css"/>
         <script src="/js/Library/extjs/ux/UploadDialog/Ext.ux.UploadDialog.js"/>
         <!-- ux -->
         
