@@ -83,24 +83,22 @@ PMS.Menu = [{
 }, {
     text: 'Графики',
     iconCls: 'prod_schd-icon',
+    hidden: !acl.isView('orders'),
     menu: [{
         text: 'График производства',
         iconCls: 'prod_schd-icon',
-        hidden: !acl.isView('admin'),
         handler: function() {
             window.open(OSDN.ABSOLUTE_PATH + '/orders/report/schedule-production');
         }
     }, {
         text: 'График монтажа',
         iconCls: 'mount_schd-icon',
-        hidden: !acl.isView('admin'),
         handler: function() {
             window.open(OSDN.ABSOLUTE_PATH + '/orders/report/schedule-mount');
         }
     }, {
         text: 'План работ',
         iconCls: 'work_schd-icon',
-        hidden: !acl.isView('admin'),
         handler: function() {
             window.open(OSDN.ABSOLUTE_PATH + '/orders/report/planning');
         }
