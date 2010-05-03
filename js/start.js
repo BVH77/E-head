@@ -68,5 +68,5 @@ Ext.onReady(function(){
         }  
     });
     
-    OSDN.LoadingMask.hide();
+    xlib.LoadingMask.hide();
 });

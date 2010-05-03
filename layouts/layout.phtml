@@ -8,9 +8,12 @@
 </head>
 <body>
 
-    <script src="/js/Library/OSDN/LoadingMask.js"></script>
+    <script src="/js/Library/xlib/LoadingMask.js"></script>
     <script type="text/javascript">
-        OSDN.LoadingMask.show();
+        xlib.LoadingMask.show();
+	    if (typeof OSDN == 'undefined') {
+	    	OSDN = {};
+	    } 
         OSDN.ABSOLUTE_PATH = '<?=$this->baseUrl(true); ?>';
         OSDN.BASE_PATH = '<?=$this->baseUrl(); ?>';
         OSDN.HOST = '<?=$_SERVER['SERVER_NAME']; ?>';

@@ -1,7 +1,6 @@
-if (typeof OSDN == 'undefined') {
-    OSDN = {};
+if (typeof xlib == 'undefined') {
+	xlib = {};
 } 
-
 
 /**
  * Simple loading mask
@@ -10,10 +9,10 @@ if (typeof OSDN == 'undefined') {
  * You can't create this directly
  * Simple examle:
  * <code>
- * OSDN.LoadingMask
+ * xlib.LoadingMask
  * </code>
  */
-OSDN.LoadingMask = function() {
+xlib.LoadingMask = function() {
     
     // signalize that loading mask container is already rendered
     var rendered = false;
