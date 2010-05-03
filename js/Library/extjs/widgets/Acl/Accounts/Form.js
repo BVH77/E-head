@@ -58,7 +58,7 @@ OSDN.Acl.Accounts.Form = Ext.extend(OSDN.form.FormPanel, {
                             w.close();
                         }, 
                         failure: function() {
-                            OSDN.Msg.error('Сохранение не удалось.');
+                            xlib.Msg.error('Сохранение не удалось.');
                         },
                         scope: this
                     });

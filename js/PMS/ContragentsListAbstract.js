@@ -126,7 +126,7 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
                         success: function(res){
                             var errors = Ext.decode(res.responseText).errors;
                             if (errors) {
-                                OSDN.Msg.error(errors[0].msg);
+                                xlib.Msg.error(errors[0].msg);
                                 return;
                             }
                             g.getStore().reload();

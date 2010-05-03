@@ -187,10 +187,10 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
                                 this.getStore().reload();
                                 return;
                             }
-                            OSDN.Msg.error('Не удалось создать учётную запись.')
+                            xlib.Msg.error('Не удалось создать учётную запись.')
                         },
                         failure: function() {
-                            OSDN.Msg.error('Не удалось создать учётную запись.')
+                        	xlib.Msg.error('Не удалось создать учётную запись.')
                         },
                         scope: this
                     });
@@ -206,7 +206,7 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
         
         var record = g.getStore().getAt(rowIndex);
         
-        OSDN.Msg.confirm('Вы уверены?', function() {
+        xlib.Msg.confirm('Вы уверены?', function() {
             Ext.Ajax.request({
                 url: link('admin', 'accounts', 'delete-account'),
                 params: {
@@ -220,7 +220,7 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
                             return;
                         }
                     }
-                    OSDN.Msg.error('Не удалось удаление.');
+                    xlib.Msg.error('Не удалось удаление.');
                 },
                 scope: this
             });    

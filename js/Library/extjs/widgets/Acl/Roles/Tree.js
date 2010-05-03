@@ -98,7 +98,7 @@ OSDN.Acl.Roles.Tree = Ext.extend(OSDN.tree.TreePanel, {
                     this.treeEditor.triggerEdit(newNode);
                     return;
                 }
-                OSDN.Msg.error('Не удалось добавить роль.');
+                xlib.Msg.error('Не удалось добавить роль.');
             },
             scope: this
         });
@@ -117,7 +117,7 @@ OSDN.Acl.Roles.Tree = Ext.extend(OSDN.tree.TreePanel, {
                 
                 if (!success) {
                     this.revertRename(node, startValue);
-                    OSDN.Msg.error('Не удалось переименовать роль.');
+                    xlib.Msg.error('Не удалось переименовать роль.');
                 }
             },
             scope: this
@@ -136,7 +136,7 @@ OSDN.Acl.Roles.Tree = Ext.extend(OSDN.tree.TreePanel, {
                     this.removeNode(node);
                     return;
                 }
-                OSDN.Msg.error('Не удалось удалить роль.');
+                xlib.Msg.error('Не удалось удалить роль.');
             },
             scope: this
         });

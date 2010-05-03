@@ -32,10 +32,8 @@ Ext.extend(OSDN.Translation, Ext.util.Observable, {
                 	}
                     return;
                 }
-                //OSDN.Msg.error('Loading translation failed.');
             },
             failure: function() {
-                //OSDN.Msg.error('Loading translation failed.');
             },
             scope: this
 		});

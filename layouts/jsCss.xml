@@ -73,13 +73,19 @@
         <script src="/js/Library/OSDN/Window.js"/>
         
         <script src="/js/Library/OSDN/Layout.js"/>
-        <script src="/js/Library/OSDN/Msg.js"/>
         <script src="/js/Library/OSDN/tree/TreePanel.js"/>
         <script src="/js/Library/OSDN/PagingToolbar.js"/>
         
         <style href="/js/Library/OSDN/Legend/Item.css"/>
         <script src="/js/Library/OSDN/Legend/Item.js"/>
         <script src="/js/Library/OSDN/Legend/Plugin.js"/>
+ 
+		<!-- osdn -->
+		
+		<!-- xlib -->
+        <script src="/js/Library/xlib/Msg.js"/>
+		
+		<!-- xlib -->
  
         <!-- Widgets -->
          

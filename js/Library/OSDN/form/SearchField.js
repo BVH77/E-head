@@ -69,7 +69,7 @@ OSDN.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
             return;
         }
         if (v.length < this.minSearchLength) {
-            OSDN.Msg.error(lang('You must enter a minimum of {0} characters', this.minSearchLength));
+        	xlib.Msg.error('Минмум символов для поиска: ' + this.minSearchLength);
             return;
         }
         

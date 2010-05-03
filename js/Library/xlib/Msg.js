@@ -1,9 +1,9 @@
-Ext.namespace('OSDN.Msg');
+Ext.namespace('xlib.Msg');
 
-OSDN.Msg = {
+xlib.Msg = {
     error: function(msg, fn, animEl){
         var s = Ext.Msg.show({
-            title: lang('Error message'),
+            title: 'Ошибка',
             animEl: animEl,
             msg: msg,
             buttons: Ext.MessageBox.OK,
@@ -14,12 +14,12 @@ OSDN.Msg = {
     
     errorCollection: function(errors){
         var t = new Ext.XTemplate('<tpl for=".">', '<span>{msg}</span><br />', '</tpl>');
-        OSDN.Msg.error(t.apply(errors));
+        xlib.Msg.error(t.apply(errors));
     },
     
     confirm: function(msg, fn, scope){
-        msg = msg || lang('Are you sure?');
-        Ext.Msg.confirm(lang('Confirm'), msg, function(b){
+        msg = msg || 'Вы уверены?';
+        Ext.Msg.confirm('Подтверждение', msg, function(b){
             
             if (b == 'yes' && typeof fn === 'function') {
                 fn.createDelegate(scope)();
@@ -33,7 +33,7 @@ OSDN.Msg = {
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.INFO,
             modal: true,
-            title: lang('Information'),
+            title: 'Информация',
             msg: msg
         });
     },

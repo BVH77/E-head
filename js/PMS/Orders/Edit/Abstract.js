@@ -119,7 +119,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
            success: function(res){
                 var errors = Ext.decode(res.responseText).errors;
                 if (errors) {
-                    OSDN.Msg.error(errors[0].msg);
+                    xlib.Msg.error(errors[0].msg);
                     record.reject();
                     this.el.unmask();
                     return;
@@ -129,7 +129,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
                 this.getStore().load();
             },
             failure: function() {
-                OSDN.Msg.error('Ошибка связи с сервером.');
+                xlib.Msg.error('Ошибка связи с сервером.');
                 record.reject();
                 this.el.unmask();
             },
@@ -168,7 +168,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
             success: function(res){
                 var errors = Ext.decode(res.responseText).errors;
                 if (errors) {
-                    OSDN.Msg.error(errors[0].msg);
+                    xlib.Msg.error(errors[0].msg);
                     this.el.unmask();
                     return;
                 }
@@ -176,7 +176,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
                 this.getStore().load();
             },
             failure: function() {
-                OSDN.Msg.error('Ошибка связи с сервером.');
+                xlib.Msg.error('Ошибка связи с сервером.');
                 this.el.unmask();
             },
             scope: this
@@ -198,7 +198,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
                         success: function(res){
                             var errors = Ext.decode(res.responseText).errors;
                             if (errors) {
-                                OSDN.Msg.error(errors[0].msg);
+                                xlib.Msg.error(errors[0].msg);
                                 this.el.unmask();
                                 return;
                             }
@@ -206,7 +206,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
                             g.getStore().load();
                         },
                         failure: function() {
-                            OSDN.Msg.error('Ошибка связи с сервером.');
+                            xlib.Msg.error('Ошибка связи с сервером.');
                             this.el.unmask();
                         },
                         scope: this

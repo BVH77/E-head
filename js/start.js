@@ -38,7 +38,7 @@ Ext.onReady(function(){
                     break;
                     
                 case 404:
-                    OSDN.Msg.error('Страница не найдена');
+                    xlib.Msg.error('Страница не найдена');
                     break;
                     
                 case 405:
@@ -58,11 +58,11 @@ Ext.onReady(function(){
                         t.push('</table>');
                     }
                         
-                    OSDN.Msg.error(t.join(''));
+                    xlib.Msg.error(t.join(''));
                     break;
                     
                 case 500:
-                    OSDN.Msg.error('Ошибка сервера');
+                	xlib.Msg.error('Ошибка сервера');
                     break;
             }
         }  

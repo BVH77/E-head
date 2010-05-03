@@ -104,7 +104,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                             success: function(res) {
                                 var errors = Ext.decode(res.responseText).errors;
                                 if (errors) {
-                                    OSDN.Msg.error(errors[0].msg);
+                                    xlib.Msg.error(errors[0].msg);
                                     return;
                                 }
                                 g.getStore().reload();
@@ -338,7 +338,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             success: function(res) {
                 var errors = Ext.decode(res.responseText).errors;
                 if (errors) {
-                    OSDN.Msg.error(errors[0].msg);
+                    xlib.Msg.error(errors[0].msg);
                     this.el.unmask();
                     return;
                 }
@@ -346,7 +346,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                 this.onCloseEditWin(orderId);
             },
             failure: function() {
-                OSDN.Msg.error('Ошибка связи с сервером.');
+                xlib.Msg.error('Ошибка связи с сервером.');
                 this.el.unmask();
             },
             scope: this

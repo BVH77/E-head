@@ -183,7 +183,7 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
                         success: function(res) {
                             var errors = Ext.decode(res.responseText).errors;
                             if (errors) {
-                                OSDN.Msg.error(errors[0].msg);
+                                xlib.Msg.error(errors[0].msg);
                                 return;
                             }
                             this.wind.close();

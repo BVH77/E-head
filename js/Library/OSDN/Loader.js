@@ -64,7 +64,7 @@ OSDN.Loader.LoadScript = function (urls, f, executeOnce) {
                         success: ff,
                         failure: function() {
 							Ext.getBody().unmask();
-							OSDN.Msg.error('Destination source is not loaded.');
+							xlib.Msg.error('Destination source is not loaded.');
 						}
                     });
                 } else {

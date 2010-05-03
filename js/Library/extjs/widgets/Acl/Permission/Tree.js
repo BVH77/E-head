@@ -192,7 +192,7 @@ OSDN.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
     },
 	
     onRemove: function(node) {
-        OSDN.Msg.confirm('Вы уверены?', function() {
+    	xlib.Msg.confirm('Вы уверены?', function() {
             
             Ext.Ajax.request({
                 url: link('admin', 'acl', 'delete-resource'),
@@ -205,7 +205,7 @@ OSDN.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
                         node.remove();
                         return;
                     }
-                    OSDN.Msg.error('Не удалось удалить ресурс.');
+                    xlib.Msg.error('Не удалось удалить ресурс.');
                 }   
             });         
         });
