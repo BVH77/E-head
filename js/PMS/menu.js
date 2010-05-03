@@ -20,7 +20,7 @@ PMS.Menu = [{
     iconCls: 'archive-icon',
     hidden: !acl.isView('archive'),
     handler: function() {
-        OSDN.System.Layout.getTabPanel().add({
+        PMS.Layout.getTabPanel().add({
             iconCls: 'archive-icon',
             xtype: 'PMS.Orders.Archive',
             id: 'PMS.Orders.Archive'
@@ -34,7 +34,7 @@ PMS.Menu = [{
         iconCls: 'customers-icon',
         hidden: !acl.isView('customers'),
         handler: function() {
-            OSDN.System.Layout.getTabPanel().add({
+            PMS.Layout.getTabPanel().add({
                 title: 'Заказчики',
                 iconCls: 'customers-icon',
                 entity: 'customers',
@@ -47,7 +47,7 @@ PMS.Menu = [{
         iconCls: 'suppliers-icon',
         hidden: !acl.isView('suppliers'),
         handler: function() {
-            OSDN.System.Layout.getTabPanel().add({
+            PMS.Layout.getTabPanel().add({
                 title: 'Поставщики',
                 iconCls: 'suppliers-icon',
                 entity: 'suppliers',
@@ -60,7 +60,7 @@ PMS.Menu = [{
         iconCls: 'subcontractors-icon',
         hidden: !acl.isView('subcontractors'),
         handler: function() {
-            OSDN.System.Layout.getTabPanel().add({
+            PMS.Layout.getTabPanel().add({
                 title: 'Субподрядчики',
                 iconCls: 'subcontractors-icon',
                 entity: 'subcontractors',
@@ -97,7 +97,7 @@ PMS.Menu = [{
 	iconCls: 'accounts_manager-icon',
 	hidden: !acl.isView('admin'),
 	handler: function() {
-	OSDN.System.Layout.getTabPanel().add({
+	PMS.Layout.getTabPanel().add({
 		iconCls: 'accounts_manager-icon',
 		xtype: 'osdn.acl.layout',
 		id: 'osdn.acl.layout'
