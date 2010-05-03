@@ -1,6 +1,6 @@
-Ext.namespace('OSDN.Layout');
+Ext.namespace('xlib.Layout');
 
-OSDN.Layout.TabPanel = Ext.extend(Ext.TabPanel, {
+xlib.Layout.TabPanel = Ext.extend(Ext.TabPanel, {
     
 	activeTab: 0,
     
@@ -13,7 +13,7 @@ OSDN.Layout.TabPanel = Ext.extend(Ext.TabPanel, {
 	enableTabScroll: true,
 	
 	initComponent: function() {
-		OSDN.Layout.TabPanel.superclass.initComponent.apply(this, arguments);
+    	xlib.Layout.TabPanel.superclass.initComponent.apply(this, arguments);
 	},
 
     /**
@@ -30,58 +30,44 @@ OSDN.Layout.TabPanel = Ext.extend(Ext.TabPanel, {
                 return c;
             }
         }
-		var cmp = OSDN.Layout.TabPanel.superclass.add.apply(this, arguments);
+		var cmp = xlib.Layout.TabPanel.superclass.add.apply(this, arguments);
         cmp.show();
         return cmp;
 	}   
     	
 });
                     
-OSDN.Layout.Workspace = Ext.extend(Ext.Viewport, {
+xlib.Layout.Workspace = Ext.extend(Ext.Viewport, {
  
     layout: 'border',
 	
-	username: '%username%',
-	
-    rolename: '%rolename%',
+    mainMenu: [],
     
     initComponent: function() {
         
 		this.menuToolbar = new Ext.Toolbar({
         	region: 'north',
             height: 30,
-            items: PMS.Menu || []
-        });
-        this.menuToolbar.add('->', {
-            text: 'Выход - <i>' + this.username + ' (' + this.rolename + ')</i>',
-            iconCls: 'exit-icon',
-            handler: function() {
-                window.location.href = '/index/logout';
-            }
+            items: this.mainMenu
         });
 		
-        this.tp = new OSDN.Layout.TabPanel({
+        this.tp = new xlib.Layout.TabPanel({
             region: 'center',
             margins: '1 1 1 1',
             border: true,
 			defaults: {
 				border: false,
                 closable: true
-			},
-            tree: this.tree
+			}
         });
                 
         this.items = [this.tp, this.menuToolbar];
-        OSDN.Layout.Workspace.superclass.initComponent.apply(this, arguments);
+        xlib.Layout.Workspace.superclass.initComponent.apply(this, arguments);
     },
 	
 	getTabPanel: function() {
 		return this.tp;
 	},
-    
-    getMenu: function() {
-        return this.tree;
-    },
     
     createComponent: function(cmp) {
         

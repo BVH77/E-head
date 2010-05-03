@@ -72,7 +72,6 @@
         <script src="/js/Library/OSDN/window/Printer.js"/>
         <script src="/js/Library/OSDN/Window.js"/>
         
-        <script src="/js/Library/OSDN/Layout.js"/>
         <script src="/js/Library/OSDN/tree/TreePanel.js"/>
         <script src="/js/Library/OSDN/PagingToolbar.js"/>
         
@@ -83,7 +82,9 @@
 		<!-- osdn -->
 		
 		<!-- xlib -->
+        
         <script src="/js/Library/xlib/Msg.js"/>
+        <script src="/js/Library/xlib/Layout.js"/>
 		
 		<!-- xlib -->
  
