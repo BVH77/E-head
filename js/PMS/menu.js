@@ -70,18 +70,7 @@ PMS.Menu = [{
         }
     }]
 }, {
-    text: 'Менеджер доступа',
-    iconCls: 'accounts_manager-icon',
-    hidden: !acl.isView('admin'),
-    handler: function() {
-        OSDN.System.Layout.getTabPanel().add({
-            iconCls: 'accounts_manager-icon',
-            xtype: 'osdn.acl.layout',
-            id: 'osdn.acl.layout'
-        });
-    }
-}, {
-    text: 'Графики',
+    text: 'Отчёты',
     iconCls: 'prod_schd-icon',
     hidden: !acl.isView('orders'),
     menu: [{
@@ -103,4 +92,15 @@ PMS.Menu = [{
             window.open(OSDN.ABSOLUTE_PATH + '/orders/report/planning');
         }
     }]
+}, {
+	text: 'Менеджер доступа',
+	iconCls: 'accounts_manager-icon',
+	hidden: !acl.isView('admin'),
+	handler: function() {
+	OSDN.System.Layout.getTabPanel().add({
+		iconCls: 'accounts_manager-icon',
+		xtype: 'osdn.acl.layout',
+		id: 'osdn.acl.layout'
+	});
+}
 }]; 
