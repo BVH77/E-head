@@ -1,4 +1,4 @@
-Ext.ns('OSDN', 'OSDN.System');
+Ext.ns('OSDN');
 
 Ext.apply(OSDN, 
 
