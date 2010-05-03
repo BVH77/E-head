@@ -1,16 +1,16 @@
 <script type="text/javascript">
 OSDN.applicationInitialization(function() {
-    Ext.ns('OSDN.System');
-    OSDN.System.Layout = new OSDN.Layout.Workspace({
+    Ext.ns('PMS');
+    PMS.Layout = new OSDN.Layout.Workspace({
         username: '<?=$this->username; ?>',
         rolename: '<?=$this->rolename; ?>'
     });
-    OSDN.System.Layout.getTabPanel().add({
+    PMS.Layout.getTabPanel().add({
         iconCls: 'orders-icon',
         closable: false,
         xtype: 'PMS.Orders.Layout',
         id: 'PMS.Orders.Layout'
     });
-    OSDN.System.Layout.doLayout();
+    PMS.Layout.doLayout();
 });
 </script>
