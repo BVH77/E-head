@@ -1,3 +1,5 @@
+Ext.ns('xlib');
+
 xlib.PagingToolbar = Ext.extend(Ext.PagingToolbar, {
 
     displayInfo: true,

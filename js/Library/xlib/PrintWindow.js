@@ -1,6 +1,6 @@
-Ext.namespace('OSDN.window');
+Ext.namespace('xlib');
 
-OSDN.window.Printer = Ext.extend(Ext.Window, {
+xlib.PrintWindow = Ext.extend(Ext.Window, {
 
     //plain : true,
     
@@ -59,7 +59,7 @@ OSDN.window.Printer = Ext.extend(Ext.Window, {
             }];
     	}
     
-    	OSDN.window.Printer.superclass.initComponent.call(this);
+    	xlib.PrintWindow.superclass.initComponent.call(this);
     	
     	if (this.localHtml) {
     		this.loadLocalData(this.localHtml);
@@ -67,7 +67,7 @@ OSDN.window.Printer = Ext.extend(Ext.Window, {
     },
     
     show: function(animateTarget, cb, scope) {
-    	OSDN.window.Printer.superclass.show.call(this, animateTarget, cb, scope);
+    	xlib.PrintWindow.superclass.show.call(this, animateTarget, cb, scope);
     	this.tools.restore.hide();
     },
     

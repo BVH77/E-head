@@ -69,7 +69,6 @@
         <script src="/js/Library/OSDN/grid/plugin/Filter.js"/>
         
         <script src="/js/Library/OSDN/window/ModalContainer.js"/>
-        <script src="/js/Library/OSDN/window/Printer.js"/>
         <script src="/js/Library/OSDN/Window.js"/>
         
         <script src="/js/Library/OSDN/tree/TreePanel.js"/>
