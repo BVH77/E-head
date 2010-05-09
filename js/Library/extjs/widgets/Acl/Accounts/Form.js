@@ -6,6 +6,8 @@ OSDN.Acl.Accounts.Form = Ext.extend(OSDN.form.FormPanel, {
     
     permissions: true,
     
+    defaultType: 'textfield',
+    
     initComponent: function() {
         
         this.items = [{
@@ -40,8 +42,9 @@ OSDN.Acl.Accounts.Form = Ext.extend(OSDN.form.FormPanel, {
     },
     
     getWindow: function() {
-        var w = new OSDN.window.ModalContainer({
+        var w = new Ext.Window({
             title: 'Редактирование учётной записи',
+            resizable: false,
             modal: true,
             width: 300,
             items: [this],
@@ -62,6 +65,12 @@ OSDN.Acl.Accounts.Form = Ext.extend(OSDN.form.FormPanel, {
                         },
                         scope: this
                     });
+                },
+                scope: this
+            }, {
+            	text: 'Отмена',
+                handler: function() {
+                    w.close();
                 },
                 scope: this
             }],

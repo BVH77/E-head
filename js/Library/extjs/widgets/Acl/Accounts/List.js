@@ -159,6 +159,7 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
         
         var f = new OSDN.form.FormPanel({
         	permissions: acl.isAdd('admin', 'acl'),
+        	defaultType: 'textfield',
             items: [{
                 fieldLabel: 'Логин',
                 name: 'login'
@@ -168,8 +169,11 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
             }]
         });
         
-        var w = new OSDN.window.ModalContainer({
+        var w = new Ext.Window({
             title: 'Создание новой учётной записи',
+            resizable: false,
+            width: 300,
+            modal: true,
             items: [f],
             buttons: [{
                 text: 'Создать',
@@ -194,6 +198,12 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
                         },
                         scope: this
                     });
+                },
+                scope: this
+            }, {
+            	text: 'Отмена',
+                handler: function() {
+                    w.close();
                 },
                 scope: this
             }]
