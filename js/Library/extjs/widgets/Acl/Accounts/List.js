@@ -109,7 +109,7 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
             scope: this
         });
         
-        this.bbar = new OSDN.PagingToolbar({
+        this.bbar = new xlib.PagingToolbar({
             store: this.ds,
             items: ['-', this.createAccountBtn]
         });

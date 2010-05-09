@@ -1,4 +1,4 @@
-OSDN.PagingToolbar = Ext.extend(Ext.PagingToolbar, {
+xlib.PagingToolbar = Ext.extend(Ext.PagingToolbar, {
 
     displayInfo: true,
     
@@ -39,12 +39,12 @@ OSDN.PagingToolbar = Ext.extend(Ext.PagingToolbar, {
             this.plugins = this.plugins.concat(this.ps);
         }
         
-        OSDN.PagingToolbar.superclass.initComponent.apply(this, arguments);
+        xlib.PagingToolbar.superclass.initComponent.apply(this, arguments);
         
     },
     
     beforeLoad: function(store, options) {
-        OSDN.PagingToolbar.superclass.beforeLoad.call(this);
+        xlib.PagingToolbar.superclass.beforeLoad.call(this);
         options.params = options.params || {};
         Ext.applyIf(options.params, {
             start: 0,
@@ -65,7 +65,7 @@ OSDN.PagingToolbar = Ext.extend(Ext.PagingToolbar, {
 			ps[this.paramNames.start] = page;
             this.refreshOptions(ps);			
 		} else {
-		    OSDN.PagingToolbar.superclass.changePage.apply(this, arguments);	
+		    xlib.PagingToolbar.superclass.changePage.apply(this, arguments);	
 		}
     },
 	
@@ -73,39 +73,13 @@ OSDN.PagingToolbar = Ext.extend(Ext.PagingToolbar, {
 	 * Refresh paging options
 	 * 
 	 * @param {Object} o
-	 * @return {OSDN.PagingToolbar}
+	 * @return {xlib.PagingToolbar}
 	 */
 	refreshOptions: function(o) {
 		var args = [this.getStore(), [], {params: o}];
         this.onLoad.apply(this, args);
 		return this;  
 	},
-	
-	//private
-	/*updateInfo : function(){
-        if(this.displayEl){
-			var totalCount = this.store.getTotalCount();
-			
-			var count = this.store.getCount();
-			if (this.ps ) {
-				var d = this.getPageData();
-				var ap = d.activePage;
-				
-				console.log(ap, d);
-				//var ps = this.pageSize;
-				//count = (ap * ps - ps).constrain(0, totalCount);
-			}
-			
-			console.log(this.cursor, count);
-            var msg = count == 0 ?
-                this.emptyMsg :
-                String.format(
-                    this.displayMsg,
-                    this.cursor+1, this.cursor+count, totalCount 
-                );
-            this.displayEl.update(msg);
-        }
-    },*/
 	
 	/**
 	 * Retrieve store

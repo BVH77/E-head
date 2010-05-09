@@ -51,7 +51,7 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
 	        ]
 	    });
         
-        this.bbar = new OSDN.PagingToolbar({
+        this.bbar = new xlib.PagingToolbar({
             store: this.ds,
             displayInfo: true,
             items: ['-', {

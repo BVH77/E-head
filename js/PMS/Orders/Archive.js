@@ -158,7 +158,7 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
             scope: this
         });
         
-        this.bbar = new OSDN.PagingToolbar({
+        this.bbar = new xlib.PagingToolbar({
             plugins: [this.filtersPlugin],
             store: this.ds
         });

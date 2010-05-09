@@ -211,7 +211,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             scope: this
         });
         this.tbar.add(this.filteringMenuButton);
-        this.bbar = new OSDN.PagingToolbar({
+        this.bbar = new xlib.PagingToolbar({
             plugins: [this.filtersPlugin],
             store: this.ds
         });

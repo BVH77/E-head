@@ -73,7 +73,6 @@
         <script src="/js/Library/OSDN/Window.js"/>
         
         <script src="/js/Library/OSDN/tree/TreePanel.js"/>
-        <script src="/js/Library/OSDN/PagingToolbar.js"/>
         
         <style href="/js/Library/OSDN/Legend/Item.css"/>
         <script src="/js/Library/OSDN/Legend/Item.js"/>
@@ -83,6 +82,7 @@
 		
 		<!-- xlib -->
         
+        <script src="/js/Library/xlib/PagingToolbar.js"/>
         <script src="/js/Library/xlib/Msg.js"/>
         <script src="/js/Library/xlib/Layout.js"/>
 		
