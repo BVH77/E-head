@@ -80,9 +80,6 @@
 .osdn-comment-add {
     background: url(/images/comment_add.png) no-repeat left center !important;
 }
-.osdn-add {
-    background-image: url(/images/add.gif) !important;
-}
 .osdn-scanner-configuration {
     background: url(/images/settings.gif) no-repeat left center !important;
 }
@@ -103,4 +100,8 @@
 }
 .osdn-templates {
     background: url(/images/preview-bottom.gif) no-repeat left center !important;
+}
+
+.add {
+    background-image: url(/images/add.gif) !important;
 }
