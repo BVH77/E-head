@@ -133,8 +133,7 @@ Ext.tree.ColumnNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
                     '<span unselectable="on">', n.text || (c.renderer ? c.renderer(a[c.dataIndex], n, a) : a[c.dataIndex]),"</span></a>",
                 "</div>"
          ];
-                        
-        
+
          for(var i = 1, len = cols.length; i < len; i++) {
              c = cols[i];
              buf.push(
