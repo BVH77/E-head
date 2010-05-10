@@ -49,7 +49,7 @@
         <script src="/js/Library/OSDN/form/VTypes.js"/>
         <script src="/js/Library/OSDN/form/ComboBox.js"/>
         
-        <style href="/js/Library/OSDN/css/form/ComboTrigger.css"/>
+        <style href="/js/Library/OSDN/form/ComboTrigger.css"/>
         <script src="/js/Library/OSDN/form/ComboTrigger.js"/>
         
         <script src="/js/Library/OSDN/form/DateField.js"/>
