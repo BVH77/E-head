@@ -6,15 +6,15 @@ OSDN.form.ComboTrigger = Ext.extend(OSDN.form.ComboBox, {
     
     validateOnBlur:false,
     
-    trigger1Class:'',
+    trigger1Class: '',
     
-    trigger2Class: 'osdn-add',
+    trigger2Class: 'add',
     
     width: 180,
     
-    hasSearch : false,
+    hasSearch: false,
     
-    paramName : 'query',
+    paramName: 'query',
 
     triggerAction: 'all',
 	

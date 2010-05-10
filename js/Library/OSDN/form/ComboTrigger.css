@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 
-.x-form-twin-triggers .osdn-add {
-    background-image: url(add.gif) !important;
+.x-form-twin-triggers .add {
+    background-image: url(/images/add.gif) !important;
     background-position: center right !important;  
     border: 0pt none !important;
 }
