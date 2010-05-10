@@ -13,7 +13,7 @@
         <script src="/js/Library/OSDN/OSDN.js"/>
         <script src="/js/Library/OSDN/Translation.js"/>
         
-        <script src="/js/Library/OSDN/acl/Manager.js"/>
+        <script src="/js/Library/xlib/AclManager.js"/>
         <script src="/js/common.js"/>
         
         <!-- Plugins -->
