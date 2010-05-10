@@ -46,7 +46,6 @@
         <!-- osdn -->
         <script src="/js/Library/OSDN/form/BasicForm.js"/>
         <script src="/js/Library/OSDN/form/FormPanel.js"/>
-        <script src="/js/Library/OSDN/form/VTypes.js"/>
         <style href="/js/Library/OSDN/Legend/Item.css"/>
         <script src="/js/Library/OSDN/Legend/Item.js"/>
         <script src="/js/Library/OSDN/Legend/Plugin.js"/>
