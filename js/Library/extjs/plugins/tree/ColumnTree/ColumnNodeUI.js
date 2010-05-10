@@ -144,7 +144,7 @@ Ext.tree.ColumnNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
                 "</div>"
             );
         }
-         
+
         buf.push(
             '<div class="x-clear"></div></div>',
             '<ul class="x-tree-node-ct" style="display:none;"></ul>',
