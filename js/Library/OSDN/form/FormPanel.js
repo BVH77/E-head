@@ -85,9 +85,9 @@ OSDN.form.FormPanel = Ext.extend(Ext.form.FormPanel, {
         });
     },
     
-    createForm : function(){
+    createForm: function() {
         var config = Ext.applyIf({listeners: {}}, this.initialConfig);
-        return new OSDN.form.BasicForm(null, config);
+        return new Ext.form.BasicForm(null, config);
     },
     
     /**
@@ -114,7 +114,7 @@ OSDN.form.FormPanel = Ext.extend(Ext.form.FormPanel, {
      * If param exist in baseParams it will be overwrited
      *
      * @param {Object} v
-     * return {OSDN.form.FormPanel}
+     * return {xlib.form.FormPanel}
      */
     setParams: function(v) {
         if (!this.getForm().baseParams) {
@@ -131,7 +131,7 @@ OSDN.form.FormPanel = Ext.extend(Ext.form.FormPanel, {
      * Set permissions to form
      * 
      * @param {Boolean} flag
-     * @return {OSDN.form.FormPanel}
+     * @return {xlib.form.FormPanel}
      */
     setPermissions: function(flag) {
         this.getForm().items.each(function(item) {
@@ -304,5 +304,4 @@ OSDN.form.FormPanel = Ext.extend(Ext.form.FormPanel, {
 	}
 });
 
-Ext.reg('osdnform', OSDN.form.FormPanel);
 Ext.reg('osdn.form.formpanel', OSDN.form.FormPanel);
