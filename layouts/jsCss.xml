@@ -58,8 +58,6 @@
         <script src="/js/Library/OSDN/form/GroupComboBox/GroupComboBox.js"/>
         <script src="/js/Library/OSDN/form/GroupComboBox/GroupDataView.js"/>
         
-        <script src="/js/Library/OSDN/grid/CheckColumn.js"/>
-        
         <script src="/js/Library/OSDN/tree/TreePanel.js"/>
         
         <style href="/js/Library/OSDN/Legend/Item.css"/>
