@@ -233,20 +233,20 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
         }, {
             header: 'Сдача (план)',
             dataIndex: 'success_date_planned',
-            renderer: OSDN.util.Format.dateRenderer(OSDN.date.DATE_FORMAT),
+            renderer: xlib.dateRenderer(OSDN.date.DATE_FORMAT),
             width: 90,
             sortable: true
         }, {
             header: 'Сдача (факт)',
             dataIndex: 'success_date_fact',
-            renderer: OSDN.util.Format.dateRenderer(OSDN.date.DATE_FORMAT),
+            renderer: xlib.dateRenderer(OSDN.date.DATE_FORMAT),
             width: 90,
             sortable: true
         }, {
             header: 'Дата/время заказа',
             width: 120,
             sortable: true,
-            renderer: OSDN.util.Format.dateRenderer(OSDN.date.DATE_TIME_FORMAT),
+            renderer: xlib.dateRenderer(OSDN.date.DATE_TIME_FORMAT),
             dataIndex: 'created'
         }, {
             header: 'Менеджер',

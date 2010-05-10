@@ -45,7 +45,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
             id: this.autoExpandColumn, 
             header: 'Описание',
             dataIndex: 'description',
-            renderer: OSDN.util.Format.dateRenderer(OSDN.date.DATE_FORMAT)
+            renderer: xlib.dateRenderer(OSDN.date.DATE_FORMAT)
         }]);
         
         this.cm.defaultSortable = true; 

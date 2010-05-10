@@ -181,7 +181,7 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
         }, {
             header: 'Сдача (факт)',
             dataIndex: 'success_date_fact',
-            renderer: OSDN.util.Format.dateRenderer(OSDN.date.DATE_FORMAT),
+            renderer: xlib.dateRenderer(OSDN.date.DATE_FORMAT),
             width: 90,
             sortable: true
         }];
