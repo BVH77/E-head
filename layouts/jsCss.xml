@@ -10,9 +10,10 @@
         <style href="/css/system.css"/>
         <style href="/css/start.css"/>
         
-        <script src="/js/Library/OSDN/OSDN.js"/>
-        
+        <script src="/js/Library/xlib/xlib.js"/>
         <script src="/js/Library/xlib/common.js"/>
+
+        <script src="/js/Library/OSDN/OSDN.js"/>
         
         <!-- Plugins -->
         <style href="/js/Library/extjs/plugins/grid/RowActions/Ext.ux.grid.RowActions.css"/>
@@ -43,16 +44,12 @@
         <!-- ux -->
         
         <!-- osdn -->
-        <script src="/js/Library/OSDN/util/Format.js"/>
         <script src="/js/Library/OSDN/form/BasicForm.js"/>
         <script src="/js/Library/OSDN/form/FormPanel.js"/>
         <script src="/js/Library/OSDN/form/VTypes.js"/>
         <script src="/js/Library/OSDN/form/ComboBox.js"/>
-        
         <style href="/js/Library/OSDN/form/ComboTrigger.css"/>
         <script src="/js/Library/OSDN/form/ComboTrigger.js"/>
-        
-        
         <style href="/js/Library/OSDN/Legend/Item.css"/>
         <script src="/js/Library/OSDN/Legend/Item.js"/>
         <script src="/js/Library/OSDN/Legend/Plugin.js"/>
