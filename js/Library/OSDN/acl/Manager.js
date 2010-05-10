@@ -1,11 +1,11 @@
-Ext.ns('OSDN.Acl');
+Ext.ns('xlib');
 
 /**
- * Default osdn acl manager
+ * Default acl manager
  * 
  * @version $Id: Manager.js 9298 2009-06-03 06:57:41Z uerter $
  */
-OSDN.Acl.Manager = function() {
+xlib.AclManager = function() {
     
     var privileges = OSDN.Acl.Storage.Privileges || {};
     var permissions = OSDN.Acl.Storage.Permissions || {};
@@ -133,4 +133,4 @@ OSDN.Acl.Manager = function() {
     };
 }();
 
-acl = OSDN.Acl.Manager;
+acl = xlib.AclManager;
