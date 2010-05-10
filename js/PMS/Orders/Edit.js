@@ -108,7 +108,7 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
             title: 'Файлы',
             items: [this.files]
         }, {
-            title: 'Примечания',
+            title: 'Комментарии',
             iconCls: 'reply',
             items: [this.notes]
         });

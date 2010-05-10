@@ -112,6 +112,7 @@ PMS.Orders.Photos = Ext.extend(Ext.Panel, {
             autoHeight: true,
             autoEl: {
                 tag: 'img',
+                style: 'height: 500px;',
                 src: 'files/' + record.get('filename')
             }
         });
@@ -120,6 +121,7 @@ PMS.Orders.Photos = Ext.extend(Ext.Panel, {
             title: record.get('description'),
             modal: true,
             width: 600,
+            height: 500,
             autoScroll: true,
             layout: 'fit',
             tools: [{
@@ -128,7 +130,13 @@ PMS.Orders.Photos = Ext.extend(Ext.Panel, {
                     panel.toggleMaximize();
                 }
             }],
-            items:[img]
+            items:[img],
+            listeners: {
+        		bodyClick: function () {
+        			wind.close();
+        		},
+        		scope: this
+        	}
         });
         wind.show(record.get('filename'));
     },
