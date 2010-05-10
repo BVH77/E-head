@@ -13,7 +13,6 @@
         <script src="/js/Library/OSDN/OSDN.js"/>
         <script src="/js/Library/OSDN/Translation.js"/>
         
-        <script src="/js/Library/xlib/AclManager.js"/>
         <script src="/js/common.js"/>
         
         <!-- Plugins -->
@@ -63,8 +62,6 @@
         <script src="/js/Library/OSDN/form/GroupComboBox/GroupDataView.js"/>
         
         <script src="/js/Library/OSDN/grid/CheckColumn.js"/>
-        <script src="/js/Library/OSDN/grid/Viewer.js"/>
-        <style src="/js/Library/OSDN/css/grid/Viewer.css"/>
         
         <script src="/js/Library/OSDN/grid/plugin/Filter.js"/>
         
@@ -75,9 +72,12 @@
         <script src="/js/Library/OSDN/Legend/Plugin.js"/>
  
 		<!-- osdn -->
+        
+        
 		
 		<!-- xlib -->
         
+        <script src="/js/Library/xlib/AclManager.js"/>
         <script src="/js/Library/xlib/PagingToolbar.js"/>
         <script src="/js/Library/xlib/Msg.js"/>
         <script src="/js/Library/xlib/Layout.js"/>
