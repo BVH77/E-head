@@ -19,9 +19,7 @@ xlib.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
     minSearchLength: 2,
     
     initComponent: function() {
-        
         xlib.form.SearchField.superclass.initComponent.apply(this, arguments);
-
         this.on('specialkey', function(f, e){
             if (e.getKey() == e.ENTER) {
                 this.onTrigger2Click();
@@ -58,9 +56,7 @@ xlib.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
         	xlib.Msg.error('Минмум символов для поиска: ' + this.minSearchLength);
             return;
         }
-        
         this.fireEvent('click', this);
-        
         this.triggers[0].show();
         this.focus();
     }
