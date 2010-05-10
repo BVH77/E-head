@@ -321,7 +321,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
     },
     
     onMenuUsersShow: function(menu) {
-        var userId = this.getSelections()[0].get('creator_id');
+        var userId = this.getSelectionModel().getSelected().get('creator_id');
         menu.items.each(function(item) {
             item.setDisabled(item.value == userId);
             return true;
@@ -329,7 +329,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
     },
     
     onChangeUser: function(button) {
-        var orderId = this.getSelections()[0].get('id');
+        var orderId = this.getSelectionModel().getSelected().get('id');
         var userId = button.value;
         this.el.mask('Запись...');
         Ext.Ajax.request({
