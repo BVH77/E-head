@@ -177,5 +177,4 @@ OSDN.form.ComboTrigger = Ext.extend(OSDN.form.ComboBox, {
 });
 
 
-Ext.reg('combotrigger', OSDN.form.ComboTrigger);
 Ext.reg('osdn.form.combotrigger', OSDN.form.ComboTrigger);

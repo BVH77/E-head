@@ -1,3 +1,18 @@
 - графики довбавить период.
 - План на месяц.
 - отчет по клиентам (сумма, кол-во заказов).
+
+- Comments on main screen
+- add an invoice number / date & act number / date before move to archive 
+  (also figured in report & in order details)
+- hide mount/prod sections (in order, order details, reports) if disabled
+- reorganize tabs (make production tab & mountage tab with according dates, suppliers, prices)
+
+- how to videos for every role
+- make costs tab with detail costs form
+
+
+Bugs:
+
+- photo's sizes (too big, can't close)
+- order details (redesign)
