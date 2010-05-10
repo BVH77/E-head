@@ -1,4 +1,6 @@
-OSDN.form.DateField = Ext.extend(Ext.form.DateField, {
+Ext.ns('xlib.form');
+
+xlib.form.DateField = Ext.extend(Ext.form.DateField, {
 
     hiddenFormat: 'Y-m-d',
     
@@ -22,7 +24,7 @@ OSDN.form.DateField = Ext.extend(Ext.form.DateField, {
     },
     
     onRender: function() {
-        OSDN.form.DateField.superclass.onRender.apply(this, arguments);
+        xlib.form.DateField.superclass.onRender.apply(this, arguments);
         
         if(this.hiddenName && !this.disabled) {
             this.hiddenField = this.el.insertSibling({
@@ -42,7 +44,7 @@ OSDN.form.DateField = Ext.extend(Ext.form.DateField, {
 		if(this.disabled){
             return;
         }
-		OSDN.form.DateField.superclass.onTriggerClick.apply(this, arguments);
+		xlib.form.DateField.superclass.onTriggerClick.apply(this, arguments);
 		
 		this.menu.picker.on('select', function() {
 			this.fireEvent('select', this);
@@ -54,4 +56,4 @@ OSDN.form.DateField = Ext.extend(Ext.form.DateField, {
     }
 });
 
-Ext.reg('osdndatefield', OSDN.form.DateField);
+Ext.reg('xlib.form.DateField', xlib.form.DateField);

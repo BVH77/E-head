@@ -50,7 +50,7 @@ PMS.Orders.Edit.Info = Ext.extend(OSDN.form.FormPanel, {
                 items: [{ 
                     name: 'production_start_planned',
                     hiddenName: 'production_start_planned',
-                    xtype: 'osdndatefield',
+                    xtype: 'xlib.form.DateField',
                     fieldLabel: 'Начало пр-ва (план)',
                     disabled: !acl.isUpdate('orders', 'production', 'start_planned'),
                     anchor: 0,
@@ -61,7 +61,7 @@ PMS.Orders.Edit.Info = Ext.extend(OSDN.form.FormPanel, {
                 items: [{ 
                     name: 'production_start_fact',
                     hiddenName: 'production_start_fact',
-                    xtype: 'osdndatefield',
+                    xtype: 'xlib.form.DateField',
                     fieldLabel: 'Начало пр-ва (факт)',
                     disabled: !acl.isUpdate('orders', 'production', 'start_fact'),
                     anchor: 0,
@@ -90,7 +90,7 @@ PMS.Orders.Edit.Info = Ext.extend(OSDN.form.FormPanel, {
                 items: [{             
                     name: 'production_end_planned',
                     hiddenName: 'production_end_planned',
-                    xtype: 'osdndatefield',
+                    xtype: 'xlib.form.DateField',
                     fieldLabel: 'Конец пр-ва (план)',
                     disabled: !acl.isUpdate('orders', 'production', 'end_planned'),
                     anchor: 0,
@@ -101,7 +101,7 @@ PMS.Orders.Edit.Info = Ext.extend(OSDN.form.FormPanel, {
                 items: [{ 
                     name: 'production_end_fact',
                     hiddenName: 'production_end_fact',
-                    xtype: 'osdndatefield',
+                    xtype: 'xlib.form.DateField',
                     fieldLabel: 'Конец пр-ва (факт)',
                     disabled: !acl.isUpdate('orders', 'production', 'end_fact'),
                     anchor: 0,
@@ -120,7 +120,7 @@ PMS.Orders.Edit.Info = Ext.extend(OSDN.form.FormPanel, {
                 items: [{
                     name: 'mount_start_planned',
                     hiddenName: 'mount_start_planned',
-                    xtype: 'osdndatefield',
+                    xtype: 'xlib.form.DateField',
                     fieldLabel: 'Начало монтажа (план)',
                     disabled: !acl.isUpdate('orders', 'mount', 'start_planned'),
                     anchor: 0,
@@ -131,7 +131,7 @@ PMS.Orders.Edit.Info = Ext.extend(OSDN.form.FormPanel, {
                 items: [{
                     name: 'mount_start_fact',
                     hiddenName: 'mount_start_fact',
-                    xtype: 'osdndatefield',
+                    xtype: 'xlib.form.DateField',
                     fieldLabel: 'Начало монтажа (факт)',
                     disabled: !acl.isUpdate('orders', 'mount', 'start_end'),
                     anchor: 0,
@@ -160,7 +160,7 @@ PMS.Orders.Edit.Info = Ext.extend(OSDN.form.FormPanel, {
                 items: [{
                     name: 'mount_end_planned',
                     hiddenName: 'mount_end_planned',
-                    xtype: 'osdndatefield',
+                    xtype: 'xlib.form.DateField',
                     fieldLabel: 'Конец монтажа (план)',
                     disabled: !acl.isUpdate('orders', 'mount', 'end_planned'),
                     anchor: 0,
@@ -171,7 +171,7 @@ PMS.Orders.Edit.Info = Ext.extend(OSDN.form.FormPanel, {
                 items: [{
                     name: 'mount_end_fact',
                     hiddenName: 'mount_end_fact',
-                    xtype: 'osdndatefield',
+                    xtype: 'xlib.form.DateField',
                     fieldLabel: 'Конец монтажа (факт)',
                     disabled: !acl.isUpdate('orders', 'mount', 'end_fact'),
                     anchor: 0,
@@ -190,7 +190,7 @@ PMS.Orders.Edit.Info = Ext.extend(OSDN.form.FormPanel, {
                 items: [{
                     name: 'success_date_planned',
                     hiddenName: 'success_date_planned',
-                    xtype: 'osdndatefield',
+                    xtype: 'xlib.form.DateField',
                     fieldLabel: 'Сдача (план)',
                     disabled: !acl.isUpdate('orders', 'success', 'planned'),
                     anchor: 0,
@@ -201,7 +201,7 @@ PMS.Orders.Edit.Info = Ext.extend(OSDN.form.FormPanel, {
                 items: [{
                     name: 'success_date_fact',
                     hiddenName: 'success_date_fact',
-                    xtype: 'osdndatefield',
+                    xtype: 'xlib.form.DateField',
                     fieldLabel: 'Сдача (факт)',
                     disabled: !acl.isUpdate('orders', 'success', 'fact'),
                     anchor: 0,
