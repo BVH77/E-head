@@ -326,8 +326,7 @@ Ext.extend(Ext.grid.GridFilters, Ext.util.Observable, {
 	/**
 	 * Returns a filter for the given dataIndex, if on exists.
 	 * 
-	 * @param {String}
-	 *            dataIndex The dataIndex of the desired filter object.
+	 * @param {String} dataIndex The dataIndex of the desired filter object.
 	 * 
 	 * @return {Ext.grid.filter.Filter}
 	 */
@@ -346,7 +345,7 @@ Ext.extend(Ext.grid.GridFilters, Ext.util.Observable, {
 	},
 
 	/** private * */
-getFilterData: function() {
+	getFilterData: function() {
         
         var filters = [];
         var searchable = this.isSearchable();
@@ -354,7 +353,7 @@ getFilterData: function() {
         
         this.filters.each(function(f) {
             
-            if (OSDN.empty(f.getValue())) {
+            if (Ext.isEmpty(f.getValue())) {
                 f.active = false;
             }
             
@@ -464,7 +463,7 @@ getFilterData: function() {
 	getSearchField: function(config) {
         if (!this.searchField) {
             this.searchable = true;
-            this.searchField = new OSDN.form.SearchField({
+            this.searchField = new xlib.form.SearchField({
                 width: 250,
                 enableKeyEvents: true
             });
