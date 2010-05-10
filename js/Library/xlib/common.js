@@ -1,11 +1,11 @@
 // replace the Ext.decode native method
-Ext.decode = OSDN.decode;
+Ext.decode = xlib.decode;
 
 String.prototype.ucFirst = function() {
     return this.substr(0,1).toUpperCase() + this.substr(1,this.length);
 };
 
-link = OSDN.link;
+link = xlib.link;
 
 lang = function(phrase) {
     return phrase;
