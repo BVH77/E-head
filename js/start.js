@@ -28,7 +28,7 @@ Ext.onReady(function(){
     OSDN.date.DATE_TIME_FORMAT = 'd-m-Y H:i:s';
     OSDN.date.DATE_TIME_FORMAT_SERVER = 'Y-m-d H:i:s';
     OSDN.date.DATE_FORMAT_SERVER = 'Y-m-d';
-    
+   
     Ext.Ajax.on({
         requestexception: function(conn, response, options) {
             switch (response.status) {

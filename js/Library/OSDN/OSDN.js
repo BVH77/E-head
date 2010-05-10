@@ -1,12 +1,6 @@
 Ext.ns('OSDN');
 
-Ext.apply(OSDN, 
-
-/**
- * The singleton class that provide a common interface for assing the 
- * startup initialization events in differerent ordering
- */
-function() {
+Ext.apply(OSDN, function() {
 
     /**
      * Event manager
@@ -23,9 +17,8 @@ function() {
     var eventListeners = [];
 
     var link = function(module, controller, action, params, router, absolute) {
-        var bp = absolute ? OSDN.ABSOLUTE_PATH : OSDN.BASE_PATH;
         if (true === /\.js$/.test(module)) {
-            return bp + module;
+            return module;
         }
         
         var p = [];
@@ -35,7 +28,7 @@ function() {
         }
         
         var type = 'json';
-        var link = [bp];
+        var link = [];
         if (router != 'html') {
             link.push(type);
         }
@@ -181,11 +174,3 @@ function() {
         }
     }
 }());
-
-
-// replace the Ext.decode native method
-Ext.decode = OSDN.decode;
-
-String.prototype.ucFirst = function() {
-    return this.substr(0,1).toUpperCase() + this.substr(1,this.length);
-};

@@ -2,23 +2,21 @@ Ext.namespace('xlib');
 
 xlib.PrintWindow = Ext.extend(Ext.Window, {
 
-    //plain : true,
+    modal: true,
     
-    modal : true,
+    maximizable: true,
     
-    maximizable : true,
+    width: 700,
     
-    width : 700,
+    height: 550,
     
-    height : 550,
+    title: lang('Preview'),
     
-    title : lang('Preview'),
+    iconCls: 'print',
     
-    iconCls: 'osdn-print',
+    closeText: lang('Close'),
     
-    closeText : lang('Close'),
-    
-    printText : lang('Print'),
+    printText: lang('Print'),
     
     localHtml: null,
     
@@ -50,7 +48,7 @@ xlib.PrintWindow = Ext.extend(Ext.Window, {
         	this.buttons = [{
     			text : this.printText,
     			handler : this.print,
-    			iconCls: 'osdn-print',
+    			iconCls: 'print',
     			scope : this
     		}, {
                 text : this.closeText,
@@ -87,19 +85,19 @@ xlib.PrintWindow = Ext.extend(Ext.Window, {
     	return this.getIframe().dom.contentWindow;
     },
     
-    loadLocalData: function (html, title) {
+    loadLocalData: function(html, title) {
     	this.src = null;
     	this.localHtml = html;
     	if (this.rendered) {
-    		this.updateIframeContent(html, OSDN.ABSOLUTE_PATH + "/css/print.css");
+    		this.updateIframeContent(html, "/css/print.css");
     	} else {
     		this.on('render', function() {
-    			this.updateIframeContent(html, OSDN.ABSOLUTE_PATH + "/css/print.css");
+    			this.updateIframeContent(html, "/css/print.css");
     		}, this, {delay: 300})
     	}
     },
     
-    loadRemoteData: function (src) {
+    loadRemoteData: function(src) {
     	this.src = src;
         this.localHtml = null;
     	this.getIframe().getEl().src = src;  

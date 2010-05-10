@@ -80,19 +80,19 @@ PMS.Menu = function(username, rolename) {
 	        text: 'График производства',
 	        iconCls: 'prod_schd-icon',
 	        handler: function() {
-	            window.open(OSDN.ABSOLUTE_PATH + '/orders/report/schedule-production');
+	            window.open('/orders/report/schedule-production');
 	        }
 	    }, {
 	        text: 'График монтажа',
 	        iconCls: 'mount_schd-icon',
 	        handler: function() {
-	            window.open(OSDN.ABSOLUTE_PATH + '/orders/report/schedule-mount');
+	            window.open('/orders/report/schedule-mount');
 	        }
 	    }, {
 	        text: 'План работ',
 	        iconCls: 'work_schd-icon',
 	        handler: function() {
-	            window.open(OSDN.ABSOLUTE_PATH + '/orders/report/planning');
+	            window.open('/orders/report/planning');
 	        }
 	    }]
 	}, {

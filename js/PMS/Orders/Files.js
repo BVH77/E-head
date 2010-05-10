@@ -49,7 +49,7 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
             tpl: new Ext.XTemplate(
                 '<tpl for=".">',
                 '<div class="thumb-wrap" id="{filename}">',
-                '<div><a href="' + OSDN.ABSOLUTE_PATH + '/files/{filename}" target="_blank">', 
+                '<div><a href="/files/{filename}" target="_blank">', 
                 '<img src="/images/download.png" qtip="Открыть">',
                 '</a></div><span class="x-editable" qtip="{[this.e(this.h(values.description), 50)]}">',
                 '{[this.e(this.f(values.description), 15)]}',
