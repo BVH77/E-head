@@ -1,12 +1,9 @@
-Ext.ns('OSDN.form');
+Ext.ns('xlib.form');
 
 /**
- * Combo extension
- * Allow local filtering, lazy set value, etc.
- * 
- * @version $Id: ComboBox.js 15122 2009-12-16 08:11:59Z yaroslav $
+ * Combo extension. Allow local filtering, lazy set value, etc.
  */
-OSDN.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
+xlib.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
     
     //defaults options
     resizable: true,
@@ -107,60 +104,38 @@ OSDN.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
      * Set handler for event "beforequery"
      */
     initComponent: function() {
-        
-        OSDN.form.ComboBox.superclass.initComponent.call(this);
-        
+    	xlib.form.ComboBox.superclass.initComponent.call(this);
         this.on('beforequery', this.onBeforeQuery);
-		
 		this.store.on('load', function () {
 			this._storeLoaded = true;
             this.prepareDefaultValue(this.getStore());
 		}, this, {single: true});
-        
         if ('local' == this.mode && this.allowBlankOption) {
             this.insertBlankOption();
         }
-        
 		this.store.on('load', function(store, records) {
             if (this.allowBlankOption) {
                 this.insertBlankOption();
             }
-			
 			if (this.getValue()) {
 				this.setValue(this.getValue());
 			}
-            
             this.doSelectFirst();
 		}, this);
-        
         if (this.reloadOnChange) {
             this.on(this.reloadOnChangeEvent, function() {
                 this.getStore().reload();
             }, this);
         }
-        
-        
-        this.addEvents(
-            /**
-             * Fire in situation when combo preload store before setting the value
-             * And when value is assigned
-             * 
-             * @param {OSDN.form.ComboBox}  combo
-             * @param {String} value
-             */
-            'ready'
-        );
     },
     
     initList: function() {
-        
         if (!this.tpl) {
             this.tpl = '<tpl for="."><div class="x-combo-list-item">'
                 + this.getDisplayField()
                 + '&nbsp;</div></tpl>';
         }
-        
-        OSDN.form.ComboBox.superclass.initList.apply(this, arguments);
+        xlib.form.ComboBox.superclass.initList.apply(this, arguments);
     },
 	
 	prepareDefaultValue: function(store) {
@@ -207,10 +182,10 @@ OSDN.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
         }
     },
     
-    getDisplayedValue: function () {
+    getDisplayedValue: function() {
     	var displayedValue, value = this.getValue();
     	if (value) {
-    		this.getStore().each(function (rec) {
+    		this.getStore().each(function(rec) {
     			if (rec.get(this.valueField) == value) {
     				displayedValue = rec.get(this.displayField);
     				return false; 
@@ -224,12 +199,10 @@ OSDN.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
      * If combo is not loaded then loaded and try set value
      */
     setValue: function(v) {
-
         var s = this.getStore();
         if ('object' == Ext.type(s)) {
 			s.setBaseParam('value', v);
         }
-		
         if (this.preloadRecords && this.preloadOnNullValue && 'remote' === this.mode && !this.isLoaded()) {
             this.initList();
             var args = arguments;
@@ -240,7 +213,6 @@ OSDN.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
                 p.start = 0;
                 p.limit = parseInt(this.pageSize);    
             }
-            
             this.getStore().load({
                 params: p,
                 callback: function() {
@@ -259,11 +231,9 @@ OSDN.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
             });
             return;
         }
-        
         if (null === v) {
             v = '';
         }
-        
         if (this.displayRawField) {
             var text = v;
             if (this.valueField) {
@@ -282,7 +252,7 @@ OSDN.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
             Ext.form.ComboBox.superclass.setValue.call(this, text);
             this.value = v;
         } else {
-        	OSDN.form.ComboBox.superclass.setValue.call(this, v);
+        	xlib.form.ComboBox.superclass.setValue.call(this, v);
         }
     },
     
@@ -325,7 +295,6 @@ OSDN.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
                 names[i.name] = '';
             });
         }
-		
         var rf = Ext.data.Record.create(fields);
         var record = new rf(this.blankOptionData || names);
         switch(this.blankOptionPosition) {
@@ -344,7 +313,7 @@ OSDN.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
     },
     
     getParams: function(q) {
-        var p = OSDN.form.ComboBox.superclass.getParams.apply(this, arguments);
+        var p = xlib.form.ComboBox.superclass.getParams.apply(this, arguments);
 		if (q) {
             p['filter[0][field]'] = this.displayField;
             p['filter[0][data][type]'] = 'string';
@@ -356,7 +325,6 @@ OSDN.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
         if (!this.selectFirst) {
             return;
         }
-        
         var record = this.getStore().getAt(0);
         if (record) {
             this.setValue(record.get(this.valueField));
@@ -367,5 +335,4 @@ OSDN.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
     }
 });
 
-Ext.reg('osdncombo', OSDN.form.ComboBox);
-Ext.reg('osdn.form.combobox', OSDN.form.ComboBox);
+Ext.reg('xlib.form.combobox', xlib.form.ComboBox);

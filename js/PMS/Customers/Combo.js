@@ -1,6 +1,6 @@
 Ext.ns('PMS.Customers');
 
-PMS.Customers.Combo = Ext.extend(OSDN.form.ComboTrigger, {
+PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
 	
     lazyInit: false,
     
