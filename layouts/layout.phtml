@@ -10,16 +10,15 @@
 
     <script src="/js/Library/xlib/LoadingMask.js"></script>
     <script type="text/javascript">
+	    if (typeof xlib == 'undefined') {
+	    	xlib = {};
+	    } 
         xlib.LoadingMask.show();
 	    if (typeof OSDN == 'undefined') {
 	    	OSDN = {};
 	    } 
-        OSDN.ABSOLUTE_PATH = '<?=$this->baseUrl(true); ?>';
-        OSDN.BASE_PATH = '<?=$this->baseUrl(); ?>';
-        OSDN.HOST = '<?=$_SERVER['SERVER_NAME']; ?>';
         OSDN.LOCALE = '<?=$this->locale; ?>';
         OSDN.DEBUG = <?=$this->debug ? 'true' : 'false'; ?>;
-        OSDN.IS_LINUX_SEVER = <?= (false !== stripos(PHP_OS, 'linux'))? 'true': 'false';?>;
     </script>
 
     <script src="/default/config/get-permissions" ></script>

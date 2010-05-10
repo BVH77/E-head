@@ -84,7 +84,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
 	            {name: 'files'}
 	        ]
 	    });
-	    this.filtersPlugin = new OSDN.grid.plugin.Filter({
+	    this.filtersPlugin = new Ext.grid.GridFilters({
 	        filters: [
 	            {type: 'string',  dataIndex: 'customer'},
 	            {type: 'string',  dataIndex: 'address'},

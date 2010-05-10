@@ -11,9 +11,8 @@
         <style href="/css/start.css"/>
         
         <script src="/js/Library/OSDN/OSDN.js"/>
-        <script src="/js/Library/OSDN/Translation.js"/>
         
-        <script src="/js/common.js"/>
+        <script src="/js/Library/xlib/common.js"/>
         
         <!-- Plugins -->
         <style href="/js/Library/extjs/plugins/grid/RowActions/Ext.ux.grid.RowActions.css"/>
@@ -49,8 +48,6 @@
         <script src="/js/Library/OSDN/form/FormPanel.js"/>
         <script src="/js/Library/OSDN/form/VTypes.js"/>
         <script src="/js/Library/OSDN/form/ComboBox.js"/>
-        <script src="/js/Library/OSDN/form/Textarea.js"/>
-        <style src="/js/Library/OSDN/css/form/Textarea.css"/>
         
         <style href="/js/Library/OSDN/css/form/ComboTrigger.css"/>
         <script src="/js/Library/OSDN/form/ComboTrigger.js"/>
@@ -62,8 +59,6 @@
         <script src="/js/Library/OSDN/form/GroupComboBox/GroupDataView.js"/>
         
         <script src="/js/Library/OSDN/grid/CheckColumn.js"/>
-        
-        <script src="/js/Library/OSDN/grid/plugin/Filter.js"/>
         
         <script src="/js/Library/OSDN/tree/TreePanel.js"/>
         

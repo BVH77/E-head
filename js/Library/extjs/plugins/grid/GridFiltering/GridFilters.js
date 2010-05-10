@@ -56,6 +56,14 @@ Ext.extend(Ext.grid.GridFilters, Ext.util.Observable, {
 	 */
 	showMenu : true,
 
+    searchable: false,
+    
+    searchField: null,
+    
+    isSearchable: function() {
+        return this.searchable && String(this.getSearchField().getValue()).length > 0;
+    },
+	
 	init : function(grid) {
 		if (grid instanceof Ext.grid.GridPanel) {
 			this.grid = grid;
@@ -77,6 +85,12 @@ Ext.extend(Ext.grid.GridFilters, Ext.util.Observable, {
 
 		} else if (grid instanceof Ext.PagingToolbar) {
 			this.toolbar = grid;
+		}
+		
+		if (this.searchable && grid instanceof Ext.grid.GridPanel) {
+            grid.getColumnModel().on('hiddenchange', function(cm, colIndex, hidden) {
+               this.reload();
+           }, this);
 		}
 	},
 
@@ -257,10 +271,9 @@ Ext.extend(Ext.grid.GridFilters, Ext.util.Observable, {
 			this.deferredUpdate.cancel();
 			var store = this.grid.store;
 			if (this.toolbar) {
-				var start = this.toolbar.paramNames.start;
 				if (store.lastOptions && store.lastOptions.params
-						&& store.lastOptions.params[start]) {
-					store.lastOptions.params[start] = 0;
+						&& store.lastOptions.params['start']) {
+					store.lastOptions.params['start'] = 0;
 				}
 			}
 			store.reload();
@@ -333,23 +346,58 @@ Ext.extend(Ext.grid.GridFilters, Ext.util.Observable, {
 	},
 
 	/** private * */
-	getFilterData : function() {
-		var filters = [];
-
-		this.filters.each(function(f) {
-					if (f.active) {
-						var d = [].concat(f.serialize());
-						for (var i = 0, len = d.length; i < len; i++) {
-							filters.push({
-										field : f.dataIndex,
-										data : d[i]
-									});
-						}
-					}
-				});
-
-		return filters;
-	},
+getFilterData: function() {
+        
+        var filters = [];
+        var searchable = this.isSearchable();
+        var searchableCollection = [];
+        
+        this.filters.each(function(f) {
+            
+            if (OSDN.empty(f.getValue())) {
+                f.active = false;
+            }
+            
+            if (f.active) {
+                var d = [].concat(f.serialize(this));
+                for (var i = 0, len = d.length; i < len; i++) {
+                    filters.push({
+                        field: f.dataIndex,
+                        data: d[i]
+                    });
+                }
+            }
+            
+            if (searchable) {
+                switch (f.type) {
+                    case 'string':
+                    case 'date':
+                    case 'numeric':
+                        if (false !== f.searchable) {
+                            var cm = this.grid.getColumnModel();
+                            var colIndex = cm.findColumnIndex(f.dataIndex);
+                            if (-1 != colIndex && !cm.isHidden(colIndex)) {
+                                searchableCollection.push(f.dataIndex);
+                                f.active = true;
+                            }
+                        }
+                }
+            }
+        }, this);
+        
+        if (searchable && searchableCollection.length > 0) {
+            filters.push({
+                field: searchableCollection.join(','),
+                data: {
+                    type: 'search',
+                    value: this.getSearchField().getValue(),
+                    field: ''
+                }
+            });
+        }
+        
+        return filters;
+    },
 
 	/**
 	 * Function to take structured filter data and 'flatten' it into
@@ -411,5 +459,43 @@ Ext.extend(Ext.grid.GridFilters, Ext.util.Observable, {
 	getFilterClass : function(type) {
 		return Ext.grid.filter[type.substr(0, 1).toUpperCase()
 				+ type.substr(1) + 'Filter'];
-	}
+	},
+	
+	getSearchField: function(config) {
+        if (!this.searchField) {
+            this.searchable = true;
+            this.searchField = new OSDN.form.SearchField({
+                width: 250,
+                enableKeyEvents: true
+            });
+            if (config) {
+                Ext.apply(this.searchField, config);
+            }
+            
+            var f = function() {
+                if (this.searchField.getValue().length > 0) {
+                    this.searchField.showClearBtn();
+                } else {
+                    this.searchField.hideClearBtn();
+                }
+                
+                this.reload();
+                updateTask.cancel();
+            };
+            var updateTask = new Ext.util.DelayedTask(f, this);
+            
+            this.searchField.on({
+                keyup: function(event) {
+                    updateTask.delay(this.updateBuffer);
+                },
+                click: f,
+                clear: function() {
+                    this.reload();
+                },
+                scope: this
+            });
+        }
+        
+        return this.searchField;
+    }
 });
