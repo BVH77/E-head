@@ -1,10 +1,5 @@
 Ext.ns('xlib');
 
-/**
- * Default acl manager
- * 
- * @version $Id: Manager.js 9298 2009-06-03 06:57:41Z uerter $
- */
 xlib.AclManager = function() {
     
     var privileges = OSDN.Acl.Storage.Privileges || {};
