@@ -1,4 +1,6 @@
-OSDN.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
+Ext.ns('xlib.form');
+
+xlib.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
     
     validationEvent: false,
     
@@ -18,29 +20,13 @@ OSDN.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
     
     initComponent: function() {
         
-        OSDN.form.SearchField.superclass.initComponent.apply(this, arguments);
+        xlib.form.SearchField.superclass.initComponent.apply(this, arguments);
+
         this.on('specialkey', function(f, e){
             if (e.getKey() == e.ENTER) {
                 this.onTrigger2Click();
             }
         }, this);
-        
-        this.addEvents(
-            
-            /**
-             * Fire and clear value
-             * 
-             * @param {OSDN.form.SearchField}
-             */
-            'clear',
-             
-            /**
-             * Fire on click
-             * 
-             * @param {OSDN.form.SearchField}
-             */    
-            'click'
-        );
     },
         
     onTrigger1Click: function() {

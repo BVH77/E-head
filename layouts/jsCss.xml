@@ -53,10 +53,6 @@
         <script src="/js/Library/OSDN/form/ComboTrigger.js"/>
         
         <script src="/js/Library/OSDN/form/DateField.js"/>
-        <script src="/js/Library/OSDN/form/SearchField.js"/>
-        
-        <script src="/js/Library/OSDN/form/GroupComboBox/GroupComboBox.js"/>
-        <script src="/js/Library/OSDN/form/GroupComboBox/GroupDataView.js"/>
         
         <script src="/js/Library/OSDN/tree/TreePanel.js"/>
         
@@ -70,6 +66,7 @@
 		
 		<!-- xlib -->
         
+        <script src="/js/Library/xlib/form/SearchField.js"/>
         <script src="/js/Library/xlib/AclManager.js"/>
         <script src="/js/Library/xlib/PagingToolbar.js"/>
         <script src="/js/Library/xlib/Msg.js"/>
