@@ -1,6 +1,6 @@
 Ext.ns('OSDN.Acl.Roles');
 
-OSDN.Acl.Roles.Tree = Ext.extend(OSDN.tree.TreePanel, {
+OSDN.Acl.Roles.Tree = Ext.extend(xlib.TreePanel, {
 
     title: 'Роли',
 

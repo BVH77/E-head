@@ -1,6 +1,6 @@
-Ext.namespace('OSDN.tree');
+Ext.namespace('xlib');
 
-OSDN.tree.TreePanel = Ext.extend(Ext.tree.TreePanel, {
+xlib.TreePanel = Ext.extend(Ext.tree.TreePanel, {
     
     /**
      * Panel is scrollable
@@ -71,7 +71,7 @@ OSDN.tree.TreePanel = Ext.extend(Ext.tree.TreePanel, {
             });
         }
         
-        OSDN.tree.TreePanel.superclass.initComponent.call(this);
+        xlib.TreePanel.superclass.initComponent.call(this);
         
         this.on({
             beforenodedrop:     {scope: this, fn: this.onBeforeNodeDrop},

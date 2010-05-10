@@ -52,7 +52,6 @@
         <style href="/js/Library/OSDN/form/ComboTrigger.css"/>
         <script src="/js/Library/OSDN/form/ComboTrigger.js"/>
         
-        <script src="/js/Library/OSDN/tree/TreePanel.js"/>
         
         <style href="/js/Library/OSDN/Legend/Item.css"/>
         <script src="/js/Library/OSDN/Legend/Item.js"/>
@@ -66,6 +65,7 @@
         
         <script src="/js/Library/xlib/form/DateField.js"/>
         <script src="/js/Library/xlib/form/SearchField.js"/>
+        <script src="/js/Library/xlib/TreePanel.js"/>
         <script src="/js/Library/xlib/AclManager.js"/>
         <script src="/js/Library/xlib/PagingToolbar.js"/>
         <script src="/js/Library/xlib/Msg.js"/>
