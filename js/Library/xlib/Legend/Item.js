@@ -1,24 +1,21 @@
-Ext.ns('OSDN.Legend');
+Ext.ns('xlib.Legend');
 
-OSDN.Legend.Item = Ext.extend(Ext.BoxComponent, {
+xlib.Legend.Item = Ext.extend(Ext.BoxComponent, {
 
     /**
      * Legend color item
-     * 
      * @param {String}
      */
     color: 'transparent',
     
     /**
      * Legend text label
-     * 
      * @param {String}
      */
     text: 'Legend text',
     
     /**
      * Qtip text
-     *
      * @param {String} 
      */
     qtip: '',
@@ -44,15 +41,15 @@ OSDN.Legend.Item = Ext.extend(Ext.BoxComponent, {
     	this.el = ct.createChild({
     	    tag: 'ul',
     	    id: this.getId(),
-            cls: 'x-osdn-legend',
+            cls: 'xlib-legend',
             children: [
                 {tag: 'li', children: [rectangle]},
                 {tag: 'li', 'class': "text", html: this.text, 'ext:qtip': this.qtip || ""}
             ]
         }, position);
     	
-    	OSDN.Legend.Item.superclass.onRender.apply(this, arguments); 
+    	xlib.Legend.Item.superclass.onRender.apply(this, arguments); 
 	}
 });
 
-Ext.reg('osdn.legend.item', OSDN.Legend.Item);
+Ext.reg('xlib.legend.item', xlib.Legend.Item);

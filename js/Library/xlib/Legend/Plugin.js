@@ -1,11 +1,11 @@
-Ext.ns('OSDN.Legend');
+Ext.ns('xlib.Legend');
 
-OSDN.Legend.Plugin = function(cfg) {
+xlib.Legend.Plugin = function(cfg) {
     Ext.apply(this, cfg || {});
-    OSDN.Legend.Plugin.superclass.constructor.call(this);    
+    xlib.Legend.Plugin.superclass.constructor.call(this);    
 };
 
-Ext.extend(OSDN.Legend.Plugin, Ext.util.Observable, {
+Ext.extend(xlib.Legend.Plugin, Ext.util.Observable, {
 	
 	items: [],
 
@@ -13,7 +13,7 @@ Ext.extend(OSDN.Legend.Plugin, Ext.util.Observable, {
 	
 	strategy: '',
     
-    baseCls: 'x-osdn-legend-',
+    baseCls: 'xlib-legend-',
     
     cls: '',
     
@@ -52,7 +52,7 @@ Ext.extend(OSDN.Legend.Plugin, Ext.util.Observable, {
 		var header = this.ancestor.header;
 
 		var tt = new Ext.Template([
-			'<ul class="x-osdn-legend {cls}">',
+			'<ul class="xlib-legend {cls}">',
 				'<li><div class="rectangle" style="background-color: {color}">&nbsp;</div></li>',
 				'<li class="text" ext:qtip="{qtip}">{text}</li>',
 			'</ul>'
@@ -60,7 +60,7 @@ Ext.extend(OSDN.Legend.Plugin, Ext.util.Observable, {
 		
 		var ct = document.createElement('div');
 		ct.id = Ext.id();
-		ct.className = 'x-osdn-legend-container';
+		ct.className = 'xlib-legend-container';
 		
 		var el = Ext.fly(ct);
 		el.insertBefore(header.child('span'));
@@ -74,7 +74,7 @@ Ext.extend(OSDN.Legend.Plugin, Ext.util.Observable, {
 	getHtml: function() {
 
 		var tt = new Ext.Template([
-			'<ul class="x-osdn-legend {cls}">',
+			'<ul class="xlib-legend {cls}">',
 				'<li><div class="rectangle" style="background-color: {color}">&nbsp;</div></li>',
 				'<li class="text" ext:qtip="{qtip}">{text}</li>',
 			'</ul><br>'
@@ -90,6 +90,7 @@ Ext.extend(OSDN.Legend.Plugin, Ext.util.Observable, {
 	
 	onRenderToolbarStrategy: function() {
 		for(var i = 0; i < this.items.length; i++) {
+			this.items[i].xtype = 'xlib.legend.item';
 			this.ancestor.add(this.items[i]);
 		}
 	}

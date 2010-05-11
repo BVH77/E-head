@@ -1,10 +1,10 @@
 @CHARSET "UTF-8";
 
-.x-osdn-legend-container .x-osdn-legend {
+.xlib-legend-container .xlib-legend {
 	float: right;
 }
 
-ul.x-osdn-legend li div.rectangle {
+ul.xlib-legend li div.rectangle {
 	background: red;
 	border: 1px solid #15428B;
 	float: left;
@@ -14,16 +14,16 @@ ul.x-osdn-legend li div.rectangle {
 	margin-left: 7px;
 }
 
-ul.x-osdn-legend li {
+ul.xlib-legend li {
 	display: inline;
 }
 	
-.x-osdn-legend-panel ul.x-osdn-legend {
+.xlib-legend-panel ul.xlib-legend {
 	clear: both;
 	line-height: 21px;
 }
 
-.x-osdn-legend-panel ul.x-osdn-legend li div.rectangle {
+.xlib-legend-panel ul.xlib-legend li div.rectangle {
 	border: 1px solid #15428B;
 	float: left;
 	width: 12px;
@@ -31,22 +31,22 @@ ul.x-osdn-legend li {
 	margin: 4px 1px 0px 5px;
 }
 
-.ext-ie6 .x-osdn-legend-panel ul.x-osdn-legend li div.rectangle,
-.ext-ie6 .x-panel-header ul.x-osdn-legend li div.rectangle {
+.ext-ie6 .xlib-legend-panel ul.xlib-legend li div.rectangle,
+.ext-ie6 .x-panel-header ul.xlib-legend li div.rectangle {
 	line-height: 12px;
 }
 
-ul.x-osdn-legend li.text {
+ul.xlib-legend li.text {
 	font-size: 11px;
 	font-family:tahoma,arial,verdana,sans-serif;
 	cursor: help;
 }
 
-.x-osdn-legend-toolbar ul.x-osdn-legend {
+.xlib-legend-toolbar ul.xlib-legend {
 	float: right;
 	clear: none;
 }
 
-.x-toolbar .x-osdn-legend-toolbar .x-panel-body {
+.x-toolbar .xlib-legend-toolbar .x-panel-body {
 	background-color: transparent;
 }
