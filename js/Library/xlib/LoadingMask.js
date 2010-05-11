@@ -33,22 +33,17 @@ xlib.LoadingMask = function() {
         container.id = '-loading-mask';
         
         var loading = document.createElement('DIV');
-        loading.id = 'osdn-loading';
+        loading.id = 'xlib-loading';
         
         var indicator = document.createElement('DIV');
-        indicator.className = 'osdn-loading-indicator';
+        indicator.className = 'xlib-loading-indicator';
         
         var text = document.createElement('DIV');
-        text.className = 'osdn-loading-indicator-text';
-        text.innerHTML = 'Загрузка...';
-        
-        msg = document.createElement('DIV');
-        msg.id = 'osdn-msg';
-        msg.className = 'osdn-loading-indicator-text-detail';
+        text.className = 'xlib-loading-indicator-text';
+        text.innerHTML = 'загрузка';
         
         // create container add add additional subcontainers        
         indicator.appendChild(text);
-        indicator.appendChild(msg);
         loading.appendChild(indicator);
         container.appendChild(loading);
         container.style.display = 'none';
@@ -72,17 +67,11 @@ xlib.LoadingMask = function() {
         // show mask
         show: function(text) {
             container.style.display = 'block';
-            this.msg(text);
         },
         
         // hide mask
         hide: function() {
             container.style.display = 'none';
-        },
-        
-        // set msg
-        msg: function(text) {
-            msg.innerHTML = text || '';
         },
         
         // destroy mask
