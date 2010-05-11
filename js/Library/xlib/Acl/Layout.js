@@ -1,4 +1,6 @@
-OSDN.Acl.Layout = Ext.extend(Ext.Panel, {
+Ext.ns('xlib.Acl');
+
+xlib.Acl.Layout = Ext.extend(Ext.Panel, {
     
     layout: 'border',
     
@@ -10,13 +12,13 @@ OSDN.Acl.Layout = Ext.extend(Ext.Panel, {
         split: true
     },
     
-    id: 'osdn.acl.layout',
+    id: 'xlib.acl.layout',
     
     ddAcountsGroup: 'dd-accounts-group',
     
     initComponent: function() {
         
-        this.roles = new OSDN.Acl.Roles.Tree({
+        this.roles = new xlib.Acl.Roles.Tree({
             region: 'west',
             width: 200,
             border: false,
@@ -27,7 +29,7 @@ OSDN.Acl.Layout = Ext.extend(Ext.Panel, {
             enableDD: true
         });
         
-        this.accounts = new OSDN.Acl.Accounts.List({
+        this.accounts = new xlib.Acl.Accounts.List({
             region: 'center',
             ddGroup: this.ddAcountsGroup,
 			border: false,
@@ -35,7 +37,7 @@ OSDN.Acl.Layout = Ext.extend(Ext.Panel, {
             enableDragDrop: true
         });
         
-        this.permissions = new OSDN.Acl.Permission.Tree({
+        this.permissions = new xlib.Acl.Permission.Tree({
             region: 'south',
             height: 300,
             cmargins: '5 1 1 0',
@@ -56,7 +58,7 @@ OSDN.Acl.Layout = Ext.extend(Ext.Panel, {
             items: [this.accounts, this.permissions]
         }];
         
-        OSDN.Acl.Layout.superclass.initComponent.apply(this, arguments);
+        xlib.Acl.Layout.superclass.initComponent.apply(this, arguments);
         this.roles.on({
             click: this.onRolesClick,
             firstnodeselected: this.onRolesClick,
@@ -111,4 +113,4 @@ OSDN.Acl.Layout = Ext.extend(Ext.Panel, {
     }
 });
 
-Ext.reg('osdn.acl.layout', OSDN.Acl.Layout);
+Ext.reg('xlib.acl.layout', xlib.Acl.Layout);

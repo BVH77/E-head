@@ -70,7 +70,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
         
         if (this.permissions) {
 
-            var actionsPlugin = new OSDN.grid.Actions({
+            var actionsPlugin = new xlib.grid.Actions({
     	        autoWidth: true,
     	        items: [{
                     text: 'Отсоединить',

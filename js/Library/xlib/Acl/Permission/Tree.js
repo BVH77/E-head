@@ -1,22 +1,32 @@
-Ext.ns('OSDN.Acl.Permission');
+Ext.ns('xlib.Acl.Permission');
 
-OSDN.Acl.Permission.TreeNodeUI = Ext.extend(Ext.tree.ColumnNodeUI, {
+xlib.Acl.Permission.TreeNodeUI = Ext.extend(Ext.tree.ColumnNodeUI, {
     onCheckboxClick: function() {},
 	onCheckChange: function() {}
 });
 
-OSDN.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
+xlib.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
 
     animCollapse: false,
+    
     animate: false,
+    
     autoScroll:true,
+    
     title: 'Редактор уровней доступа',
+    
     autoExpandColumn: 'resource',
+    
     allowRename: false,
+    
     allowRemove: false,
+    
     enableDD: false,
+    
     enableDrop: true,
+    
     loadUrl: null,
+    
     rootVisible: false,
     
     initComponent: function() {
@@ -35,34 +45,24 @@ OSDN.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
             '<div class="column-tree-action-item">',
                 '<input type="checkbox" name="{name}" qtip="{qtip}" ',
                 '{[values.checked == true ? " checked " : ""]}' ,
-                '{[values.disabled == true ? " disabled " : ""]} />', // action:ida="{idAction}"
+                '{[values.disabled == true ? " disabled " : ""]} />',
             '</div>',
             '</tpl>'
         ).compile();
 
 		var renderer = function(attribs, name, node) {
-            
             var disabled = false;
             var manager = node.parentNode.ui.manager;
-            
             if (manager) {
                 disabled = !manager.items.get(name).dom.checked;
             }    
-            
 			return tpl.apply({
 				qtip: name,
-//				idAction: attribs[name] ? attribs[name].id : '',
 				name: name,
 				checked: attribs[name] ? 1 == attribs[name] : '',
 				disabled: disabled
 			});
 		};
-		
-//        var actionsTpl = new Ext.XTemplate(
-//            '<tpl for=".">',
-//            '<div class="column-tree-action-item {cls} qtip="{qtip}">&#160;</div>',
-//            '</tpl>'
-//        ).compile();
 		        
         this.columns = [{
             header: 'Ресурсы',
@@ -96,24 +96,12 @@ OSDN.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
             renderer: function(a, node, attribs) {
                 return renderer(attribs, 'delete', node);
             }
-        }
-//        , {
-//            header: lang('Actions'),
-//            width: 50,
-//            cls: 'column-tree-row-actions',
-//            renderer: function(a, node, attribs) {
-//                return actionsTpl.apply([{
-//                    cls: 'core-remove',
-//                    qtip: lang('Remove')
-//                }]);
-//            } 
-//        }
-        ];
+        }];
 
         this.loader = new Ext.tree.TreeLoader({
             dataUrl: this.loadUrl,
             uiProviders:{
-                'col': OSDN.Acl.Permission.TreeNodeUI
+                'col': xlib.Acl.Permission.TreeNodeUI
             },
             baseAttrs: {
                 uiProvider: 'col',
@@ -139,7 +127,7 @@ OSDN.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
             expanded: false
         });
         
-        OSDN.Acl.Permission.Tree.superclass.initComponent.apply(this, arguments);
+        xlib.Acl.Permission.Tree.superclass.initComponent.apply(this, arguments);
         this.on({
             renderelements: this.onRenderElements,
 			addcorenode: function(tree, node, destinationNode) {
@@ -170,7 +158,7 @@ OSDN.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
 	},
 	
     onRenderElements: function(ui) {
-		ui.manager = new OSDN.Acl.Permission.TreeManager({
+		ui.manager = new xlib.Acl.Permission.TreeManager({
             ui: ui,
             node: ui.node
         });
@@ -180,27 +168,17 @@ OSDN.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
 			var comp = Ext.get(ui.columns[i].firstChild.firstChild.firstChild);
 			ui.manager.add(comp.dom.name, comp);
 		}
-		
-//        var actions = ui.columns[count + 1].firstChild.childNodes;
-//        Ext.get(actions[0]).on('click', function() {
-//            this.onRename(ui.node);
-//        }, this);
-//        
-//        Ext.get(actions[1]).on('click', function() {
-//            this.onRemove(ui.node);
-//        }, this);
     },
 	
     onRemove: function(node) {
     	xlib.Msg.confirm('Вы уверены?', function() {
-            
             Ext.Ajax.request({
                 url: link('admin', 'acl', 'delete-resource'),
                 params: {
                     resourceId: node.id
                 },
                 success: function(response) {
-                    var res = Ext.decode(response.responseText);
+                    var res = xlib.decode(response.responseText);
                     if (res.success === true) {
                         node.remove();
                         return;
@@ -253,4 +231,4 @@ OSDN.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
     }
 });
 
-Ext.reg('osdn.acl.permission.tree', OSDN.Acl.Permission.Tree);
+Ext.reg('xlib.acl.permission.tree', xlib.Acl.Permission.Tree);

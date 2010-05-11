@@ -102,8 +102,8 @@ PMS.Menu = function(username, rolename) {
 		handler: function() {
 			PMS.System.Layout.getTabPanel().add({
 				iconCls: 'accounts_manager-icon',
-				xtype: 'osdn.acl.layout',
-				id: 'osdn.acl.layout'
+				xtype: 'xlib.acl.layout',
+				id: 'xlib.acl.layout'
 			});
 		}
 	}, '->', {

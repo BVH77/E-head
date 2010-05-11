@@ -1,9 +1,8 @@
-Ext.ns('OSDN.Acl.Permission');
+Ext.ns('xlib.Acl.Permission');
 
-OSDN.Acl.Permission.TreeManager = function(c) {
+xlib.Acl.Permission.TreeManager = function(c) {
     Ext.apply(this, c || {});
     this.items = new Ext.util.MixedCollection();
-    
     this.node.on({
         disabledchange: function(node, disabled) {
             if (disabled === true) {
@@ -16,7 +15,7 @@ OSDN.Acl.Permission.TreeManager = function(c) {
     });
 };
 
-OSDN.Acl.Permission.TreeManager.prototype = {
+xlib.Acl.Permission.TreeManager.prototype = {
 
     ui: null,
     
@@ -31,15 +30,12 @@ OSDN.Acl.Permission.TreeManager.prototype = {
     },
     
     onClick: function(e, node) {
-
         if (this.node.parentNode.disabled === true) {
             return;
         }
-        
         var el = this.getNodeEl(node);
         var checked = el.dom.checked === true;
         var name = el.dom.name;
-        
         Ext.Ajax.request({
             url: link('admin', 'acl', 'allow'),
             params: {
@@ -49,17 +45,15 @@ OSDN.Acl.Permission.TreeManager.prototype = {
                 roleId: this.node.ownerTree.getRoleId()
             },
             success: function(response) {
-                var res = OSDN.decode(response.responseText);
+                var res = xlib.decode(response.responseText);
                 if (res.success !== true) {
                     return;
                 }
-                
                 if (!checked) {
                     var f = function(n) {     // disable
                         if (n.ui.node == this.node) {
                             return;
                         }
-                        
                         var c = n.ui.manager.items.get(name).dom;
                         c.checked = false;
                         c.disabled = true;
@@ -68,22 +62,16 @@ OSDN.Acl.Permission.TreeManager.prototype = {
                         }
                     };
                     this.node.expand(true, false);
-                  
                 } else {
-
                     var f = function(n) {       // enable
                         var c = n.ui.manager.items.get(name).dom;
                         c.disabled = false;
                     }
-                    
                     this.node.expand(false, false);
                 }
-                
                 this.node.eachChild(f, this);
             },
-            failure: function() {
-                
-            },
+            failure: Ext.emptyFn,
             scope: this
         });   
     },

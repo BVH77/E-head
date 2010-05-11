@@ -62,7 +62,7 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
             }]
         });
         
-        var actionsPlugin = new OSDN.grid.Actions({
+        var actionsPlugin = new xlib.grid.Actions({
 	        autoWidth: true,
 	        items: [{
                 text: 'Добавить нового',

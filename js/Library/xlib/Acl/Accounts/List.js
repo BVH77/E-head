@@ -1,6 +1,6 @@
-Ext.ns('OSDN.Acl.Accounts');
+Ext.ns('xlib.Acl.Accounts');
 
-OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
+xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
 
     title: 'Учётные записи',
 
@@ -38,7 +38,7 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
             dataIndex: 'active'
         });
         
-        var actions = new OSDN.grid.Actions({
+        var actions = new xlib.grid.Actions({
             autoWidth: true,
             items: [{
                 text: 'Редактировать',
@@ -46,7 +46,7 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
                 hidden: !acl.isUpdate('admin', 'acl'),
                 handler: function(g, rowIndex) {
                     var record = g.getStore().getAt(rowIndex);
-                    var w = new OSDN.Acl.Accounts.Form({
+                    var w = new xlib.Acl.Accounts.Form({
                         accountId: record.get('id')
                     }).getWindow();
                     
@@ -114,7 +114,7 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
             items: ['-', this.createAccountBtn]
         });
         
-        OSDN.Acl.Accounts.List.superclass.initComponent.apply(this, arguments);
+        xlib.Acl.Accounts.List.superclass.initComponent.apply(this, arguments);
         
         this.on({
             afteredit: this.onAfterEdit,
@@ -132,7 +132,7 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
                 id: data.record.get('id')
             },
             callback: function(options, success, response) {
-                var r = OSDN.decode(response.responseText);
+                var r = xlib.decode(response.responseText);
                 if (r && r.success) {
                     data.record.commit();
                     return;
@@ -224,7 +224,7 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
                 },
                 callback: function (options, success, response) {
                     if (true == success) {
-                        var res = OSDN.decode(response.responseText);
+                        var res = xlib.decode(response.responseText);
                         if (true == res.success) {
                             g.getStore().reload();
                             return;
@@ -289,4 +289,4 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
     }
 });
 
-Ext.reg('osdn.acl.accounts.list', OSDN.Acl.Accounts.List);
+Ext.reg('xlib.acl.accounts.list', xlib.Acl.Accounts.List);

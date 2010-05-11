@@ -130,7 +130,7 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
     	        {type: 'date',  dataIndex: 'success_date_fact', dateFormat: 'Y-m-d'}
 	    ]});
         
-	    var actionsPlugin = new OSDN.grid.Actions({
+	    var actionsPlugin = new xlib.grid.Actions({
 	        autoWidth: true,
 	        items: [{
                 text: 'Просмотреть',

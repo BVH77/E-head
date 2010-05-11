@@ -16,12 +16,9 @@
         <script src="/js/Library/OSDN/OSDN.js"/>
         
         <!-- Plugins -->
-        <style href="/js/Library/extjs/plugins/grid/RowActions/Ext.ux.grid.RowActions.css"/>
-        <script src="/js/Library/extjs/plugins/grid/RowActions/Ext.ux.grid.RowActions.js"/>
         <style href="/js/Library/extjs/plugins/grid/CheckColumn/CheckColumn.css"/>
         <script src="/js/Library/extjs/plugins/grid/CheckColumn/CheckColumn.js"/>
         <script src="/js/Library/extjs/plugins/grid/RowExpander.js"/>
-        <script src="/js/Library/extjs/plugins/grid/Actions.js"/>
         <script src="/js/Library/extjs/plugins/grid/GridFiltering/menu/EditableItem.js"/>
         <script src="/js/Library/extjs/plugins/grid/GridFiltering/menu/RangeMenu.js"/>
         <script src="/js/Library/extjs/plugins/grid/GridFiltering/GridFilters.js"/>
@@ -44,6 +41,7 @@
         <!-- ux -->
         
 		<!-- xlib -->
+        <script src="/js/Library/xlib/grid/Actions.js"/>
         <style href="/js/Library/xlib/Legend/Item.css"/>
         <script src="/js/Library/xlib/Legend/Item.js"/>
         <script src="/js/Library/xlib/Legend/Plugin.js"/>
@@ -63,12 +61,12 @@
  
         <!-- Widgets -->
          
-        <script src="/js/Library/extjs/widgets/Acl/Permission/Tree.js"/>
-        <script src="/js/Library/extjs/widgets/Acl/Permission/TreeManager.js"/>
-        <script src="/js/Library/extjs/widgets/Acl/Accounts/Form.js"/>
-        <script src="/js/Library/extjs/widgets/Acl/Accounts/List.js"/>
-        <script src="/js/Library/extjs/widgets/Acl/Roles/Tree.js"/>
-        <script src="/js/Library/extjs/widgets/Acl/Layout.js"/>
+        <script src="/js/Library/xlib/Acl/Permission/Tree.js"/>
+        <script src="/js/Library/xlib/Acl/Permission/TreeManager.js"/>
+        <script src="/js/Library/xlib/Acl/Accounts/Form.js"/>
+        <script src="/js/Library/xlib/Acl/Accounts/List.js"/>
+        <script src="/js/Library/xlib/Acl/Roles/Tree.js"/>
+        <script src="/js/Library/xlib/Acl/Layout.js"/>
        
         <!-- Widgets -->
         

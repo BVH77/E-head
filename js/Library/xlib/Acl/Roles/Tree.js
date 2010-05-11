@@ -1,6 +1,6 @@
-Ext.ns('OSDN.Acl.Roles');
+Ext.ns('xlib.Acl.Roles');
 
-OSDN.Acl.Roles.Tree = Ext.extend(xlib.TreePanel, {
+xlib.Acl.Roles.Tree = Ext.extend(xlib.TreePanel, {
 
     title: 'Роли',
 
@@ -42,7 +42,7 @@ OSDN.Acl.Roles.Tree = Ext.extend(xlib.TreePanel, {
             }
         });
         
-        OSDN.Acl.Roles.Tree.superclass.initComponent.apply(this, arguments);
+        xlib.Acl.Roles.Tree.superclass.initComponent.apply(this, arguments);
     },
     
     onContextMenu: function(node, e) {
@@ -87,7 +87,7 @@ OSDN.Acl.Roles.Tree = Ext.extend(xlib.TreePanel, {
                 name: text
             },
             callback: function(options, success, response) {
-                var r = OSDN.decode(response.responseText);
+                var r = xlib.decode(response.responseText);
                 if (success && r && r.success && r.id > 0) {
                     var newNode = new Ext.tree.TreeNode({
                         text: text,
@@ -112,7 +112,7 @@ OSDN.Acl.Roles.Tree = Ext.extend(xlib.TreePanel, {
                 text: value
             },
             callback: function(options, success, response) {
-                var r = OSDN.decode(response.responseText);
+                var r = xlib.decode(response.responseText);
                 var success = success && r && r.success;
                 
                 if (!success) {
@@ -131,7 +131,7 @@ OSDN.Acl.Roles.Tree = Ext.extend(xlib.TreePanel, {
                 id: node.id
             },
             callback: function(options, success, response) {
-                var r = OSDN.decode(response.responseText);
+                var r = xlib.decode(response.responseText);
                 if (success && r && r.success) {
                     this.removeNode(node);
                     return;
@@ -143,4 +143,4 @@ OSDN.Acl.Roles.Tree = Ext.extend(xlib.TreePanel, {
     }
 });
 
-Ext.reg('osdn.acl.roles.tree', OSDN.Acl.Roles.Tree);
+Ext.reg('xlib.acl.roles.tree', xlib.Acl.Roles.Tree);

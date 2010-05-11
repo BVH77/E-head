@@ -129,7 +129,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                 scope: this
             }
         });
-	    var actionsPlugin = new OSDN.grid.Actions({
+	    var actionsPlugin = new xlib.grid.Actions({
 	        autoWidth: true,
 	        items: [{
                 text: 'Редактировать',
