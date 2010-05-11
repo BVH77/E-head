@@ -1,6 +1,6 @@
 Ext.ns('PMS.Orders.Edit');
 
-PMS.Orders.Edit.Info = Ext.extend(OSDN.form.FormPanel, {
+PMS.Orders.Edit.Info = Ext.extend(xlib.form.FormPanel, {
     
     permissions: true,
     
