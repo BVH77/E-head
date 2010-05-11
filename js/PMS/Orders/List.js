@@ -193,17 +193,14 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             }, ' ', this.filtersPlugin.getSearchField({width:200}), 
             ' ', this.filteringMenuButton, ' '
             ],
-            plugins: [new OSDN.Legend.Plugin({
+            plugins: [new xlib.Legend.Plugin({
                 items: [{
-                    xtype: 'osdn.legend.item',
                     color: '#99FF99',
                     text: 'Выполненные'
                 }, {
-                    xtype: 'osdn.legend.item',
                     color: '#FFFF99',
                     text: 'Просроченные'
                 }, {
-                    xtype: 'osdn.legend.item',
                     color: '#FF9999',
                     text: 'Конфликт'
                 }]
