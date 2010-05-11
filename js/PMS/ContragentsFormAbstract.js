@@ -1,6 +1,6 @@
 Ext.ns('PMS');
 
-PMS.ContragentsFormAbstract = Ext.extend(OSDN.form.FormPanel, {
+PMS.ContragentsFormAbstract = Ext.extend(xlib.form.FormPanel, {
     
 	sid: null,
     
