@@ -89,27 +89,6 @@
 	display: block;
 }
 
-
-/* form style like grid (font size and color and field height) */
-.x-ca-form-field .x-form-field,
-.x-ca-form-field .ext-strict .x-form-text{
-	font-size: 11px !important;
-	height: 14px !important;
-}
-.x-ca-form-field .x-form-textarea{
-	height: 60px !important;
-}
-.x-ca-form-field .x-item-disabled{
-	color: #303030;
-}
-.x-ca-form-field .x-form-item{
-	font-size: 11px !important;
-}
-.x-ca-form-field .x-form-field-wrap .x-form-trigger{
-	height: 17px !important;
-}
-
-/* for OSDN.form.PasswordField */
 .x-form-warning-icon {
     width: 16px;
     height: 18px;
