@@ -21,7 +21,7 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
         this.photosPanel = new PMS.Orders.Photos({
             region: 'south',
             height: 200,
-            cls: 'x-osdn-border-top'
+            cls: 'x-border-top'
         });
         
 		this.listPanel = new PMS.Orders.List({
@@ -29,7 +29,7 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
             minWidth: 600,
             width: 600,
             border: false,
-            cls: 'x-osdn-border-right'
+            cls: 'x-border-right'
 		});
 		
 	    this.items = [this.listPanel, {	
@@ -38,7 +38,7 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
             width: 450,
 			region: 'east',
             border: false,
-            cls: 'x-osdn-border-left',
+            cls: 'x-border-left',
             defaults: {
                 border: false
 //                split: true

@@ -22,7 +22,7 @@ xlib.Acl.Layout = Ext.extend(Ext.Panel, {
             region: 'west',
             width: 200,
             border: false,
-			cls: 'x-osdn-border-right',
+			cls: 'x-border-right',
             collapsible: true,
             xtype: 'osdn.acl.roles.tree',
             ddGroup: this.ddAcountsGroup,
@@ -33,7 +33,7 @@ xlib.Acl.Layout = Ext.extend(Ext.Panel, {
             region: 'center',
             ddGroup: this.ddAcountsGroup,
 			border: false,
-			cls: 'x-osdn-border-bottom x-osdn-border-left',
+			cls: 'x-border-bottom x-border-left',
             enableDragDrop: true
         });
         
@@ -43,7 +43,7 @@ xlib.Acl.Layout = Ext.extend(Ext.Panel, {
             cmargins: '5 1 1 0',
             collapsible: true,
             border: false,
-			cls: 'x-osdn-border-top x-osdn-border-left',
+			cls: 'x-border-top x-border-left',
             loadUrl: link('admin', 'acl', 'get-list')
         });
         

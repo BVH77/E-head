@@ -39,7 +39,7 @@
         <script src="/js/Library/extjs/ux/UploadDialog/Ext.ux.UploadDialog.js"/>
         <!-- Ext ux -->
         
-		<!-- --------------------------- xlib --------------------------- -->
+		<!-- ================ xlib ================ -->
         
         <!-- Plugins -->
         <script src="/js/Library/xlib/grid/Actions.js"/>
@@ -69,7 +69,7 @@
         <script src="/js/Library/xlib/Acl/Layout.js"/>
         <!-- Widgets -->
         
-		<!-- --------------------------- xlib --------------------------- -->
+		<!-- ================ xlib ================ -->
  
         
         <!-- Modules -->

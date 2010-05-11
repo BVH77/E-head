@@ -13,7 +13,7 @@ PMS.Orders.Info = Ext.extend(Ext.Panel, {
     initComponent: function() {
         var template = '<tpl for="."><table cellspacing="5" cellpadding="5" class="x-grid3-row">'+
                         '<tr><td width="150"><b>№ заказа:</b></td><td width="150">{id}</td>'+
-                        '<td rowspan="0" class="x-osdn-border-left" style="padding-left: 8px;">'+
+                        '<td rowspan="0" class="x-border-left" style="padding-left: 8px;">'+
                             '<b>Поставщики:</b><br/>'+
                             '<tpl for="suppliers" if="values.suppliers">'+
                                 '<li style="list-style-position: inside; list-style-type: {[values.success == 1 ? "disc" : "circle"]};">{name}'+

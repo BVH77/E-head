@@ -15,43 +15,20 @@
     background: #FF9999;
 }
 
-.x-osdn-no-border-left .x-panel-body,
-.x-osdn-no-border-left .x-panel-bbar .x-toolbar,
-.x-osdn-no-border-left .x-panel-header {
-    border-left: 0pt none !important;
-}
 
-.x-osdn-no-border-right .x-panel-body,
-.x-osdn-no-border-left .x-panel-bbar .x-toolbar,
-.x-osdn-no-border-left .x-panel-header {
-    border-right: 0pt none !important;
-}
-
-.x-osdn-no-border-top .x-panel-body {
-    border-top: 0pt none !important;
-}
-
-.x-osdn-no-border-bottom .x-panel-body {
-    border-bottom: 0pt none !important;
-}
-
-.x-osdn-transparent .x-panel-body {
-    background: none !important;
-}
-
-.x-osdn-border-top {
+.x-border-top {
     border-top: 1px solid #99BBE8 !important;
 }
 
-.x-osdn-border-bottom {
+.x-border-bottom {
     border-bottom: 1px solid #99BBE8 !important;
 }
 
-.x-osdn-border-left {
+.x-border-left {
     border-left: 1px solid #99BBE8 !important;
 }
 
-.x-osdn-border-right {
+.x-border-right {
     border-right: 1px solid #99BBE8 !important;
 }
 
