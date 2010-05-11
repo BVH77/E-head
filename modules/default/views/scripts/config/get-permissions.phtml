@@ -1,14 +1,12 @@
-// Ext.ns('OSDN.Acl');
-
-if ('object' != typeof OSDN) {
-    OSDN = {};
+if ('object' != typeof xlib) {
+    xlib = {};
 }
 
-if ('object' != typeof OSDN.Acl) {
-    OSDN.Acl = {};
+if ('object' != typeof xlib.Acl) {
+    xlib.Acl = {};
 }
 
-OSDN.Acl.Storage = function() {
+xlib.Acl.Storage = function() {
 
     var permissions = <?=Zend_Json::encode($this->acl); ?> || [];
     var privileges = <?=Zend_Json::encode($this->privileges); ?> || {};

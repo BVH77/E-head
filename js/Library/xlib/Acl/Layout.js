@@ -24,7 +24,6 @@ xlib.Acl.Layout = Ext.extend(Ext.Panel, {
             border: false,
 			cls: 'x-border-right',
             collapsible: true,
-            xtype: 'osdn.acl.roles.tree',
             ddGroup: this.ddAcountsGroup,
             enableDD: true
         });

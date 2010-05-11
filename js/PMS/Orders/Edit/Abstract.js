@@ -45,7 +45,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
             id: this.autoExpandColumn, 
             header: 'Описание',
             dataIndex: 'description',
-            renderer: xlib.dateRenderer(OSDN.date.DATE_FORMAT)
+            renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT)
         }]);
         
         this.cm.defaultSortable = true; 
@@ -62,7 +62,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
 	            {name: 'id'},
 	            {name: 'name'},
                 {name: 'success'},
-                {name: 'date', type: 'date', dateFormat: OSDN.date.DATE_FORMAT_SERVER}
+                {name: 'date', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER}
 	        ]
 	    });
         
@@ -114,7 +114,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
                 id: record.get('id'),
                 orderId: this.orderId,
                 success: record.get('success'),
-                date: dt ? dt.format(OSDN.date.DATE_FORMAT_SERVER) : ''
+                date: dt ? dt.format(xlib.date.DATE_FORMAT_SERVER) : ''
            },
            success: function(res){
                 var errors = Ext.decode(res.responseText).errors;

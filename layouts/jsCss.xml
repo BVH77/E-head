@@ -5,15 +5,12 @@
         <script src="/js/Library/extjs/framework/ext-all.js"/>
         
         <style href="/css/new-pms-icons.css"/>
-
         <style href="/css/icons.css"/>
         <style href="/css/system.css"/>
         
         <script src="/js/Library/xlib/xlib.js"/>
         <script src="/js/Library/xlib/common.js"/>
 
-        <script src="/js/Library/OSDN/OSDN.js"/>
-        
         <!-- Ext Plugins -->
         <style href="/js/Library/extjs/plugins/grid/CheckColumn/CheckColumn.css"/>
         <script src="/js/Library/extjs/plugins/grid/CheckColumn/CheckColumn.js"/>

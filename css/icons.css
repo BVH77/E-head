@@ -1,107 +1,18 @@
 .settings {
     background-image:url(/images/folder_wrench.png) !important;
 }
-.nav {
-    background-image:url(/images/folder_go.png) !important;
-}
-.comm {
-    background-image:url(/images/post.gif) !important;
-}
 .user {
     background-image:url(/images/user.png) !important;
 }
 .reply {
     background-image:url(/images/user_comment.png) !important;
 }
-.reply_quote {
-    background-image:url(/images/plugin_add.gif) !important;
-}
 .delete {
     background-image:url(/images/delete.gif) !important;
 }
 .add {
-    background-image:url(/images/plugin_add.gif) !important;
+    background-image:url(/images/add.gif) !important;
 }
 .edit {
     background-image:url(/images/cog_edit.png) !important;
-}
-.activate {
-    background-image:url(/images/unlock.gif) !important;
-}
-.deactivate {
-    background-image:url(/images/lock.gif) !important;
-}
-
-.pdf-report {
-    background-image:url(/images/report_pdf.gif) !important;
-}
-.word-report {
-    background-image:url(/images/report_word.gif) !important;
-}
-.xls-report {
-    background-image:url(/images/report_xls.gif) !important;
-}
-.osdn-scan {
-    background: url(/images/print.gif) no-repeat left center !important;
-}
-.osdn-print {
-    background: url(/images/print.gif) no-repeat left center !important;
-}
-.added-file {
-    background: url(/images/paperclip.png) no-repeat left center !important;
-}
-.osdn-reports {
-    background: url(/images/osdn-report.gif) no-repeat left center !important;
-}
-.osdn-documents {
-    background: url(/images/documents.png) no-repeat left center !important;
-}
-.osdn-document {
-    background: url(/images/document_view.png) no-repeat left center !important;
-}
-.osdn-document-edit {
-    background: url(/images/document_edit.png) no-repeat left center !important;
-}
-.osdn-document-delete {
-    background: url(/images/document_delete.png) no-repeat left center !important;
-}
-.osdn-document-add {
-    background: url(/images/document_add.png) no-repeat left center !important;
-}
-.osdn-comments {
-    background: url(/images/comments.png) no-repeat left center !important;
-}
-.osdn-comment-edit {
-    background: url(/images/comment_edit.png) no-repeat left center !important;
-}
-.osdn-comment-delete {
-    background: url(/images/comment_delete.png) no-repeat left center !important;
-}
-.osdn-comment-add {
-    background: url(/images/comment_add.png) no-repeat left center !important;
-}
-.osdn-scanner-configuration {
-    background: url(/images/settings.gif) no-repeat left center !important;
-}
-.osdn-document-add-request {
-	background: url(/images/label_add_16x16.gif) no-repeat left center !important;
-}
-.osdn-document-delete-request {
-    background: url(/images/label_delete_16x16.gif) no-repeat left center !important;
-}
-.osdn-document-requested-added {
-    background: url(/images/ok_16x16.gif) no-repeat left center !important;
-}
-.osdn-document-requested {
-    background: #ff9b9b;
-}
-.osdn-document-received {
-    background: #b9ffab;
-}
-.osdn-templates {
-    background: url(/images/preview-bottom.gif) no-repeat left center !important;
-}
-
-.add {
-    background-image: url(/images/add.gif) !important;
 }

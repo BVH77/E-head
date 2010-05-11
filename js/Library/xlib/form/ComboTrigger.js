@@ -75,7 +75,7 @@ xlib.form.ComboTrigger = Ext.extend(xlib.form.ComboBox, {
                     id: this.triggerId + '-img-' + (trigger.name || ''),
                     tag: "img",
                     src: Ext.BLANK_IMAGE_URL,
-                    cls: "x-form-trigger no-border-bottom x-form-osdn-trigger " + (trigger.iconCls || trigger.cls || this.trigger2Class),
+                    cls: "x-form-trigger no-border-bottom x-form-trigger " + (trigger.iconCls || trigger.cls || this.trigger2Class),
 					style: (trigger.hidden ? 'display: none;' : '')
                 }
 				if (trigger.qtip) {

@@ -6,8 +6,8 @@
     border: 0pt none !important;
 }
 
-.x-form-osdn-trigger.x-form-trigger-over,
-.x-trigger-wrap-focus .x-form-osdn-trigger {
+.x-form-trigger. x-form-trigger-over,
+.x-trigger-wrap-focus .x-form-trigger {
 	background-position: 0% 50% !important;
 }
 
@@ -15,6 +15,6 @@
 	border-bottom: 0pt none !important;
 }
 
-.x-form-twin-triggers .x-form-osdn-trigger {
+.x-form-twin-triggers .x-form-trigger {
 	background-position: 0px 50%;
 }

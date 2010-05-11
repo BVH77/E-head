@@ -101,7 +101,7 @@ Ext.apply(xlib, function() {
             try {
                 return regDecode.test(value) && eval('(' + value + ')');
             } catch (e) {
-                if (true !== OSDN.DEBUG) {
+                if (true !== DEBUG) {
                     return false;
                 }
                 if (Ext.isGecko) {
@@ -142,7 +142,7 @@ Ext.apply(xlib, function() {
                 if(o.hasOwnProperty(p)) {
                     v = o[p];
                     if(v && 'object' === typeof v) {
-                        c[p] = OSDN.clone(v);
+                        c[p] = xlib.clone(v);
                     } else {
                         c[p] = v;
                     }
@@ -154,7 +154,7 @@ Ext.apply(xlib, function() {
         link: link,
         
         alink: function(module, controller, action, params, router) {
-            return OSDN.link(module, controller, action, params, router, true);
+            return xlib.link(module, controller, action, params, router, true);
         }
     }
 }());

@@ -11,15 +11,11 @@
 
     <script src="/js/Library/xlib/LoadingMask.js"></script>
     <script type="text/javascript">
+        DEBUG = <?=$this->debug ? 'true' : 'false'; ?>;
 	    if (typeof xlib == 'undefined') {
 	    	xlib = {};
 	    } 
         xlib.LoadingMask.show();
-	    if (typeof OSDN == 'undefined') {
-	    	OSDN = {};
-	    } 
-        OSDN.LOCALE = '<?=$this->locale; ?>';
-        OSDN.DEBUG = <?=$this->debug ? 'true' : 'false'; ?>;
     </script>
 
     <script src="/default/config/get-permissions" ></script>
@@ -31,11 +27,11 @@
     <?endif; ?>
     <?php if ($this->assemble): ?>
         <script type="text/javascript">
-            OSDN.onReady(function() {
+        	xlib.onReady(function() {
                 try {
                     <?=$this->assemble . "\n"; ?>
                 } catch(e) {
-                    OSDN.Msg.error('Ошибка запроса');
+                	xlib.Msg.error('Ошибка запроса');
                 }
             }, 99);
         </script>

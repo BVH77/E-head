@@ -75,32 +75,4 @@ class ConfigController extends OSDN_Controller_Action
         $privilege = OSDN_Acl_Privilege::fetchAll();
         $this->view->privileges = (object) $privilege;
     }
-
-    public function saveStatesAction()
-    {
-        $accounts = new OSDN_Accounts();
-        $state = Zend_Json::decode($this->_getParam('data'));
-        $response = $accounts->saveState(OSDN_Accounts_Prototype::getId(), $state);
-
-        if ($response->isError()) {
-            $this->_collectErrors($response);
-            return;
-        }
-
-        $this->view->success = true;
-    }
-
-    public function getStatesAction()
-    {
-        $this->disableLayout(true);
-        $accounts = new OSDN_Accounts();
-
-        $response = $accounts->getState(OSDN_Accounts_Prototype::getId());
-        if ($response->isError()) {
-            $this->_collectErrors($response);
-            return;
-        }
-        $this->view->success = true;
-        $this->view->rows = $response->rows;
-    }
 }

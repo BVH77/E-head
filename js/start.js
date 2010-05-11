@@ -20,14 +20,14 @@ Ext.onReady(function(){
     Ext.form.Field.prototype.stateful = false;
     Ext.form.FieldSet.prototype.stateful = false;
     
-    Ext.namespace('OSDN.date');
-    OSDN.date.TIME_FORMAT = 'H:i';
-    OSDN.date.DATE_FORMAT = 'd-m-Y';
-    OSDN.date.DATE_WEEK_FORMAT = 'd-m-Y, l';
-    OSDN.date.DATE_TIME_WITHOUT_SECONDS_FORMAT = 'd-m-Y H:i';
-    OSDN.date.DATE_TIME_FORMAT = 'd-m-Y H:i:s';
-    OSDN.date.DATE_TIME_FORMAT_SERVER = 'Y-m-d H:i:s';
-    OSDN.date.DATE_FORMAT_SERVER = 'Y-m-d';
+    Ext.namespace('xlib.date');
+    xlib.date.TIME_FORMAT = 'H:i';
+    xlib.date.DATE_FORMAT = 'd-m-Y';
+    xlib.date.DATE_WEEK_FORMAT = 'd-m-Y, l';
+    xlib.date.DATE_TIME_WITHOUT_SECONDS_FORMAT = 'd-m-Y H:i';
+    xlib.date.DATE_TIME_FORMAT = 'd-m-Y H:i:s';
+    xlib.date.DATE_TIME_FORMAT_SERVER = 'Y-m-d H:i:s';
+    xlib.date.DATE_FORMAT_SERVER = 'Y-m-d';
    
     Ext.Ajax.on({
         requestexception: function(conn, response, options) {
@@ -45,7 +45,7 @@ Ext.onReady(function(){
                 
                     var t = ['<b>Нет прав!</b>'];
                     
-                    var result = OSDN.decode(response.responseText);
+                    var result = xlib.decode(response.responseText);
                     if (Ext.isArray(result.trace) && result.trace.length > 0) {
 
                         t = t.concat(['<table style="padding-top: 20px">', '<tr>', '<td colspan="2"><b>Запрашиваемый ресурс:</b></td></tr>']);

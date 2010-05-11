@@ -48,8 +48,8 @@ PMS.Orders.Info = Ext.extend(Ext.Panel, {
         this.tpl = new Ext.XTemplate(template, {
                 nr: function(v) {return v == null ? '' : v;}, 
                 tr: function(v) {return v == null ? '' : v;}, 
-                dr: xlib.dateRenderer(OSDN.date.DATE_FORMAT),
-                dtr: xlib.dateRenderer(OSDN.date.DATE_TIME_FORMAT)
+                dr: xlib.dateRenderer(xlib.date.DATE_FORMAT),
+                dtr: xlib.dateRenderer(xlib.date.DATE_TIME_FORMAT)
             }
         );
 		
