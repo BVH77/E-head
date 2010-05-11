@@ -15,7 +15,7 @@
 
         <script src="/js/Library/OSDN/OSDN.js"/>
         
-        <!-- Plugins -->
+        <!-- Ext Plugins -->
         <style href="/js/Library/extjs/plugins/grid/CheckColumn/CheckColumn.css"/>
         <script src="/js/Library/extjs/plugins/grid/CheckColumn/CheckColumn.js"/>
         <script src="/js/Library/extjs/plugins/grid/RowExpander.js"/>
@@ -33,15 +33,19 @@
         <script src="/js/Library/extjs/plugins/pPageSize.js"/>
         <style href="/js/Library/extjs/plugins/DataView/data-view.css"/>
         <script src="/js/Library/extjs/plugins/DataView/data-view-plugins.js"/>
-        <!-- Plugins -->
+        <!-- Ext Plugins -->
         
-        <!-- ux -->
+        <!-- Ext ux -->
         <style href="/js/Library/extjs/ux/UploadDialog/Ext.ux.UploadDialog.css"/>
         <script src="/js/Library/extjs/ux/UploadDialog/Ext.ux.UploadDialog.js"/>
-        <!-- ux -->
+        <!-- Ext ux -->
         
-		<!-- xlib -->
+		<!-- --------------------------- xlib --------------------------- -->
+        
+        <!-- Plugins -->
         <script src="/js/Library/xlib/grid/Actions.js"/>
+        <!-- Plugins -->
+        
         <style href="/js/Library/xlib/Legend/Item.css"/>
         <script src="/js/Library/xlib/Legend/Item.js"/>
         <script src="/js/Library/xlib/Legend/Plugin.js"/>
@@ -57,18 +61,17 @@
         <script src="/js/Library/xlib/Msg.js"/>
         <script src="/js/Library/xlib/Layout.js"/>
 		
-		<!-- xlib -->
- 
         <!-- Widgets -->
-         
         <script src="/js/Library/xlib/Acl/Permission/Tree.js"/>
         <script src="/js/Library/xlib/Acl/Permission/TreeManager.js"/>
         <script src="/js/Library/xlib/Acl/Accounts/Form.js"/>
         <script src="/js/Library/xlib/Acl/Accounts/List.js"/>
         <script src="/js/Library/xlib/Acl/Roles/Tree.js"/>
         <script src="/js/Library/xlib/Acl/Layout.js"/>
-       
         <!-- Widgets -->
+        
+		<!-- --------------------------- xlib --------------------------- -->
+ 
         
         <!-- Modules -->
         
@@ -93,8 +96,8 @@
         <script src="/js/PMS/menu.js"/>
         <script src="/js/start.js"/>
         
-        <!-- I18n -->
+        <!-- localization files -->
         <script src="/js/Library/extjs/framework/ext-lang-ru.js"/>
-        <!-- I18n -->
+        <!-- localization files -->
     </data>
 </xml>
