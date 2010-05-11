@@ -157,7 +157,7 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
     
     onAddAccount: function(b, e) {
         
-        var f = new OSDN.form.FormPanel({
+        var f = new xlib.form.FormPanel({
         	permissions: acl.isAdd('admin', 'acl'),
         	defaultType: 'textfield',
             items: [{
@@ -241,7 +241,7 @@ OSDN.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
         
         var record = g.getStore().getAt(rowIndex);
         
-        var f = new OSDN.form.FormPanel({
+        var f = new xlib.form.FormPanel({
             permissions: true,
             labelAlign: 'top',    
             items: [{

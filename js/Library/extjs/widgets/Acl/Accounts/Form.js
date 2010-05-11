@@ -1,6 +1,6 @@
 Ext.ns('OSDN.Acl.Accounts');
 
-OSDN.Acl.Accounts.Form = Ext.extend(OSDN.form.FormPanel, {
+OSDN.Acl.Accounts.Form = Ext.extend(xlib.form.FormPanel, {
     
     accountId: null,
     

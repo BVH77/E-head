@@ -1,11 +1,6 @@
-Ext.ns('OSDN.form');
+Ext.ns('xlib.form');
 
-/**
- * @version $Id: $
- * @class OSDN.form.FormPanel
- * @extends Ext.form.FormPanel
- */
-OSDN.form.FormPanel = Ext.extend(Ext.form.FormPanel, {
+xlib.form.FormPanel = Ext.extend(Ext.form.FormPanel, {
 
     autoScroll: true,
     
@@ -42,21 +37,7 @@ OSDN.form.FormPanel = Ext.extend(Ext.form.FormPanel, {
             anchor: this.defaultAnchor
         });
         
-        OSDN.form.FormPanel.superclass.initComponent.apply(this, arguments);
-        
-        this.addEvents(
-            /**
-             * Fire when fields added to form collection
-             * @param {Ext.form.FormPanel} form
-             */
-            'ready', 
-            
-            /**
-             * Fire when form is resetted
-             * @param {Ext.form.BasicForm} form
-             */
-            'reset' 
-        );
+        xlib.form.FormPanel.superclass.initComponent.apply(this, arguments);
         
         /**
          * Collect not checked checkboxes and set the "zero" value
@@ -97,7 +78,7 @@ OSDN.form.FormPanel = Ext.extend(Ext.form.FormPanel, {
      * @private
      */
     initFields: function() {
-        OSDN.form.FormPanel.superclass.initFields.apply(this, arguments);
+        xlib.form.FormPanel.superclass.initFields.apply(this, arguments);
         this.setPermissions(this.permissions);
         this.initChangeEvent();
         this.fireEvent.defer(1, this, ['ready', this]);
@@ -168,7 +149,7 @@ OSDN.form.FormPanel = Ext.extend(Ext.form.FormPanel, {
      *
      * @param {Object} v key => value
      * 
-     * return {OSDN.form.FormPanel}
+     * return {xlib.form.FormPanel}
      */
     setBodyStyle: function(v) {
         for(var i in v) {
@@ -303,5 +284,3 @@ OSDN.form.FormPanel = Ext.extend(Ext.form.FormPanel, {
 		}
 	}
 });
-
-Ext.reg('osdn.form.formpanel', OSDN.form.FormPanel);
