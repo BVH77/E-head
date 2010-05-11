@@ -43,16 +43,10 @@
         <script src="/js/Library/extjs/ux/UploadDialog/Ext.ux.UploadDialog.js"/>
         <!-- ux -->
         
-        <!-- osdn -->
-        <style href="/js/Library/OSDN/Legend/Item.css"/>
-        <script src="/js/Library/OSDN/Legend/Item.js"/>
-        <script src="/js/Library/OSDN/Legend/Plugin.js"/>
- 
-		<!-- osdn -->
-        
-		
 		<!-- xlib -->
-        
+        <style href="/js/Library/xlib/Legend/Item.css"/>
+        <script src="/js/Library/xlib/Legend/Item.js"/>
+        <script src="/js/Library/xlib/Legend/Plugin.js"/>
         <script src="/js/Library/xlib/form/FormPanel.js"/>
         <script src="/js/Library/xlib/form/ComboBox.js"/>
         <style href="/js/Library/xlib/form/ComboTrigger.css"/>
