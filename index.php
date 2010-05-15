@@ -77,10 +77,13 @@ if (!OSDN_DEBUG) {
  */
 Zend_Loader::loadClass('OSDN_Db_Adapter_Pdo_Mysql');
 
-$db = Zend_Db::factory($config->db->adapter, $config->db->config->toArray());
+$dbConfig = $config->db->toArray();
+$dbConfig['adapterNamespace'] = 'OSDN_Db_Adapter';
+
+$db = Zend_Db::factory('PDO_MYSQL', $dbConfig);
 Zend_Db_Table_Abstract::setDefaultAdapter($db);
 Zend_Db_Table_Abstract::setDefaultMetadataCache($cacheCore);
-OSDN_Db_Table_Abstract::setDefaultPrefix($config->db->config->prefix);
+OSDN_Db_Table_Abstract::setDefaultPrefix($config->db->prefix);
 OSDN_Db_Table_Abstract::setDefaultSequence(true);
 Zend_Registry::set('db', $db);
 

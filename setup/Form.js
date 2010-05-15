@@ -52,18 +52,6 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
                 name: 'company[name]',
                 title: 'Company name to identify this site'
             },{
-    			fieldLabel: 'Allowed mimetypes',
-    			name: 'file[upload][types]',
-                fieldType: 'array',
-                title: 'Allowed file mime types for uploading (default: application/pdf, application/vnd.ms-excel, application/msword, image/tiff, image/jpg, image/jpeg, image/pjpeg, application/octet-stream)',
-    			value: 'application/pdf, application/vnd.ms-excel, application/msword, image/tiff, image/jpg, image/jpeg, image/pjpeg, application/octet-stream'
-            },{
-    			fieldLabel: 'Allowed extensions',
-    			name: 'file[upload][extensions]',
-                fieldType: 'array',
-                title: 'Allowed file extensins for uploading (default: pdf, xls, doc, tif, jpg, jpeg, png)',
-    			value: 'pdf, xls, doc, tif, jpg, jpeg, png'
-    		}, {
                 xtype: 'combo',
                 fieldLabel: 'Timezone',
                 name: 'ui[timezone]',
@@ -87,40 +75,28 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
             },
 			items: [{
     			fieldLabel: 'Hostname',
-    			name: 'db[config][host]',
+    			name: 'db[host]',
                 allowBlank: false,
                 title: 'Host (server) where database installed (default: localhost)',
     			value: 'localhost'
 			},{
     			fieldLabel: 'Username',
-    			name: 'db[config][username]',
+    			name: 'db[username]',
                 allowBlank: false,
                 title: 'Username for connect to database'
 			},{
     			fieldLabel: 'Password',
-    			name: 'db[config][password]',
+    			name: 'db[password]',
                 title: 'Password for connect to database'
 			},{
     			fieldLabel: 'DB name',
-    			name: 'db[config][dbname]',
+    			name: 'db[dbname]',
                 allowBlank: false,
                 title: 'Database name'
 			},{
     			fieldLabel: 'Tables prefix',
-    			name: 'db[config][prefix]',
+    			name: 'db[prefix]',
                 title: 'Default prefix for all tables in database'
-			},{
-				fieldLabel: 'Adapter',
-                name: 'db[adapter]',
-                allowBlank: false,
-                title: 'Adapter for connection to database (default: PDO_MYSQL)',
-                value: 'PDO_MYSQL'
-			},{
-                fieldLabel: 'Adapter namespace',
-                name: 'db[config][adapterNamespace]',
-                allowBlank: false,
-                title: 'Namespace for adapter which connects to database (default: OSDN_Db_Adapter)',
-                value: 'OSDN_Db_Adapter'
 			}]
 		},{
 			xtype: 'fieldset',
@@ -185,16 +161,6 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
     			name: 'auth[superadmin][password]',
                 value: 'sadmin',
     			title: 'Password for superadmin (default: sadmin)'
-            },{
-    			fieldLabel: 'Default username',
-    			name: 'auth[default][username]',
-                value: 'admin',
-    			title: 'Username for autofill (for developers only if debug set to true)'
-			},{
-    			fieldLabel: 'Default password',
-    			name: 'auth[default][password]',
-                value: 'admin',
-    			title: 'Password for autofill (for developers only if debug set to true)'
 			}]
 		}];
         

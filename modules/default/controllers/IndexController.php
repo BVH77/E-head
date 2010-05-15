@@ -60,35 +60,6 @@ class IndexController extends OSDN_Controller_Action
         }
     }
 
-    public function getJsContentAction()
-    {
-        ob_start ("ob_gzhandler");
-        header('Content-type: text/javascript; charset: UTF-8');
-        echo OSDN_Script::factory()->get();
-        exit;
-    }
-
-    public function getCssContentAction()
-    {
-        header("Content-type: text/css; charset: UTF-8");
-        echo OSDN_Script::factory("Css")->get();
-        exit;
-    }
-
-    public function getMenuAction()
-    {
-        $config = Zend_Registry::get('config');
-
-        if (file_exists(ROOT_DIR . $config->layout->layoutPath . '/menu.xml')) {
-            $xmlConfig = new Zend_Config_Xml(ROOT_DIR . $config->layout->layoutPath . '/menu.xml');
-        } else {
-            $xmlConfig = new Zend_Config_Xml(ROOT_DIR . '/html/layouts/menu.xml');
-        }
-
-        $cfg = $xmlConfig->toArray();
-        $this->view->assign($this->correct($cfg['menu']['item']));
-    }
-    
     /**
      * User authentification.
      * Destroy current session and create new if authentification has been success.

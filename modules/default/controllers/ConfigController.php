@@ -18,18 +18,6 @@ class ConfigController extends OSDN_Controller_Action
     	   . ';';
     }
 
-    public function getAllowedExtensionsAction()
-    {
-    	$this->disableRender(true);
-    	try {
-    		$config = Zend_Registry::get('config');
-    	    $exts = $config->file->upload->extensions->toArray();
-    	} catch (Exception $e) {
-            $exts = array();
-    	}
-    	echo 'OSDN.AllowedExtensions = ' . Zend_Json::encode($exts) . ';';
-    }
-
     public function setLocaleAction()
     {
         $locale = $this->_getParam('locale');
