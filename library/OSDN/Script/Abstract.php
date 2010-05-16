@@ -10,7 +10,7 @@ abstract class OSDN_Script_Abstract
     public function __construct()
     {
     	$config = Zend_Registry::get('config');
-        $this->_xmlUrl = ROOT_DIR . $config->layout->layoutPath . '/jsCss.xml';
+        $this->_xmlUrl = LAYOUT_DIR . '/jsCss.xml';
         $this->_basePath = ROOT_DIR. '/html';
     }
 	

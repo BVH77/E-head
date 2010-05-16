@@ -14,6 +14,7 @@ define('API_DIR', ROOT_DIR . '/library');
 define('FILES_DIR', ROOT_DIR . '/files');
 define('CACHE_DIR', ROOT_DIR . '/cache');
 define('MODULES_DIR', ROOT_DIR . '/modules');
+define('LAYOUT_DIR', ROOT_DIR . '/layouts');
 define('CONFIG_FILE', ROOT_DIR . '/config/config.xml');
 
 if (!file_exists(CONFIG_FILE)) {
@@ -119,9 +120,8 @@ $fc->addModuleDirectory(MODULES_DIR);
 
 $config = Zend_Registry::get('config');
 $options = array(
-    'layoutPath'    => ROOT_DIR . $config->layout->layoutPath,
+    'layoutPath'    => LAYOUT_DIR,
     'debug'         => OSDN_DEBUG,
-    'packjavascript'=> $config->packjavascript,
     'locale'        => OSDN_Language::getDefaultLocale()
 );
 

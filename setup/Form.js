@@ -34,19 +34,6 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
                 title: 'Hide all errors message then false. Disable on production server. Used only by developers (default: false)',
                 checked: false
             },{
-                xtype: 'checkbox',
-                fieldLabel: 'Enable source packer',
-                anchor: 0,
-                name: 'packjavascript',
-                title: 'Pack JavaScript codes for a less loadtime. (default: false)',
-                checked: false
-            },{
-    			fieldLabel: 'Layout path',
-    			name: 'layout[layoutPath]',
-                allowBlank: false,
-                title: 'Path to project layouts (default: /html/layouts)',
-    			value: '/html/layouts'
-            },{
                 xtype: 'textfield',
                 fieldLabel: 'Company name',
                 name: 'company[name]',
@@ -252,5 +239,4 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
         alert('Load/update settings failed.');
         this.fireEvent('requestFailure');
     }
-    
 });
