@@ -33,7 +33,6 @@ class OSDN_View
         $engine = strtolower($engine);
         switch ($engine) {
             case 'json':
-            case 'xml':
             case 'debug':
                 $engineName = 'OSDN_View_Engine_' . ucfirst($engine);
                 $engineObject = new $engineName();
