@@ -1,7 +1,6 @@
 <?php
 
 /**
- * OSDN_Subject
  *
  * @category OSDN
  * @package OSDN
