@@ -34,7 +34,7 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
         this.sm = new Ext.grid.RowSelectionModel();
         
         var activeCheckColumn = new Ext.grid.CheckColumn({
-            header: lang('Активная'),
+            header: 'Активная',
             dataIndex: 'active'
         });
         

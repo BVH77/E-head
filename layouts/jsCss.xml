@@ -9,7 +9,6 @@
         <style href="/css/system.css"/>
         
         <script src="/js/Library/xlib/xlib.js"/>
-        <script src="/js/Library/xlib/common.js"/>
 
         <!-- Ext Plugins -->
         <style href="/js/Library/extjs/plugins/grid/CheckColumn/CheckColumn.css"/>

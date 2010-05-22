@@ -158,3 +158,8 @@ Ext.apply(xlib, function() {
         }
     }
 }());
+
+//replace the Ext.decode native method
+Ext.decode = xlib.decode;
+
+link = xlib.link;

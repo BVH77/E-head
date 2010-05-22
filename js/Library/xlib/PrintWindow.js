@@ -10,13 +10,13 @@ xlib.PrintWindow = Ext.extend(Ext.Window, {
     
     height: 550,
     
-    title: lang('Preview'),
+    title: 'Preview',
     
     iconCls: 'print',
     
-    closeText: lang('Close'),
+    closeText: 'Close'),
     
-    printText: lang('Print'),
+    printText: 'Print',
     
     localHtml: null,
     
