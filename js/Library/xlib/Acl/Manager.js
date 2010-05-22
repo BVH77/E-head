@@ -1,6 +1,6 @@
-Ext.ns('xlib');
+Ext.ns('xlib.Acl');
 
-xlib.AclManager = function() {
+xlib.Acl.Manager = function() {
     
     var privileges = xlib.Acl.Storage.Privileges || {};
     var permissions = xlib.Acl.Storage.Permissions || {};
@@ -102,4 +102,4 @@ xlib.AclManager = function() {
     };
 }();
 
-acl = xlib.AclManager;
+acl = xlib.Acl.Manager;

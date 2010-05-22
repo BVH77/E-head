@@ -50,12 +50,12 @@
         <script src="/js/Library/xlib/form/DateField.js"/>
         <script src="/js/Library/xlib/form/SearchField.js"/>
         <script src="/js/Library/xlib/TreePanel.js"/>
-        <script src="/js/Library/xlib/AclManager.js"/>
         <script src="/js/Library/xlib/PagingToolbar.js"/>
         <script src="/js/Library/xlib/Msg.js"/>
         <script src="/js/Library/xlib/Layout.js"/>
 		
         <!-- Widgets -->
+        <script src="/js/Library/xlib/Acl/Manager.js"/>
         <script src="/js/Library/xlib/Acl/Permission/Tree.js"/>
         <script src="/js/Library/xlib/Acl/Permission/TreeManager.js"/>
         <script src="/js/Library/xlib/Acl/Accounts/Form.js"/>
