@@ -41,7 +41,6 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
             cls: 'x-border-left',
             defaults: {
                 border: false
-//                split: true
             },
             items: [this.infoPanel, this.photosPanel]
         }];
