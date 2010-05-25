@@ -32,12 +32,6 @@ PMS.Orders.Edit.Info = Ext.extend(xlib.form.FormPanel, {
             disabled: !acl.isUpdate('orders', 'address'),
             anchor: '-1',
 			allowBlank: false
-//        }, {
-//            xtype: 'textfield',
-//            name: 'customer',
-//            fieldLabel: 'Заказчик',
-//            disabled: !acl.isUpdate('orders', 'address'),
-//			allowBlank: false
         }, {
             xtype: 'textfield',
             name: 'address',

@@ -1250,5 +1250,5 @@ p.i18n = {
     note_upload_failed: 'Server is unavailable or internal server error occured.',
     note_upload_success: 'OK',
     note_upload_error: 'Upload error.',
-    note_aborted: 'Aborted by user.',
+    note_aborted: 'Aborted by user.'
 };

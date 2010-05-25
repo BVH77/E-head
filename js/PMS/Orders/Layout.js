@@ -35,7 +35,7 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
 	    this.items = [this.listPanel, {	
             title: 'Детали',
             layout: 'border',
-            width: 450,
+            width: 320,
 			region: 'east',
             border: false,
             cls: 'x-border-left',

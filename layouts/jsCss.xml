@@ -25,6 +25,7 @@
         <style href="/js/Library/extjs/plugins/tree/ColumnTree/column-tree.css"/>
         <script src="/js/Library/extjs/plugins/tree/ColumnTree/ColumnNodeUI.js"/>
         <script src="/js/Library/extjs/plugins/pPageSize.js"/>
+        <script src="/js/Library/extjs/plugins/DataTip.js"/>
         <style href="/js/Library/extjs/plugins/DataView/data-view.css"/>
         <script src="/js/Library/extjs/plugins/DataView/data-view-plugins.js"/>
         <!-- Ext Plugins -->
