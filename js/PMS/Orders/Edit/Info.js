@@ -127,7 +127,7 @@ PMS.Orders.Edit.Info = Ext.extend(xlib.form.FormPanel, {
                     hiddenName: 'mount_start_fact',
                     xtype: 'xlib.form.DateField',
                     fieldLabel: 'Начало монтажа (факт)',
-                    disabled: !acl.isUpdate('orders', 'mount', 'start_end'),
+                    disabled: !acl.isUpdate('orders', 'mount', 'start_fact'),
                     anchor: 0,
                     allowBlank: true
                 }]
