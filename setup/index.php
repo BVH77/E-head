@@ -16,6 +16,25 @@ $config = array(
     'nonce_timeout'     => 3600
 );
 
+$adapter = new Zend_Auth_Adapter_Http($config);
+
+$digestResolver = new Zend_Auth_Adapter_Http_Resolver_File();
+$digestResolver->setFile(dirname(__FILE__) . '/_files/passwd.txt');
+
+$adapter->setDigestResolver($digestResolver);
+$adapter->setRequest(new Zend_Controller_Request_Http());
+$adapter->setResponse(new Zend_Controller_Response_Http());
+
+$auth = Zend_Auth::getInstance();
+$auth->setStorage(new Zend_Auth_Storage_NonPersistent());
+$result = $auth->authenticate($adapter);
+
+if (true !== $result->isValid()) {
+    $adapter->getResponse()->sendHeaders();
+    echo join('<br/>', $result->getMessages());
+    exit;
+}
+
 $filename = ROOT_DIR . "/config/config.xml";
 $cacheDir = ROOT_DIR . "/cache";
 $action = !empty($_GET['action']) ? trim($_GET['action']) : '';
