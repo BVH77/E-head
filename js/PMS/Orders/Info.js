@@ -83,6 +83,17 @@ PMS.Orders.Info = Ext.extend(Ext.grid.GridPanel, {
         if (acl.isView('orders', 'description')) {
         	data.push(['Описание', record.get('description')]);
         }
+        if (acl.isView('suppliers')) {
+        	data.push(['<b>Поставщики:</b>']);
+        	var tmp = record.get('suppliers');
+        	Ext.each(tmp, function(item) {
+        		data.push(['', item.name]);
+        	});
+        	tmp = record.get('subcontractors');
+        	Ext.each(tmp, function(item) {
+        		data.push(['', item.name]);
+        	});
+        }
     	//console.log(record.data);
         this.store.loadData(data);
     }

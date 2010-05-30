@@ -18,18 +18,13 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
             url: link('orders', 'index', 'get-notes'),
             baseParams: {orderId: this.orderId},
             root: 'rows',
-            fields: ['name', 'text', {name: 'time', type: 'date', dateFormat: 'Y-m-d H:i:s'}],
-            listeners: {
-                load: function() {
-                    this.body.scroll('b', 1000);
-                },
-                scope: this
-            }
+            fields: ['name', 'text', {name: 'time', type: 'date', dateFormat: 'Y-m-d H:i:s'}]
         });
         
         this.list = new Ext.DataView({
             autoHeight: true,
             autoWidth: true,
+            border: false,
             itemSelector: 'div.search-item',
             store: this.store,
             tpl: new Ext.XTemplate(
@@ -47,6 +42,7 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
         
         this.items = [{
         	region: 'center',
+        	border: false,
         	autoScroll: true,
         	items: [new Ext.DataView({
         		autoHeight: true,
@@ -76,7 +72,6 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
             	region: 'south',
             	height: 60,
             	layout: 'hbox',
-            	margins: '5px 5px 0 5px',
                 border: false,
                 items: [this.field, {
                 	columnWidth: '100px',
@@ -109,7 +104,7 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
         if (!Ext.isEmpty(text)) {
             Ext.Ajax.request({
                 url: link('orders', 'index', 'add-note'),
-                params: {orderId: this.orderId, text: text},
+                params: {orderId: this.store.orderId, text: text},
                 callback: function() {
                     this.field.reset();
                     this.store.reload();

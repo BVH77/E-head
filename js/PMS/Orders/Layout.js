@@ -7,47 +7,60 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
     border: false,
     
     layout: 'border',
-	
-    defaults: {
-        split: true
-    },
     
 	initComponent: function() {
+    	
+    	this.listPanel = new PMS.Orders.List({
+    		region: 'center',
+    		border: false,
+    		cls: 'x-border-right x-border-bottom'
+    	});
+    	
+    	this.photosPanel = new PMS.Orders.Photos({
+    		region: 'south',
+    		height: 130,
+    		border: false,
+    		margins: '5px 0 0 0',
+    		cls: 'x-border-right x-border-top'
+    	});
 
 		this.infoPanel = new PMS.Orders.Info({
+			title: 'Детали',
+			margins: '0 0 5px 0',
+			cls: 'x-border-left x-border-bottom',
             region: 'center'
         });
         
-        this.photosPanel = new PMS.Orders.Photos({
-            region: 'south',
-            height: 200,
-            cls: 'x-border-top'
+        this.notesPanel = new PMS.Orders.Edit.Notes({
+        	title: 'Комментарии',
+        	region: 'south',
+        	border: false,
+        	height: 300,
+        	cls: 'x-border-left x-border-top'
         });
-        
-		this.listPanel = new PMS.Orders.List({
-            region: 'center',
-            minWidth: 600,
-            width: 600,
-            border: false,
-            cls: 'x-border-right'
-		});
 		
-	    this.items = [this.listPanel, {	
-            title: 'Детали',
+	    this.items = [{
+	    	region: 'center',
+	    	layout: 'border',
+	    	border: false,
+	    	items: [this.listPanel, this.photosPanel]	
+	    }, {
             layout: 'border',
             width: 320,
 			region: 'east',
-            border: false,
-            cls: 'x-border-left',
+			border: false,
+            margins: '0 0 0 5px', 
             defaults: {
                 border: false
             },
-            items: [this.infoPanel, this.photosPanel]
+            items: [this.infoPanel, this.notesPanel]
         }];
         
         this.listPanel.on('orderselect', function(record) {
             this.infoPanel.loadData(record);
             this.photosPanel.loadData(record.data);
+            this.notesPanel.store.setBaseParam('orderId', record.get('id'));
+            this.notesPanel.store.load();
         }, this);
         
 		PMS.Orders.Layout.superclass.initComponent.apply(this, arguments);
