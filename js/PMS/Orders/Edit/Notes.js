@@ -4,7 +4,7 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
 
     autoScroll: true,
     
-    layout: 'fit',
+    layout: 'border',
     
     permissions: true, 
     
@@ -45,15 +45,42 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
             )
         });
         
+        this.items = [{
+        	region: 'center',
+        	autoScroll: true,
+        	items: [new Ext.DataView({
+        		autoHeight: true,
+        		autoWidth: true,
+        		itemSelector: 'div.search-item',
+        		store: this.store,
+        		tpl: new Ext.XTemplate(
+        				'<style>',
+        				'.search-item {',
+        				'font:normal 11px tahoma, arial, helvetica, sans-serif;',
+        				'padding: 3px 10px 3px 10px;',
+        				'border-bottom: 1px solid #eeeeee;',
+        				'}',
+        				'</style>',
+        				'<tpl for="."><div class="search-item"><b>{name}</b>, ',
+        				'<i>{time:date("d.m.Y H:i")}</i>.<br/><br/>{text}</div></tpl>'
+        		)
+        	})]
+        }];
+        
         if (this.permissions) {
             this.field = new Ext.form.TextArea({
-                width: 620,
-                xtype: 'textarea'
+            	height: 62,
+            	flex: 1
             });
-            
-            this.bbar = new Ext.Toolbar({
+            this.items.push({
+            	region: 'south',
+            	height: 60,
+            	layout: 'hbox',
+            	margins: '5px 5px 0 5px',
                 border: false,
                 items: [this.field, {
+                	columnWidth: '100px',
+                	margins: '0',
                     xtype: 'button',
                     handleMouseEvents: false,
                     tooltip: 'Отослать', 
@@ -65,8 +92,6 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
                 }]
             });
         }
-        
-        this.items = [this.list];
         
         PMS.Orders.Edit.Notes.superclass.initComponent.apply(this, arguments);
         
