@@ -20,13 +20,13 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
     		region: 'south',
     		height: 130,
     		border: false,
-    		margins: '5px 0 0 0',
+    		margins: '2px 0 0 0',
     		cls: 'x-border-right x-border-top'
     	});
 
 		this.infoPanel = new PMS.Orders.Info({
 			title: 'Детали',
-			margins: '0 0 5px 0',
+			margins: '0 0 2px 0',
 			cls: 'x-border-left x-border-bottom',
             region: 'center'
         });
@@ -49,7 +49,7 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
             width: 320,
 			region: 'east',
 			border: false,
-            margins: '0 0 0 5px', 
+            margins: '0 0 0 2px', 
             defaults: {
                 border: false
             },

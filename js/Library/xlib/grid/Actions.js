@@ -75,8 +75,10 @@ Ext.extend(xlib.grid.Actions, Ext.util.Observable, {
     onRowContextMenu: function (g, rowIndex, e) {
         
         e.stopEvent();
-        
-        g.getSelectionModel().selectRow(rowIndex);
+        var record = g.getStore().getAt(rowIndex);
+        if (!g.getSelectionModel().isIdSelected(record.get('id'))) {
+        	g.getSelectionModel().selectRow(rowIndex);
+        }
         
         var menu = new Ext.menu.Menu();
         var count = 0;

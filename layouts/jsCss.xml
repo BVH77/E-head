@@ -75,10 +75,10 @@
         <script src="/js/PMS/Orders/Archive.js"/>
         <script src="/js/PMS/Orders/Info.js"/>
         <script src="/js/PMS/Orders/Photos.js"/>
+        <script src="/js/PMS/Orders/Files.js"/>
         <script src="/js/PMS/Orders/Edit.js"/>
         <script src="/js/PMS/Orders/Edit/Info.js"/>
-        <script src="/js/PMS/Orders/Edit/Abstract.js"/>
-        <script src="/js/PMS/Orders/Files.js"/>
+        <script src="/js/PMS/Orders/Edit/Suppliers.js"/>
         <script src="/js/PMS/Orders/Edit/Notes.js"/>
         
         <script src="/js/PMS/Customers/Combo.js"/>

@@ -2,7 +2,7 @@
 - План на месяц.
 - отчет по клиентам (сумма, кол-во заказов).
 
-- Comments on main screen
++ Comments on main screen
 - add an invoice number / date & act number / date before move to archive 
   (also figured in report & in order details)
 - hide mount/prod sections (in order, order details, reports) if disabled
@@ -15,4 +15,4 @@
 Bugs:
 
 - photo's sizes (too big, can't close)
-- order details (redesign)
++ order details (redesign)

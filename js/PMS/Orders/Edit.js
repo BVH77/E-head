@@ -56,24 +56,8 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
     
     enableTabs: function() {
         
-        this.suppliers = new PMS.Orders.Edit.Abstract({
-            permissions: this.permissions,
-            orderId: this.orderId,
-            loadURL: link('orders', 'index', 'get-suppliers'),
-            attachURL: link('orders', 'index', 'attach-supplier'),
-            removeURL: link('orders', 'index', 'remove-supplier'),
-            checkURL: link('orders', 'index', 'check-supplier'),
-            entity: 'suppliers'
-        }); 
-        
-        this.subcontractors = new PMS.Orders.Edit.Abstract({
-            permissions: this.permissions,
-            orderId: this.orderId,
-            loadURL: link('orders', 'index', 'get-subcontractors'),
-            attachURL: link('orders', 'index', 'attach-subcontractor'),
-            removeURL: link('orders', 'index', 'remove-subcontractor'),
-            checkURL: link('orders', 'index', 'check-subcontractor'),
-            entity: 'subcontractors'
+        this.suppliers = new PMS.Orders.Edit.Suppliers({
+            orderId: this.orderId
         }); 
         
         this.photos = new PMS.Orders.Photos({
@@ -92,15 +76,18 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
         
         this.notes = new PMS.Orders.Edit.Notes({
             permissions: this.permissions,
+            listeners: {
+        		render: function(obj) {
+                	obj.store.load();
+        		},
+        		scope: this
+            },
             orderId: this.orderId
         });
         
         this.add({
             title: 'Поставщики',
             items: [this.suppliers]
-        }, {
-            title: 'Субподрядчики',
-            items: [this.subcontractors]
         }, {
             title: 'Фото',
             items: [this.photos]
@@ -166,7 +153,6 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
     loadData: function(record) {
         this.form.loadData(record);
         this.suppliers.loadData(record.data);
-        this.subcontractors.loadData(record.data);
         this.photos.loadData(record.data);
         this.files.loadData(record.data);
     },

@@ -75,7 +75,7 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
                 border: false,
                 items: [this.field, {
                 	columnWidth: '100px',
-                	margins: '0',
+                	margins: 0,
                     xtype: 'button',
                     handleMouseEvents: false,
                     tooltip: 'Отослать', 
@@ -91,11 +91,10 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
         PMS.Orders.Edit.Notes.superclass.initComponent.apply(this, arguments);
         
         this.on('render', function() {
-            loadingMask: new Ext.LoadMask(this.el, {
+            new Ext.LoadMask(this.el, {
                 msg: 'Загрузка...', 
                 store: this.store
-            }),
-            this.store.load();
+            });
         }, this, {delay: 50});
     },
         

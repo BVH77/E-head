@@ -19,7 +19,9 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
     stripeRows: true,
     
     viewConfig: {
+	
         getRowClass: function(record) {
+	
             var today = new Date();
             var sdf = record.get('success_date_fact');
             var sdp = record.get('success_date_planned');
@@ -44,8 +46,11 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
     },
     
     initComponent: function() {
+    	
         this.autoExpandColumn = Ext.id();
+        
         this.sm = new Ext.grid.RowSelectionModel({singleSelect:true});
+        
         this.ds = new Ext.data.JsonStore({
             baseParams: {Xfilter: 0},
             timeout: 300,
@@ -84,6 +89,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
 	            {name: 'files'}
 	        ]
 	    });
+        
 	    this.filtersPlugin = new Ext.grid.GridFilters({
 	        filters: [
 	            {type: 'string',  dataIndex: 'customer'},
@@ -92,6 +98,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
     	        {type: 'date',  dataIndex: 'success_date_fact', dateFormat: 'Y-m-d'},
     	        {type: 'date',  dataIndex: 'created', dateFormat: 'Y-m-d'}
 	    ]});
+	    
         var onDelete = function(g, rowIndex) {
             Ext.Msg.show({
                 title: 'Подтверждение',
@@ -117,6 +124,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                 icon: Ext.MessageBox.QUESTION
             });
         }
+        
         this.menuUsers = new Ext.menu.Menu({
             defaults: {
                 group: 'users',
@@ -129,6 +137,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                 scope: this
             }
         });
+        
 	    var actionsPlugin = new xlib.grid.Actions({
 	        autoWidth: true,
 	        items: [{
@@ -149,6 +158,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                 menu: this.menuUsers
             }]
 	    });
+	    
 	    this.filteringMenu = new Ext.menu.Menu({
 	    	defaults: {
 	    		checked: false,
@@ -176,12 +186,15 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             }],
             scope: this
         });
+	    
         this.filteringMenuButton = new Ext.Toolbar.Button({ 
             text: 'Фильтр',
             iconCls: 'filter-icon',
             menu: this.filteringMenu
         });
+        
         this.plugins = [this.filtersPlugin, actionsPlugin];
+        
         this.tbar = new Ext.Toolbar({
             items: [{
                 text: 'Новый заказ',
@@ -207,11 +220,14 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             })],
             scope: this
         });
+        
         this.tbar.add(this.filteringMenuButton);
+        
         this.bbar = new xlib.PagingToolbar({
             plugins: [this.filtersPlugin],
             store: this.ds
         });
+        
 		this.columns = [{
             header: '№', 
             dataIndex: 'id',
@@ -252,13 +268,13 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             dataIndex: 'creator_name'
         }];
         PMS.Orders.List.superclass.initComponent.apply(this, arguments);
+        
         this.on('rowdblclick', this.onEdit, this);
+        
         this.getSelectionModel().on('rowselect', function(sm, rowIndex, record) {
             this.fireEvent('orderselect', record);
         }, this);
-		this.getStore().on('load', function() {
-			this.getSelectionModel().selectFirstRow();
-	    }, this);
+		
         if (acl.isView('admin')) {
             this.loadUsers();
         }
@@ -275,24 +291,11 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
         var editForm = new PMS.Orders.Edit({record: record}).showInWindow({
             listeners: {
                 close: function() {
-                    this.onCloseEditWin(id);
+        			this.getStore().reload();
                 },
                 scope: this
             }
         });
-    },
-    
-    onCloseEditWin: function(id) {
-        this.getStore().on('load', function() {
-            var index = this.getStore().findBy(function(r) {
-                return r.get('id') == id;
-            }, this);
-            if (!index) {
-                index = 0;
-            } 
-            this.getSelectionModel().selectRow(index);
-        }, this, {single: true});
-        this.getStore().reload();
     },
     
     loadUsers: function() {
@@ -340,7 +343,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                     return;
                 }
                 this.el.unmask();
-                this.onCloseEditWin(orderId);
+                this.getStore().reload();
             },
             failure: function() {
                 xlib.Msg.error('Ошибка связи с сервером.');

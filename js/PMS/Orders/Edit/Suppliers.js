@@ -1,26 +1,22 @@
 Ext.ns('PMS.Orders.Edit');
 
-PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
+PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
 	
-    loadURL: null,
-
-    attachURL: null,
+	loadURL: link('orders', 'index', 'get-suppliers'),
     
-    removeURL: null,
+	attachURL: link('orders', 'index', 'attach-supplier'),
     
-    checkURL: null,
+    removeURL: link('orders', 'index', 'remove-supplier'),
+    
+    checkURL: link('orders', 'index', 'check-supplier'),
     
     orderId: null,
-    
-    entity: null,
     
     autoScroll: true,
     
     border: false,
     
     loadMask: {msg: 'Загрузка...'},
-    
-    permissions: true,
     
     stripeRows: true,
     
@@ -32,7 +28,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
             header: 'Выпонено',
             width: 65,
             dataIndex: 'success',
-            disabled: !acl.isUpdate(this.entity) || !this.permissions
+            disabled: !acl.isUpdate('suppliers')
         });
         
         this.autoExpandColumn = Ext.id();
@@ -57,7 +53,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
             baseParams: {
                 orderId: this.orderId
             },
-	        root: this.entity,
+	        root: 'suppliers',
 	        fields: [
 	            {name: 'id'},
 	            {name: 'name'},
@@ -68,7 +64,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
         
         this.plugins = [success];
         
-        if (this.permissions) {
+        if (acl.isUpdate('suppliers')) {
 
             var actionsPlugin = new xlib.grid.Actions({
     	        autoWidth: true,
@@ -77,7 +73,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
                     iconCls: 'delete',
                     handler: this.onRemove,
                     scope: this,
-                    hidden: !acl.isDelete(this.entity)
+                    hidden: !acl.isDelete('suppliers')
                 }]
     	    });
             
@@ -88,7 +84,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
             	iconCls: 'add',
             	handler: this.onAttach,
                 scope: this,
-                hidden: !acl.isAdd(this.entity)
+                hidden: !acl.isAdd('suppliers')
             }];
 	    
             this.on({
@@ -102,7 +98,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
             });
         }
         
-        PMS.Orders.Edit.Abstract.superclass.initComponent.apply(this, arguments);
+        PMS.Orders.Edit.Suppliers.superclass.initComponent.apply(this, arguments);
     },
     
     onChangeRecord: function(record) {
@@ -138,9 +134,7 @@ PMS.Orders.Edit.Abstract = Ext.extend(Ext.grid.GridPanel, {
     },
     
     onAttach: function(g, rowIndex) {
-        var itemsList = new PMS.ContragentsListAbstract({entity: this.entity});
-        //itemsList.purgeListeners();
-        //itemsList.getBottomToolbar().hide();
+        var itemsList = new PMS.ContragentsListAbstract({entity: 'suppliers'});
         itemsList.on('rowdblclick', function(g, rowIndex) {
             this.attach(g.getStore().getAt(rowIndex).get('id'), this.orderId);
             wind.close();
