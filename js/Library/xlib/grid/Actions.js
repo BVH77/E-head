@@ -75,6 +75,7 @@ Ext.extend(xlib.grid.Actions, Ext.util.Observable, {
     onRowContextMenu: function (g, rowIndex, e) {
         
         e.stopEvent();
+        
         var record = g.getStore().getAt(rowIndex);
         if (!g.getSelectionModel().isIdSelected(record.get('id'))) {
         	g.getSelectionModel().selectRow(rowIndex);
