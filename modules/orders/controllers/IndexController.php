@@ -214,57 +214,6 @@ class Orders_IndexController extends OSDN_Controller_Action
         }
     }
     
-    public function getSubcontractorsAction()
-    {
-    	$subcontractors = new PMS_Subcontractors();
-        $response = $subcontractors->getByOrderId($this->_getParam('orderId'));
-        if ($response->isSuccess()) {
-            $this->view->success = true;
-            $this->view->subcontractors = $response->getRowset();
-        } else {
-           $this->_collectErrors($response);
-        }
-    }
-    
-    public function attachSubcontractorAction()
-    {
-        $subcontractors = new PMS_Subcontractors();
-        $response = $subcontractors->attach($this->_getParam('id'), $this->_getParam('orderId'));
-        if ($response->isSuccess()) {
-            $this->view->success = true;
-        } else {
-           $this->_collectErrors($response);
-        }
-    }
-    
-    public function removeSubcontractorAction()
-    {
-        $subcontractors = new PMS_Subcontractors();
-        $response = $subcontractors->remove($this->_getParam('id'), $this->_getParam('orderId'));
-        if ($response->isSuccess()) {
-            $this->view->success = true;
-        } else {
-           $this->_collectErrors($response);
-        }
-    }
-    
-    public function checkSubcontractorAction()
-    {
-        $subcontractors = new PMS_Subcontractors();
-        $response = $subcontractors->check(
-            $this->_getParam('id'), 
-            $this->_getParam('orderId'),
-            intval($this->_getParam('success')),
-            $this->_getParam('date')
-        );
-        if ($response->isSuccess()) {
-            $this->view->success = true;
-        } else {
-           $this->_collectErrors($response);
-        }
-    }
-    
-    
     // --------------------------------------------------
     
     public function getNotesAction()

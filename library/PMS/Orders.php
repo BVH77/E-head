@@ -180,7 +180,6 @@ class PMS_Orders
         $status = null;
         try {
         	$suppliers = new PMS_Suppliers();
-            $subcontractors = new PMS_Subcontractors();
             $files = new PMS_Files();
         	$rows = $select->query()->fetchAll();
         	foreach ($rows as &$data) {
@@ -192,15 +191,6 @@ class PMS_Orders
 	                $rowset = array(); 
 	            }
 	            $data['suppliers'] = $rowset;
-	            
-	            $resp = $subcontractors->getByOrderId($data['id']);
-	            if ($resp->isSuccess()) {
-	                $rowset = $resp->getRowset();
-	            } else {
-	                $data['subcontractors_errors'] = $resp->getStatusCollection();
-	                $rowset = array(); 
-	            }
-	            $data['subcontractors'] = $rowset;
 	            
 	            $resp = $files->getPhotos($data['id']);
 	            if ($resp->isSuccess()) {

@@ -58,19 +58,6 @@ PMS.Menu = function(username, rolename) {
 	                id: 'PMS.Suppliers.List'
 	            });
 	        }
-	    }, {
-	        text: 'Субподрядчики',
-	        iconCls: 'subcontractors-icon',
-	        hidden: !acl.isView('subcontractors'),
-	        handler: function() {
-	            PMS.System.Layout.getTabPanel().add({
-	                title: 'Субподрядчики',
-	                iconCls: 'subcontractors-icon',
-	                entity: 'subcontractors',
-	                xtype: 'PMS.ContragentsListAbstract',
-	                id: 'PMS.Subcontractors.List'
-	            });
-	        }
 	    }]
 	}, {
 	    text: 'Отчёты',
