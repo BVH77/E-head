@@ -109,34 +109,24 @@ PMS.Orders.Photos = Ext.extend(Ext.Panel, {
         
         var img = new Ext.ComponentMgr.create({
             xtype: 'box',
-            autoHeight: true,
-            autoEl: {
-                tag: 'img',
-                style: 'height: 500px;',
-                src: 'files/' + record.get('filename')
-            }
+            html: '<a href="/files/' + record.get('filename') + '" '
+        		+ 'style="border: none;" target="_blank">'
+            	+ '<img src="/files/' + record.get('filename') + '" '
+            	+ 'style="max-height: 600px; max-width: 800px;" /></a>'
         });
         
         var wind = new Ext.Window({
             title: record.get('description'),
             modal: true,
-            width: 600,
-            height: 500,
-            autoScroll: true,
-            layout: 'fit',
+            autoWidth: true,
+            autoHeight: true,
             tools: [{
                 id: 'maximize',
                 handler: function(event, toolEl, panel){
                     panel.toggleMaximize();
                 }
             }],
-            items:[img],
-            listeners: {
-        		bodyClick: function () {
-        			wind.close();
-        		},
-        		scope: this
-        	}
+            items:[img]
         });
         wind.show(record.get('filename'));
     },
