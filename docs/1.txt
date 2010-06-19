@@ -14,5 +14,5 @@
 
 Bugs:
 
-- photo's sizes (too big, can't close)
++ photo's sizes (too big, can't close)
 + order details (redesign)

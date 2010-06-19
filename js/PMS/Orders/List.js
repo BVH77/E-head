@@ -85,7 +85,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
 	            {name: 'creator_name'},
 	            {name: 'suppliers'},
 	            {name: 'subcontractors'},
-	            {name: 'photos'},
+	            {name: 'is_photo'},
 	            {name: 'files'}
 	        ]
 	    });

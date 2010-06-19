@@ -10,13 +10,15 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
     
     checkURL: link('orders', 'index', 'check-supplier'),
     
+    loadMask: {msg: 'Загрузка...'},
+    
+    title: 'Поставщики',
+    
     orderId: null,
     
     autoScroll: true,
     
     border: false,
-    
-    loadMask: {msg: 'Загрузка...'},
     
     stripeRows: true,
     

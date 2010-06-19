@@ -192,15 +192,6 @@ class PMS_Orders
 	            }
 	            $data['suppliers'] = $rowset;
 	            
-	            $resp = $files->getPhotos($data['id']);
-	            if ($resp->isSuccess()) {
-	                $rowset = $resp->getRowset();
-	            } else {
-	                $data['photos_errors'] = $resp->getStatusCollection();
-	                $rowset = array(); 
-	            }
-	            $data['photos'] = $rowset;
-	            
 	            $resp = $files->getFiles($data['id']);
 	            if ($resp->isSuccess()) {
 	                $rowset = $resp->getRowset();

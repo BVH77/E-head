@@ -2,19 +2,19 @@ Ext.ns('PMS.Orders');
 
 PMS.Orders.Files = Ext.extend(Ext.Panel, {
     
-    loadURL: link('orders', 'files', 'get-files'),
+	loadURL: link('orders', 'files', 'get-all'),
 
-    uploadURL: link('orders', 'files', 'upload-file'),
+    uploadURL: link('orders', 'files', 'upload'),
     
-    updateURL: link('orders', 'files', 'update-file'),
+    updateURL: link('orders', 'files', 'update'),
     
-    deleteURL: link('orders', 'files', 'delete-file'),
+    deleteURL: link('orders', 'files', 'delete'),
     
-    title: 'Файлы',
+    title: 'Документы',
 	
     autoScroll: true,
     
-    allowEdit: true,
+    allowEdit: false,
     
     layout: 'fit',
     
@@ -35,37 +35,51 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
             style: 'overflow: auto',
             layout: 'fit',
             multiSelect: false,
-            plugins: (this.allowEdit && acl.isUpdate('orders')) 
+            plugins: (this.allowEdit && acl.isUpdate('orders', 'files')) 
                    ? [new Ext.DataView.LabelEditor({dataIndex: 'description'})] : [],
             store: new Ext.data.JsonStore({
                 url: this.loadURL,
                 root: 'files',
-                fields: ['id', 'filename', 'description', 'original_name'],
+                fields: ['id', 'filename', 'description', 'is_photo'],
                 listeners: {
-                    update: acl.isUpdate('orders') ? this.onUpdate : Ext.emptyFn,
+                    update: acl.isUpdate('orders', 'files') ? this.onUpdate : Ext.emptyFn,
                     scope: this
                 }
             }),
             tpl: new Ext.XTemplate(
                 '<tpl for=".">',
-                '<div class="thumb-wrap" id="{filename}">',
-                '<div><a href="/files/{filename}" target="_blank">', 
-                '<img src="/images/download.png" qtip="Открыть">',
-                '</a></div><span class="x-editable" qtip="{[this.e(this.h(values.description), 50)]}">',
-                '{[this.e(this.f(values.description), 15)]}',
-                '</span></div></tpl><div class="x-clear"></div>', {
+	                '<div class="thumb-wrap" id="{filename}">',
+		                '<div class="thumb">',
+			                '<tpl if="is_photo == 0">',
+			                	'<a href="/files/{filename}" target="_blank">',
+			            			'<img src="/images/download.png" ',
+			            			'qtip="{[this.e(this.h(values.description), 50)]}"/>',
+			                	'</a>',
+			                '</tpl>',
+			                '<tpl if="is_photo == 1">',
+			                	'<img src="/files/{filename}" class="thumb-img" ',
+			                	'qtip="{[this.e(this.h(values.description), 50)]}">',
+			                '</tpl>', 
+		                '</div>',
+		                '<span class="x-editable" qtip="{[this.e(this.h(values.description), 50)]}">',
+		                	'{[this.e(this.f(values.description), 15)]}',
+	                	'</span>',
+	            	'</div>',
+            	'</tpl>',
+            	'<div class="x-clear"></div>', {
                     f: function(v) {return v || '                    ';}, 
                     h: function(v) {return Ext.util.Format.htmlEncode(v) || '';}, 
                     e: Ext.util.Format.ellipsis
                 }
-            )
+            ),
+            listeners: {click: {fn: this.showFile, scope: this, buffer: 200}}
         });
         
         if (this.allowEdit) {
-            if (acl.isDelete('orders')) {
+            if (acl.isDelete('orders', 'files')) {
                 menu = new Ext.menu.Menu({
                     items: [{
-                        text: 'Удалить файл',
+                        text: 'Удалить',
                         iconCls: 'delete',
                         handler: function() {
                             var record = menu.view.store.getAt(menu.index);
@@ -77,13 +91,13 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
                 
                 this.view.on('contextmenu', function(view, index, node, e) {
                     e.stopEvent();
-                    Ext.apply(menu, {view: view, index: index, node: node, e: e});
+                    Ext.apply(menu, {view: view, index:index, node: node, e: e});
                     menu.showAt(e.getXY());
                 });
             }
-            if (acl.isAdd('orders')) {
+            if (acl.isAdd('orders', 'files')) {
                 this.bbar = ['->', {
-                    text: 'Добавить файл',
+                    text: 'Добавить',
                     iconCls: 'add',
                     handler: this.onUpload,
                     scope: this
@@ -103,6 +117,38 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
         PMS.Orders.Files.superclass.initComponent.apply(this, arguments);
     },
     
+    showFile: function(view, index, node, e) {
+    	
+        var record = view.store.getAt(index);
+
+        if (record.get('is_photo') == 0) {
+        	return;
+        }
+        
+        var img = new Ext.ComponentMgr.create({
+            xtype: 'box',
+            html: '<a href="/files/' + record.get('filename') + '" '
+        		+ 'style="border: none;" target="_blank">'
+            	+ '<img src="/files/' + record.get('filename') + '" '
+            	+ 'style="max-height: 600px; max-width: 800px;" /></a>'
+        });
+        
+        var wind = new Ext.Window({
+            title: record.get('description'),
+            modal: true,
+            autoWidth: true,
+            autoHeight: true,
+            tools: [{
+                id: 'maximize',
+                handler: function(event, toolEl, panel){
+                    panel.toggleMaximize();
+                }
+            }],
+            items:[img]
+        });
+        wind.show(record.get('filename'));
+    },
+        
     loadData: function(data) {
         this.view.store.loadData(data);
         this.orderId = data['id'];
@@ -110,7 +156,7 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
     
     onUpload: function(button) {
         var uploadWin = new Ext.Window({
-            title: 'Загрузка файла',
+            title: 'Загрузка фото',
             modal: true,
             width: 400,
             height: 200,
@@ -138,7 +184,7 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
         loadingMask.show();
         Ext.Ajax.request({
             url: this.updateURL,
-            params: {fileId: record.get('id'), description: record.get('description')},
+            params: {id: record.get('id'), description: record.get('description')},
             callback: function() {
                 loadingMask.hide();
             }
@@ -156,7 +202,7 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
                     loadingMask.show();
                     Ext.Ajax.request({
                         url: this.deleteURL,
-                        params: {fileId: id},
+                        params: {id: id},
                         callback: function() {
                             loadingMask.hide();
                             this.view.store.load({params: {orderId: this.orderId}});

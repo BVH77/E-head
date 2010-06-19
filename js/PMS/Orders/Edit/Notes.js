@@ -2,6 +2,8 @@ Ext.ns('PMS.Orders.Edit');
 
 PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
 
+	title: 'Комментарии',
+	
     autoScroll: true,
     
     layout: 'border',

@@ -16,7 +16,7 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
     		cls: 'x-border-right x-border-bottom'
     	});
     	
-    	this.photosPanel = new PMS.Orders.Photos({
+    	this.filesPanel = new PMS.Orders.Files({
     		region: 'south',
     		height: 130,
     		border: false,
@@ -43,7 +43,7 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
 	    	region: 'center',
 	    	layout: 'border',
 	    	border: false,
-	    	items: [this.listPanel, this.photosPanel]	
+	    	items: [this.listPanel, this.filesPanel]	
 	    }, {
             layout: 'border',
             width: 320,
@@ -58,7 +58,7 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
         
         this.listPanel.on('orderselect', function(record) {
             this.infoPanel.loadData(record);
-            this.photosPanel.loadData(record.data);
+            this.filesPanel.loadData(record.data);
             this.notesPanel.store.setBaseParam('orderId', record.get('id'));
             this.notesPanel.store.load();
         }, this);

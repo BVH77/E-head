@@ -60,17 +60,9 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
             orderId: this.orderId
         }); 
         
-        this.photos = new PMS.Orders.Photos({
-            allowEdit: this.permissions,
-            orderId: this.orderId, 
-            title: false, 
-            border: false
-        });
-        
         this.files = new PMS.Orders.Files({
             allowEdit: this.permissions,
             orderId: this.orderId, 
-            title: false, 
             border: false
         });
         
@@ -85,20 +77,7 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
             orderId: this.orderId
         });
         
-        this.add({
-            title: 'Поставщики',
-            items: [this.suppliers]
-        }, {
-            title: 'Фото',
-            items: [this.photos]
-        }, {
-            title: 'Файлы',
-            items: [this.files]
-        }, {
-            title: 'Комментарии',
-            iconCls: 'reply',
-            items: [this.notes]
-        });
+        this.add(this.suppliers, this.files, this.notes);
     },
     
     onSave: function() {
@@ -153,7 +132,6 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
     loadData: function(record) {
         this.form.loadData(record);
         this.suppliers.loadData(record.data);
-        this.photos.loadData(record.data);
         this.files.loadData(record.data);
     },
     

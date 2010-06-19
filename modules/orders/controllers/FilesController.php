@@ -15,55 +15,16 @@ class Orders_FilesController extends OSDN_Controller_Action
 	
     public function permission(OSDN_Controller_Action_Helper_Acl $acl)
     {
-        $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->orders->photos);
-        $acl->isAllowed(OSDN_Acl_Privilege::VIEW,   'get-photos');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'upload-photo');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update-photo');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete-photo');
-        
-        $acl->isAllowed(OSDN_Acl_Privilege::VIEW,   'get-files');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'upload-file');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update-file');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete-file');
-    }
-    
-    public function getPhotosAction()
-    {
-        $response = $this->_class->getPhotos($this->_getParam('orderId'));
-        if ($response->isSuccess()) {
-            $this->view->success = true;
-            $this->view->photos = $response->getRowset();
-        } else {
-           $this->_collectErrors($response);
-        }
-    }
-    
-    public function uploadPhotoAction()
-    {
-        $response = $this->_class->savePhoto($this->_getParam('orderId'), $_FILES['file']);
-        $this->view->success = $response->isSuccess();
-    }
-    
-    public function updatePhotoAction()
-    {
-        $response = $this->_class->updateFileDescription(array(
-            'id'          => $this->_getParam('photoId'),
-            'description' => $this->_getParam('description')
-        ));
-        $this->view->success = $response->isSuccess();
-    }
-    
-    public function deletePhotoAction()
-    {
-        $response = $this->_class->deleteFile($this->_getParam('photoId'));
-        $this->view->success = $response->isSuccess();
+        $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->orders->files);
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW,   'get-all');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'upload');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');
     }
 
-// -----------------------------------------------------------------------------
-
-    public function getFilesAction()
+    public function getAllAction()
     {
-        $response = $this->_class->getFiles($this->_getParam('orderId'));
+        $response = $this->_class->getAll($this->_getParam('orderId'));
         if ($response->isSuccess()) {
             $this->view->success = true;
             $this->view->files = $response->getRowset();
@@ -71,25 +32,25 @@ class Orders_FilesController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-
-    public function uploadFileAction()
+    
+    public function uploadAction()
     {
-        $response = $this->_class->saveFile($this->_getParam('orderId'), $_FILES['file']);
+        $response = $this->_class->upload($this->_getParam('orderId'), $_FILES['file']);
         $this->view->success = $response->isSuccess();
     }
     
-    public function updateFileAction()
+    public function updateAction()
     {
-        $response = $this->_class->updateFileDescription(array(
-            'id'          => $this->_getParam('fileId'),
+        $response = $this->_class->update(array(
+            'id'          => $this->_getParam('id'),
             'description' => $this->_getParam('description')
         ));
         $this->view->success = $response->isSuccess();
     }
     
-    public function deleteFileAction()
+    public function deleteAction()
     {
-        $response = $this->_class->deleteFile($this->_getParam('fileId'));
+        $response = $this->_class->delete($this->_getParam('id'));
         $this->view->success = $response->isSuccess();
     }
 }

@@ -11,12 +11,11 @@
     font: 11px Arial, Helvetica, sans-serif;
 }
 .thumb{
-    background: #dddddd;
     padding: 3px;
 }
 .thumb img{
-    height: 60px;
-    width: 80px;
+    max-height: 60px;
+    max-width: 80px;
 }
 .thumb-wrap{
     float: left;
