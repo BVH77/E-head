@@ -192,7 +192,7 @@ class PMS_Orders
 	            }
 	            $data['suppliers'] = $rowset;
 	            
-	            $resp = $files->getFiles($data['id']);
+	            $resp = $files->getAll($data['id']);
 	            if ($resp->isSuccess()) {
 	                $rowset = $resp->getRowset();
 	            } else {
