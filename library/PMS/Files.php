@@ -93,23 +93,23 @@ class PMS_Files
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
-            return $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
+            return $response->addStatus(new PMS_Status(
+            	PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
         $file = $this->_table->find($id)->toArray();
-        if (count($file)) {
-        	if (!empty($file[0]['filename'])) {
-        		$filename = FILES_DIR . '/' . $file[0]['filename'];
-        		if (file_exists($filename)) {
-                     if(!@unlink($filename)) {
-                        return $response->addStatus(new PMS_Status(PMS_Status::DELETE_FAILED));
-                     }
-        		}
-        	} 
-	        $affectedRows = $this->_table->deleteByPk($id);
-	        $status = PMS_Status::retrieveAffectedRowStatus($affectedRows);
-            return $response->addStatus(new PMS_Status($status));
-        } else {
-        	return $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
+        if (!count($file)) {
+        	return $response->addStatus(new PMS_Status(
+        		PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
+        if (empty($file[0]['filename'])) {
+			return $response->addStatus(new PMS_Status(PMS_Status::DELETE_FAILED));
+        }
+        $filename = FILES_DIR . '/' . $file[0]['filename'];
+        if (file_exists($filename) && !@unlink($filename)) {
+			return $response->addStatus(new PMS_Status(PMS_Status::DELETE_FAILED));
+		}
+        $affectedRows = $this->_table->deleteByPk($id);
+        $status = PMS_Status::retrieveAffectedRowStatus($affectedRows);
+		return $response->addStatus(new PMS_Status($status));
     }
 }

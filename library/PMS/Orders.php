@@ -99,7 +99,8 @@ class PMS_Orders
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
-            return $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
+            return $response->addStatus(new PMS_Status(
+            	PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
         $affectedRows = $this->_table->deleteByPk($id);
         $status = PMS_Status::retrieveAffectedRowStatus($affectedRows);
@@ -218,9 +219,8 @@ class PMS_Orders
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
-            $response->addStatus(new PMS_Status(
+            return $response->addStatus(new PMS_Status(
                 PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
-            return $response;
         }
         $select = $this->_table->getAdapter()->select();
         $accounts = new OSDN_Accounts_Table_Accounts();
@@ -254,12 +254,12 @@ class PMS_Orders
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($orderId)) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
-            return $response;
+            return $response->addStatus(new PMS_Status(
+            	PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
         }
         if (!$validate->isValid($userId)) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'userId'));
-            return $response;
+            return $response->addStatus(new PMS_Status(
+            	PMS_Status::INPUT_PARAMS_INCORRECT, 'userId'));
         }
         $res = $this->_table->updateByPk(array('creator_id' => $userId), $orderId);
         $status = $res === false ? PMS_Status::FAILURE : PMS_Status::OK;
@@ -271,12 +271,13 @@ class PMS_Orders
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($orderId)) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
-            return $response;
+            return $response->addStatus(new PMS_Status(
+            	PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
         }
         $tableNotes = new PMS_Orders_Table_Notes();
         try {
-            $result = $tableNotes->fetchAll(array('order_id = ?' => $orderId), 'time ASC');
+            $result = $tableNotes->fetchAll(
+            	array('order_id = ?' => $orderId), 'time ASC');
             $response->setRowset($result->toArray());
             $status = PMS_Status::OK;
         } catch (Exception $e) {
@@ -290,8 +291,8 @@ class PMS_Orders
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($orderId)) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
-            return $response;
+            return $response->addStatus(new PMS_Status(
+            	PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
         }
         $text = strip_tags($text);
         $data = array('order_id' => $orderId, 'text' => $text);
