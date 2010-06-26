@@ -21,8 +21,7 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
     border: false,
     
     defaults: {
-        border: false,
-        layout: 'fit'
+        border: false
     },
     
     initComponent: function() {

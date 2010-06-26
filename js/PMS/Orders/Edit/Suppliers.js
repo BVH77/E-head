@@ -38,12 +38,18 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
         this.cm = new Ext.grid.ColumnModel([success, {
             header: 'Название',
             width: 200,
-            dataIndex: 'name'
+            dataIndex: 'name',
+        	renderer: function(v, md, r) {
+        		return '<span qtip="' + r.get('description') + '">' + v + '</span>';
+        	}
         }, {
-            id: this.autoExpandColumn, 
-            header: 'Описание',
-            dataIndex: 'description',
-            renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT)
+            header: 'Сотимость',
+            dataIndex: 'cost',
+            width: 80
+        }, {
+        	id: this.autoExpandColumn, 
+        	header: 'Примечание',
+        	dataIndex: 'note',
         }]);
         
         this.cm.defaultSortable = true; 
@@ -57,10 +63,13 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
             },
 	        root: 'suppliers',
 	        fields: [
-	            {name: 'id'},
-	            {name: 'name'},
-                {name: 'success'},
-                {name: 'date', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER}
+	            {name: 'id', type: 'int'},
+                {name: 'success', type: 'int'},
+                {name: 'name'},
+                {name: 'description'},
+                {name: 'date', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
+                {name: 'cost', type: 'int'},
+                {name: 'note'}
 	        ]
 	    });
         
@@ -124,7 +133,6 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
                 }
                 record.commit();
                 this.el.unmask();
-                this.getStore().load();
             },
             failure: function() {
                 xlib.Msg.error('Ошибка связи с сервером.');

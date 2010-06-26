@@ -16,3 +16,6 @@ INSERT INTO `orders_suppliers` (`success`, `date`, `order_id`, `supplier_id`) SE
 ALTER TABLE `suppliers` DROP `subcontractor_id` ;
 DROP TABLE `orders_subcontractors` ;
 DROP TABLE `subcontractors` ;
+
+ALTER TABLE `orders_suppliers` ADD `cost` INT NOT NULL ;
+ALTER TABLE `orders_suppliers` ADD `note` TEXT NULL ; 
