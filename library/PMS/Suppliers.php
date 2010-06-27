@@ -26,19 +26,16 @@ class PMS_Suppliers
             $id = $this->_table->insert($f->getData());
             $status = $id ? PMS_Status::OK : PMS_Status::FAILURE;
         } catch (Exception $e) {
-            $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
-            return $response;
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
 
-        $response->addStatus(new PMS_Status($status));
         $response->id = $id;
-        return $response;
+        return $response->addStatus(new PMS_Status($status));
     }
     
     public function update(array $params)
     {
-        $f = new OSDN_Filter_Input(array(
-        ), array(
+        $f = new OSDN_Filter_Input(array(), array(
             'id'          => array('int', 'presence' => 'required'),
             'name'        => array(array('StringLength', 1, 255), 'presence' => 'required')
         ), $params);
@@ -59,12 +56,10 @@ class PMS_Suppliers
 	            $status = PMS_Status::FAILURE;
 	        }
         } catch (Exception $e) {
-            $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
-            return $response;
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
 
-        $response->addStatus(new PMS_Status($status));
-        return $response;
+        return $response->addStatus(new PMS_Status($status));
     }
     
     public function delete($id)
@@ -76,8 +71,7 @@ class PMS_Suppliers
         }
         $affectedRows = $this->_table->deleteByPk($id);
         $status = PMS_Status::retrieveAffectedRowStatus($affectedRows);
-        $response->addStatus(new PMS_Status($status));
-        return $response;
+        return $response->addStatus(new PMS_Status($status));
     }
     
     public function get($id)
@@ -100,9 +94,7 @@ class PMS_Suppliers
             }
             $status = PMS_Status::DATABASE_ERROR;
         }
-        
-        $response->addStatus(new PMS_Status($status));
-        return $response;
+        return $response->addStatus(new PMS_Status($status));
     }
     
     /**
@@ -153,30 +145,36 @@ class PMS_Suppliers
         return $response->addStatus(new PMS_Status($status));
     }
     
-    public function attach($id, $orderId)
+    public function attach($supplier_id, $order_id)
     {
     	$response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
-        if (!$validate->isValid($id)) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
-            return $response;
+        if (!$validate->isValid($supplier_id)) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'supplier_id'));
         }
-        if (!$validate->isValid($orderId)) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
-            return $response;
+        if (!$validate->isValid($order_id)) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'order_id'));
         }
         $ordersSuppliers = new PMS_Orders_Table_OrdersSuppliers();
+        $row = $ordersSuppliers->fetchRow(
+            'supplier_id = "' . $supplier_id . '" AND order_id = "' . $order_id . '"');
+        if ($row != null) {
+            return $response->addStatus(new PMS_Status(PMS_Status::ADD_FAILED));
+        }
+        
         try {
 	        $ordersSuppliers->insert(array(
-	            'supplier_id'   => $id, 
-	            'order_id'      => $orderId, 
+	            'supplier_id'   => $supplier_id, 
+	            'order_id'      => $order_id, 
 	            'success'       => 0
 	        ));
 	        $status = PMS_Status::OK;
         } catch (Exception $e) {
             $status = PMS_Status::DATABASE_ERROR;
             if (OSDN_DEBUG) {
-                throw $e;
+                //throw $e;
             }
         }
         return $response->addStatus(new PMS_Status($status));

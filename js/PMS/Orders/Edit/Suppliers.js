@@ -151,38 +151,35 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
     },
     
     onAttach: function(g, rowIndex) {
-        
-        var itemsList = new PMS.ContragentsListAbstract({entity: 'suppliers'});
-        
-        itemsList.on('rowdblclick', function(g, rowIndex) {
-            
-            g.el.mask('Запись...');
-            
-            Ext.Ajax.request({
-                url: this.attachURL,
-                params: {
-                    supplier_id: g.getStore().getAt(rowIndex).get('id'), 
-                    order_id: this.orderId
-                },
-                success: function(res) {
-                    var errors = Ext.decode(res.responseText).errors;
-                    if (errors) {
-                        xlib.Msg.error(errors[0].msg);
-                        this.el.unmask();
-                        return;
+        var scope = this;
+        var itemsList = new PMS.ContragentsListAbstract({
+            entity: 'suppliers',
+            onRowdblclick: function(g, rowIndex) {
+                g.el.mask('Запись...');
+                Ext.Ajax.request({
+                    url: scope.attachURL,
+                    params: {
+                        supplier_id: g.getStore().getAt(rowIndex).get('id'), 
+                        order_id: scope.orderId
+                    },
+                    success: function(res) {
+                        var errors = Ext.decode(res.responseText).errors;
+                        if (errors) {
+                            xlib.Msg.error(errors[0].msg);
+                            g.el.unmask();
+                            return;
+                        }
+                        g.el.unmask();
+                        wind.close();
+                        scope.getStore().load();
+                    },
+                    failure: function() {
+                        g.el.unmask();
+                        xlib.Msg.error('Ошибка связи с сервером.');
                     }
-                    g.el.unmask();
-                    wind.close();
-                    this.getStore().load();
-                },
-                failure: function() {
-                    g.el.unmask();
-                    xlib.Msg.error('Ошибка связи с сервером.');
-                },
-                scope: this
-            });
-            
-        }, this);
+                });
+            }
+        });
         
         var wind = new Ext.Window({
             title: 'Присоединить',

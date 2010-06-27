@@ -13,7 +13,7 @@ class OSDN_Response_Status_Storage extends OSDN_Response_Status_Storage_Abstract
      *
      * @var int
      */
-    protected $_moduleCode = OSDN_EntityTypes::SYSTEM;
+    protected $_moduleCode = 1;
     
     /**
      * Module name

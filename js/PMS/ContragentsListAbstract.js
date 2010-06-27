@@ -88,14 +88,18 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
                 {type: 'string',  dataIndex: 'description'}
             ]}
         ), actionsPlugin];
-		
-        if (acl.isUpdate(this.entity)) {
-            this.on('rowdblclick', this.edit, this);
-        }
         
         PMS.ContragentsListAbstract.superclass.initComponent.apply(this, arguments);
+		
+        if (acl.isUpdate(this.entity)) {
+            this.on('rowdblclick', this.onRowdblclick, this);
+        }
     },
     
+    onRowdblclick: function(g, rowIndex) {
+    	this.edit(g, rowIndex);
+    },
+   
     add: function(g, rowIndex) {
 		var form = new PMS.ContragentsFormAbstract({permissions: true, entity: this.entity});
 		var w = form.showInWindow({title: 'Добавление'});

@@ -6,7 +6,7 @@
  */
 class OSDN_Controller_Assemble_Status extends OSDN_Response_Status_Storage_Abstract     
 {
-    protected $_moduleCode = OSDN_EntityTypes::SYSTEM;
+    protected $_moduleCode = 1;
 
     protected $_moduleName = 'System';
     

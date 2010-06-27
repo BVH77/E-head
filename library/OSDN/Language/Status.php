@@ -13,7 +13,7 @@ class OSDN_Language_Status extends OSDN_Response_Status_Storage_Abstract
      *
      * @var int
      */
-    protected $_moduleCode = OSDN_EntityTypes::LANGUAGE;
+    protected $_moduleCode = 2;
     
     /**
      * Module name

@@ -9,15 +9,6 @@ class ConfigController extends OSDN_Controller_Action
     	echo new OSDN_Translation_Output_JsObject('OSDN.Translation.Storage');
     }
 
-    public function getEntityTypesAction()
-    {
-    	$this->disableRender(true);
-    	$entityTypes = OSDN_EntityTypes::getInstance();
-    	echo 'OSDN.EntityTypes = '
-    	   . Zend_Json::encode(array_change_key_case($entityTypes->fetchAll(), CASE_UPPER))
-    	   . ';';
-    }
-
     public function setLocaleAction()
     {
         $locale = $this->_getParam('locale');

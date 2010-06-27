@@ -107,10 +107,7 @@ class OSDN_Controller_Action extends Zend_Controller_Action
                 
                 switch($status->getModuleCode()) {
                     case OSDN_Filter_Input::MODULE_CODE:
-                    case OSDN_EntityTypes::SYSTEM:
-                                                
                         break;
-
                     default:
                         $msg = $msg;
                 }

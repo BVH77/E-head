@@ -7,7 +7,6 @@ class Admin_AclRoleController extends OSDN_Controller_Action
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->admin->acl);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'fetch-roles');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'fetch-role');
-        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'fetch-uuids');
         $acl->isAllowed(OSDN_Acl_Privilege::ADD, 'create-role');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'rename-role');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update-role');
@@ -92,21 +91,6 @@ class Admin_AclRoleController extends OSDN_Controller_Action
         }
         
         $this->view->rowset = $rowset;
-    }
-    
-    public function fetchUuidsAction()
-    {
-        $output = array();
-        $aliases = OSDN_Acl_Roles_Alias::getInstance()->fetchAll();
-        foreach($aliases as $key => $alias) {
-            $output[] = array(
-                'id'    => ucfirst($key),
-                'value' => $alias
-            );
-        }
-        
-        $this->view->rowset = $output;
-        $this->view->success = true;
     }
     
     public function updateRoleAction()
