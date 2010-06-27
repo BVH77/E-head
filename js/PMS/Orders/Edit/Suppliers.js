@@ -198,29 +198,6 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
         itemsList.getStore().load();
 	},
     
-    attach: function(id) {
-        this.el.mask('Запись...');
-		Ext.Ajax.request({
-            url: this.attachURL,
-            params: {id: id, orderId: this.orderId},
-            success: function(res){
-                var errors = Ext.decode(res.responseText).errors;
-                if (errors) {
-                    xlib.Msg.error(errors[0].msg);
-                    this.el.unmask();
-                    return;
-                }
-                this.el.unmask();
-                this.getStore().load();
-            },
-            failure: function() {
-                xlib.Msg.error('Ошибка связи с сервером.');
-                this.el.unmask();
-            },
-            scope: this
-        });
-    },
-    
     onRemove: function(g, rowIndex) {
         Ext.Msg.show({
             title: 'Подтверждение',
@@ -232,7 +209,9 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
                     this.el.mask('Запись...');
                     Ext.Ajax.request({
                         url: this.removeURL,
-                        params: {id: g.getStore().getAt(rowIndex).get('id'), orderId: this.orderId},
+                        params: {
+                            id: g.getStore().getAt(rowIndex).get('id')
+                        },
                         success: function(res){
                             var errors = Ext.decode(res.responseText).errors;
                             if (errors) {
