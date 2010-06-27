@@ -193,7 +193,7 @@ class Orders_IndexController extends OSDN_Controller_Action
     public function removeSupplierAction()
     {
         $suppliers = new PMS_Suppliers();
-        $response = $suppliers->remove($this->_getParam('id'), $this->_getParam('orderId'));
+        $response = $suppliers->remove($this->_getParam('id'));
         if ($response->isSuccess()) {
             $this->view->success = true;
         } else {

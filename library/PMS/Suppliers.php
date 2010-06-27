@@ -182,7 +182,7 @@ class PMS_Suppliers
         return $response->addStatus(new PMS_Status($status));
     }
     
-    public function remove($id, $orderId)
+    public function remove($id)
     {
     	$response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
@@ -190,16 +190,9 @@ class PMS_Suppliers
             return $response->addStatus(new PMS_Status(
                 PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
-        if (!$validate->isValid($orderId)) {
-            return $response->addStatus(new PMS_Status(
-                PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
-        }
         $ordersSuppliers = new PMS_Orders_Table_OrdersSuppliers();
         try {
-	        $ordersSuppliers->delete(array(
-	           'supplier_id = ? ' => $id, 
-	           'order_id' => $orderId
-            ));
+	        $ordersSuppliers->deleteByPk($id);
 	        $status = PMS_Status::OK;
         } catch (Exception $e) {
             $status = PMS_Status::DATABASE_ERROR;
