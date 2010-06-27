@@ -187,12 +187,12 @@ class PMS_Suppliers
     	$response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
-            return $response;
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
         if (!$validate->isValid($orderId)) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
-            return $response;
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
         }
         $ordersSuppliers = new PMS_Orders_Table_OrdersSuppliers();
         try {
@@ -210,27 +210,24 @@ class PMS_Suppliers
         return $response->addStatus(new PMS_Status($status));
     }
     
-    public function check($id, $orderId, $success, $date)
+    public function check($id, $success)
     {
     	$response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
-            return $response;
-        }
-        if (!$validate->isValid($orderId)) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
-            return $response;
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
         if ($success !== 0 && $success !== 1) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'success'));
-            return $response;
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'success'));
         }
         $ordersSuppliers = new PMS_Orders_Table_OrdersSuppliers();
         try {
-	        $ordersSuppliers->update(array('success' => $success, 'date' => $date), array(
-	           'supplier_id = ? ' => $id, 'order_id' => $orderId 
-            ));
+	        $ordersSuppliers->updateByPk(array(
+	           'success' => $success, 
+	           'date' => new Zend_Db_Expr('NOW()')
+	        ), $id);
 	        $status = PMS_Status::OK;
         } catch (Exception $e) {
             $status = PMS_Status::DATABASE_ERROR;
@@ -245,13 +242,15 @@ class PMS_Suppliers
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
-            return $response;
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
         $ordersSuppliers = new PMS_Orders_Table_OrdersSuppliers();
         $select = $this->_table->getAdapter()->select();
-        $select->from(array('s' => $this->_table->getTableName()), '*');
-        $select->join(array('os' => $ordersSuppliers->getTableName()), 'os.supplier_id=s.id');
+        $select->from(array('os' => $ordersSuppliers->getTableName()), 
+            array('id', 'success', 'date', 'cost', 'note'));
+        $select->join(array('s' => $this->_table->getTableName()), 
+            'os.supplier_id=s.id', array('name', 'description'));
         $select->where('os.order_id = ? ', $id);
         try {
             $response->setRowset($select->query()->fetchAll());

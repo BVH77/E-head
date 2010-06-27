@@ -1,6 +1,6 @@
 Ext.ns('PMS.Orders.Edit');
 
-PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
+PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
 	
 	loadURL: link('orders', 'index', 'get-suppliers'),
     
@@ -26,11 +26,16 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
     
     initComponent: function() {
         
-        var success = new Ext.grid.CheckColumn({
+        var success = new xlib.grid.CheckColumn({
             header: 'Выпонено',
             width: 65,
             dataIndex: 'success',
-            disabled: !acl.isUpdate('suppliers')
+            disabled: !acl.isUpdate('suppliers'),
+            getQtip: function(record) {
+                var dt = record.get('date');
+                dt = Ext.isDate(dt) ? dt.format('l, d-m-Y') : '';
+                return !record.get('success') ? null : dt;
+            }
         });
         
         this.autoExpandColumn = Ext.id();
@@ -45,11 +50,13 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
         }, {
             header: 'Сотимость',
             dataIndex: 'cost',
-            width: 80
+            width: 80,
+            editor: acl.isUpdate('suppliers') ? new Ext.form.NumberField() : ''
         }, {
         	id: this.autoExpandColumn, 
         	header: 'Примечание',
         	dataIndex: 'note',
+        	editor: acl.isUpdate('suppliers') ? new Ext.form.TextField() : ''
         }]);
         
         this.cm.defaultSortable = true; 
@@ -100,10 +107,12 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
 	    
             this.on({
                 afteredit: function(params) {
-                    this.getSelectionModel().selectRow(params.row);
-                    var value = params.value == '1' ? new Date() : null;
-                    params.record.set('date', value);
-                    this.onChangeRecord(params.record);
+                    console.log(params);
+                    switch (params.field) {
+                        case 'success':
+                            this.onCheck(params.record);
+                            break;
+                    }
                 },
                 scope: this
             });
@@ -112,18 +121,15 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
         PMS.Orders.Edit.Suppliers.superclass.initComponent.apply(this, arguments);
     },
     
-    onChangeRecord: function(record) {
-        var dt = record.get('date');
+    onCheck: function(record) {
         this.el.mask('Запись...');
         Ext.Ajax.request({
            url: this.checkURL,
            params: { 
                 id: record.get('id'),
-                orderId: this.orderId,
-                success: record.get('success'),
-                date: dt ? dt.format(xlib.date.DATE_FORMAT_SERVER) : ''
+                success: record.get('success')
            },
-           success: function(res){
+           success: function(res) {
                 var errors = Ext.decode(res.responseText).errors;
                 if (errors) {
                     xlib.Msg.error(errors[0].msg);
@@ -131,6 +137,7 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
                     this.el.unmask();
                     return;
                 }
+                record.set('date', new Date());
                 record.commit();
                 this.el.unmask();
             },
@@ -144,10 +151,37 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
     },
     
     onAttach: function(g, rowIndex) {
+        
         var itemsList = new PMS.ContragentsListAbstract({entity: 'suppliers'});
+        
         itemsList.on('rowdblclick', function(g, rowIndex) {
-            this.attach(g.getStore().getAt(rowIndex).get('id'), this.orderId);
-            wind.close();
+            
+            g.el.mask('Запись...');
+            
+            Ext.Ajax.request({
+                url: this.attachURL,
+                params: {
+                    supplier_id: g.getStore().getAt(rowIndex).get('id'), 
+                    order_id: this.orderId
+                },
+                success: function(res) {
+                    var errors = Ext.decode(res.responseText).errors;
+                    if (errors) {
+                        xlib.Msg.error(errors[0].msg);
+                        this.el.unmask();
+                        return;
+                    }
+                    g.el.unmask();
+                    wind.close();
+                    this.getStore().load();
+                },
+                failure: function() {
+                    g.el.unmask();
+                    xlib.Msg.error('Ошибка связи с сервером.');
+                },
+                scope: this
+            });
+            
         }, this);
         
         var wind = new Ext.Window({
@@ -161,7 +195,7 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.GridPanel, {
         });
         wind.show();
         
-        itemsList.getStore().load({params: {start: 0, limit: 1000}});
+        itemsList.getStore().load();
 	},
     
     attach: function(id) {

@@ -39,6 +39,7 @@
         
         <!-- Plugins -->
         <script src="/js/Library/xlib/grid/Actions.js"/>
+        <script src="/js/Library/xlib/grid/CheckColumn.js"/>
         <!-- Plugins -->
         
         <style href="/js/Library/xlib/Legend/Item.css"/>

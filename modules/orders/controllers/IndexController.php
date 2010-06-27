@@ -179,7 +179,10 @@ class Orders_IndexController extends OSDN_Controller_Action
     public function attachSupplierAction()
     {
         $suppliers = new PMS_Suppliers();
-        $response = $suppliers->attach($this->_getParam('id'), $this->_getParam('orderId'));
+        $response = $suppliers->attach(
+            $this->_getParam('supplier_id'), 
+            $this->_getParam('order_id')
+        );
         if ($response->isSuccess()) {
             $this->view->success = true;
         } else {
@@ -202,10 +205,8 @@ class Orders_IndexController extends OSDN_Controller_Action
     {
         $suppliers = new PMS_Suppliers();
         $response = $suppliers->check(
-            $this->_getParam('id'), 
-            $this->_getParam('orderId'),
-            intval($this->_getParam('success')),
-            $this->_getParam('date')
+            intval($this->_getParam('id')), 
+            intval($this->_getParam('success'))
         );
         if ($response->isSuccess()) {
             $this->view->success = true;

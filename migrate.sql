@@ -18,4 +18,15 @@ DROP TABLE `orders_subcontractors` ;
 DROP TABLE `subcontractors` ;
 
 ALTER TABLE `orders_suppliers` ADD `cost` INT NOT NULL ;
-ALTER TABLE `orders_suppliers` ADD `note` TEXT NULL ; 
+ALTER TABLE `orders_suppliers` ADD `note` TEXT NULL ;
+ALTER TABLE `orders_suppliers` DROP PRIMARY KEY ;
+ALTER TABLE `orders_suppliers` DROP FOREIGN KEY `orders_suppliers_ibfk_1`  ;
+ALTER TABLE `orders_suppliers` DROP FOREIGN KEY `orders_suppliers_ibfk_2` ;
+ALTER TABLE `orders_suppliers` ADD `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
+ALTER TABLE `orders_suppliers` DROP INDEX `order_id` ;
+ALTER TABLE `orders_suppliers` DROP INDEX `supplier_id` ;
+ALTER TABLE `orders_suppliers` ADD INDEX ( `order_id` );
+ALTER TABLE `orders_suppliers` ADD INDEX ( `supplier_id` );
+ALTER TABLE `orders_suppliers` ADD UNIQUE ( `order_id`, `supplier_id` );
+ALTER TABLE `orders_suppliers` ADD FOREIGN KEY ( `order_id` ) REFERENCES `pms`.`orders` (`id`) ON DELETE CASCADE ;
+ALTER TABLE `orders_suppliers` ADD FOREIGN KEY ( `supplier_id` ) REFERENCES `pms`.`suppliers` (`id`) ON DELETE CASCADE ;
