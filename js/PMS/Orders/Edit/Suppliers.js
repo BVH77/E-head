@@ -8,6 +8,8 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
     
     removeURL: link('orders', 'index', 'remove-supplier'),
     
+    updateURL: link('orders', 'index', 'update-supplier'),
+    
     checkURL: link('orders', 'index', 'check-supplier'),
     
     loadMask: {msg: 'Загрузка...'},
@@ -17,6 +19,8 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
     orderId: null,
     
     autoScroll: true,
+    
+    autoHeight: true,
     
     border: false,
     
@@ -50,6 +54,9 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
         }, {
             header: 'Сотимость',
             dataIndex: 'cost',
+            renderer: function(v) {
+                return v == 0 ? '' : v;  
+            },
             width: 80,
             editor: acl.isUpdate('suppliers') ? new Ext.form.NumberField() : ''
         }, {
@@ -97,7 +104,7 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
             
             this.plugins.push(actionsPlugin);
             
-            this.bbar = ['->', {
+            this.tbar = ['->', {
             	text: 'Присоединить',
             	iconCls: 'add',
             	handler: this.onAttach,
@@ -107,10 +114,12 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
 	    
             this.on({
                 afteredit: function(params) {
-                    console.log(params);
                     switch (params.field) {
                         case 'success':
                             this.onCheck(params.record);
+                            break;
+                        default:
+                            this.onUpdate(params.record);
                             break;
                     }
                 },
@@ -149,36 +158,74 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
             scope: this
         });
     },
+
+    onUpdate: function(record) {
+        this.el.mask('Запись...');
+        Ext.Ajax.request({
+           url: this.updateURL,
+           params: { 
+                id: record.get('id'),
+                cost: record.get('cost'),
+                note: record.get('note')
+           },
+           success: function(res) {
+                var errors = Ext.decode(res.responseText).errors;
+                if (errors) {
+                    xlib.Msg.error(errors[0].msg);
+                    record.reject();
+                    this.el.unmask();
+                    return;
+                }
+                record.commit();
+                this.el.unmask();
+            },
+            failure: function() {
+                xlib.Msg.error('Ошибка связи с сервером.');
+                record.reject();
+                this.el.unmask();
+            },
+            scope: this
+        });
+    },
     
     onAttach: function(g, rowIndex) {
+        
         var scope = this;
+        
+        var onRowdblclick = function(g, rowIndex) {
+            g.el.mask('Запись...');
+            Ext.Ajax.request({
+                url: scope.attachURL,
+                params: {
+                    supplier_id: g.getStore().getAt(rowIndex).get('id'), 
+                    order_id: scope.orderId
+                },
+                success: function(res) {
+                    var errors = Ext.decode(res.responseText).errors;
+                    if (errors) {
+                        xlib.Msg.error(errors[0].msg);
+                        g.el.unmask();
+                        return;
+                    }
+                    g.el.unmask();
+                    wind.close();
+                    scope.getStore().load();
+                },
+                failure: function() {
+                    g.el.unmask();
+                    xlib.Msg.error('Ошибка связи с сервером.');
+                }
+            });
+        };
+        
         var itemsList = new PMS.ContragentsListAbstract({
             entity: 'suppliers',
-            onRowdblclick: function(g, rowIndex) {
-                g.el.mask('Запись...');
-                Ext.Ajax.request({
-                    url: scope.attachURL,
-                    params: {
-                        supplier_id: g.getStore().getAt(rowIndex).get('id'), 
-                        order_id: scope.orderId
-                    },
-                    success: function(res) {
-                        var errors = Ext.decode(res.responseText).errors;
-                        if (errors) {
-                            xlib.Msg.error(errors[0].msg);
-                            g.el.unmask();
-                            return;
-                        }
-                        g.el.unmask();
-                        wind.close();
-                        scope.getStore().load();
-                    },
-                    failure: function() {
-                        g.el.unmask();
-                        xlib.Msg.error('Ошибка связи с сервером.');
-                    }
-                });
-            }
+            onRowdblclick: onRowdblclick,
+            actions: [{
+                text: 'Присоединить',
+                iconCls: 'add',
+                handler: onRowdblclick.createDelegate(this)
+            }, '-']
         });
         
         var wind = new Ext.Window({

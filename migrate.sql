@@ -17,7 +17,7 @@ ALTER TABLE `suppliers` DROP `subcontractor_id` ;
 DROP TABLE `orders_subcontractors` ;
 DROP TABLE `subcontractors` ;
 
-ALTER TABLE `orders_suppliers` ADD `cost` INT NOT NULL ;
+ALTER TABLE `orders_suppliers` ADD `cost` INT NULL ;
 ALTER TABLE `orders_suppliers` ADD `note` TEXT NULL ;
 ALTER TABLE `orders_suppliers` DROP PRIMARY KEY ;
 ALTER TABLE `orders_suppliers` DROP FOREIGN KEY `orders_suppliers_ibfk_1`  ;

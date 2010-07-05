@@ -35,6 +35,7 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
         	title: 'Комментарии',
         	region: 'south',
         	border: false,
+        	permissions: false,
         	height: 300,
         	cls: 'x-border-left x-border-top'
         });

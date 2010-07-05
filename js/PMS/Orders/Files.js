@@ -13,6 +13,8 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
     title: 'Документы',
 	
     autoScroll: true,
+
+    border: false,
     
     allowEdit: false,
     
@@ -96,7 +98,7 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
                 });
             }
             if (acl.isAdd('orders', 'files')) {
-                this.bbar = ['->', {
+                this.tbar = ['->', {
                     text: 'Добавить',
                     iconCls: 'add',
                     handler: this.onUpload,

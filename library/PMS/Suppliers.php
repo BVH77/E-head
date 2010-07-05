@@ -201,6 +201,37 @@ class PMS_Suppliers
         return $response->addStatus(new PMS_Status($status));
     }
     
+    public function updateByOrdersSuppliersId($params) {
+    	
+        $f = new OSDN_Filter_Input(array(), array(
+            'id'   => array('int', 'presence' => 'required'),
+            'cost' => array('int', 'presence' => 'required'),
+            'note' => array(array('StringLength', 1, 255), 'allowEmpty' => true)
+        ), $params);
+
+        $response = new OSDN_Response();
+        $response->addInputStatus($f);
+        if ($response->hasNotSuccess()) {
+            return $response;
+        }
+        
+        $ordersSuppliers = new PMS_Orders_Table_OrdersSuppliers();
+        try {
+            $updatedRows = $ordersSuppliers->updateByPk($f->getData(), $f->getEscaped('id'));
+            if ($updatedRows > 0) {
+                $status = PMS_Status::UPDATED;
+            } else if ($updatedRows === 0) {
+                $status = PMS_Status::UPDATED_NO_ONE_ROWS_UPDATED;
+            } else {
+                $status = PMS_Status::FAILURE;
+            }
+        } catch (Exception $e) {
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+        }
+
+        return $response->addStatus(new PMS_Status($status));
+    }
+    
     public function check($id, $success)
     {
     	$response = new OSDN_Response();

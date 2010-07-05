@@ -224,6 +224,7 @@ class PMS_Orders
         }
         $select = $this->_table->getAdapter()->select();
         $accounts = new OSDN_Accounts_Table_Accounts();
+        $customers = new PMS_Customers_Table_Customers();
         $select->from(array('o' => $this->_table->getTableName()), '*');
         $select->join(array(
             'u' => $accounts->getTableName()), 

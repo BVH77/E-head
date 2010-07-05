@@ -1,6 +1,6 @@
 Ext.ns('PMS.Orders');
 
-PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
+PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
     
     loadURL: link('orders', 'index', 'get'),
 
@@ -16,41 +16,59 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
     
     permissions: true,
     
-    activeTab: 0,
-    
     border: false,
     
-    defaults: {
-        border: false
-    },
+    padding: 0,
     
     initComponent: function() {
+
+    	this.formInfo = new PMS.Orders.Edit.Info();
         
-        this.form = new PMS.Orders.Edit.Info({permissions: this.permissions});
+        this.formProduction = new PMS.Orders.Edit.Production({
+            scope: this
+        });
         
-        this.items = [{
-            title: 'Детали',
-            bbar: this.permissions ? [{
-                    text: 'В архив', 
-                    hidden: (!this.record || !this.record.get('success_date_fact') || !acl.isAdd('archive')),
-                    handler: this.archive, 
-                    scope: this
-                }, '->',
-                {text: 'Сохранить', handler: this.onSave, scope: this}, '-',  
-                {text: 'Отменить', handler: function() {this.wind.close();}, scope: this}
-            ] : ['->', {text: 'Закрыть', handler: function() {this.wind.close();}, scope: this}],
-            items: [this.form]
-        }]
+        this.formMount = new PMS.Orders.Edit.Mount({
+    	   scope: this
+        });
+        
+        this.tabPanel = new Ext.TabPanel({
+            activeTab: 0,
+            border: false,
+            items: [this.formInfo]
+        });
+    	
+        this.items = [this.tabPanel];
+        
+        this.bbar = this.permissions ? [{
+    		text: 'В архив', 
+    		hidden: (!this.record || !this.record.get('success_date_fact') || !acl.isAdd('archive')),
+    		handler: this.archive, 
+    		scope: this
+    	}, '->',
+    	{text: 'Сохранить', handler: this.onSave, scope: this}, '-',  
+    	{text: 'Отменить', handler: function() {this.wind.close();}, scope: this}
+    	] : ['->', {text: 'Закрыть', handler: function() {this.wind.close();}, scope: this}];
         
         PMS.Orders.Edit.superclass.initComponent.apply(this, arguments);
+
+        this.addEvents('add', 'saved', 'load');
+        
+        this.formInfo.on('productionChecked', function(v) {
+            this.formProduction.setDisabled(!v);
+        }, this);
+        
+        this.formInfo.on('mountChecked', function(v) {
+            this.formMount.cascade(function(cmp) {
+                cmp.setDisabled(!v);
+            });
+        }, this);
         
         if (this.record) {
             this.orderId = this.record.get('id');
-            this.on('render', function() {this.loadData(this.record)}, this, {delay: 50});
             this.enableTabs();
+            this.on('render', function() {this.loadData(this.record)}, this, {delay: 50});
         }
-        
-        this.addEvents('add', 'saved', 'load');
     },
     
     enableTabs: function() {
@@ -60,32 +78,35 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
         }); 
         
         this.files = new PMS.Orders.Files({
+            autoHeight: true,
             allowEdit: this.permissions,
             orderId: this.orderId, 
             border: false
         });
         
         this.notes = new PMS.Orders.Edit.Notes({
+            height: 315,
             permissions: this.permissions,
+            orderId: this.orderId,
             listeners: {
         		render: function(obj) {
                 	obj.store.load();
         		},
         		scope: this
-            },
-            orderId: this.orderId
+            }
         });
         
-        this.add(this.suppliers, this.files, this.notes);
+        this.tabPanel.add(this.formProduction, this.formMount, this.suppliers, this.files, this.notes);
+        
     },
     
     onSave: function() {
-        if (this.form.getForm().isValid()) {
-            this.form.el.mask('Запись...');
+        if (this.getForm().isValid()) {
+            this.el.mask('Запись...');
             var url = this.orderId ? this.saveURL : this.addURL;
             var params = this.orderId ? {id: this.orderId} : {};
             var act = this.orderId ? 'saved' : 'added'; 
-            this.form.getForm().submit({
+            this.getForm().submit({
                 url: url,
                 params: params,
                 success: function(f, action) {
@@ -101,17 +122,24 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
                     } else {
                         this.onFailure(f, action);
                     }
-                    this.form.el.unmask();
+                    this.el.unmask();
                 }, 
                 failure: function(response, options) {
                     var res = Ext.decode(response.responseText);
                     this.onFailure(res, options);
-                    this.form.el.unmask();
+                    this.el.unmask();
                 },
                 scope: this
-            }
-            );
+            });
+        } else {
+            xlib.Msg.error('Не все обязательные правильно заполнены!');
         }
+    },
+    
+    loadData: function(record) {
+        this.getForm().loadRecord(record);
+        this.suppliers.loadData(record.data);
+        this.files.loadData(record.data);
     },
     
     showInWindow: function(cfg) {
@@ -126,12 +154,6 @@ PMS.Orders.Edit = Ext.extend(Ext.TabPanel, {
         }, cfg || {}));
         this.wind.show();
         return this.wind;
-    },
-    
-    loadData: function(record) {
-        this.form.loadData(record);
-        this.suppliers.loadData(record.data);
-        this.files.loadData(record.data);
     },
     
     archive: function() {

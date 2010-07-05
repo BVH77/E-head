@@ -104,3 +104,9 @@
 .x-small-editor .x-form-text {
 	vertical-align: top !important;
 }
+
+div.search-item {
+	font: normal 11px tahoma, arial, helvetica, sans-serif;
+	padding: 3px 10px 3px 10px;
+	border-bottom: 1px solid #eeeeee;
+}

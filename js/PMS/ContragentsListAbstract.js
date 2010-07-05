@@ -1,12 +1,14 @@
 Ext.ns('PMS');
 
 PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
+    
+    entity: null,
+    
+    actions: [],
 	
     autoScroll: true,
     
     border: false,
-    
-    entity: null,
     
     loadMask: {msg: 'Загрузка...'},
     
@@ -62,24 +64,32 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
             }]
         });
         
+        var actions = [{
+            text: 'Добавить нового',
+            iconCls: 'add',
+            handler: this.add.createDelegate(this),
+            hidden: !acl.isAdd(this.entity)
+        }, '-', {
+            text: 'Редактировать',
+            iconCls: 'edit',
+            handler: this.edit.createDelegate(this),
+            hidden: !acl.isUpdate(this.entity)
+        }, {
+            text: 'Удалить',
+            iconCls: 'delete',
+            handler: this.onDelete,
+            hidden: !acl.isDelete(this.entity)
+        }];
+        
+        if (Ext.isArray(this.actions) && !Ext.isEmpty(this.actions)) {
+            this.actions = this.actions.concat(actions);
+        } else {
+            this.actions = actions;
+        }
+        
         var actionsPlugin = new xlib.grid.Actions({
 	        autoWidth: true,
-	        items: [{
-                text: 'Добавить нового',
-                iconCls: 'add',
-                handler: this.add.createDelegate(this),
-                hidden: !acl.isAdd(this.entity)
-            }, '-', {
-                text: 'Редактировать',
-                iconCls: 'edit',
-                handler: this.edit.createDelegate(this),
-                hidden: !acl.isUpdate(this.entity)
-            }, {
-                text: 'Удалить',
-                iconCls: 'delete',
-                handler: this.onDelete,
-                hidden: !acl.isDelete(this.entity)
-            }]
+	        items: this.actions
 	    });
 	    
 	    this.plugins = [new Ext.grid.GridFilters({
