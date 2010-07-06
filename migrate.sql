@@ -6,6 +6,9 @@ CREATE TABLE IF NOT EXISTS `customers` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT AUTO_INCREMENT=11 ;
 ALTER TABLE `orders` ADD `customer_id` INT UNSIGNED NULL DEFAULT NULL AFTER `id` , ADD INDEX ( customer_id );
 ALTER TABLE `orders` ADD FOREIGN KEY ( `customer_id` ) REFERENCES `customers` (`id`);
+
+-- ------------------------------ updated on quarant ---------------------------
+
 INSERT INTO `customers` (`name`) SELECT DISTINCT `customer` FROM `orders` WHERE `customer` IS NOT NULL AND `customer` != '';
 UPDATE `orders` SET `customer_id` = (SELECT `id` FROM `customers` WHERE `customers`.`name` = `orders`.`customer`);
 ALTER TABLE `orders` DROP `customer`; 
@@ -23,13 +26,9 @@ ALTER TABLE `orders_suppliers` DROP PRIMARY KEY ;
 ALTER TABLE `orders_suppliers` DROP FOREIGN KEY `orders_suppliers_ibfk_1`  ;
 ALTER TABLE `orders_suppliers` DROP FOREIGN KEY `orders_suppliers_ibfk_2` ;
 ALTER TABLE `orders_suppliers` ADD `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
-ALTER TABLE `orders_suppliers` DROP INDEX `order_id` ;
-ALTER TABLE `orders_suppliers` DROP INDEX `supplier_id` ;
-ALTER TABLE `orders_suppliers` ADD INDEX ( `order_id` );
-ALTER TABLE `orders_suppliers` ADD INDEX ( `supplier_id` );
 ALTER TABLE `orders_suppliers` ADD UNIQUE ( `order_id`, `supplier_id` );
-ALTER TABLE `orders_suppliers` ADD FOREIGN KEY ( `order_id` ) REFERENCES `pms`.`orders` (`id`) ON DELETE CASCADE ;
-ALTER TABLE `orders_suppliers` ADD FOREIGN KEY ( `supplier_id` ) REFERENCES `pms`.`suppliers` (`id`) ON DELETE CASCADE ;
+ALTER TABLE `orders_suppliers` ADD FOREIGN KEY ( `order_id` ) REFERENCES `orders` (`id`) ON DELETE CASCADE ;
+ALTER TABLE `orders_suppliers` ADD FOREIGN KEY ( `supplier_id` ) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ;
 
 ALTER TABLE `orders` ADD `archive_date` TIMESTAMP NULL ;
 ALTER TABLE `orders` ADD `invoice_number` VARCHAR( 255 ) NULL ;
