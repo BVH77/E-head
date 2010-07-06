@@ -30,3 +30,9 @@ ALTER TABLE `orders_suppliers` ADD INDEX ( `supplier_id` );
 ALTER TABLE `orders_suppliers` ADD UNIQUE ( `order_id`, `supplier_id` );
 ALTER TABLE `orders_suppliers` ADD FOREIGN KEY ( `order_id` ) REFERENCES `pms`.`orders` (`id`) ON DELETE CASCADE ;
 ALTER TABLE `orders_suppliers` ADD FOREIGN KEY ( `supplier_id` ) REFERENCES `pms`.`suppliers` (`id`) ON DELETE CASCADE ;
+
+ALTER TABLE `orders` ADD `archive_date` TIMESTAMP NULL ;
+ALTER TABLE `orders` ADD `invoice_number` VARCHAR( 255 ) NULL ;
+ALTER TABLE `orders` ADD `invoice_date` DATE NULL ;
+ALTER TABLE `orders` ADD `act_number` VARCHAR( 255 ) NULL ;
+ALTER TABLE `orders` ADD `act_date` DATE NULL ;

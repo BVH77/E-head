@@ -89,9 +89,48 @@ class PMS_Orders
         return $response->addStatus(new PMS_Status($status));
     }
 
-    public function archive($id, $dir = true)
+    public function archive($params, $dir = true)
     {
-        return $this->update(array('id' => $id, 'archive' => $dir ? 1 : 0));
+        $response = new OSDN_Response();
+        
+        $validate = new OSDN_Validate_Id();
+        
+        if (!$validate->isValid($params['id'])) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
+        }
+        
+    	$data = array();
+    	
+    	if ($dir) {
+    		
+	        $f = new OSDN_Filter_Input(array(
+	            'id'   => 'Int',
+	            '*'    => 'StringTrim'
+	        ), array(
+	            'id'               => array('id', 'presence' => 'required'),
+	            'invoice_number'   => array(array('StringLength', 1, 255)),
+	            'invoice_date'     => array(array('StringLength', 1, 255)),
+	            'act_number'       => array(array('StringLength', 1, 255)),
+	            'act_date'         => array(array('StringLength', 1, 255))
+	        ), $params);
+	        $response->addInputStatus($f);
+	        
+	        if ($response->hasNotSuccess()) {
+	            return $response;
+	        }
+	        
+	        $data = $f->getData();
+            $data['archive_date'] = new Zend_Db_Expr('NOW()');
+    	}
+    	
+        $data['archive'] = $dir ? 1 : 0;
+        
+        $res = $this->_table->updateByPk($data, $params['id']);
+        
+        return $response->addStatus(new PMS_Status(
+            $res === false ? PMS_Status::FAILURE : PMS_Status::OK
+        ));
     }
     
     public function delete($id)
@@ -103,9 +142,9 @@ class PMS_Orders
             	PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
         $affectedRows = $this->_table->deleteByPk($id);
-        $status = PMS_Status::retrieveAffectedRowStatus($affectedRows);
-        $response->addStatus(new PMS_Status($status));
-        return $response;
+        return $response->addStatus(new PMS_Status(
+            PMS_Status::retrieveAffectedRowStatus($affectedRows)
+        ));
     }
     
     /**

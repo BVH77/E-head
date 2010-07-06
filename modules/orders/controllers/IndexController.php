@@ -124,7 +124,7 @@ class Orders_IndexController extends OSDN_Controller_Action
     
     public function archiveAction()
     {
-        $response = $this->_class->archive($this->_getParam('id'));
+        $response = $this->_class->archive($this->_getAllParams());
         if ($response->isSuccess()) {
             $this->view->success = true;
         } else {
@@ -134,7 +134,7 @@ class Orders_IndexController extends OSDN_Controller_Action
     
     public function unArchiveAction()
     {
-        $response = $this->_class->archive($this->_getParam('id'), false);
+        $response = $this->_class->archive(array('id' => $this->_getParam('id')), false);
         if ($response->isSuccess()) {
             $this->view->success = true;
         } else {

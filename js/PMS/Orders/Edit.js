@@ -132,7 +132,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
                 scope: this
             });
         } else {
-            xlib.Msg.error('Не все обязательные правильно заполнены!');
+            xlib.Msg.error('Не все обязательные поля правильно заполнены!');
         }
     },
     
@@ -143,6 +143,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
     },
     
     showInWindow: function(cfg) {
+        
         this.wind = new Ext.Window(Ext.apply({
             title: this.orderId ? 'Заказ № ' + this.orderId : 'Новый заказ',
             width: 700,
@@ -152,11 +153,110 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
             modal: true,
             items: [this]
         }, cfg || {}));
+        
         this.wind.show();
+        
+        this.on('archived', function() {
+            this.wind.close();
+        }, this);
+        
         return this.wind;
     },
     
     archive: function() {
+        
+        var scope = this;
+        
+        var archiveForm = new xlib.form.FormPanel({
+            permissions: true,
+            layout: 'column', 
+            columns: 2,
+            defaults: {
+                layout: 'form',
+                border: false,
+                labelWidth: 50,
+                defaults: {
+                    allowBlank: false,
+                    anchor: '90%'
+                },
+                columnWidth: .5
+            },
+            items: [{
+                items: [{
+                    xtype: 'textfield',
+                    fieldLabel: 'Счет №',
+                    name: 'invoice_number'
+                }, {
+                    xtype: 'xlib.form.DateField',
+                    fieldLabel: 'От',
+                    name: 'invoice_date'
+                }]
+            }, {
+                items: [{
+                    xtype: 'textfield',
+                    fieldLabel: 'Акт №',
+                    name: 'act_number'
+                }, {
+                    xtype: 'xlib.form.DateField',
+                    fieldLabel: 'От',
+                    name: 'act_date'
+                }]
+            }]
+        });
+        
+        var archiveWindow = new Ext.Window({
+            title: 'Поместить заказ № ' + this.orderId + ' в архив',
+            autoShow: true,
+            width: 400,
+            height: 125,
+            layout: 'fit',
+            resizable: false,
+            modal: true,
+            items: [archiveForm],
+            bbar: ['->', {
+                text: 'OK',
+                minWidth: 30,
+                handler: function() {
+                    
+                    if (!scope.orderId) {
+                        return;
+                    }
+                    
+                    if (archiveForm.getForm().isValid() == false) {
+                        xlib.Msg.error('Не все обязательные поля правильно заполнены!');
+                        return;    
+                    }
+                    
+                    archiveForm.el.mask('Запись...');
+                    
+                    archiveForm.getForm().submit({
+                        url: scope.archiveURL,
+                        params: {id: scope.orderId},
+                        success: function(f, action) {
+                            if (true === action.result.success) {
+                                scope.fireEvent('archived');
+                                archiveWindow.close();
+                            } else {
+                                archiveForm.el.unmask();
+                                var res = Ext.decode(response.responseText);
+                                scope.onFailure(res);
+                            }
+                        }, 
+                        failure: function(response, options) {
+                            archiveForm.el.unmask();
+                            scope.onFailure('Ошибка записи.');
+                        }
+                    });
+                }
+            }, '-', {
+                text: 'Отмена',
+                handler: function() {
+                    archiveWindow.close()
+                }
+            }]
+        }).show();
+        
+        /*
         Ext.Msg.show({
             title: 'Подтверждение',
             msg: 'Вы уверены?',
@@ -182,7 +282,10 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
             scope: this,
             icon: Ext.MessageBox.QUESTION
         });
+        */
     },
     
-    onFailure: Ext.emptyFn
+    onFailure: function(msg) {
+        xlib.Msg.error(msg);
+    }
 });
