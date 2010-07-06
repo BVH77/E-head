@@ -35,7 +35,7 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
 	        sortInfo: {field: 'success_date_fact', direction: 'ASC'},
 	        fields: [
 	            {name: 'id'},
-	            {name: 'customer'},
+	            {name: 'customer_name'},
 	            {name: 'address'},
 	            {name: 'description'},
 	            {name: 'mount'},
@@ -56,8 +56,6 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
 	            {name: 'creator_id'},
 	            {name: 'creator_name'},
 	            {name: 'suppliers'},
-	            {name: 'subcontractors'},
-	            {name: 'photos'},
 	            {name: 'files'}
 	        ]
 	    });
@@ -171,7 +169,7 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
         }, {
             header: 'Заказчик', 
             id: this.autoExpandColumn,
-            dataIndex: 'customer',
+            dataIndex: 'customer_name',
             sortable: true
         }, {
             header: 'Адрес', 

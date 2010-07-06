@@ -11,7 +11,6 @@ editForm.on('render', function() {
         params: {id: this.orderId} 
     });
     this.suppliers.getStore().load({});
-    this.subcontractors.getStore().load();
     this.photos.view.store.load({params: {orderId: this.orderId}});
 }, editForm, {delay: 50});
 editForm.showInWindow({

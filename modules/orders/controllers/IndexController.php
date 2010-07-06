@@ -38,13 +38,6 @@ class Orders_IndexController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'remove-supplier');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'check-supplier');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update-supplier');
-        
-        $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->subcontractors);
-        $acl->isAllowed(OSDN_Acl_Privilege::VIEW,   'get-subcontractors');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'attach-subcontractor');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'remove-subcontractor');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'check-subcontractor');
-        
     }
     
 	public function getListAction()
