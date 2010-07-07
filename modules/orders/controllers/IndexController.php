@@ -29,8 +29,8 @@ class Orders_IndexController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::ADD,    'add');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
         $acl->isAllowed(OSDN_Acl_Privilege::DELETE, 'delete');
-        $acl->isAllowed(OSDN_Acl_Privilege::DELETE, 'get-notes');
-        $acl->isAllowed(OSDN_Acl_Privilege::DELETE, 'add-note');
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-notes');
+        $acl->isAllowed(OSDN_Acl_Privilege::ADD, 'add-note');
         
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->suppliers);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW,   'get-suppliers');
