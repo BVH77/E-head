@@ -69,8 +69,18 @@ class PMS_Suppliers
         if (!$validate->isValid($id)) {
             return $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
-        $affectedRows = $this->_table->deleteByPk($id);
-        $status = PMS_Status::retrieveAffectedRowStatus($affectedRows);
+        if (!$this->_checkRelations($id)) {
+            return $response->addStatus(new PMS_Status(PMS_Status::DELETE_FAILED));
+        }
+        try {
+	        $affectedRows = $this->_table->deleteByPk($id);
+	        $status = PMS_Status::retrieveAffectedRowStatus($affectedRows);
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            $status = PMS_Status::DATABASE_ERROR;
+        }
         return $response->addStatus(new PMS_Status($status));
     }
     
@@ -79,8 +89,7 @@ class PMS_Suppliers
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
-            $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
-            return $response;
+            return $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
         $select = $this->_table->getAdapter()->select()
             ->from($this->_table->getTableName())
@@ -284,5 +293,20 @@ class PMS_Suppliers
             }
         }
         return $response->addStatus(new PMS_Status($status));
+    }
+    
+    // ----------------------- Private methods ---------------------------------
+    
+    /**
+     * Check subject if assigned to orders
+     * 
+     * @param $id int
+     * @return bool
+     */
+    private function _checkRelations($id)
+    {
+        $ordersTable = new PMS_Orders_Table_OrdersSuppliers();
+        $row = $ordersTable->fetchRow(array('supplier_id = ?' => intval($id)));
+        return $row === null; 
     }
 }

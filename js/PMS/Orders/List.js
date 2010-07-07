@@ -234,13 +234,13 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             sortable: true
         }, {
             header: 'Заказчик', 
-            id: this.autoExpandColumn,
+            width: 150,
             dataIndex: 'customer_name',
             sortable: true
         }, {
             header: 'Адрес', 
+            id: this.autoExpandColumn,
             dataIndex: 'address',
-            width: 180,
             sortable: true
         }, {
             header: 'Сдача (план)',

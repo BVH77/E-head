@@ -140,7 +140,16 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
                         success: function(res){
                             var errors = Ext.decode(res.responseText).errors;
                             if (errors) {
-                                xlib.Msg.error(errors[0].msg);
+                                var msg;
+                                switch (errors[0].code) {
+                                    case -20:
+                                        msg = 'Невозможно удалить. ' +
+                                            'Субъект связан с одним или более заказами.'
+                                        break;
+                                    default:
+                                        msg = errors[0].msg;
+                                }
+                                xlib.Msg.error(msg);
                                 return;
                             }
                             g.getStore().reload();

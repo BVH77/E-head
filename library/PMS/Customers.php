@@ -74,10 +74,19 @@ class PMS_Customers
         if (!$validate->isValid($id)) {
             return $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
-        $affectedRows = $this->_table->deleteByPk($id);
-        $status = PMS_Status::retrieveAffectedRowStatus($affectedRows);
-        $response->addStatus(new PMS_Status($status));
-        return $response;
+        if (!$this->_checkRelations($id)) {
+            return $response->addStatus(new PMS_Status(PMS_Status::DELETE_FAILED));
+        }
+        try {
+            $affectedRows = $this->_table->deleteByPk($id);
+            $status = PMS_Status::retrieveAffectedRowStatus($affectedRows);
+        } catch (Exception $e) {
+        	if (OSDN_DEBUG) {
+                throw $e;
+            }
+            $status = PMS_Status::DATABASE_ERROR;
+        }
+        return $response->addStatus(new PMS_Status($status));
     }
     
     public function get($id)
@@ -151,5 +160,20 @@ class PMS_Customers
             }
         }
         return $response->addStatus(new PMS_Status($status));
+    }
+    
+    // ----------------------- Private methods ---------------------------------
+    
+    /**
+     * Check subject if assigned to orders
+     * 
+     * @param $id int
+     * @return bool
+     */
+    private function _checkRelations($id)
+    {
+        $ordersTable = new PMS_Orders_Table_Orders();
+        $row = $ordersTable->fetchRow(array('customer_id = ?' => intval($id)));
+        return $row === null; 
     }
 }

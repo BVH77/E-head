@@ -2,7 +2,7 @@
 + hide mount/prod sections (in order, order details, reports) if disabled
 + reorganize tabs (make production tab & mountage tab with according dates, suppliers, costs)
 
-- add an invoice number / date & act number / date before move to archive (also figured in per customer's report and order details)
++ add an invoice number / date & act number / date before move to archive (also figured in per customer's report and order details)
 
 Bugs:
 
