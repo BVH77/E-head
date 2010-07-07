@@ -31,6 +31,7 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
             xtype: 'pms.customers.combo',
             disabled: !acl.isUpdate('orders', 'address'),
             anchor: '-1',
+            disabled: !acl.isUpdate('customers'),
 			allowBlank: false
         }, {
             xtype: 'textfield',
