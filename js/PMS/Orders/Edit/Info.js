@@ -29,9 +29,7 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
 
         this.items = [{
             xtype: 'pms.customers.combo',
-            disabled: !acl.isUpdate('orders', 'address'),
             anchor: '-1',
-            disabled: acl.isUpdate('customers'),
 			allowBlank: false
         }, {
             xtype: 'textfield',
@@ -75,10 +73,6 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
         			allowBlank: false,
         			handler: function(cb, status) {
         				this.fireEvent('productionChecked', status);
-//	                    this.getForm().findField('production_start_planned').setDisabled(!status);
-//	                    this.getForm().findField('production_start_fact').setDisabled(!status);
-//	                    this.getForm().findField('production_end_planned').setDisabled(!status);
-//	                    this.getForm().findField('production_end_fact').setDisabled(!status);
 	                }, scope: this
         		}]
         	}, {
@@ -94,10 +88,6 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
         			allowBlank: false,
         			handler: function(cb, status) {
         				this.fireEvent('mountChecked', status);
-//	                    this.getForm().findField('mount_start_planned').setDisabled(!status);
-//	                    this.getForm().findField('mount_start_fact').setDisabled(!status);
-//	                    this.getForm().findField('mount_end_planned').setDisabled(!status);
-//	                    this.getForm().findField('mount_end_fact').setDisabled(!status);
 	                }, scope: this
         		}]
         	}]

@@ -96,7 +96,7 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
                 }
             }
         }];
-                
+    	
         PMS.Customers.Combo.superclass.initComponent.apply(this, arguments);
     }
 });

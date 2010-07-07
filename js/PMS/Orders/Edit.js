@@ -14,7 +14,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
     
     orderId: null,
     
-    permissions: true,
+    permissions: acl.isUpdate('orders'),
     
     border: false,
     
