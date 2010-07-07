@@ -13,6 +13,7 @@ class PMS_Reports
     {
         $this->_tableOrders = new PMS_Orders_Table_Orders();
         $this->_tableAccounts = new OSDN_Accounts_Table_Accounts();
+        $this->_tableCustomers = new PMS_Customers_Table_Customers();
     }
     
     public function generateSchedule($type)
@@ -23,9 +24,11 @@ class PMS_Reports
         }
     	$date = date_create();
     	$select = $this->_tableOrders->getAdapter()->select();
-    	$select->from(array('o' => $this->_tableOrders->getTableName()), array('id', 'customer', 'address'));
+    	$select->from(array('o' => $this->_tableOrders->getTableName()), array('id', 'address'));
     	$select->join(array('u' => $this->_tableAccounts->getTableName()), 
                       'o.creator_id=u.id', array('creator_name' => 'name'));
+    	$select->join(array('c' => $this->_tableCustomers->getTableName()), 
+                      'o.customer_id=c.id', array('customer_name' => 'name'));
     	$select->where($type . '_start_planned <= ?', date_format($date, 'Y-m-d'));
     	$select->where($type . '_end_fact IS NULL');
     	$select->where('success_date_fact IS NULL');
@@ -51,6 +54,8 @@ class PMS_Reports
         $select->from(array('o' => $this->_tableOrders->getTableName()));
         $select->join(array('u' => $this->_tableAccounts->getTableName()), 
                       'o.creator_id=u.id', array('creator_name' => 'name'));
+        $select->join(array('c' => $this->_tableCustomers->getTableName()), 
+                      'o.customer_id=c.id', array('customer_name' => 'name'));
         $select->where('success_date_fact IS NULL');
         $select->order('id');
     	try {

@@ -29,7 +29,7 @@ body {
 		<?php foreach ($month['orders'] as $order) :?>
 	        <tr>
                 <td><?=$order['id']?></td>
-                <td><nobr><?=$order['customer']?></nobr></td>
+                <td><nobr><?=$order['customer_name']?></nobr></td>
                 <td><?=$order['address']?></td>
                 <td><nobr><?=$order['creator_name']?></nobr></td>
                 <?php foreach ($order['days'] as $day) :?>
