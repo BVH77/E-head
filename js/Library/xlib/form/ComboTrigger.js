@@ -2,9 +2,9 @@ Ext.ns('xlib.form');
 
 xlib.form.ComboTrigger = Ext.extend(xlib.form.ComboBox, {
     
-    validationEvent:false,
+    validationEvent: false,
     
-    validateOnBlur:false,
+    validateOnBlur: false,
     
     trigger1Class: '',
     
