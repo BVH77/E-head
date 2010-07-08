@@ -8,6 +8,8 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
     
     title: 'Детали',
     
+    permissions: acl.isUpdate('orders'),
+    
     autoHeight: true,
     
     border: false,
@@ -29,6 +31,8 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
 
         this.items = [{
             xtype: 'pms.customers.combo',
+            permissions: acl.isUpdate('customers'),
+            disabled: acl.isUpdate('customers'),
             anchor: '-1',
 			allowBlank: false
         }, {

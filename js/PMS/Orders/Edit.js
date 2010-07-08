@@ -40,15 +40,23 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
     	
         this.items = [this.tabPanel];
         
-        this.bbar = this.permissions ? [{
+        this.bbar = [{
     		text: 'В архив', 
     		hidden: (!this.record || !this.record.get('success_date_fact') || !acl.isAdd('archive')),
     		handler: this.archive, 
     		scope: this
-    	}, '->',
-    	{text: 'Сохранить', handler: this.onSave, scope: this}, '-',  
-    	{text: 'Отменить', handler: function() {this.wind.close();}, scope: this}
-    	] : ['->', {text: 'Закрыть', handler: function() {this.wind.close();}, scope: this}];
+    	}, '->', {
+            text: 'Сохранить', 
+            hidden: !acl.isUpdate('orders'),
+            handler: this.onSave, 
+            scope: this
+        }, {
+            text: acl.isUpdate('orders') ? 'Отменить' : 'Закрыть', 
+            handler: function() {
+                this.wind.close();
+            }, 
+            scope: this
+        }];
         
         PMS.Orders.Edit.superclass.initComponent.apply(this, arguments);
 
