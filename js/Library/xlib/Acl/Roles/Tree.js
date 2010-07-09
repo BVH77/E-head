@@ -126,7 +126,7 @@ xlib.Acl.Roles.Tree = Ext.extend(xlib.TreePanel, {
     
     removeProcess: function(node) {
         Ext.Ajax.request({
-            url: link('admin', 'acl', 'remove-role'),
+            url: link('admin', 'acl-role', 'remove-role'),
             params: {
                 id: node.id
             },
