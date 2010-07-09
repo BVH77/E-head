@@ -25,7 +25,7 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
     	});
 
 		this.infoPanel = new PMS.Orders.Info({
-			title: 'Детали',
+			title: 'Детали заказа',
 			border: false,
 			width: 320,
 			margins: '0 2px 0 0',
