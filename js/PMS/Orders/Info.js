@@ -41,7 +41,8 @@ PMS.Orders.Info = Ext.extend(Ext.grid.GridPanel, {
     	}
     	var data = [
             ['№', record.get('id')],
-            ['Добавлено', dateFormt(record.get('created')) + ', ' + record.get('creator_name')]
+            ['Добавлено', dateFormt(record.get('created'))],
+            ['Менеджер', record.get('creator_name')]
         ];
     	if (acl.isView('customers')) {
     		data.push(['Заказчик', record.get('customer_name')]);
@@ -82,15 +83,6 @@ PMS.Orders.Info = Ext.extend(Ext.grid.GridPanel, {
         if (acl.isView('orders', 'cost')) {
         	data.push(['Стоимость', record.get('cost')]);
         	data.push(['Аванс', record.get('advanse')]);
-        }
-        if (acl.isView('orders', 'description')) {
-        	data.push(['Описание', record.get('description')]);
-        }
-        if (acl.isView('suppliers')) {
-        	data.push(['<b>Поставщики:</b>']);
-        	Ext.each(record.get('suppliers'), function(item) {
-        		data.push([item.name, acl.isView('orders', 'cost') ? item.cost : '']);
-        	});
         }
         
         this.store.loadData(data);

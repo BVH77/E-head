@@ -10,11 +10,6 @@ class PMS_Orders
     public function add(array $params)
     {
         $f = new OSDN_Filter_Input(array(
-            'customer_id'   => 'Int',
-            'cost'          => 'Int',
-            'advanse'       => 'Int',
-            'mount'         => 'Int',
-            'production'    => 'Int',
             '*'             => 'StringTrim'
         ), array(
             'customer_id'               => array('Int', 'allowEmpty' => true),
@@ -24,16 +19,8 @@ class PMS_Orders
             'advanse'                   => array('Int', 'allowEmpty' => true),
             'mount'                     => array('Int', 'allowEmpty' => true),
             'production'                => array('Int', 'allowEmpty' => true),
-            'production_start_planned'  => array(array('StringLength', 0, 10)),
-            'production_start_fact'     => array(array('StringLength', 0, 10)),
-            'production_end_planned'    => array(array('StringLength', 0, 10)),
-            'production_end_fact'       => array(array('StringLength', 0, 10)),
-            'mount_start_planned'       => array(array('StringLength', 0, 10)),
-            'mount_start_fact'          => array(array('StringLength', 0, 10)),
-            'mount_end_planned'         => array(array('StringLength', 0, 10)),
-            'mount_end_fact'            => array(array('StringLength', 0, 10)),
             'success_date_planned'      => array(array('StringLength', 0, 10)),
-            'success_date_fact'         => array(array('StringLength', 0, 10))
+            'success_date_fact'         => array(array('StringLength', 0, 10)),
         ), $params);
 
         $response = new OSDN_Response();
@@ -50,12 +37,6 @@ class PMS_Orders
     public function update(array $params)
     {
         $f = new OSDN_Filter_Input(array(
-            'id'            => 'Int',
-            'customer_id'   => 'Int',
-            'cost'          => 'Int',
-            'advanse'       => 'Int',
-            'mount'         => 'Int',
-            'production'    => 'Int',
             '*'             => 'StringTrim'
         ), array(
             'id'                        => array('int', 'presence' => 'required'),

@@ -56,6 +56,11 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
 	            {name: 'creator_id'},
 	            {name: 'creator_name'},
 	            {name: 'suppliers'},
+	            {name: 'archive_date', type: 'date', dateFormat: xlib.date.DATE_TIME_FORMAT_SERVER},
+	            {name: 'invoice_number'},
+	            {name: 'invoice_date', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
+	            {name: 'act_number'},
+	            {name: 'act_date', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
 	            {name: 'files'}
 	        ]
 	    });
@@ -164,24 +169,57 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
 		this.columns = [{
             header: '№', 
             dataIndex: 'id',
-            width: 40,
+            width: 30,
             sortable: true
         }, {
             header: 'Заказчик', 
-            id: this.autoExpandColumn,
+            width: 180,
             dataIndex: 'customer_name',
             sortable: true
         }, {
             header: 'Адрес', 
+            id: this.autoExpandColumn,
             dataIndex: 'address',
-            width: 180,
             sortable: true
         }, {
-            header: 'Сдача (факт)',
+            header: 'Заказ сдан',
             dataIndex: 'success_date_fact',
             renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
-            width: 90,
+            width: 80,
             sortable: true
+        }, {
+        	header: 'Cдан в архив',
+        	dataIndex: 'archive_date',
+        	renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
+        	width: 80,
+        	sortable: true
+        }, {
+        	header: 'Счет №',
+        	dataIndex: 'invoice_number',
+        	width: 60,
+        	sortable: true
+        }, {
+        	header: 'Счет от',
+        	dataIndex: 'invoice_date',
+        	renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
+        	width: 70,
+        	sortable: true
+        }, {
+        	header: 'Акт №',
+        	dataIndex: 'act_number',
+        	width: 60,
+        	sortable: true
+        }, {
+        	header: 'Акт от',
+        	dataIndex: 'act_date',
+        	renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
+        	width: 70,
+        	sortable: true
+        }, {
+            header: 'Менеджер',
+            width: 120,
+            sortable: true,
+            dataIndex: 'creator_name'
         }];
         
         PMS.Orders.Archive.superclass.initComponent.apply(this, arguments);

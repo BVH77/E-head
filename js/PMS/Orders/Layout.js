@@ -18,7 +18,7 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
     	
     	this.filesPanel = new PMS.Orders.Files({
     		region: 'south',
-    		height: 130,
+    		height: 200,
     		border: false,
     		margins: '2px 0 0 0',
     		cls: 'x-border-right x-border-top'
@@ -26,18 +26,39 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
 
 		this.infoPanel = new PMS.Orders.Info({
 			title: 'Детали',
-			margins: '0 0 2px 0',
-			cls: 'x-border-left x-border-bottom',
-            region: 'center'
+			border: false,
+			width: 320,
+			margins: '0 2px 0 0',
+			cls: 'x-border-left x-border-right x-border-bottom',
+            region: 'west'
         });
         
+		this.suppliersPanel = new PMS.Orders.Suppliers({
+			title: 'Поставщики',
+			region: 'center',
+			border: false,
+			cls: 'x-border-left x-border-bottom',
+		});
+		
+		this.descriptionPanel = new Ext.Panel({
+			title: 'Описание',
+			region: 'center',
+			autoScroll: true,
+			padding: 5,
+			bodyCssClass: 'images-view',
+			cls: 'x-border-left x-border-top x-border-bottom',
+			border: false,
+			height: 200
+		})
+		
         this.notesPanel = new PMS.Orders.Edit.Notes({
         	title: 'Комментарии',
-        	region: 'south',
         	border: false,
+        	margins: '2px 0 0 0',
+        	cls: 'x-border-left x-border-top',
+        	region: 'south',
         	permissions: false,
-        	height: 300,
-        	cls: 'x-border-left x-border-top'
+        	height: 200
         });
 		
 	    this.items = [{
@@ -47,19 +68,34 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
 	    	items: [this.listPanel, this.filesPanel]	
 	    }, {
             layout: 'border',
-            width: 320,
+            width: 620,
 			region: 'east',
 			border: false,
             margins: '0 0 0 2px', 
             defaults: {
-                border: false
+	    		layout: 'border',
+	    		border: false
             },
-            items: [this.infoPanel, this.notesPanel]
+            items: [{
+            	region: 'center',
+            	margins: '0 0 2px 0',
+            	items: [this.infoPanel, this.suppliersPanel]
+            }, {
+            	region: 'south',
+            	height: 400,
+            	items: [this.descriptionPanel, this.notesPanel]
+            }]
         }];
         
         this.listPanel.on('orderselect', function(record) {
             this.infoPanel.loadData(record);
             this.filesPanel.loadData(record.data);
+            if (acl.isView('suppliers')) {
+            	this.suppliersPanel.loadData(record.get('suppliers'));
+            }
+            if (acl.isView('orders', 'description')) {
+            	this.descriptionPanel.update(record.get('description'));
+            }
             this.notesPanel.store.setBaseParam('orderId', record.get('id'));
             this.notesPanel.store.load();
         }, this);

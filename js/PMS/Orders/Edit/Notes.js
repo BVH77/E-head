@@ -31,7 +31,7 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
         	region: 'center',
         	border: false,
         	autoScroll: true,
-            cls: 'x-border-bottom',
+            cls: this.permissions ? 'x-border-bottom' : '',
         	items: [new Ext.DataView({
         		autoHeight: true,
         		autoWidth: true,

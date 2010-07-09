@@ -230,11 +230,11 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
 		this.columns = [{
             header: '№', 
             dataIndex: 'id',
-            width: 40,
+            width: 30,
             sortable: true
         }, {
             header: 'Заказчик', 
-            width: 150,
+            width: 100,
             dataIndex: 'customer_name',
             sortable: true
         }, {
@@ -243,22 +243,22 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             dataIndex: 'address',
             sortable: true
         }, {
-            header: 'Сдача (план)',
+            header: 'Сдать',
             dataIndex: 'success_date_planned',
             renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
-            width: 90,
+            width: 70,
             sortable: true
         }, {
-            header: 'Сдача (факт)',
+            header: 'Сдано',
             dataIndex: 'success_date_fact',
             renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
-            width: 90,
+            width: 70,
             sortable: true
         }, {
-            header: 'Дата/время заказа',
-            width: 120,
+            header: 'Добавлено',
+            width: 70,
             sortable: true,
-            renderer: xlib.dateRenderer(xlib.date.DATE_TIME_FORMAT),
+            renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
             dataIndex: 'created'
         }, {
             header: 'Менеджер',

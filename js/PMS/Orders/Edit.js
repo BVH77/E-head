@@ -197,7 +197,8 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
                 }, {
                     xtype: 'xlib.form.DateField',
                     fieldLabel: 'От',
-                    name: 'invoice_date'
+                    name: 'invoice_date',
+                    hiddenName: 'invoice_date'
                 }]
             }, {
                 items: [{
@@ -207,7 +208,8 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
                 }, {
                     xtype: 'xlib.form.DateField',
                     fieldLabel: 'От',
-                    name: 'act_date'
+                    name: 'act_date',
+                    hiddenName: 'act_date'
                 }]
             }]
         });
