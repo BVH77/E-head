@@ -37,7 +37,7 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
 			title: 'Поставщики',
 			region: 'center',
 			border: false,
-			cls: 'x-border-left x-border-bottom',
+			cls: 'x-border-left x-border-bottom'
 		});
 		
 		this.descriptionPanel = new Ext.Panel({
