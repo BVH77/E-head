@@ -23,6 +23,7 @@ xlib.PagingToolbar = Ext.extend(Ext.PagingToolbar, {
         if (false !== this.ps) {
             var o = Ext.applyIf(this.psConfig || {}, {
                 stateId: this.stateId,
+                pageSize: this.pageSize,
                 pagingToolbar: this
             });
             
@@ -33,16 +34,11 @@ xlib.PagingToolbar = Ext.extend(Ext.PagingToolbar, {
                 o.forceLoad = this.forceLoad;
             }
             
-            if (!Ext.isArray(this.plugins)) {
-                this.plugins = [this.plugins];
-            }
-            
             this.ps = new Ext.ux.Andrie.pPageSize(o);
             this.plugins = this.plugins.concat(this.ps);
         }
         
         xlib.PagingToolbar.superclass.initComponent.apply(this, arguments);
-        
     },
     
     beforeLoad: function(store, options) {

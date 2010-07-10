@@ -224,6 +224,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.bbar = new xlib.PagingToolbar({
             plugins: [this.filtersPlugin],
+            pageSize: 15,
             store: this.ds
         });
         
