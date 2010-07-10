@@ -36,14 +36,14 @@ PMS.Orders.Info = Ext.extend(Ext.grid.GridPanel, {
     },
     
     loadData: function(record) {
+    	
+        var data = [];
+        
     	var dateFormt = function(v) {
     		return Ext.isDate(v) ? v.format(xlib.date.DATE_FORMAT) : '';
     	}
-    	var data = [
-            ['№', record.get('id')],
-            ['Добавлено', dateFormt(record.get('created'))],
-            ['Менеджер', record.get('creator_name')]
-        ];
+        
+        data.push(['№', record.get('id')]);
     	if (acl.isView('customers')) {
     		data.push(['Заказчик', record.get('customer_name')]);
     	}
@@ -84,6 +84,8 @@ PMS.Orders.Info = Ext.extend(Ext.grid.GridPanel, {
         	data.push(['Стоимость', record.get('cost')]);
         	data.push(['Аванс', record.get('advanse')]);
         }
+        data.push(['Добавлено', dateFormt(record.get('created'))]);
+        data.push(['Менеджер', record.get('creator_name')]);     
         
         this.store.loadData(data);
     }
