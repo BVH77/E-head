@@ -12,15 +12,15 @@ class PMS_Orders
         $f = new OSDN_Filter_Input(array(
             '*'             => 'StringTrim'
         ), array(
-            'customer_id'               => array('Int', 'allowEmpty' => true),
-            'address'                   => array(array('StringLength', 1, 255)),
-            'description'               => array(array('StringLength', 0, 4096)),
-            'cost'                      => array('Int', 'allowEmpty' => true),
-            'advanse'                   => array('Int', 'allowEmpty' => true),
-            'mount'                     => array('Int', 'allowEmpty' => true),
-            'production'                => array('Int', 'allowEmpty' => true),
-            'success_date_planned'      => array(array('StringLength', 0, 10)),
-            'success_date_fact'         => array(array('StringLength', 0, 10)),
+            'customer_id'           => array('Int', 'allowEmpty' => true),
+            'address'               => array(array('StringLength', 1, 255)),
+            'description'           => array(array('StringLength', 0, 4096)),
+            'cost'                  => array('Int', 'allowEmpty' => true),
+            'advanse'               => array('Int', 'allowEmpty' => true),
+            'mount'                 => array('Int', 'allowEmpty' => true),
+            'production'            => array('Int', 'allowEmpty' => true),
+            'success_date_planned'  => array(array('StringLength', 0, 10)),
+            'success_date_fact'     => array(array('StringLength', 0, 10)),
         ), $params);
 
         $response = new OSDN_Response();
@@ -164,16 +164,13 @@ class PMS_Orders
         $select->join(array(
             'u' => $accounts->getTableName()), 
             'o.creator_id=u.id', 
-            array('creator_name' => 'name')
+            array('creator_name' => 'u.name')
         );
         $select->join(array(
             'c' => $customers->getTableName()), 
             'o.customer_id=c.id', 
-            array('customer_name' => 'name')
+            array('customer_name' => 'c.name')
         );
-        $select->order('success_date_fact');
-        $plugin = new OSDN_Db_Plugin_Select($this->_table, $select);
-        $plugin->parse($params);
         $acl = OSDN_Accounts_Prototype::getAcl();
         if ($acl->isAllowed(
             OSDN_Acl_Resource_Generator::getInstance()->orders->owncheck, 
@@ -197,6 +194,12 @@ class PMS_Orders
         		break;
         	default:
         }
+        //$select->order('success_date_fact');
+        $plugin = new OSDN_Db_Plugin_Select($this->_table, $select, 
+            array('id', 'address', 'success_date_fact', 'success_date_planned', 
+                'created', 'creator_name', 'customer_name')
+        );
+        $plugin->parse($params);
         
         $status = null;
         try {
