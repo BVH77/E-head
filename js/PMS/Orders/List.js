@@ -59,7 +59,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
 	        root: 'data',
 	        totalProperty: 'totalCount',
 	        remoteSort: true,
-	        sortInfo: {field: 'success_date_planned', direction: 'DESC'},
+	        sortInfo: {field: 'success_date_planned', direction: 'ASC'},
 	        fields: [
 	            {name: 'id'},
 	            {name: 'customer_id'},
