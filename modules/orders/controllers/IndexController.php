@@ -264,9 +264,18 @@ class Orders_IndexController extends OSDN_Controller_Action
         	return;
         }
         $order = $response->getRow();
-        if (empty($order)) {
+        if (empty($order) || empty($order['created'])) {
         	return;
         }
+        
+        // check if order is younger than 1 hour, when return - no message
+        $now = new Zend_Date();
+        $created = new Zend_date($order['created']);
+        $diff = $now->getTimestamp() - $created->getTimestamp(); 
+        if ($diff < 60*60) {
+        	return;
+        }
+        
         $orderAddress = $order['address'];
         $customer = $order['customer_name'];
         
