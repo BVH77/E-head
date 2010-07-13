@@ -63,7 +63,9 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         this.addEvents('add', 'saved', 'load');
         
         this.formInfo.on('productionChecked', function(v) {
-            this.formProduction.setDisabled(!v);
+            this.formProduction.cascade(function(cmp) {
+                cmp.setDisabled(!v);
+            });
         }, this);
         
         this.formInfo.on('mountChecked', function(v) {
