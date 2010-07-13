@@ -17,15 +17,12 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
     	});
     	
     	this.filesPanel = new PMS.Orders.Files({
-    		region: 'south',
-    		height: 130,
+    		region: 'center',
     		border: false,
-    		margins: '2px 0 0 0',
-    		cls: 'x-border-right x-border-top'
+    		cls: 'x-border-left x-border-bottom'
     	});
 
 		this.infoPanel = new PMS.Orders.Info({
-			title: 'Детали заказа',
 			width: 320,
 			margins: '0 2px 0 0',
 			cls: 'x-border-left x-border-right x-border-bottom',
@@ -34,16 +31,17 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
         
 		this.descriptionPanel = new Ext.Panel({
 			title: 'Описание',
-			region: 'center',
+			region: 'south',
 			autoScroll: true,
+    		margins: '2px 0 0 0',
+            border: false,
 			padding: 5,
 			bodyCssClass: 'images-view',
-			cls: 'x-border-left x-border-bottom',
-			height: 200
+			cls: 'x-border-right x-border-top',
+			height: 130
 		})
 		
         this.notesPanel = new PMS.Orders.Edit.Notes({
-        	title: 'Комментарии',
         	margins: '2px 0 0 0',
         	cls: 'x-border-left x-border-top',
         	region: 'south',
@@ -55,17 +53,17 @@ PMS.Orders.Layout = Ext.extend(Ext.Panel, {
 	    	region: 'center',
 	    	layout: 'border',
 	    	border: false,
-	    	items: [this.listPanel, this.filesPanel]	
+	    	items: [this.listPanel, this.descriptionPanel]	
 	    }, {
             layout: 'border',
-            width: 520,
+            width: 450,
 			region: 'east',
 			border: false,
             margins: '0 0 0 2px', 
             defaults: {
 	    		border: false
             },
-            items: [this.infoPanel, this.descriptionPanel, this.notesPanel]
+            items: [this.infoPanel, this.filesPanel, this.notesPanel]
         }];
         
         this.listPanel.on('orderselect', function(record) {

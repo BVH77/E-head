@@ -10,7 +10,7 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
     
     deleteURL: link('orders', 'files', 'delete'),
     
-    title: 'Документы',
+    title: 'Файлы',
 	
     autoScroll: true,
 

@@ -2,6 +2,8 @@ Ext.ns('PMS.Orders');
 
 PMS.Orders.Info = Ext.extend(Ext.grid.GridPanel, {
 
+    title: 'Детали заказа',
+    
     layout: 'fit',
     
     hideHeaders: true,
