@@ -114,10 +114,11 @@ abstract class OSDN_Script_Abstract
                     continue;
                 }
                 $src = isset($el['src']) ? $el['src'] : $el['href'];
+                $file = $this->getBasePath() . $src . '?' . filemtime(ROOT_DIR . $src); 
                 if ($fileType == 'script') {
-                    $content = '<script src="' . $this->getBasePath() . $src . '" type="text/javascript" ></script>';
+                    $content = '<script src="' . $file . '" type="text/javascript" ></script>';
                 } else {
-                    $content = '<link rel="stylesheet" href="' . $this->getBasePath() . $src . '" type="text/css" />';
+                    $content = '<link rel="stylesheet" href="' . $file . '" type="text/css" />';
                 }
             } else {
                 if ($fileType == 'script') {

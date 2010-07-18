@@ -75,7 +75,6 @@
         <script src="/js/PMS/Orders/List.js"/>
         <script src="/js/PMS/Orders/Archive.js"/>
         <script src="/js/PMS/Orders/Info.js"/>
-        <script src="/js/PMS/Orders/Suppliers.js"/>
         <script src="/js/PMS/Orders/Files.js"/>
         <script src="/js/PMS/Orders/Edit.js"/>
         <script src="/js/PMS/Orders/Edit/Info.js"/>

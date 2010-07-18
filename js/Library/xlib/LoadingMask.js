@@ -82,5 +82,4 @@ xlib.LoadingMask = function() {
             }            
         }
     };
-    
 }();
