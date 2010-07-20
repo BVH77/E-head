@@ -26,10 +26,6 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
 	
 	allowBlank: true,
 	
-    pageSize: 20,
-
-    listWidth: 500,
-    
     mode: 'remote',
     
     overCls: '',
