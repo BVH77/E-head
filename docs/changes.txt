@@ -1,0 +1,24 @@
++ Comments on main screen
++ hide mount/prod sections (in order, order details, reports) if disabled
++ reorganize tabs (make production tab & mountage tab with according dates, suppliers, costs)
++ add an invoice number / date & act number / date before move to archive (also figured in per customer's report and order details)
++ photo's sizes (too big, can't close)
++ order details (redesign)
++ компоновка (под размер 1024х800, убрать с главной окно поставщиков)
++ письма (добавление заказа - избыточный спам)
++ окно уведомления (заказ добавлен/сохранён)
++ Исправить грамматические ошибки (сотимость -> стоимость)
+
+- ошибка при добавлении заказчика из комбобокса
+
+
+- Перевести ресурсы в менеджере доступа на русский
+- письма (не работaет assemble)
+- комментарии сделать адресными (с отсылкой тела каммента адресату)
+- сортировка (todo: multiple columns)
+
+
+- how to videos for every role
+- графики (добавить период).
+- План на месяц (?).
+- отчет по клиентам (сумма, кол-во заказов).
