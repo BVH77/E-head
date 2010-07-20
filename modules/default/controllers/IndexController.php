@@ -30,7 +30,6 @@ class IndexController extends OSDN_Controller_Action
 
     public function changesAction()
     {
-        //$this->disableLayout(true);
         $this->disableRender(true);
         $file = file_get_contents(ROOT_DIR . '/docs/changes.txt');
         echo nl2br($file);
