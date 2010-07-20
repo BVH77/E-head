@@ -52,7 +52,7 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
         		return '<span qtip="' + r.get('description') + '">' + v + '</span>';
         	}
         }, {
-            header: 'Сотимость',
+            header: 'Стоимость',
             dataIndex: 'cost',
             renderer: function(v) {
                 return v == 0 ? '' : v;  
