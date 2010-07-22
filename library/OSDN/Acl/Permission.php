@@ -46,8 +46,7 @@ class OSDN_Acl_Permission
             }
             $status = OSDN_Acl_Status::DATABASE_ERROR;
         }
-        $response->addStatus(new OSDN_Acl_Status($status));
-        return $response;
+        return $response->addStatus(new OSDN_Acl_Status($status));
     }
 
     /**
@@ -62,14 +61,14 @@ class OSDN_Acl_Permission
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($roleId)) {
-            $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
-            return $response;
+            return $response->addStatus(new OSDN_Acl_Status(
+                OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
         }
         
         $validateResource = new OSDN_Validate_Id(true);
         if (!$validateResource->isValid($resourceId)) {
-            $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'resource_id'));
-            return $response;
+            return $response->addStatus(new OSDN_Acl_Status(
+                OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'resource_id'));
         }
         
         $rows = $this->_tablePermission->fetchPermissions($roleId, $resourceId);
@@ -79,8 +78,7 @@ class OSDN_Acl_Permission
         } else {
             $status = OSDN_Acl_Status::DATABASE_ERROR;
         }
-        $response->addStatus(new OSDN_Acl_Status($status));
-        return $response;
+        return $response->addStatus(new OSDN_Acl_Status($status));
     }
     
     /**
@@ -103,24 +101,24 @@ class OSDN_Acl_Permission
         $validate = new OSDN_Validate_Id();
         $response = new OSDN_Response();
         if (!$validate->isValid($roleId)) {
-            $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
-            return $response;
+            return $response->addStatus(new OSDN_Acl_Status(
+                OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
         }
         
         if (!$validate->isValid($resourceId)) {
-            $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'resource_id'));
-            return $response;
+            $response->addStatus(new OSDN_Acl_Status(
+                OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'resource_id'));
         }
         
         if (true !== OSDN_Acl_Privilege::isExists($privilege)) {
-            $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::PRIVILEGE_DOES_NOT_EXISTS, 'privilege'));
-            return $response;
+            return $response->addStatus(new OSDN_Acl_Status(
+                OSDN_Acl_Status::PRIVILEGE_DOES_NOT_EXISTS, 'privilege'));
         }
         
         $validateValue = new OSDN_Validate_Boolean(true);
         if (!$validateValue->isValid($value)) {
-            $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'value'));
-            return $response;
+            return $response->addStatus(new OSDN_Acl_Status(
+                OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'value'));
         }
         
         $booleanFilter = new OSDN_Filter_Boolean(true);
@@ -145,8 +143,7 @@ class OSDN_Acl_Permission
         }
         
         $this->_deletePermission($roleId, $resourceId, $privilegeId);
-        $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::OK));
-        return $response;
+        return $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::OK));
     }
     
     /**

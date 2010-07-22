@@ -149,7 +149,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                 text: 'Удалить',
                 iconCls: 'delete',
                 handler: onDelete,
-				hidden: !acl.isDelete('orders')
+				hidden: !acl.isUpdate('orders')
         	}, {
                 text: 'Сменить пользователя',
                 iconCls: 'user',

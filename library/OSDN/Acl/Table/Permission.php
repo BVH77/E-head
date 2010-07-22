@@ -36,7 +36,7 @@ class OSDN_Acl_Table_Permission extends OSDN_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(
                 array('resources' => OSDN_Db_Table_Abstract::getDefaultPrefix() . 'acl_resources'),
-                array('id', 'text' => 'name')
+                array('id', 'text' => 'title')
            )
            ->joinLeft(
                 array('permissions' => $this->getTableName()),

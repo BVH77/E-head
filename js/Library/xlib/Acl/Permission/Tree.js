@@ -75,13 +75,13 @@ xlib.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
             renderer: function(a, node, attribs) {
                 return renderer(attribs, 'view', node);
             }
-		} ,{
-			header: 'Добавление',
-			width: 100,
-			cls: 'column-tree-row-actions',
-			renderer: function(a, node, attribs) {
-				return renderer(attribs, 'add', node);
-			}
+//		}, {
+//			header: 'Добавление',
+//			width: 100,
+//			cls: 'column-tree-row-actions',
+//			renderer: function(a, node, attribs) {
+//				return renderer(attribs, 'add', node);
+//			}
 		}, {
             header: 'Редактирование',
             width: 100,
@@ -89,13 +89,13 @@ xlib.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
             renderer: function(a, node, attribs) {
                 return renderer(attribs, 'update', node);
             }
-        }, {
-            header: 'Удаление',
-            width: 100,
-            cls: 'column-tree-row-actions',
-            renderer: function(a, node, attribs) {
-                return renderer(attribs, 'delete', node);
-            }
+//        }, {
+//            header: 'Удаление',
+//            width: 100,
+//            cls: 'column-tree-row-actions',
+//            renderer: function(a, node, attribs) {
+//                return renderer(attribs, 'delete', node);
+//            }
         }];
 
         this.loader = new Ext.tree.TreeLoader({
@@ -163,7 +163,7 @@ xlib.Acl.Permission.Tree = Ext.extend(Ext.tree.ColumnTree, {
             node: ui.node
         });
 		
-        var count = 4;
+        var count = 2;
 		for (var i = 1; i <= count; i++) {
 			var comp = Ext.get(ui.columns[i].firstChild.firstChild.firstChild);
 			ui.manager.add(comp.dom.name, comp);

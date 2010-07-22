@@ -18,8 +18,6 @@ xlib.form.ComboTrigger = Ext.extend(xlib.form.ComboBox, {
 
     triggerAction: 'all',
 	
-	permissions: false,
-	
 	triggerQtip: null,
 	
 	disabledClass: 'x-item-field-disabled',

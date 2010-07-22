@@ -7,8 +7,8 @@ class Admin_AclController extends OSDN_Controller_Action
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->admin->acl);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-list');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'allow');
-        $acl->isAllowed(OSDN_Acl_Privilege::DELETE, 'delete-resource');
-        $acl->isAllowed(OSDN_Acl_Privilege::ADD, 'insert-resource');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete-resource');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'insert-resource');
     }
     
     public function getListAction()

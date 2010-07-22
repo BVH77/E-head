@@ -150,7 +150,7 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
                 text: 'Удалить',
                 iconCls: 'delete',
                 handler: onDelete,
-				hidden: !acl.isDelete('archive')
+				hidden: !acl.isUpdate('archive')
             }]
 	    });
         

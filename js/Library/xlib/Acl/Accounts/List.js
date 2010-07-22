@@ -65,7 +65,7 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
             }, {
                 text: 'Удалить',
                 iconCls: 'delete',
-                hidden: !acl.isDelete('admin', 'acl'),
+                hidden: !acl.isUpdate('admin', 'acl'),
                 handler: this.onDeleteAccount,
                 scope: this
             }],
@@ -103,7 +103,7 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
         this.createAccountBtn = new Ext.Toolbar.Button({
             text: 'Добавить',
             iconCls: 'add',
-            hidden: !acl.isAdd('admin', 'acl'),
+            hidden: !acl.isUpdate('admin', 'acl'),
             qtip: 'Добавить новую учётную запись',
             handler: this.onAddAccount,
             scope: this
@@ -158,7 +158,7 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
     onAddAccount: function(b, e) {
         
         var f = new xlib.form.FormPanel({
-        	permissions: acl.isAdd('admin', 'acl'),
+        	permissions: acl.isUpdate('admin', 'acl'),
         	defaultType: 'textfield',
             items: [{
                 fieldLabel: 'Логин',

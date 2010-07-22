@@ -42,7 +42,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         
         this.bbar = [{
     		text: 'В архив', 
-    		hidden: (!this.record || !this.record.get('success_date_fact') || !acl.isAdd('archive')),
+    		hidden: (!this.record || !this.record.get('success_date_fact') || !acl.isUpdate('archive')),
     		handler: this.archive, 
     		scope: this
     	}, '->', {

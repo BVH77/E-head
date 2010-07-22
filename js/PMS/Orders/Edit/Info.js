@@ -30,11 +30,10 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
     initComponent: function() {
 
         this.items = [{
-            xtype: 'pms.customers.combo',
-            permissions: acl.isUpdate('customers'),
-            disabled: acl.isUpdate('customers'),
-            anchor: '-1',
-			allowBlank: false
+        	xtype: 'pms.customers.combo',
+        	disabled: !acl.isUpdate('customers'),
+        	anchor: '-1',
+        	allowBlank: false
         }, {
             xtype: 'textfield',
             name: 'address',
@@ -77,7 +76,8 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
         			allowBlank: false,
         			handler: function(cb, status) {
         				this.fireEvent('productionChecked', status);
-	                }, scope: this
+	                }, 
+                    scope: this
         		}]
         	}, {
         		items: [{
@@ -92,7 +92,8 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
         			allowBlank: false,
         			handler: function(cb, status) {
         				this.fireEvent('mountChecked', status);
-	                }, scope: this
+	                }, 
+                    scope: this
         		}]
         	}]
         }, {

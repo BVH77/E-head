@@ -22,8 +22,6 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
 	
     trackResetOnLoad: true,
 	
-    permissions: acl.isAdd('customers'),
-	
 	allowBlank: true,
 	
     mode: 'remote',
@@ -44,12 +42,12 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
             cls: 'add',
             name: 'btn0',
             overCls: '',
-            permissions: acl.isAdd('customers'),
+            permissions: acl.isUpdate('customers'),
             qtip: 'Добавить заказчика',
             handler: function(e, node) {
                 this.collapse();
                 var f = new PMS.ContragentsFormAbstract({
-                    permissions: acl.isAdd('customers'),
+                    permissions: this.permissions,
                     entity: 'customers',
                     listeners: {
                         saved: function(id) {
@@ -63,7 +61,8 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
                 var win = f.showInWindow({
                     title: 'Добавить заказчика'
                 });
-            }
+            },
+            scope: this
         }, {
             cls: 'edit',
             name: 'btn1',

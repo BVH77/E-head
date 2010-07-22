@@ -60,7 +60,7 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
             	text: 'Добавить',
             	iconCls: 'add',
             	handler: this.add.createDelegate(this),
-                hidden: !acl.isAdd(this.entity)
+                hidden: !acl.isUpdate(this.entity)
             }]
         });
         
@@ -68,7 +68,7 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
             text: 'Добавить нового',
             iconCls: 'add',
             handler: this.add.createDelegate(this),
-            hidden: !acl.isAdd(this.entity)
+            hidden: !acl.isUpdate(this.entity)
         }, '-', {
             text: 'Редактировать',
             iconCls: 'edit',
@@ -78,7 +78,7 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
             text: 'Удалить',
             iconCls: 'delete',
             handler: this.onDelete,
-            hidden: !acl.isDelete(this.entity)
+            hidden: !acl.isUpdate(this.entity)
         }];
         
         if (Ext.isArray(this.actions) && !Ext.isEmpty(this.actions)) {

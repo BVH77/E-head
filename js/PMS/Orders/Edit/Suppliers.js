@@ -98,7 +98,7 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
                     iconCls: 'delete',
                     handler: this.onRemove,
                     scope: this,
-                    hidden: !acl.isDelete('suppliers')
+                    hidden: !acl.isUpdate('suppliers')
                 }]
     	    });
             
@@ -109,7 +109,7 @@ PMS.Orders.Edit.Suppliers = Ext.extend(Ext.grid.EditorGridPanel, {
             	iconCls: 'add',
             	handler: this.onAttach,
                 scope: this,
-                hidden: !acl.isAdd('suppliers')
+                hidden: !acl.isUpdate('suppliers')
             }];
 	    
             this.on({

@@ -17,8 +17,8 @@ class Admin_AccountsController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'change-role');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update-field');
-        $acl->isAllowed(OSDN_Acl_Privilege::ADD, 'add-account');
-        $acl->isAllowed(OSDN_Acl_Privilege::DELETE, 'delete-account');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add-account');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete-account');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'change-password');
     }
     

@@ -7,10 +7,10 @@ class Admin_AclRoleController extends OSDN_Controller_Action
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->admin->acl);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'fetch-roles');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'fetch-role');
-        $acl->isAllowed(OSDN_Acl_Privilege::ADD, 'create-role');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'create-role');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'rename-role');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update-role');
-        $acl->isAllowed(OSDN_Acl_Privilege::DELETE, 'remove-role');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'remove-role');
     }
 
     public function fetchRolesAction()

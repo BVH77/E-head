@@ -78,7 +78,7 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
         });
         
         if (this.allowEdit) {
-            if (acl.isDelete('orders', 'files')) {
+            if (acl.isUpdate('orders', 'files')) {
                 menu = new Ext.menu.Menu({
                     items: [{
                         text: 'Удалить',
@@ -97,7 +97,7 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
                     menu.showAt(e.getXY());
                 });
             }
-            if (acl.isAdd('orders', 'files')) {
+            if (acl.isUpdate('orders', 'files')) {
                 this.tbar = ['->', {
                     text: 'Добавить',
                     iconCls: 'add',

@@ -18,9 +18,9 @@ class Orders_SuppliersController extends OSDN_Controller_Action
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->suppliers);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-list');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get');
-        $acl->isAllowed(OSDN_Acl_Privilege::ADD, 'add');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
-        $acl->isAllowed(OSDN_Acl_Privilege::DELETE, 'delete');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');
     }
     
 	public function getListAction()
