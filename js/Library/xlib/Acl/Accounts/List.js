@@ -12,7 +12,7 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
 
     roleId: null,
     
-    permissions: acl.isUpdate('admin', 'acl'),
+    permissions: acl.isUpdate('admin'),
     
     initComponent: function() {
         
@@ -43,7 +43,7 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
             items: [{
                 text: 'Редактировать',
                 iconCls: 'edit',
-                hidden: !acl.isUpdate('admin', 'acl'),
+                hidden: !this.permissions,
                 handler: function(g, rowIndex) {
                     var record = g.getStore().getAt(rowIndex);
                     var w = new xlib.Acl.Accounts.Form({
@@ -59,13 +59,13 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
             }, {
                 text: 'Сменть пароль',
                 iconCls: 'edit',
-                hidden: !acl.isUpdate('admin', 'acl'),
+                hidden: !this.permissions,
                 handler: this.onChangePassword,
                 scope: this
             }, {
                 text: 'Удалить',
                 iconCls: 'delete',
-                hidden: !acl.isUpdate('admin', 'acl'),
+                hidden: !this.permissions,
                 handler: this.onDeleteAccount,
                 scope: this
             }],
@@ -103,7 +103,7 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
         this.createAccountBtn = new Ext.Toolbar.Button({
             text: 'Добавить',
             iconCls: 'add',
-            hidden: !acl.isUpdate('admin', 'acl'),
+            hidden: !this.permissions,
             qtip: 'Добавить новую учётную запись',
             handler: this.onAddAccount,
             scope: this
@@ -158,7 +158,7 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
     onAddAccount: function(b, e) {
         
         var f = new xlib.form.FormPanel({
-        	permissions: acl.isUpdate('admin', 'acl'),
+        	permissions: this.permissions,
         	defaultType: 'textfield',
             items: [{
                 fieldLabel: 'Логин',

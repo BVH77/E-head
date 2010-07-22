@@ -30,6 +30,7 @@ xlib.Acl.Layout = Ext.extend(Ext.Panel, {
             region: 'south',
             height: 300,
             margins: '2 0 0 0',
+            split: true,
             border: false,
 			cls: 'x-border-top x-border-left',
             loadUrl: link('admin', 'acl', 'get-list')

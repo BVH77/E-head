@@ -22,11 +22,11 @@ xlib.Acl.Accounts.Form = Ext.extend(xlib.form.FormPanel, {
             name: 'email',
             vtype: 'email'
         }, {
-            fieldLabel: 'Теолефон',
+            fieldLabel: 'Телефон',
             name: 'phone',
             allowBlank: true
         }, {
-            fieldLabel: 'Активно',
+            fieldLabel: 'Активна',
             xtype: 'checkbox',
             name: 'active',
             inputValue: 1
