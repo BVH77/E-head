@@ -4,7 +4,7 @@ xlib.applicationInitialization(function() {
     PMS.System.Layout = new xlib.Layout.Workspace({
 		mainMenu: PMS.Menu('<?=$this->username; ?>', '<?=$this->rolename; ?>')
     });
-    PMS.System.Layout.getTabPanel().add({
+    PMS.OrdersTab = PMS.System.Layout.getTabPanel().add({
         iconCls: 'orders-icon',
         closable: false,
         xtype: 'PMS.Orders.Layout',

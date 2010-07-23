@@ -262,7 +262,30 @@ class PMS_Orders
         $select->where('o.id = ?', $id);
         $status = null;
         try {
-            $response->setRow($select->query()->fetch());
+        	$suppliers = new PMS_Suppliers();
+            $files = new PMS_Files();
+            
+        	$row = $select->query()->fetch();
+        	
+            $resp = $suppliers->getByOrderId($id);
+            if ($resp->isSuccess()) {
+                $rowset = $resp->getRowset();
+            } else {
+                $row['suppliers_errors'] = $resp->getStatusCollection();
+                $rowset = array(); 
+            }
+            $row['suppliers'] = $rowset;
+            
+            $resp = $files->getAll($id);
+            if ($resp->isSuccess()) {
+                $rowset = $resp->getRowset();
+            } else {
+                $row['files_errors'] = $resp->getStatusCollection();
+                $rowset = array(); 
+            }
+            $row['files'] = $rowset;
+            
+            $response->setRow($row);
             $status = PMS_Status::OK;
         } catch (Exception $e) {
             $status = PMS_Status::DATABASE_ERROR;

@@ -2,6 +2,8 @@ Ext.ns('PMS.Orders');
 
 PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
     
+    loadOrderURL: link('orders', 'index', 'get'),
+    
     loadLink: link('orders', 'index', 'get-list'),
 
     loadUsersURL: link('admin', 'accounts', 'get-accounts'),
@@ -281,21 +283,8 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
     },
 	
     onEdit: function(g, rowIndex) {
-        if (rowIndex === null) {
-            var record = null;
-            var id = null;
-        } else {
-            var record = g.getStore().getAt(rowIndex); 
-            var id = record.get('id');
-        }
-        var editForm = new PMS.Orders.Edit({record: record}).showInWindow({
-            listeners: {
-                close: function() {
-        			this.getStore().reload();
-                },
-                scope: this
-            }
-        });
+        var record = g.getStore().getAt(rowIndex);
+        this.showEditForm(record);
     },
     
     loadUsers: function() {
@@ -351,5 +340,41 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             },
             scope: this
         });
+    },
+    
+    showEditForm: function(record) {
+        var editForm = new PMS.Orders.Edit({record: record}).showInWindow({
+            listeners: {
+                close: function() {
+                    this.getStore().reload();
+                },
+                scope: this
+            }
+        });
+    },
+    
+    showOrder: function(id) {
+        if (id > 0) {
+            Ext.Ajax.request({
+                url: this.loadOrderURL,
+                params: {id: id},
+                success: function(res) {
+                    var errors = Ext.decode(res.responseText).errors;
+                    if (errors) {
+                        xlib.Msg.error(errors[0].msg);
+                        this.el.unmask();
+                        return;
+                    }
+                    var data = Ext.decode(res.responseText).data;
+                    var recordType = this.getStore().recordType;
+                    var record = new recordType(data);
+                    this.showEditForm(record);
+                },
+                failure: function() {
+                    xlib.Msg.error('Ошибка связи с сервером.');
+                },
+                scope: this
+            });
+        }
     }
 });

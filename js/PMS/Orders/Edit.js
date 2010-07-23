@@ -2,8 +2,6 @@ Ext.ns('PMS.Orders');
 
 PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
     
-    loadURL: link('orders', 'index', 'get'),
-
     saveURL: link('orders', 'index', 'update'),
     
     addURL: link('orders', 'index', 'add'),
