@@ -32,14 +32,12 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
         this.items = [{
         	xtype: 'pms.customers.combo',
         	disabled: !acl.isUpdate('customers'),
-        	anchor: '-1',
-        	allowBlank: false
+        	anchor: '-1'
         }, {
             xtype: 'textfield',
             name: 'address',
             fieldLabel: 'Адрес',
-            disabled: !acl.isUpdate('orders', 'address'),
-			allowBlank: false
+            disabled: !acl.isUpdate('orders', 'address')
         }, {
             items: [{
                 items: [{
@@ -48,8 +46,7 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
                     xtype: 'xlib.form.DateField',
                     fieldLabel: 'Сдача (план)',
                     disabled: !acl.isUpdate('orders', 'success', 'planned'),
-                    anchor: 0,
-                    allowBlank: false
+                    anchor: 0
                 }]
             }, {
                 items: [{
@@ -58,8 +55,7 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
                     xtype: 'xlib.form.DateField',
                     fieldLabel: 'Сдача (факт)',
                     disabled: !acl.isUpdate('orders', 'success', 'fact'),
-                    anchor: 0,
-                    allowBlank: true
+                    anchor: 0
                 }]
             }]
         }, {
@@ -73,7 +69,6 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
                     checked: true,
         			disabled: !acl.isUpdate('orders', 'production'),
         			anchor: 0,
-        			allowBlank: false,
         			handler: function(cb, status) {
         				this.fireEvent('productionChecked', status);
 	                }, 
@@ -89,7 +84,6 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
                     checked: true,
         			disabled: !acl.isUpdate('orders', 'mount'),
         			anchor: 0,
-        			allowBlank: false,
         			handler: function(cb, status) {
         				this.fireEvent('mountChecked', status);
 	                }, 
@@ -105,8 +99,7 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
                     fieldLabel: 'Стоимость',
                     disabled: !acl.isUpdate('orders', 'cost'),
                     anchor: 0,
-                    minValue: 1,
-                    allowBlank: false
+                    minValue: 1
                 }]
             }, {
                 items: [{
@@ -114,8 +107,7 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
                     xtype: 'numberfield',
                     fieldLabel: 'Аванс',
                     disabled: !acl.isUpdate('orders', 'cost'),
-                    anchor: 0,
-                    allowBlank: false
+                    anchor: 0
                 }]
             }]
         }, {
@@ -123,8 +115,7 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
         	xtype: 'textarea',
         	fieldLabel: 'Описание',
         	height: 160,
-        	disabled: !acl.isUpdate('orders', 'description'),
-        	allowBlank: true
+        	disabled: !acl.isUpdate('orders', 'description')
         }];
         
         PMS.Orders.Edit.Info.superclass.initComponent.apply(this, arguments);

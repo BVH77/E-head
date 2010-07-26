@@ -28,8 +28,7 @@ PMS.Orders.Edit.Mount = Ext.extend(Ext.Panel, {
                 hiddenName: 'mount_start_planned',
                 xtype: 'xlib.form.DateField',
                 fieldLabel: 'Начало - план',
-                disabled: !acl.isUpdate('orders', 'mount', 'start_planned'),
-                allowBlank: false
+                disabled: !acl.isUpdate('orders', 'mount', 'start_planned')
             }]
         }, {
             items: [{
@@ -37,8 +36,7 @@ PMS.Orders.Edit.Mount = Ext.extend(Ext.Panel, {
                 hiddenName: 'mount_start_fact',
                 xtype: 'xlib.form.DateField',
                 fieldLabel: 'Начало - факт',
-                disabled: !acl.isUpdate('orders', 'mount', 'start_fact'),
-                allowBlank: true
+                disabled: !acl.isUpdate('orders', 'mount', 'start_fact')
             }]
         }, {
             items: [{
@@ -46,8 +44,7 @@ PMS.Orders.Edit.Mount = Ext.extend(Ext.Panel, {
                 hiddenName: 'mount_end_planned',
                 xtype: 'xlib.form.DateField',
                 fieldLabel: 'Конец - план',
-                disabled: !acl.isUpdate('orders', 'mount', 'end_planned'),
-                allowBlank: false
+                disabled: !acl.isUpdate('orders', 'mount', 'end_planned')
             }]
         }, {
             items: [{
@@ -55,8 +52,7 @@ PMS.Orders.Edit.Mount = Ext.extend(Ext.Panel, {
                 hiddenName: 'mount_end_fact',
                 xtype: 'xlib.form.DateField',
                 fieldLabel: 'Конец - факт',
-                disabled: !acl.isUpdate('orders', 'mount', 'end_fact'),
-                allowBlank: true
+                disabled: !acl.isUpdate('orders', 'mount', 'end_fact')
             }]
         }];
         

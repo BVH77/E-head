@@ -262,38 +262,10 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
             }, '-', {
                 text: 'Отмена',
                 handler: function() {
-                    archiveWindow.close()
+                    archiveWindow.close();
                 }
             }]
         }).show();
-        
-        /*
-        Ext.Msg.show({
-            title: 'Подтверждение',
-            msg: 'Вы уверены?',
-            buttons: Ext.Msg.YESNO,
-            fn: function(b) {
-                if ('yes' == b) {
-                    Ext.Ajax.request({
-                        url: this.archiveURL,
-                        success: function(res) {
-                            var errors = Ext.decode(res.responseText).errors;
-                            if (errors) {
-                                xlib.Msg.error(errors[0].msg);
-                                return;
-                            }
-                            this.wind.close();
-                        },
-                        scope: this,
-                        failure: Ext.emptyFn(),
-                        params: {id: this.record.get('id')}
-                    });
-                }
-            },
-            scope: this,
-            icon: Ext.MessageBox.QUESTION
-        });
-        */
     },
     
     onFailure: function(msg) {

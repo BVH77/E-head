@@ -132,20 +132,15 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
             html: '<a href="/files/' + record.get('filename') + '" '
         		+ 'style="border: none;" target="_blank">'
             	+ '<img src="/files/' + record.get('filename') + '" '
-            	+ 'style="max-height: 600px; max-width: 800px;" /></a>'
+            	+ 'style="max-height: 400px; max-width: 600px;" /></a>'
         });
         
         var wind = new Ext.Window({
             title: record.get('description'),
             modal: true,
             autoWidth: true,
+            resizable: false,
             autoHeight: true,
-            tools: [{
-                id: 'maximize',
-                handler: function(event, toolEl, panel){
-                    panel.toggleMaximize();
-                }
-            }],
             items:[img]
         });
         wind.show(record.get('filename'));
