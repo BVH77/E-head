@@ -38,7 +38,12 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             if (Ext.isDate(sdf)) {
                 return 'x-row-success';
             }
-            if (psp > sdp || pep > sdp || msp > sdp || mep > sdp) {
+            if (Ext.isEmpty(sdp) || psp > sdp || pep > sdp || msp > sdp || mep > sdp
+            || (parseInt(record.get('production')) > 0 && Ext.isEmpty(psp))
+            || (parseInt(record.get('production')) > 0 && Ext.isEmpty(pep))
+            || (parseInt(record.get('mount')) > 0 && Ext.isEmpty(msp))
+            || (parseInt(record.get('mount')) > 0 && Ext.isEmpty(mep))
+            ) {
                 return 'x-row-error';
             }
             if (Ext.isDate(sdp) && sdp < today) {
@@ -216,7 +221,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                     text: 'Просроченные'
                 }, {
                     color: '#FF9999',
-                    text: 'Конфликт'
+                    text: 'Ошибка'
                 }]
             })],
             scope: this
