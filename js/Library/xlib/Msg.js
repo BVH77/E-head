@@ -28,7 +28,7 @@ xlib.Msg = {
     },
     
     info: function(msg, animEl) {
-        Ext.Msg.show({
+        return Ext.Msg.show({
             animEl: animEl,
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.INFO,

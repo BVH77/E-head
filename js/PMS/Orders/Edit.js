@@ -119,7 +119,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
                 params: params,
                 success: function(f, action) {
                     if (true === action.result.success) {
-                        xlib.Msg.info('Заказ успешно сохранён.');
+                        xlib.Msg.info('Заказ успешно сохранён.').getDialog().close.defer(3000);
                         this.fireEvent(act, action.result.id);
                         if (act == 'saved') { 
                             this.wind.close();
