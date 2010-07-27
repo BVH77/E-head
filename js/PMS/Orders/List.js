@@ -35,17 +35,23 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             var msf = record.get('mount_start_fact');
             var mep = record.get('mount_end_planned');
             var mef = record.get('mount_end_fact');
+            
             if (Ext.isDate(sdf)) {
                 return 'x-row-success';
             }
-            if (Ext.isEmpty(sdp) || psp > sdp || pep > sdp || msp > sdp || mep > sdp
-            || (parseInt(record.get('production')) > 0 && Ext.isEmpty(psp))
+            
+            if (!Ext.isDate(sdp) || psp > sdp || pep > sdp || msp > sdp || mep > sdp) {
+                return 'x-row-error';
+            }
+            
+            if ((parseInt(record.get('production')) > 0 && Ext.isEmpty(psp))
             || (parseInt(record.get('production')) > 0 && Ext.isEmpty(pep))
             || (parseInt(record.get('mount')) > 0 && Ext.isEmpty(msp))
             || (parseInt(record.get('mount')) > 0 && Ext.isEmpty(mep))
             ) {
                 return 'x-row-error';
             }
+            
             if (Ext.isDate(sdp) && sdp < today) {
                 return 'x-row-expired';
             }

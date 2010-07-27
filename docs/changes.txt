@@ -1,11 +1,11 @@
 <fieldset><legend><b>Открытые задачи</b></legend>
 
 - комментарии сделать адресными (с отсылкой тела каммента адресату)
-- сортировка (todo: multiple columns)
-- how to videos for every role
 - графики (добавить период).
 - план на месяц (?).
 - отчет по клиентам (сумма, кол-во заказов).
+- сортировка (todo: multiple columns)
+- how to videos for every role
 
 </fieldset>
 <fieldset><legend><b>Выполнено</b></legend>
