@@ -227,7 +227,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                     text: 'Просроченные'
                 }, {
                     color: '#FF9999',
-                    text: 'Ошибка'
+                    text: 'Конфликт'
                 }]
             })],
             scope: this
