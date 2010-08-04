@@ -25,11 +25,13 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
         this.cm = new Ext.grid.ColumnModel([{
             header: '№',
             width: 40,
-            dataIndex: 'id'
+            dataIndex: 'id',
+            sortable: true
         }, {
             width: 200,
             header: 'Название',
-            dataIndex: 'name'
+            dataIndex: 'name',
+            sortable: true
         }, {
             id: this.autoExpandColumn,
             header: 'Описание',
@@ -46,6 +48,10 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
             autoLoad: true,
 	        remoteSort: true,
 	        root: 'data',
+            sortInfo: {
+                field: 'name',
+                direction: 'ASC'
+            },
 	        fields: [
 	            {name: 'id'},
 	            {name: 'name'},

@@ -14,6 +14,8 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
 	
     fieldLabel: 'Заказчик',
 	
+    updatePermissions: acl.isUpdate('customers'),
+    
     editable: false,
 	
     allowBlankOption: true,
@@ -35,6 +37,10 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
         this.store = new Ext.data.JsonStore({
             url: link('orders', 'customers', 'get-list'),
             root: 'data',
+            sortInfo: {
+                field: 'name',
+                direction: 'ASC'
+            },
             fields: ['id', 'name', 'descrioption'] 
         });
         
@@ -42,12 +48,12 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
             cls: 'add',
             name: 'btn0',
             overCls: '',
-            permissions: acl.isUpdate('customers'),
+            permissions: this.updatePermissions,
             qtip: 'Добавить заказчика',
             handler: function(e, node) {
                 this.collapse();
                 var f = new PMS.ContragentsFormAbstract({
-                    permissions: this.permissions,
+                    permissions: this.updatePermissions,
                     entity: 'customers',
                     listeners: {
                         saved: function(id) {
@@ -67,7 +73,7 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
             cls: 'edit',
             name: 'btn1',
             overCls: '',
-            permissions: acl.isUpdate('customers'),
+            permissions: this.updatePermissions,
             qtip: 'Редактировать заказчика',
             handler: function(e, node) {
                 this.collapse();
@@ -75,7 +81,7 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
                 if (value > 0) {
                     var f = new PMS.ContragentsFormAbstract({
                         sid: value,
-                        permissions: acl.isUpdate('customers'),
+                        permissions: this.updatePermissions,
                         entity: 'customers',
                         listeners: {
                             saved: function(id) {
