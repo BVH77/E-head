@@ -172,6 +172,8 @@ class PMS_Orders
             array('customer_name' => 'c.name')
         );
         $acl = OSDN_Accounts_Prototype::getAcl();
+        
+        // Show only orders created by this account for managers
         if ($acl->isAllowed(
             OSDN_Acl_Resource_Generator::getInstance()->orders->owncheck, 
             OSDN_Acl_Privilege::VIEW)
@@ -179,6 +181,23 @@ class PMS_Orders
             $userId = OSDN_Accounts_Prototype::getId();
             $select->where('creator_id = ?', $userId);
         }
+        
+        // Hide orders with production disabled
+        if ($acl->isAllowed(
+            OSDN_Acl_Resource_Generator::getInstance()->orders->hideproduction, 
+            OSDN_Acl_Privilege::VIEW)
+        ) {
+            $select->where('production = 1');
+        }
+        
+        // Hide orders with mountage disabled
+        if ($acl->isAllowed(
+            OSDN_Acl_Resource_Generator::getInstance()->orders->hidemount, 
+            OSDN_Acl_Privilege::VIEW)
+        ) {
+            $select->where('mount = 1');
+        }
+        
         $select->where('archive = ?', (int)$archive);
         
         switch($params['Xfilter']) {
