@@ -269,11 +269,13 @@ class Orders_IndexController extends OSDN_Controller_Action
         }
         
         // check if order is younger than 1 hour, when return - no message
-        $now = new Zend_Date();
-        $created = new Zend_date($order['created']);
-        $diff = $now->getTimestamp() - $created->getTimestamp(); 
-        if ($diff < 60*60) {
-        	return;
+        if ($type == 'updated') {
+	        $now = new Zend_Date();
+	        $created = new Zend_date($order['created']);
+	        $diff = $now->getTimestamp() - $created->getTimestamp(); 
+	        if ($diff < 60*60) {
+	        	return;
+	        }
         }
         
         $orderAddress = $order['address'];
@@ -299,15 +301,6 @@ class Orders_IndexController extends OSDN_Controller_Action
             $rows = $response->getRowset();
             foreach ($rows as $row) {
                 if ($currentPerson->email != $row['email'] && $row['active'] == 1) {
-                    $persons[] = array('email' => $row['email'], 'name' => $row['name']);
-                }
-    		}
-    	}
-    	$response = $accounts->fetchByRole(6); // 6 = technical director
-    	if ($response->isSuccess()) {
-            $rows = $response->getRowset();
-            foreach ($rows as $row) {
-    		    if ($currentPerson->email != $row['email'] && $row['active'] == 1) {
                     $persons[] = array('email' => $row['email'], 'name' => $row['name']);
                 }
     		}
