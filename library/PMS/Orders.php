@@ -161,7 +161,7 @@ class PMS_Orders
         $accounts = new OSDN_Accounts_Table_Accounts();
         $customers = new PMS_Customers_Table_Customers();
         $select->from(array('o' => $this->_table->getTableName()), '*');
-        $select->join(array(
+        $select->joinLeft(array(
             'u' => $accounts->getTableName()), 
             'o.creator_id=u.id', 
             array('creator_name' => 'u.name')
