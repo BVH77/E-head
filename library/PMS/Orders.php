@@ -215,7 +215,7 @@ class PMS_Orders
         }
         $select->order('success_date_fact');
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select, 
-            array('id' => 'o.id', 'address', 'success_date_fact', 'success_date_planned', 
+            array('o.id' => 'id', 'address', 'success_date_fact', 'success_date_planned', 
                 'created', 'creator_name', 'customer_name')
         );
         $plugin->parse($params);
