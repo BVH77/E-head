@@ -5,6 +5,8 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
     loadOrderURL: link('orders', 'index', 'get'),
     
     loadLink: link('orders', 'index', 'get-list'),
+    
+    deleteLink: link('orders', 'index', 'delete'),
 
     loadUsersURL: link('admin', 'accounts', 'get-accounts'),
     
@@ -119,7 +121,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                 fn: function(b) {
                     if ('yes' == b) {
                         Ext.Ajax.request({
-                            url: link('orders', 'index', 'delete'),
+                            url: g.deleteLink,
                             success: function(res) {
                                 var errors = Ext.decode(res.responseText).errors;
                                 if (errors) {
