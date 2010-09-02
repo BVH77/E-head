@@ -287,24 +287,32 @@ class Orders_IndexController extends OSDN_Controller_Action
     	$persons = array();
     	
     	$accounts = new OSDN_Accounts();
-    	$response = $accounts->fetchByRole(4); // 4 = production
-    	if ($response->isSuccess()) {
-            $rows = $response->getRowset();
-    		foreach ($rows as $row) {
-    			if ($currentPerson->email != $row['email'] && $row['active'] == 1) {
-                    $persons[] = array('email' => $row['email'], 'name' => $row['name']);
-    			}
-    		}
+    	
+    	// check if order have a production
+    	if ($order['production'] == 1) {  
+	    	$response = $accounts->fetchByRole(4); // 4 = production
+	    	if ($response->isSuccess()) {
+	            $rows = $response->getRowset();
+	    		foreach ($rows as $row) {
+	    			if ($currentPerson->email != $row['email'] && $row['active'] == 1) {
+	                    $persons[] = array('email' => $row['email'], 'name' => $row['name']);
+	    			}
+	    		}
+	    	}
     	}
-    	$response = $accounts->fetchByRole(5); // 5 = mount
-    	if ($response->isSuccess()) {
-            $rows = $response->getRowset();
-            foreach ($rows as $row) {
-                if ($currentPerson->email != $row['email'] && $row['active'] == 1) {
-                    $persons[] = array('email' => $row['email'], 'name' => $row['name']);
-                }
-    		}
-    	}
+    	
+    	// check if order have a moutage
+        if ($order['mount'] == 1) {
+	    	$response = $accounts->fetchByRole(5); // 5 = mount
+	    	if ($response->isSuccess()) {
+	            $rows = $response->getRowset();
+	            foreach ($rows as $row) {
+	                if ($currentPerson->email != $row['email'] && $row['active'] == 1) {
+	                    $persons[] = array('email' => $row['email'], 'name' => $row['name']);
+	                }
+	    		}
+	    	}
+        }
     	$response = $accounts->fetchByRole(1); // 1 = director
     	if ($response->isSuccess()) {
     	    $rows = $response->getRowset();
