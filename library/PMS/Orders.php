@@ -165,7 +165,8 @@ class PMS_Orders
             . ' OR success_date_planned < production_start_planned'
             . ' OR success_date_planned < production_end_planned'
             . ' OR success_date_planned < mount_start_planned'
-            . ' OR success_date_planned < mount_end_planned, 1, 0)'));
+            . ' OR success_date_planned < mount_end_planned, 0, 1)',
+            'success' => 'IF(success_date_fact IS NULL, 0, 1)'));
         $select->joinLeft(array(
             'u' => $accounts->getTableName()), 
             'o.creator_id=u.id', 
@@ -218,11 +219,12 @@ class PMS_Orders
         		break;
         	default:
         }
-        $select->order('conflict DESC');
-        $select->order('success_date_fact');
+        $select->order('success');
+        $select->order('conflict');
+        //$select->order('success_date_fact');
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select, 
             array('o.id' => 'id', 'address', 'success_date_fact', 'success_date_planned', 
-                'created', 'creator_name', 'customer_name', 'conflict')
+                'created', 'creator_name', 'customer_name', 'conflict', 'success')
         );
         $plugin->parse($params);
 
