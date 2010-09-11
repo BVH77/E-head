@@ -166,7 +166,7 @@ class PMS_Orders
             . ' OR success_date_planned < production_end_planned'
             . ' OR success_date_planned < mount_start_planned'
             . ' OR success_date_planned < mount_end_planned, 1, 0)',
-            'success' => 'IF(success_date_fact IS NULL, 1, 0)'));
+            'success' => 'IF(success_date_fact IS NOT NULL, 1, 0)'));
         $select->joinLeft(array(
             'u' => $accounts->getTableName()), 
             'o.creator_id=u.id', 
