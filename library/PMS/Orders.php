@@ -160,7 +160,12 @@ class PMS_Orders
         $select = $this->_table->getAdapter()->select();
         $accounts = new OSDN_Accounts_Table_Accounts();
         $customers = new PMS_Customers_Table_Customers();
-        $select->from(array('o' => $this->_table->getTableName()), '*');
+        $select->from(array('o' => $this->_table->getTableName()), array(
+            '*', 'conflict' => 'IF(success_date_planned IS NULL' 
+            . ' OR success_date_planned < production_start_planned'
+            . ' OR success_date_planned < production_end_planned'
+            . ' OR success_date_planned < mount_start_planned'
+            . ' OR success_date_planned < mount_end_planned, 1, 0)'));
         $select->joinLeft(array(
             'u' => $accounts->getTableName()), 
             'o.creator_id=u.id', 
@@ -213,13 +218,14 @@ class PMS_Orders
         		break;
         	default:
         }
+        $select->order('conflict DESC');
         $select->order('success_date_fact');
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select, 
             array('o.id' => 'id', 'address', 'success_date_fact', 'success_date_planned', 
-                'created', 'creator_name', 'customer_name')
+                'created', 'creator_name', 'customer_name', 'conflict')
         );
         $plugin->parse($params);
-        
+
         $status = null;
         try {
         	$suppliers = new PMS_Suppliers();
