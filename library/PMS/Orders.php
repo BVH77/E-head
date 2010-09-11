@@ -218,8 +218,8 @@ class PMS_Orders
         		break;
         	default:
         }
-        $select->order('success_date_fact DESC');
         $select->order('conflict DESC');
+        $select->order('success_date_fact');
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select, 
             array('o.id' => 'id', 'address', 'success_date_fact', 'success_date_planned', 
                 'created', 'creator_name', 'customer_name', 'conflict')
