@@ -153,7 +153,7 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
     
     onUpload: function(button) {
         var uploadWin = new Ext.Window({
-            title: 'Загрузка фото',
+        	title: 'Передача файлов на сервер',
             modal: true,
             width: 400,
             height: 200,
