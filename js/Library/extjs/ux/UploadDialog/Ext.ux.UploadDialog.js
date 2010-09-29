@@ -1220,6 +1220,40 @@ Ext.reg('uploaddialog', Ext.ux.UploadDialog.Dialog);
 // ---------------------------------------------------------------------------------------------- //
 
 var p = Ext.ux.UploadDialog.Dialog.prototype;
+/*
+p.i18n = {
+    title: 'File upload dialog',
+    state_col_title: 'State',
+    state_col_width: 70,
+    filename_col_title: 'Filename',
+    filename_col_width: 230,
+    note_col_title: 'Note',
+    note_col_width: 150,
+    add_btn_text: 'Add',
+    add_btn_tip: 'Add file into upload queue.',
+    remove_btn_text: 'Remove',
+    remove_btn_tip: 'Remove file from upload queue.',
+    reset_btn_text: 'Reset',
+    reset_btn_tip: 'Reset queue.',
+    upload_btn_start_text: 'Upload',
+    upload_btn_stop_text: 'Abort',
+    upload_btn_start_tip: 'Upload queued files to the server.',
+    upload_btn_stop_tip: 'Stop upload.',
+    close_btn_text: 'Close',
+    close_btn_tip: 'Close the dialog.',
+    progress_waiting_text: 'Waiting...',
+    progress_uploading_text: 'Uploading: {0} of {1} files complete.',
+    error_msgbox_title: 'Error',
+    permitted_extensions_join_str: ',',
+    err_file_type_not_permitted: 'Selected file extension isn\'t permitted.<br/>Please select files with following extensions: {1}',
+    note_queued_to_upload: 'Queued for upload.',
+    note_processing: 'Uploading...',
+    note_upload_failed: 'Server is unavailable or internal server error occured.',
+    note_upload_success: 'OK',
+    note_upload_error: 'Upload error.',
+    note_aborted: 'Aborted by user.'
+};
+*/
 p.i18n = {
     title: 'Передача файлов на сервер',
     state_col_title: 'Статус',
