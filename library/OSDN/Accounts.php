@@ -40,19 +40,18 @@ class OSDN_Accounts
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($accountId)) {
-            $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'account_id'));
-            return $response;
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'account_id'));
         }
 
         $rowset = $this->_tableAccounts->findOne($accountId);
-        $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::OK));
         if (!is_null($rowset)) {
             $rowset = $rowset->toArray();
         } elseif (empty($rowset)) {
             $rowset = array();
         }
         $response->rowset = $rowset;
-        return $response;
+        return $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::OK));
     }
 
     /**
@@ -90,8 +89,7 @@ class OSDN_Accounts
             $status = OSDN_Accounts_Status::OK;
         }
 
-        $response->addStatus(new OSDN_Accounts_Status($status));
-        return $response;
+        return $response->addStatus(new OSDN_Accounts_Status($status));
     }
 
     /**
@@ -107,7 +105,8 @@ class OSDN_Accounts
     {
         $validate = new OSDN_Validate_Id(true);
         if (!$validate->isValid($roleId)) {
-            return new OSDN_Response(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
+            return new OSDN_Response(new OSDN_Acl_Status(
+                OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
         }
 
         $clause = array();
@@ -175,8 +174,7 @@ class OSDN_Accounts
             $status = OSDN_Acl_Status::DATABASE_ERROR;
         }
 
-        $response->addStatus(new OSDN_Acl_Status($status));
-        return $response;
+        return $response->addStatus(new OSDN_Acl_Status($status));
     }
 
     /**
@@ -201,8 +199,8 @@ class OSDN_Accounts
         $response = new OSDN_Response();
         $validateRole = new OSDN_Validate_Id(true);
         if (!$validateRole->isValid($roleId)) {
-            $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
-            return $response;
+            return $response->addStatus(new OSDN_Acl_Status(
+                OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
         }
 
         if (!is_array($accountIds)) {
@@ -212,8 +210,8 @@ class OSDN_Accounts
         $validateAccount = new OSDN_Validate_Id();
         foreach ($accountIds as $accountId) {
             if (!$validateAccount->isValid($accountId)) {
-                $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'account_id'));
-                return $response;
+                return $response->addStatus(new OSDN_Acl_Status(
+                    OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'account_id'));
             }
 
             $affectedRows = $this->_tableAccounts->updateByPk(array(
@@ -221,13 +219,11 @@ class OSDN_Accounts
             ), $accountId);
 
             if (false === $affectedRows) {
-                $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::DATABASE_ERROR));
-                return $response;
+                return $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::DATABASE_ERROR));
             }
         }
 
-        $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::OK));
-        return $response;
+        return $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::OK));
     }
 
     /**
@@ -262,9 +258,9 @@ class OSDN_Accounts
             'active'    => $f->active
         ), $f->id);
 
-        $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
         $response->affectedRows = $affectedRows;
-        return $response;
+        return $response->addStatus(new OSDN_Accounts_Status(
+            OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
     }
 
     /**
@@ -301,9 +297,9 @@ class OSDN_Accounts
             'name'  => $f->name
         ), $f->id);
 
-        $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
         $response->affectedRows = $affectedRows;
-        return $response;
+        return $response->addStatus(new OSDN_Accounts_Status(
+            OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
     }
 
     /**
@@ -319,8 +315,8 @@ class OSDN_Accounts
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
-            $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'id'));
-            return $response;
+            return $response->addStatus(new OSDN_Acl_Status(
+                OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
 
         $fieldValidate = null;
@@ -344,14 +340,14 @@ class OSDN_Accounts
                 break;
 
             default:
-                $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'id'));
-                return $response;
+                return $response->addStatus(new OSDN_Acl_Status(
+                    OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
 
         if ($fieldValidate instanceof Zend_Validate_Interface) {
             if (!$fieldValidate->isValid($value) || !$this->_tableAccounts->isAllowedField($field)) {
-                $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, $field));
-                return $response;
+                return $response->addStatus(new OSDN_Acl_Status(
+                    OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, $field));
             }
         }
         $affectedRows = false;
@@ -366,8 +362,8 @@ class OSDN_Accounts
             ), $id);
         }
 
-        $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::retrieveAffectedRowStatus($affectedRows)));
-        return $response;
+        return $response->addStatus(new OSDN_Acl_Status(
+            OSDN_Acl_Status::retrieveAffectedRowStatus($affectedRows)));
     }
 
     /**
@@ -419,8 +415,7 @@ class OSDN_Accounts
             $status = OSDN_Acl_Status::FAILURE;
         }
 
-        $response->addStatus(new OSDN_Acl_Status($status));
-        return $response;
+        return $response->addStatus(new OSDN_Acl_Status($status));
     }
 
     /**
@@ -472,8 +467,7 @@ class OSDN_Accounts
             $response->id = $id;
         }
 
-        $response->addStatus(new OSDN_Accounts_Status($status));
-        return $response;
+        return $response->addStatus(new OSDN_Accounts_Status($status));
     }
 
     /**
@@ -494,8 +488,8 @@ class OSDN_Accounts
         $loginValidator = new OSDN_Validate_Login();
         $response = new OSDN_Response();
         if (!$stringLengthValidator->isValid($login) || !$loginValidator->isValid($login)) {
-            $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'login'));
-            return $response;
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'login'));
         }
 
         $count = $this->_tableAccounts->count(array('login = ?' => $login));
@@ -511,9 +505,8 @@ class OSDN_Accounts
             $status = OSDN_Accounts_Status::ACCOUNT_IS_ALREADY_EXISTS;
         }
 
-        $response->addStatus(new OSDN_Accounts_Status($status));
         $response->exists = $exists;
-        return $response;
+        return $response->addStatus(new OSDN_Accounts_Status($status));
     }
 
     /**
@@ -527,8 +520,8 @@ class OSDN_Accounts
         $validate = new OSDN_Validate_Id();
         $response = new OSDN_Response();
         if (!$validate->isValid($id)) {
-            $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'id'));
-            return $response;
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
 
         try {
@@ -541,8 +534,7 @@ class OSDN_Accounts
             $status = OSDN_Accounts_Status::DATABASE_ERROR;
         }
 
-        $response->addStatus(new OSDN_Accounts_Status($status));
-        return $response;
+        return $response->addStatus(new OSDN_Accounts_Status($status));
     }
 
     /**
@@ -574,8 +566,8 @@ class OSDN_Accounts
             'password'  => md5($password),
         ), $id);
 
-        $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRow)));
-        return $response;
+        return $response->addStatus(new OSDN_Accounts_Status(
+            OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRow)));
     }
 
     /**
@@ -611,20 +603,22 @@ class OSDN_Accounts
         $password = $this->_tableAccounts->fetchPassword($id);
 
         if ($password !== md5($f->old_password)) {
-            return $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::WRONG_PASSWORD, 'old_password'));
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::WRONG_PASSWORD, 'old_password'));
         }
 
         if ($f->new_password1 !== $f->new_password2) {
-            return $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::UNCORRECT_NEW_PASSWORD, 'new_password2'));
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::UNCORRECT_NEW_PASSWORD, 'new_password2'));
         }
 
         $affectedRows = $this->_tableAccounts->updateByPk(array(
             'password' => md5($f->new_password1)
         ), $id);
 
-        $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
         $response->affectedRows = $affectedRows;
-        return $response;
+        return $response->addStatus(new OSDN_Accounts_Status(
+            OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
     }
 
     /**
@@ -638,24 +632,24 @@ class OSDN_Accounts
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
-            $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'id'));
-            return $response;
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
 
         $row = $this->_tableAccounts->findOne($id);
         if (is_null($row)) {
-            $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::NO_ONE_ROWS_AFFECTED));
-            return $response;
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::NO_ONE_ROWS_AFFECTED));
         }
 
 
         if (false !== ($state = @unserialize($row->state))) {
             $response->rows = $state;
-            $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::OK));
+            $status = OSDN_Accounts_Status::OK;
         } else {
-            $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::FAILURE));
+            $status = OSDN_Accounts_Status::FAILURE;
         }
-        return $response;
+        return $response->addStatus(new OSDN_Accounts_Status($status));
     }
 
     /**
@@ -670,15 +664,15 @@ class OSDN_Accounts
         $response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
-            $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'id'));
-            return $response;
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
 
         $affectedRows = $this->_tableAccounts->updateByPk(array(
             'state' => serialize($state)
         ), $id);
 
-        $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
-        return $response;
+        return $response->addStatus(new OSDN_Accounts_Status(
+            OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
     }
 }
