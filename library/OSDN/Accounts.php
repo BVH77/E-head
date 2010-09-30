@@ -15,7 +15,7 @@ class OSDN_Accounts
      * @var OSDN_Accounts_Table_Accounts
      */
     protected $_tableAccounts;
-    
+
     /**
      * Constructor
      *
@@ -43,7 +43,7 @@ class OSDN_Accounts
             $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'account_id'));
             return $response;
         }
-        
+
         $rowset = $this->_tableAccounts->findOne($accountId);
         $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::OK));
         if (!is_null($rowset)) {
@@ -54,7 +54,7 @@ class OSDN_Accounts
         $response->rowset = $rowset;
         return $response;
     }
-    
+
     /**
      * Retrieve account information by login and password
      *
@@ -65,35 +65,35 @@ class OSDN_Accounts
     public function fetchByLoginPassword($login, $password)
     {
         $response = new OSDN_Response();
-        
+
         try {
             $row = $this->_tableAccounts->fetchRow(array(
                 'login = ?'     => $login,
                 'password = ?'  => $password
             ));
-            
+
             if (!is_null($row)) {
                 $row = $row->toArray();
                 unset($row['state']);
             }
-            
+
             $response->row = $row;
-            
+
         } catch (Exception $e) {
             $row = null;
             $status = OSDN_Accounts_Status::DATABASE_ERROR;
         }
-        
+
         if (is_null($row)) {
             $status = OSDN_Accounts_Status::FAILURE;
         } else {
             $status = OSDN_Accounts_Status::OK;
         }
-        
+
         $response->addStatus(new OSDN_Accounts_Status($status));
         return $response;
     }
-    
+
     /**
      * Fetch accounts by role
      * @see _fetchAll()
@@ -109,15 +109,15 @@ class OSDN_Accounts
         if (!$validate->isValid($roleId)) {
             return new OSDN_Response(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
         }
-        
+
         $clause = array();
         if (!empty($roleId)) {
             $clause = array('role_id = ?' => $roleId);
         }
         return $this->_fetchAll($clause, $params);
     }
-    
-    
+
+
     /**
      * Fetches all rows
      *
@@ -149,16 +149,16 @@ class OSDN_Accounts
         $response = new OSDN_Response();
         $select = $this->_tableAccounts->getAdapter()->select();
         $select->from(array('a' => $this->_tableAccounts->getTableName()));
-        
+
         $plugin = new OSDN_Db_Plugin_Select($this->_tableAccounts, $select);
         $plugin->parse($params);
-        
+
         if (!empty($where)) {
             foreach ($where as $key => $value) {
                 $select->where($key, $value);
             }
         }
-        
+
         $status = null;
         try {
             $rowset = $select->query()->fetchAll();
@@ -166,19 +166,19 @@ class OSDN_Accounts
             $response->setRowset($rowset);
             $response->total = $plugin->getTotalCount();
             $status = OSDN_Acl_Status::OK;
-            
+
         } catch (Exception $e) {
             if (OSDN_DEBUG) {
                 throw $e;
             }
-            
+
             $status = OSDN_Acl_Status::DATABASE_ERROR;
         }
-        
+
         $response->addStatus(new OSDN_Acl_Status($status));
         return $response;
     }
-    
+
     /**
      * @see _fetchAll()
      *
@@ -188,7 +188,7 @@ class OSDN_Accounts
     {
         return $this->_fetchAll(array(), $params);
     }
-    
+
     /**
      * Change account role
      *
@@ -204,32 +204,32 @@ class OSDN_Accounts
             $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
             return $response;
         }
-        
+
         if (!is_array($accountIds)) {
             $accountIds = array($accountIds);
         }
-        
+
         $validateAccount = new OSDN_Validate_Id();
         foreach ($accountIds as $accountId) {
             if (!$validateAccount->isValid($accountId)) {
                 $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'account_id'));
                 return $response;
             }
-            
+
             $affectedRows = $this->_tableAccounts->updateByPk(array(
                 'role_id'   => $roleId
             ), $accountId);
-            
+
             if (false === $affectedRows) {
                 $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::DATABASE_ERROR));
                 return $response;
             }
         }
-        
+
         $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::OK));
         return $response;
     }
-    
+
     /**
      * Update account
      *
@@ -248,12 +248,12 @@ class OSDN_Accounts
             'radius'    => array('boolean'),
             'active'    => array('boolean')
         ), $data);
-        
+
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
             return $response;
         }
-        
+
         $affectedRows = $this->_tableAccounts->updateByPk(array(
             'email'     => $f->email,
             'phone'     => $f->phone,
@@ -261,12 +261,12 @@ class OSDN_Accounts
             'radius'    => $f->radius,
             'active'    => $f->active
         ), $f->id);
-        
+
         $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
         $response->affectedRows = $affectedRows;
         return $response;
     }
-    
+
     /**
      * Update personal information account
      *
@@ -289,23 +289,23 @@ class OSDN_Accounts
             'id'    => array('id', 'presense' => 'required'),
             'email' => array('EmailAddress', 'presense' => 'required')
         ), $data);
-        
+
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
             return $response;
         }
-        
+
         $affectedRows = $this->_tableAccounts->updateByPk(array(
             'email' => $f->email,
             'phone' => $f->phone,
             'name'  => $f->name
         ), $f->id);
-        
+
         $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
         $response->affectedRows = $affectedRows;
         return $response;
     }
-    
+
     /**
      * Update account field by name
      *
@@ -322,32 +322,32 @@ class OSDN_Accounts
             $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'id'));
             return $response;
         }
-        
+
         $fieldValidate = null;
         $field = strtolower($field);
-        
+
         switch ($field) {
             case 'name':
                 $fieldValidate = new Zend_Validate_NotEmpty();
                 break;
-                
+
             case 'email':
                 $fieldValidate = new Zend_Validate_EmailAddress();
                 break;
-                
+
             case 'active':
             case 'radius':
                 $fieldValidate = new OSDN_Validate_Boolean();
                 break;
-            
+
             case 'phone':
                 break;
-                
+
             default:
                 $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'id'));
                 return $response;
         }
-        
+
         if ($fieldValidate instanceof Zend_Validate_Interface) {
             if (!$fieldValidate->isValid($value) || !$this->_tableAccounts->isAllowedField($field)) {
                 $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, $field));
@@ -355,7 +355,7 @@ class OSDN_Accounts
             }
         }
         $affectedRows = false;
-        
+
         // try to set method catcher before common method
         $method = '_set' . ucfirst($field) . 'Account';
         if (method_exists($this, $method)) {
@@ -365,11 +365,11 @@ class OSDN_Accounts
                 $field  => $value
             ), $id);
         }
-        
+
         $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::retrieveAffectedRowStatus($affectedRows)));
         return $response;
     }
-    
+
     /**
      * Set anonymous account
      *
@@ -383,7 +383,7 @@ class OSDN_Accounts
         if ($anonymousPresent) {
             return false;
         }
-        
+
         $this->_tableAccounts->updateQuote(
             array('anonymous'   => new Zend_Db_Expr('NULL')),
             array('anonymous ?' => new Zend_Db_Expr('IS NOT NULL'))
@@ -411,18 +411,18 @@ class OSDN_Accounts
         ));
         $response = new OSDN_Response();
         $status = null;
-        
+
         if (!is_null($rowset)) {
             $response->row = $rowset->toArray();
             $status = OSDN_Acl_Status::OK;
         } else {
             $status = OSDN_Acl_Status::FAILURE;
         }
-        
+
         $response->addStatus(new OSDN_Acl_Status($status));
         return $response;
     }
-    
+
     /**
      * Create new account
      *
@@ -445,13 +445,13 @@ class OSDN_Accounts
             'password'  => array('password', 'presense' => 'required'),
             'roleId'    => array(array('Id', array(true)))
         ), $data);
-        
+
         $response = new OSDN_Response();
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
             return $response;
         }
-        
+
         $login = $f->login;
         $password = $f->password;
         $roleId = $f->roleId;
@@ -459,23 +459,23 @@ class OSDN_Accounts
         if ($existsResponse->isError()) {
             return $existsResponse;
         }
-        
+
         $id = $this->_tableAccounts->insert(array(
             'login'     => $login,
             'password'  => md5($password),
             'role_id'   => $roleId
         ));
-        
+
         $status = OSDN_Accounts_Status::FAILURE;
         if ($id > 0) {
             $status = OSDN_Accounts_Status::OK;
             $response->id = $id;
         }
-        
+
         $response->addStatus(new OSDN_Accounts_Status($status));
         return $response;
     }
-    
+
     /**
      * Check if present account
      *
@@ -489,7 +489,7 @@ class OSDN_Accounts
     {
         $f = new Zend_Filter_StringTrim();
         $login = $f->filter($login);
-        
+
         $stringLengthValidator = new Zend_Validate_StringLength(3, 50);
         $loginValidator = new OSDN_Validate_Login();
         $response = new OSDN_Response();
@@ -497,11 +497,11 @@ class OSDN_Accounts
             $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'login'));
             return $response;
         }
-        
+
         $count = $this->_tableAccounts->count(array('login = ?' => $login));
         $status = null;
         $exists = true;
-        
+
         if (0 === $count) {
             $status = OSDN_Accounts_Status::OK;
             $exists = false;
@@ -510,12 +510,12 @@ class OSDN_Accounts
         } else {
             $status = OSDN_Accounts_Status::ACCOUNT_IS_ALREADY_EXISTS;
         }
-        
+
         $response->addStatus(new OSDN_Accounts_Status($status));
         $response->exists = $exists;
         return $response;
     }
-    
+
     /**
      * Delete account by id
      *
@@ -530,25 +530,7 @@ class OSDN_Accounts
             $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'id'));
             return $response;
         }
-        
-        $anonymous = $this->fetchAnonymousAccount();
-        
-        $success = true;
-        if ($anonymous->isError()) {
-            $success = false;
-        } else {
-            
-            $row = $anonymous->row;
-            if (empty($row['id']) || $id == $row['id']) {
-                $success = false;
-            }
-        }
-        
-        if (true !== $success) {
-            $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::ACCOUNT_IS_PROTECTED));
-            return $response;
-        }
-        
+
         try {
             $affectedRows = $this->_tableAccounts->deleteByPk($id);
             $status = OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows);
@@ -558,11 +540,11 @@ class OSDN_Accounts
             }
             $status = OSDN_Accounts_Status::DATABASE_ERROR;
         }
-        
+
         $response->addStatus(new OSDN_Accounts_Status($status));
         return $response;
     }
-    
+
     /**
      * Change account password
      *
@@ -581,21 +563,21 @@ class OSDN_Accounts
             'id'        => $id,
             'password'  => $password
         ));
-        
+
         $response = new OSDN_Response();
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
             return $response;
         }
-        
+
         $affectedRow = $this->_tableAccounts->updateByPk(array(
             'password'  => md5($password),
         ), $id);
-        
+
         $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRow)));
         return $response;
     }
-    
+
     /**
      * Change password
      *
@@ -612,7 +594,7 @@ class OSDN_Accounts
     {
         $response = new OSDN_Response();
         $data['id'] = $id;
-        
+
         $f = new OSDN_Filter_Input(array(
             '*'     => array('StringTrim')
         ), array(
@@ -620,31 +602,31 @@ class OSDN_Accounts
             'new_password1'  => array('password', 'presense' => 'required'),
             'new_password2'  => array('password', 'presense' => 'required')
         ), $data);
-        
+
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
             return $response;
         }
-        
+
         $password = $this->_tableAccounts->fetchPassword($id);
-        
+
         if ($password !== md5($f->old_password)) {
             return $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::WRONG_PASSWORD, 'old_password'));
         }
-        
+
         if ($f->new_password1 !== $f->new_password2) {
             return $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::UNCORRECT_NEW_PASSWORD, 'new_password2'));
         }
-        
+
         $affectedRows = $this->_tableAccounts->updateByPk(array(
             'password' => md5($f->new_password1)
         ), $id);
-        
+
         $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
         $response->affectedRows = $affectedRows;
         return $response;
     }
-    
+
     /**
      * Retrieve account state
      *
@@ -659,14 +641,14 @@ class OSDN_Accounts
             $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'id'));
             return $response;
         }
-        
+
         $row = $this->_tableAccounts->findOne($id);
         if (is_null($row)) {
             $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::NO_ONE_ROWS_AFFECTED));
             return $response;
         }
-        
-        
+
+
         if (false !== ($state = @unserialize($row->state))) {
             $response->rows = $state;
             $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::OK));
@@ -675,7 +657,7 @@ class OSDN_Accounts
         }
         return $response;
     }
-    
+
     /**
      * Update account state
      *
@@ -691,11 +673,11 @@ class OSDN_Accounts
             $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'id'));
             return $response;
         }
-        
+
         $affectedRows = $this->_tableAccounts->updateByPk(array(
             'state' => serialize($state)
         ), $id);
-        
+
         $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
         return $response;
     }
