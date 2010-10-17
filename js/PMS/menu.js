@@ -1,8 +1,9 @@
 Ext.ns('PMS');
 
-PMS.Menu = function(username, rolename) {
+PMS.Menu = function(username, rolename, roleId) {
 	username = username || '';
 	rolename = rolename || '';
+	roleId = parseInt(roleId);
 	return [{
 	    xtype: 'box',
 	    autoEl: {
@@ -94,6 +95,26 @@ PMS.Menu = function(username, rolename) {
 			});
 		}
 	}, '->', {
+		text: 'Учебник',
+        iconCls: 'work_schd-icon',
+        handler: function() {
+			var url = 'http://e-head.ru/index.php/home/tutorial/tutorial-';
+			var role = 'director';
+			switch (roleId) {
+				case 3: 
+					role = 'manager';
+					break;
+				case 4: 
+				case 5: 
+					role = 'executor';
+					break;
+				case 7: 
+					role = 'bookkeeper';
+					break;
+			}
+            window.open(url + role);
+        }
+	}, '-', {
         text: 'Выход - <i>' + username + ' (' + rolename + ')</i>',
         iconCls: 'exit-icon',
         handler: function() {

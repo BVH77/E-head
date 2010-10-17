@@ -132,9 +132,10 @@ if(!OSDN_Accounts_Prototype::isAuthenticated()) {
 	try {
 		$role = $roles->fetchRole(OSDN_Accounts_Prototype::getRoleId());
 		$roleRow = $role->getRow();
-		$roleName = $roleRow['name'];  
+		$roleName = $roleRow['name'];
 	} catch (Exception $e) {$roleName = '';}
     $options += array(
+        'roleId' => OSDN_Accounts_Prototype::getRoleId(),
         'username' => OSDN_Accounts_Prototype::getInformation()->name,
         'rolename' => $roleName
     );
