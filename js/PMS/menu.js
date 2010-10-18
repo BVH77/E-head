@@ -65,19 +65,19 @@ PMS.Menu = function(username, rolename, roleId) {
 	    iconCls: 'prod_schd-icon',
 	    hidden: !acl.isView('orders'),
 	    menu: [{
-	        text: 'График производства',
+	        text: 'План производственных работ',
 	        iconCls: 'prod_schd-icon',
 	        handler: function() {
 	            window.open('/orders/report/schedule-production');
 	        }
 	    }, {
-	        text: 'График монтажа',
+	        text: 'План монтажных работ',
 	        iconCls: 'mount_schd-icon',
 	        handler: function() {
 	            window.open('/orders/report/schedule-mount');
 	        }
 	    }, {
-	        text: 'План работ',
+	        text: 'Сводный план работ',
 	        iconCls: 'work_schd-icon',
 	        handler: function() {
 	            window.open('/orders/report/planning');

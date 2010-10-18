@@ -12,7 +12,7 @@ body {
 }
 </style>
 <center>
-<h3>План проектов на <?=$this->data['date']?></h3>
+<h3>Сводный план работ на <?=$this->data['date']?></h3>
 </center>
 <?php foreach ($this->data['data'] as $monthNumber => $month) :?>
     <center><?=$month['name']?></center><br/>
@@ -24,7 +24,7 @@ body {
             <td><b>Ответственный</b></td>
             <?php foreach ($month['days'] as $number => $day) :?>
                 <td align="center"><?=$day?><br/><b><?=$number?></b></td>
-            <?php endforeach;?>    
+            <?php endforeach;?>
         </tr>
 		<?php foreach ($month['orders'] as $order) :?>
 	        <tr>

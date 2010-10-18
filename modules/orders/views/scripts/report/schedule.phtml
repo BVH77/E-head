@@ -1,7 +1,5 @@
 <center><h3>
-График работ по <?php if ($this->data['type'] == 'mount'): ?>МОНТАЖУ
-<?php elseif ($this->data['type'] == 'production'):?> ПРОИЗВОДСТВУ
-<?php endif;?> на&nbsp;&nbsp;&nbsp;&nbsp;<?=date_format($this->data['date'], 'd-m-Y');?>
+График <?php if ($this->data['type'] == 'mount'): ?>монтажных<?php elseif ($this->data['type'] == 'production'):?>производственных<?php endif;?> работ на&nbsp;&nbsp;&nbsp;&nbsp;<?=date_format($this->data['date'], 'd-m-Y');?>
 </h3></center>
 <?php foreach ($this->data['orders'] as $order) :?>
     <div style="float: left; padding: 10px; height: 350px;">
