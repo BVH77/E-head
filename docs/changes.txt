@@ -1,7 +1,6 @@
 <fieldset><legend><b>Открытые задачи</b></legend>
 
 - Доступ к демо только после регистрации
-- скрипт сброса базы демо на комп 
 - комментарии сделать адресными (с отсылкой тела каммента адресату)
 - графики (добавить период).
 - план на месяц (?).
@@ -10,6 +9,8 @@
 
 </fieldset>
 <fieldset><legend><b>Выполнено</b></legend>
+20.10.2010
++ Прикручен скрипт сброса базы демо
 
 18.10.2010
 + Обучающие видеоролики
@@ -63,11 +64,11 @@
 + письма (добавление заказа - избыточный спам)
 
 10.07.2010
-+ comments on main screen
-+ hide mount/prod sections (in order, order details, reports) if disabled
-+ reorganize tabs (make production tab & mountage tab with according dates, suppliers, costs)
-+ add an invoice number / date & act number / date before move to archive (also figured in per customer's report and order details)
-+ photo's sizes (too big, can't close)
-+ order details (redesign)
++ Комментарии на главной странице
++ Скрывать монтаж/производство (в заказах, деталях заказов, отчётах) если соотв. раздел выключен
++ Реорганизовать вкладки (сделать вкладки монтажа ипроизводства соответственно с датами и стоимостью)
++ При перенесении в архив запрашивается дата и номер - счёта и акта
++ Размеры фото уменьшены
++ Редизайн окна заказов
 
 </fieldset>
