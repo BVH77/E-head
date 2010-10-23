@@ -4,6 +4,8 @@ class CronController extends OSDN_Controller_Action
 {
     public function scheduleAction()
     {
+        $this->disableRender(true);
+
         $config = Zend_Registry::get('config');
         $server = $config->mail->SMTP;
 
