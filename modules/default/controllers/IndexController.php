@@ -13,7 +13,7 @@ class IndexController extends OSDN_Controller_Action
     public function indexAction()
     {
         $assemble = new Zend_Session_Namespace('assemble');
-        	
+
         if (!OSDN_Accounts_Prototype::isAuthenticated()) {
         	$assemble->path = $_SERVER['REQUEST_URI'];
             $this->_redirect('/index/login');
@@ -22,7 +22,7 @@ class IndexController extends OSDN_Controller_Action
         	$assemble->unsetAll();
         	$this->_redirect($path);
         }
-        
+
         // use for assemble
         $id = $this->_getParam('id');
         if (!empty($id)) {
@@ -41,7 +41,7 @@ class IndexController extends OSDN_Controller_Action
         $file = file_get_contents(ROOT_DIR . '/docs/changes.txt');
         echo nl2br($file);
     }
-    
+
     public function addNewTranslationAction()
     {
         $alias = $this->_getParam('alias');
@@ -82,20 +82,20 @@ class IndexController extends OSDN_Controller_Action
     public function loginAction()
     {
         Zend_Auth::getInstance()->clearIdentity();
-        
+
         $do = trim($this->_getParam('do'));
         if (empty($do)) {
             $this->view->message = '';
             return;
         }
-            
+
         $login = trim($this->_getParam('login'));
         $password = md5(trim($this->_getParam('password')));
         $dbAdapter = OSDN_Db_Table_Abstract::getDefaultAdapter();
         $authAdapter = new Zend_Auth_Adapter_DbTable($dbAdapter);
-        
+
         $errMes = 'ОШИБКА АВТОРИЗАЦИИ!';
-        
+
         if (empty($login) || empty($password)) {
             $this->view->message = $errMes;
             return;
@@ -104,10 +104,10 @@ class IndexController extends OSDN_Controller_Action
         $authAdapter->setTableName(OSDN_Db_Table_Abstract::getDefaultPrefix() . 'accounts');
         $authAdapter->setIdentityColumn('login');
         $authAdapter->setCredentialColumn('password');
-        
+
         $authAdapter->setIdentity($login);
         $authAdapter->setCredential($password);
-        
+
         $auth = Zend_Auth::getInstance();
         $result = $authAdapter->authenticate();
 
@@ -115,7 +115,7 @@ class IndexController extends OSDN_Controller_Action
             $this->view->message = $errMes;
             return;
         }
-            
+
         // instance of stdClass
         $data = $authAdapter->getResultRowObject(null, 'password');
         $config = Zend_Registry::get('config');
@@ -123,25 +123,25 @@ class IndexController extends OSDN_Controller_Action
         // try to create acl object and assign the permissions
         $acl = new OSDN_Acl();
         $roleId = $data->role_id;
-        
+
         $permissions = new OSDN_Acl_Permission();
         $response = $permissions->fetchByRoleId($roleId);
         if ($response->isSuccess()) {
-            $rows = $response->rows;
-            foreach ($rows as $row) {
+            $rowset = $response->getRowset();
+            foreach ($rowset as $row) {
                 $resourceId = $row['resource_id'];
                 $acl->addResource($resourceId);
                 $acl->allow($resourceId, $row['privilege_id']);
             }
         }
-        
+
         /**
          * Store acl object into the standart auth storage
          * When user go to logout or session time is out
          * then acl will be destroyed with user's authentification settings
          */
         $data->acl = $acl;
-        
+
         /**
          * Apply account locale
          */
@@ -150,11 +150,11 @@ class IndexController extends OSDN_Controller_Action
 //        if ($language->isAvailableLocale($locale)) {
 //            OSDN_Language::setDefaultLocale($locale, true);
 //        }
-        
+
         $auth->getStorage()->write($data);
         header('Location: /');
     }
-    
+
     /**
      * Destroy account session and redirect on base site url.
      *
@@ -175,7 +175,7 @@ class IndexController extends OSDN_Controller_Action
             Zend_Auth::getInstance()->clearIdentity();
         }
         Zend_Session::destroy();
-        
+
         $this->view->success = true;
         header('Location: /');
     }
