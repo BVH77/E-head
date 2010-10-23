@@ -26,7 +26,7 @@ class CronController extends OSDN_Controller_Action
         }
         $mail->setSubject("График производства на завтра");
         $mail->setBodyHtml("http://$server/orders/report/schedule-production");
-        echo $mail->getBodyHtml;
+        echo $mail->getBodyHtml();
         try {
             $mail->send();
         } catch (Exception $e) {
@@ -52,23 +52,11 @@ class CronController extends OSDN_Controller_Action
         }
         $mail->setSubject("График монтажных работ на завтра");
         $mail->setBodyHtml("http://$server/orders/report/schedule-mount");
-        echo $mail->getBodyHtml;
+        echo $mail->getBodyHtml();
         try {
             $mail->send();
         } catch (Exception $e) {
             echo $e->getMessage();
         }
-
-        // Send mail to mount
-        $mail = new Zend_Mail('UTF-8');
-        $mail->setFrom($config->mail->from->address, $config->mail->from->caption);
-
-        try {
-            $mail->send();
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
-
-        exit();
     }
 }
