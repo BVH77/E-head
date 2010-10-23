@@ -161,7 +161,6 @@ class OSDN_Accounts
         $status = null;
         try {
             $rowset = $select->query()->fetchAll();
-            $response->rows = $rowset;
             $response->setRowset($rowset);
             $response->total = $plugin->getTotalCount();
             $status = OSDN_Acl_Status::OK;
