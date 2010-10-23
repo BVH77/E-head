@@ -6,8 +6,7 @@ class CronController extends OSDN_Controller_Action
     {
         $config = Zend_Registry::get('config');
         $server = $config->mail->SMTP;
-        $mail = new Zend_Mail('UTF-8');
-        $mail->setFrom($config->mail->from->address, $config->mail->from->caption);
+
         $accounts = new OSDN_Accounts();
 
         // Send mail to production
@@ -21,22 +20,26 @@ class CronController extends OSDN_Controller_Action
                 }
             }
         }
-        foreach ($persons as $person) {
-            $mail->addTo($person['email'], $person['name']);
+        if (!empty($persons)) {
+
+            $mail = new Zend_Mail('UTF-8');
+            $mail->setFrom($config->mail->from->address, $config->mail->from->caption);
+
+            foreach ($persons as $person) {
+                $mail->addTo($person['email'], $person['name']);
+            }
+            $mail->setSubject("График производства на завтра");
+            $mail->setBodyHtml("http://$server/orders/report/schedule-production");
+
+            try {
+                $mail->send();
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
         }
-        $mail->setSubject("График производства на завтра");
-        $mail->setBodyHtml("http://$server/orders/report/schedule-production");
-        echo $mail->getBodyHtml();
-        try {
-            $mail->send();
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
+
 
         // Send mail to mount
-        $mail = new Zend_Mail('UTF-8');
-        $mail->setFrom($config->mail->from->address, $config->mail->from->caption);
-
         $persons = array();
         $response = $accounts->fetchByRole(5); // 5 = mount
         if ($response->isSuccess()) {
@@ -47,16 +50,22 @@ class CronController extends OSDN_Controller_Action
                 }
             }
         }
-        foreach ($persons as $person) {
-            $mail->addTo($person['email'], $person['name']);
-        }
-        $mail->setSubject("График монтажных работ на завтра");
-        $mail->setBodyHtml("http://$server/orders/report/schedule-mount");
-        echo $mail->getBodyHtml();
-        try {
-            $mail->send();
-        } catch (Exception $e) {
-            echo $e->getMessage();
+        if (!empty($persons)) {
+
+            $mail = new Zend_Mail('UTF-8');
+            $mail->setFrom($config->mail->from->address, $config->mail->from->caption);
+
+            foreach ($persons as $person) {
+                $mail->addTo($person['email'], $person['name']);
+            }
+            $mail->setSubject("График монтажных работ на завтра");
+            $mail->setBodyHtml("http://$server/orders/report/schedule-mount");
+
+            try {
+                $mail->send();
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
         }
     }
 }
