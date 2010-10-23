@@ -8,7 +8,7 @@ class Admin_AccountsController extends OSDN_Controller_Action
      * @var OSDN_Accounts
      */
     protected $_accounts;
-    
+
     public function permission(OSDN_Controller_Action_Helper_Acl $acl)
     {
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->admin);
@@ -21,13 +21,13 @@ class Admin_AccountsController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete-account');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'change-password');
     }
-    
+
     public function init()
     {
         $this->_accounts = new OSDN_Accounts();
         parent::init();
     }
-    
+
     public function getAccountsAction()
     {
         $roleId = $this->_getParam('roleId');
@@ -36,7 +36,7 @@ class Admin_AccountsController extends OSDN_Controller_Action
             $this->_collectErrors($response);
             return;
         }
-        $this->view->rows = $response->rows;
+        $this->view->rows = $response->getRowset();
         $this->view->success = true;
     }
 
@@ -48,11 +48,11 @@ class Admin_AccountsController extends OSDN_Controller_Action
             $this->view->rows = array();
             return;
         }
-        
+
         $this->view->rows = array($response->rowset);
         $this->view->success = true;
     }
-    
+
     public function updateAction()
     {
         $response = $this->_accounts->update($this->_getParam('id'), $this->_getAllParams());
@@ -60,10 +60,10 @@ class Admin_AccountsController extends OSDN_Controller_Action
             $this->_collectErrors($response);
             return;
         }
-        
+
         $this->view->success = true;
     }
-    
+
     public function updateFieldAction()
     {
         $id = $this->_getParam('id');
@@ -76,7 +76,7 @@ class Admin_AccountsController extends OSDN_Controller_Action
         }
         $this->view->success = true;
     }
-    
+
     public function addAccountAction()
     {
         $response = $this->_accounts->createAccount(array(
@@ -84,7 +84,7 @@ class Admin_AccountsController extends OSDN_Controller_Action
             'password'  => $this->_getParam('password'),
             'roleId'   => $this->_getParam('roleId')
         ));
-        
+
         if ($response->isError()) {
             $this->_collectErrors($response);
         } else {
@@ -92,7 +92,7 @@ class Admin_AccountsController extends OSDN_Controller_Action
             $this->view->errors = array();
         }
     }
-    
+
     public function deleteAccountAction()
     {
         $response = $this->_accounts->deleteAccount($this->_getParam('id'));
@@ -100,10 +100,10 @@ class Admin_AccountsController extends OSDN_Controller_Action
             $this->_collectErrors($response);
             return;
         }
-        
+
         $this->view->success = true;
     }
-    
+
     public function changePasswordAction()
     {
         $response = $this->_accounts->changePassword($this->_getParam('id'), $this->_getParam('password'));
@@ -111,11 +111,11 @@ class Admin_AccountsController extends OSDN_Controller_Action
             $this->_collectErrors($response);
             return;
         }
-        
+
         $this->view->success = true;
         $this->view->errors = array();
     }
-    
+
     public function changeRoleAction()
     {
         $accountIds = $this->_getParam('accountIds');
