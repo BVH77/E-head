@@ -21,6 +21,7 @@ class CronController extends OSDN_Controller_Action
                 }
             }
         }
+        var_dump($persons);
         foreach ($persons as $person) {
             $mail->addTo($person['email'], $person['name']);
         }
