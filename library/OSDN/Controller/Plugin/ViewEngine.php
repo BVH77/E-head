@@ -17,19 +17,19 @@ class OSDN_Controller_Plugin_ViewEngine extends Zend_Controller_Plugin_Abstract
 {
 
     protected $_options = array();
-    
+
     public function __construct(array $options = array())
     {
         if (is_array($options)) {
             $this->_options = $options;
         }
     }
-    
+
     /**
      * @var Zend_Controller_Front
      */
     protected $_frontController = null;
-    
+
     /**
      * Called before Zend_Controller_Front begins evaluating the
      * request against its routes.
@@ -40,7 +40,7 @@ class OSDN_Controller_Plugin_ViewEngine extends Zend_Controller_Plugin_Abstract
     public function routeStartup(Zend_Controller_Request_Abstract $request)
     {
         $router = $this->getFrontController()->getRouter();
-        
+
         // prepare json router
         $router->addRoute(
             'json',
@@ -51,7 +51,7 @@ class OSDN_Controller_Plugin_ViewEngine extends Zend_Controller_Plugin_Abstract
                 'action'        => 'action'
             ))
         );
-        
+
         // prepare xml router
         $router->addRoute(
             'xml',
@@ -62,7 +62,7 @@ class OSDN_Controller_Plugin_ViewEngine extends Zend_Controller_Plugin_Abstract
                 'action'        => 'action'
             ))
         );
-        
+
         $router->addRoute(
             'assemble',
             new Zend_Controller_Router_Route_Regex('^([a-fA-F0-9]{32})$',
@@ -73,7 +73,7 @@ class OSDN_Controller_Plugin_ViewEngine extends Zend_Controller_Plugin_Abstract
             ),
             array('id' => 1))
         );
-        
+
         // prepare debug router
         if (OSDN_DEBUG) {
             $router->addRoute(
@@ -87,7 +87,7 @@ class OSDN_Controller_Plugin_ViewEngine extends Zend_Controller_Plugin_Abstract
             );
         }
     }
-    
+
     /**
      * Called after Zend_Controller_Router exits.
      *
@@ -102,21 +102,23 @@ class OSDN_Controller_Plugin_ViewEngine extends Zend_Controller_Plugin_Abstract
         $route = $frontController->getRouter();
         $routeName = $route->getCurrentRouteName();
         $view = OSDN_View::factory($routeName, $this->_options);
-        
+
         // set a predefined variables
         if ($view instanceof Zend_View_Abstract) {
             $view->assign($this->_options);
         }
-        
+
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
         $viewRenderer->setView($view);
-        
+
         // set site address in config
         $config = Zend_Registry::get('config');
         if (!isset($config->site->address)) {
             $protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
-            $host = $_SERVER['HTTP_HOST'] . $this->getFrontController()->getBaseUrl();
-            
+            $host = isset($_SERVER['HTTP_HOST'])
+                ? $_SERVER['HTTP_HOST'] . $this->getFrontController()->getBaseUrl()
+                : $this->getFrontController()->getBaseUrl();
+
             $tmp = $config->toArray();
             if (!isset($tmp['site'])) {
                 $tmp['site'] = array();
@@ -128,7 +130,7 @@ class OSDN_Controller_Plugin_ViewEngine extends Zend_Controller_Plugin_Abstract
             Zend_Registry::set('config', $config);
         }
     }
-    
+
     /**
      * Get front controller instance
      *
@@ -140,7 +142,7 @@ class OSDN_Controller_Plugin_ViewEngine extends Zend_Controller_Plugin_Abstract
         if (!is_null($this->_frontController)) {
             return $this->_frontController;
         }
-        
+
         if (class_exists('Zend_Controller_Front')) {
             $this->_frontController = Zend_Controller_Front::getInstance();
             return $this->_frontController;
@@ -148,6 +150,6 @@ class OSDN_Controller_Plugin_ViewEngine extends Zend_Controller_Plugin_Abstract
 
         // Throw exception in all other cases
         throw new OSDN_Controller_Exception('Front controller class has not been loaded');
-        
+
     }
 }
