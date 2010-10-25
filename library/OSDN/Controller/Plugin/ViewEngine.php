@@ -115,9 +115,9 @@ class OSDN_Controller_Plugin_ViewEngine extends Zend_Controller_Plugin_Abstract
         $config = Zend_Registry::get('config');
         if (!isset($config->site->address)) {
             $protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
-            $host = isset($_SERVER['HTTP_HOST'])
+            $host = isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])
                 ? $_SERVER['HTTP_HOST'] . $this->getFrontController()->getBaseUrl()
-                : $this->getFrontController()->getBaseUrl();
+                : '';
 
             $tmp = $config->toArray();
             if (!isset($tmp['site'])) {
