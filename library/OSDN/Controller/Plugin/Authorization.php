@@ -12,9 +12,9 @@
 
 class OSDN_Controller_Plugin_Authorization extends Zend_Controller_Plugin_Abstract
 {
-    
+
     protected $_public = 'public';
-    
+
     /**
      * The list of allowed routers
      *
@@ -28,21 +28,21 @@ class OSDN_Controller_Plugin_Authorization extends Zend_Controller_Plugin_Abstra
      */
     private $_allowRouters = array();
 
-    
+
     public function routeShutdown(Zend_Controller_Request_Abstract $request)
     {
         $module = strtolower($request->getModuleName());
         $controller = strtolower($request->getControllerName());
-        
+
         // account go to anonymous area
         // make this account anonymous
         if ($this->_isPublic($module)) {
-            
+
             // if already is anonymous
             if (OSDN_Accounts_Prototype::isAnonymous()) {
                 return;
             }
-            
+
             $accounts = new OSDN_Accounts();
             $response = $accounts->fetchAnonymousAccount();
             if ($response->isSuccess()) {
@@ -50,7 +50,7 @@ class OSDN_Controller_Plugin_Authorization extends Zend_Controller_Plugin_Abstra
                 if (empty($anonymous)) {
                     throw new OSDN_Exception('The Anonymous account is not set.');
                 }
-                
+
                 Zend_Auth::getInstance()->getStorage()->write((object) $anonymous);
                 return;
             }
@@ -60,27 +60,27 @@ class OSDN_Controller_Plugin_Authorization extends Zend_Controller_Plugin_Abstra
         if (OSDN_Accounts_Prototype::isSuperAdministrator()) {
             return;
         }
-        
+
         // if not public area but anonymous then clear and redirect to start page to login
         if (!$this->_isPublic($module) && OSDN_Accounts_Prototype::isAnonymous()) {
             Zend_Auth::getInstance()->clearIdentity();
             return;
         }
-        
+
         // account is authenticated
         // add acl helper
         if (OSDN_Accounts_Prototype::isAuthenticated()) {
             Zend_Controller_Action_HelperBroker::addHelper(new OSDN_Controller_Action_Helper_Acl());
             return;
         }
-        
+
         // if not public area -> go out
         if (false === $this->_isAllowed($module, $controller)) {
 
             $frontController = Zend_Controller_Front::getInstance();
             $route = $frontController->getRouter();
             header($_SERVER['SERVER_PROTOCOL'] . ' 401 Unauthorized', false, 401);
-            
+
             /**
              * Current request is not allowed
              * Try to execute the default request settings
@@ -92,13 +92,13 @@ class OSDN_Controller_Plugin_Authorization extends Zend_Controller_Plugin_Abstra
                     ->setControllerName($dispatcher->getDefaultControllerName())
                     ->setActionName($dispatcher->getDefaultAction());
             } else {
-                
+
                 // other routes
                 exit;
             }
         }
     }
-    
+
     /**
      * Fetch allowed routers
      *
@@ -111,7 +111,7 @@ class OSDN_Controller_Plugin_Authorization extends Zend_Controller_Plugin_Abstra
             $this->_public  => true
         );
     }
-    
+
     /**
      * Check if dispatched controller is public
      *
@@ -122,7 +122,7 @@ class OSDN_Controller_Plugin_Authorization extends Zend_Controller_Plugin_Abstra
     {
         return $module == $this->_public;
     }
-    
+
     /**
      * Check if module is allowed
      *
