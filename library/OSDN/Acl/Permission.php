@@ -8,7 +8,7 @@ class OSDN_Acl_Permission
      * @var OSDN_Acl_Table_Permission
      */
     protected $_tablePermission = null;
-    
+
     /**
      * The constructor
      *
@@ -17,7 +17,7 @@ class OSDN_Acl_Permission
     {
         $this->_tablePermission = new OSDN_Acl_Table_Permission();
     }
-    
+
     /**
      * Retrieve permissions by role id
      *
@@ -35,10 +35,10 @@ class OSDN_Acl_Permission
             $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'roleid'));
             return $response;
         }
-        
+
         try {
             $rowset = $this->_tablePermission->fetchAll(array('role_id = ?' => $roleId));
-            $response->rows = $rowset->toArray();
+            $response->setRowset($rowset->toArray());
             $status = OSDN_Acl_Status::OK;
         } catch (Exception $e) {
             if (OSDN_DEBUG) {
@@ -64,13 +64,13 @@ class OSDN_Acl_Permission
             return $response->addStatus(new OSDN_Acl_Status(
                 OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
         }
-        
+
         $validateResource = new OSDN_Validate_Id(true);
         if (!$validateResource->isValid($resourceId)) {
             return $response->addStatus(new OSDN_Acl_Status(
                 OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'resource_id'));
         }
-        
+
         $rows = $this->_tablePermission->fetchPermissions($roleId, $resourceId);
         if (false !== $rows) {
             $status = OSDN_Acl_Status::OK;
@@ -80,7 +80,7 @@ class OSDN_Acl_Permission
         }
         return $response->addStatus(new OSDN_Acl_Status($status));
     }
-    
+
     /**
      * Set permission on resource for role
      *
@@ -104,34 +104,34 @@ class OSDN_Acl_Permission
             return $response->addStatus(new OSDN_Acl_Status(
                 OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
         }
-        
+
         if (!$validate->isValid($resourceId)) {
             $response->addStatus(new OSDN_Acl_Status(
                 OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'resource_id'));
         }
-        
+
         if (true !== OSDN_Acl_Privilege::isExists($privilege)) {
             return $response->addStatus(new OSDN_Acl_Status(
                 OSDN_Acl_Status::PRIVILEGE_DOES_NOT_EXISTS, 'privilege'));
         }
-        
+
         $validateValue = new OSDN_Validate_Boolean(true);
         if (!$validateValue->isValid($value)) {
             return $response->addStatus(new OSDN_Acl_Status(
                 OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'value'));
         }
-        
+
         $booleanFilter = new OSDN_Filter_Boolean(true);
         $value = $booleanFilter->filter($value);
         $privilegeId = OSDN_Acl_Privilege::name2id($privilege);
-        
+
         if (true === $value) {
             $id = $this->_tablePermission->insert(array(
                 'role_id'       => $roleId,
                 'resource_id'   => $resourceId,
                 'privilege_id'     => $privilegeId
             ));
-            
+
             if (false !== $id) {
                 $status = OSDN_Acl_Status::OK;
                 $response->id = $id;
@@ -141,11 +141,11 @@ class OSDN_Acl_Permission
             $response->addStatus(new OSDN_Acl_Status($status));
             return $response;
         }
-        
+
         $this->_deletePermission($roleId, $resourceId, $privilegeId);
         return $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::OK));
     }
-    
+
     /**
      * Cascading delete permission
      *
@@ -158,7 +158,7 @@ class OSDN_Acl_Permission
     {
         $resourceIds = array($resourceId);
         $tableResource = new OSDN_Acl_Table_Resource();
-        
+
         do {
             $affectedRows = false;
             foreach ($resourceIds as $id) {
@@ -168,10 +168,10 @@ class OSDN_Acl_Permission
                     'privilege_id = ?'  => $privilegeId
                 ));
             }
-            
+
             $whereClause = $tableResource->getAdapter()->quoteInto('parent_id IN (?)', $resourceIds);
             $resourceIds = array();
-            
+
             try {
                 $rowset = $tableResource->fetchAll($whereClause);
                 $rows = $rowset->toArray();
@@ -181,11 +181,11 @@ class OSDN_Acl_Permission
                 }
                 continue;
             }
-            
+
             foreach ($rows as $row) {
                 $resourceIds[] = $row['id'];
             }
-            
+
         } while(sizeof($resourceIds) > 0);
     }
 }
