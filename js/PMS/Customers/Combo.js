@@ -41,7 +41,7 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
                 field: 'name',
                 direction: 'ASC'
             },
-            fields: ['id', 'name', 'descrioption'] 
+            fields: ['id', 'name', 'description'] 
         });
         
         this.triggers = [{
