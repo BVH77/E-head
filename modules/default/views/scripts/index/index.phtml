@@ -1,15 +1,5 @@
 <script type="text/javascript">
-xlib.applicationInitialization(function() {
-    Ext.ns('PMS.System');
-    PMS.System.Layout = new xlib.Layout.Workspace({
-		mainMenu: PMS.Menu('<?=$this->username; ?>', '<?=$this->rolename; ?>', '<?=$this->roleId; ?>')
-    });
-    PMS.OrdersTab = PMS.System.Layout.getTabPanel().add({
-        iconCls: 'orders-icon',
-        closable: false,
-        xtype: 'PMS.Orders.Layout',
-        id: 'PMS.Orders.Layout'
-    });
-    PMS.System.Layout.doLayout();
-});
+    xlib.username = '<?=$this->username; ?>';
+    xlib.rolename = '<?=$this->rolename; ?>';
+    xlib.roleId = '<?=$this->roleId; ?>';
 </script>
