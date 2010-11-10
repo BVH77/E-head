@@ -133,21 +133,23 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
             },
 			items: [{
                 xtype: 'checkbox',
-                fieldLabel: 'Superadmin enable',
-                name: 'auth[superadmin][enable]',
+                fieldLabel: 'Remote authentification',
+                name: 'remoteauth[enable]',
                 anchor: 0,
                 checked: false,
-                title: 'Enable/disable superadmin functions (default: flase)'
+                title: 'Enable/disable remote authentification (default: flase)'
             },{
-    			fieldLabel: 'Superadmin username',
-    			name: 'auth[superadmin][login]',
-                value: 'sadmin',
+    			fieldLabel: 'Remote authentification host',
+    			name: 'auth[remoteauth][host]',
     			title: 'Username for superadmin (default: sadmin)'
 			},{
-    			fieldLabel: 'Superadmin password',
-    			name: 'auth[superadmin][password]',
-                value: 'sadmin',
-    			title: 'Password for superadmin (default: sadmin)'
+    			fieldLabel: 'Remote authentification username',
+    			name: 'auth[remoteauth][login]',
+    			title: 'Username for remote authentification'
+			},{
+				fieldLabel: 'Remote authentification password',
+				name: 'auth[remoteauth][password]',
+				title: 'Password for remote authentification'
 			}]
 		}];
         
