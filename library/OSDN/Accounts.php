@@ -366,58 +366,6 @@ class OSDN_Accounts
     }
 
     /**
-     * Set anonymous account
-     *
-     * @param int $id           The account id
-     * @return int              The affected rows
-     */
-    protected function _setAnonymousAccount($id)
-    {
-        // if anonymous is present = return
-        $anonymousPresent = $this->_tableAccounts->count(array('anonymous = ?' => 1));
-        if ($anonymousPresent) {
-            return false;
-        }
-
-        $this->_tableAccounts->updateQuote(
-            array('anonymous'   => new Zend_Db_Expr('NULL')),
-            array('anonymous ?' => new Zend_Db_Expr('IS NOT NULL'))
-        );
-
-        $affecteRows = $this->_tableAccounts->updateByPk(array(
-            'anonymous'  => 1
-        ), $id);
-        return $affecteRows;
-    }
-
-    /**
-     * Fetch anonymous account
-     *
-     * @return OSDN_Response
-     * <code>
-     * array(
-     *      'row' => array
-     * )</code>
-     */
-    public function fetchAnonymousAccount()
-    {
-        $rowset = $this->_tableAccounts->fetchRow(array(
-            'anonymous = ?' => 1
-        ));
-        $response = new OSDN_Response();
-        $status = null;
-
-        if (!is_null($rowset)) {
-            $response->row = $rowset->toArray();
-            $status = OSDN_Acl_Status::OK;
-        } else {
-            $status = OSDN_Acl_Status::FAILURE;
-        }
-
-        return $response->addStatus(new OSDN_Acl_Status($status));
-    }
-
-    /**
      * Create new account
      *
      * @param array $data

@@ -34,39 +34,6 @@ class OSDN_Controller_Plugin_Authorization extends Zend_Controller_Plugin_Abstra
         $module = strtolower($request->getModuleName());
         $controller = strtolower($request->getControllerName());
 
-        // account go to anonymous area
-        // make this account anonymous
-        if ($this->_isPublic($module)) {
-
-            // if already is anonymous
-            if (OSDN_Accounts_Prototype::isAnonymous()) {
-                return;
-            }
-
-            $accounts = new OSDN_Accounts();
-            $response = $accounts->fetchAnonymousAccount();
-            if ($response->isSuccess()) {
-                $anonymous = $response->row;
-                if (empty($anonymous)) {
-                    throw new OSDN_Exception('The Anonymous account is not set.');
-                }
-
-                Zend_Auth::getInstance()->getStorage()->write((object) $anonymous);
-                return;
-            }
-        }
-
-        // if superadministrator then "more po koleno!"
-        if (OSDN_Accounts_Prototype::isSuperAdministrator()) {
-            return;
-        }
-
-        // if not public area but anonymous then clear and redirect to start page to login
-        if (!$this->_isPublic($module) && OSDN_Accounts_Prototype::isAnonymous()) {
-            Zend_Auth::getInstance()->clearIdentity();
-            return;
-        }
-
         // account is authenticated
         // add acl helper
         if (OSDN_Accounts_Prototype::isAuthenticated()) {

@@ -5,7 +5,6 @@ xlib.Acl.Manager = function() {
     var privileges = xlib.Acl.Storage.Privileges || {};
     var permissions = xlib.Acl.Storage.Permissions || {};
     var resources = new Ext.util.MixedCollection();
-    var disabled = xlib.Acl.Storage.isSuperAdministrator();
     
     Ext.each(xlib.Acl.Storage.getResources(), function(i, index) {
         resources.add(i[0], {
@@ -17,34 +16,21 @@ xlib.Acl.Manager = function() {
     return {
     	
         isView: function() {
-            if (disabled) {
-                return true;
-            }
             var resourceId = this.fetchResource.apply(this, arguments);
             return this.isAllowedPrivilege(resourceId, xlib.Acl.Storage.getPrivileges().view);
         },
         
         isAdd: function() {
-            if (disabled) {
-                return true;
-            }
-            
             var resourceId = this.fetchResource.apply(this, arguments);
             return this.isAllowedPrivilege(resourceId, xlib.Acl.Storage.getPrivileges().add);
         },
         
         isUpdate: function() {
-            if (disabled) {
-                return true;
-            }
             var resourceId = this.fetchResource.apply(this, arguments);
             return this.isAllowedPrivilege(resourceId, xlib.Acl.Storage.getPrivileges().update);
         },
         
         isDelete: function() {
-            if (disabled) {
-                return true;
-            }
             var resourceId = this.fetchResource.apply(this, arguments);
             return this.isAllowedPrivilege(resourceId, xlib.Acl.Storage.getPrivileges()['delete']);
         },

@@ -9,15 +9,11 @@
 class OSDN_Accounts_Prototype
 {
     const ID = 'id';
-    
+
     const ROLE = 'role_id';
-    
-    const SUPERADMIN = 'superadmin';
-    
+
     const ACL = 'acl';
-    
-    const ANONYMOUS = 'anonymous';
-    
+
     /**
      * Check if user is authenticated
      *
@@ -28,14 +24,14 @@ class OSDN_Accounts_Prototype
         if (!Zend_Auth::getInstance()->hasIdentity()) {
             return false;
         }
-        
+
         $info = self::getInformation();
         if (empty($info) || !property_exists($info, 'id')) {
             return false;
         }
         return (boolean) $info->id;
     }
-    
+
     /**
      * Fetch account information for logged user
      *
@@ -55,7 +51,7 @@ class OSDN_Accounts_Prototype
     {
         return (int) self::getProperty(self::ID);
     }
-    
+
     /**
      * Fetch role id
      *
@@ -75,27 +71,7 @@ class OSDN_Accounts_Prototype
     {
         return self::getProperty(self::ACL);
     }
-    
-    /**
-     * Check superadmin account
-     *
-     * @return boolean
-     */
-    public static function isSuperAdministrator()
-    {
-        return (boolean) self::getProperty(self::SUPERADMIN);
-    }
-    
-    /**
-     * Check if account is anonymous
-     *
-     * @return boolean
-     */
-    public static function isAnonymous()
-    {
-        return (boolean) self::getProperty(self::ANONYMOUS);
-    }
-    
+
     /**
      * Fetch property from account information
      *
@@ -110,7 +86,7 @@ class OSDN_Accounts_Prototype
                  return $information->{$property};
             }
         }
-        
+
         return null;
     }
 }

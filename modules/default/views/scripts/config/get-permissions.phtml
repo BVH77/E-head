@@ -12,24 +12,20 @@ xlib.Acl.Storage = function() {
     var privileges = <?=Zend_Json::encode($this->privileges); ?> || {};
     var resources = <?=Zend_Json::encode($this->resources); ?> || {};
     var workflowPermissions = <?=Zend_Json::encode($this->workflowPermissions); ?> || {};
-    
+
     return {
         getPermissions: function() {
             return permissions;
         },
-        
+
         getResources: function() {
             return resources;
         },
-        
+
         getPrivileges: function() {
             return privileges;
         },
-        
-        isSuperAdministrator: function() {
-            return <?=$this->isSuperAdministrator ? 'true' : 'false'; ?>;
-        },
-        
+
         getWorkflowPermissions: function() {
             return workflowPermissions;
         }

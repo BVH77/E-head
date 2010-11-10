@@ -20,20 +20,6 @@ class ConfigController extends OSDN_Controller_Action
     {
         $this->disableLayout(true);
 
-        $isSuperAdministrator = OSDN_Accounts_Prototype::isSuperAdministrator();
-        $this->view->isSuperAdministrator = $isSuperAdministrator;
-
-        /**
-         * Super administrator has access to all
-         */
-        if ($isSuperAdministrator) {
-            $this->view->acl = array();
-            $this->view->workflowPermissions = array();
-            $this->view->resources = new stdClass();
-            $this->view->privileges = new stdClass();
-            return;
-        }
-
         $acl = OSDN_Accounts_Prototype::getAcl();
         $aclCollection = array();
         if (!empty($acl)) {

@@ -25,8 +25,6 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
             }, [
                 'id', 'name', 'email', 'phone', 
                 {name: 'active', type: 'boolean'},
-                {name: 'radius', type: 'boolean'},
-                {name: 'anonymous', type: 'int'},
                 'login'
             ])
         });
