@@ -240,7 +240,6 @@ class OSDN_Accounts
         ), array(
             'id'        => array('id', 'presense' => 'required'),
             'email'     => array('EmailAddress', 'presense' => 'required'),
-            'radius'    => array('boolean'),
             'active'    => array('boolean')
         ), $data);
 
@@ -253,7 +252,6 @@ class OSDN_Accounts
             'email'     => $f->email,
             'phone'     => $f->phone,
             'name'      => $f->name,
-            'radius'    => $f->radius,
             'active'    => $f->active
         ), $f->id);
 
@@ -331,7 +329,6 @@ class OSDN_Accounts
                 break;
 
             case 'active':
-            case 'radius':
                 $fieldValidate = new OSDN_Validate_Boolean();
                 break;
 
