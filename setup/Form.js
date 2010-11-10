@@ -141,7 +141,7 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
             },{
     			fieldLabel: 'Remote authentification host',
     			name: 'auth[remoteauth][host]',
-    			title: 'Username for superadmin (default: sadmin)'
+    			title: 'Host for remote authentification'
 			},{
     			fieldLabel: 'Remote authentification username',
     			name: 'auth[remoteauth][login]',
