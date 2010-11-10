@@ -6,14 +6,8 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
 	
     saveUrl: '/setup/?action=submit',
     
-    bodyStyle: {
-        padding: '10px'
-    },
+    padding: 10,
 
-    autoScroll: true,
-    
-    labelWidth: 150,
-    
     title: 'Config editor',
     
 	initComponent: function() {
@@ -108,24 +102,24 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
                 allowBlank: false,
                 title: 'SMTP server name from which emails sent'
 			},{
-                fieldLabel: 'Authentification type',
+                fieldLabel: 'Auth type',
                 name: 'mail[authentificate][auth]',
                 value: 'login',
                 title: 'Authentification type for mail sending'
 			},{
-                fieldLabel: 'Authentification username',
+                fieldLabel: 'Username',
                 name: 'mail[authentificate][username]',
                 allowBlank: false,
                 title: 'Username for mail sending'
 			},{
-                fieldLabel: 'Authentification password',
+                fieldLabel: 'Password',
                 name: 'mail[authentificate][password]',
                 allowBlank: false,
                 title: 'Password for mail sending'
 			}]
         },{
 			xtype: 'fieldset',
-			title: 'Authentification settings',
+			title: 'Remote authentification settings',
 			autoHeight: true,
             defaults: {
                 xtype: 'textfield',
@@ -133,21 +127,21 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
             },
 			items: [{
                 xtype: 'checkbox',
-                fieldLabel: 'Remote authentification',
+                fieldLabel: 'Enabled',
                 name: 'remoteauth[enable]',
                 anchor: 0,
                 checked: false,
                 title: 'Enable/disable remote authentification (default: flase)'
             },{
-    			fieldLabel: 'Remote authentification host',
+    			fieldLabel: 'Host',
     			name: 'auth[remoteauth][host]',
     			title: 'Host for remote authentification'
 			},{
-    			fieldLabel: 'Remote authentification username',
+    			fieldLabel: 'Login',
     			name: 'auth[remoteauth][login]',
-    			title: 'Username for remote authentification'
+    			title: 'Login for remote authentification'
 			},{
-				fieldLabel: 'Remote authentification password',
+				fieldLabel: 'Password',
 				name: 'auth[remoteauth][password]',
 				title: 'Password for remote authentification'
 			}]

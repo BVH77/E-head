@@ -88,7 +88,7 @@ switch ($action):
                 	width: 650,
                     border: true,
                     autoScroll: true,
-                    style: {margin: '0 auto'},
+                    style: {margin: '50px auto'},
                     renderTo: Ext.getBody()
                 }).load();
             });
