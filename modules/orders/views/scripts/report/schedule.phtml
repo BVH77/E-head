@@ -4,11 +4,11 @@
 <?php foreach ($this->data['orders'] as $order) :?>
     <div style="float: left; padding: 10px; height: 350px;">
     <table cellspacing="0" cellpadding="5" border="1" width="300px">
-        <tr><td colspan="2">Заказчик: <b><?=$order['customer_name']?></b></td></tr>
-        <tr><td colspan="2">Адрес заказа: <b><?=$order['address']?></b></td></tr>
-        <tr valign="top"><td colspan="2" height="200px">Вид работ:</td></tr>
-        <tr><td colspan="2">Ответственный: <b><?=$order['creator_name']?></b></td></tr>
-        <tr><td>Автомобиль:&nbsp;</td><td width="100%"></td></tr>
+        <tr><td>Заказчик: <b><?=$order['customer_name']?></b></td></tr>
+        <tr><td>Адрес заказа: <b><?=$order['address']?></b></td></tr>
+        <tr valign="top"><td height="200px">Вид работ:</td></tr>
+        <tr><td>Ответственный: <b><?=$order['creator_name']?></b></td></tr>
+        <tr><td>участок №_________ Смена №_________</td></tr>
     </table>
     </div>
 <?php endforeach;?>
