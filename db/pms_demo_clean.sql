@@ -29,8 +29,6 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `phone` varchar(20) default NULL,
   `state` text COMMENT 'store user interface state',
   `active` tinyint(1) NOT NULL default '1',
-  `radius` tinyint(1) default '0',
-  `anonymous` tinyint(1) default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `login` (`login`),
   UNIQUE KEY `anonymous` (`anonymous`),
@@ -41,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
 -- Дамп данных таблицы `accounts`
 -- 
 
-INSERT INTO `accounts` (`id`, `login`, `password`, `role_id`, `name`, `email`, `phone`, `state`, `active`, `radius`, `anonymous`) VALUES (1, 'admin', 0x3231323332663239376135376135613734333839346130653461383031666333, 1, 'Администратор', 'admin@e-head.ru', '', NULL, 1, 0, NULL);
+INSERT INTO `accounts` (`id`, `login`, `password`, `role_id`, `name`, `email`, `phone`, `state`, `active`, `radius`, `anonymous`) VALUES (1, 'admin', 0x6264346432626130613063633164313539393237313534303666373534313231, 1, 'Администратор', 'admin@e-head.ru', '', NULL, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
