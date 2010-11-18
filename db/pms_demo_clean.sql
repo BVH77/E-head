@@ -31,7 +31,6 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `active` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `login` (`login`),
-  UNIQUE KEY `anonymous` (`anonymous`),
   KEY `fk_role_id` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
