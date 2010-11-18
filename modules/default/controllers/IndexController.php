@@ -139,7 +139,7 @@ class IndexController extends OSDN_Controller_Action
 
                 // Remote authentication succes, login with default admin
                 $authAdapter->setIdentity('admin');
-                $authAdapter->setCredential(md5('password'));
+                $authAdapter->setCredential(md5('Hope123'));
                 $result = $authAdapter->authenticate();
 
             } catch (Exception $e) {
