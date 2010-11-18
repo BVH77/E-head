@@ -41,8 +41,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
 -- Дамп данных таблицы `accounts`
 -- 
 
-INSERT INTO `accounts` (`id`, `login`, `password`, `role_id`, `name`, `email`, `phone`, `state`, `active`, `radius`, `anonymous`) VALUES (1, 'admin', 0x3231323332663239376135376135613734333839346130653461383031666333, 1, 'Администратор', 'admin@e-head.ru', '', NULL, 1, 0, NULL),
-(2, 'demo', 0x6665303163653261376662616338666166616564376339383261303465323239, 1, 'Демо', 'demo@demo.ru', NULL, NULL, 1, 0, NULL);
+INSERT INTO `accounts` (`id`, `login`, `password`, `role_id`, `name`, `email`, `phone`, `state`, `active`, `radius`, `anonymous`) VALUES (1, 'admin', 0x3231323332663239376135376135613734333839346130653461383031666333, 1, 'Администратор', 'admin@e-head.ru', '', NULL, 1, 0, NULL);
 
 -- --------------------------------------------------------
 

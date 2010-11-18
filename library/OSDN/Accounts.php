@@ -51,6 +51,7 @@ class OSDN_Accounts
             $rowset = array();
         }
         $response->rowset = $rowset;
+        $response->setRowset($rowset);
         return $response->addStatus(new OSDN_Accounts_Status(OSDN_Accounts_Status::OK));
     }
 
@@ -196,6 +197,8 @@ class OSDN_Accounts
     public function changeRole($accountIds, $roleId)
     {
         $response = new OSDN_Response();
+
+
         $validateRole = new OSDN_Validate_Id(true);
         if (!$validateRole->isValid($roleId)) {
             return $response->addStatus(new OSDN_Acl_Status(
@@ -211,6 +214,10 @@ class OSDN_Accounts
             if (!$validateAccount->isValid($accountId)) {
                 return $response->addStatus(new OSDN_Acl_Status(
                     OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'account_id'));
+            }
+
+            if ($this->isRemoteauthEnabled() && $this->isAdmin($accountId)) {
+                continue;
             }
 
             $affectedRows = $this->_tableAccounts->updateByPk(array(
@@ -234,6 +241,12 @@ class OSDN_Accounts
     public function update($id, array $data = array())
     {
         $response = new OSDN_Response();
+
+        if ($this->isRemoteauthEnabled() && $this->isAdmin($id)) {
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::ACCOUNT_IS_PROTECTED));
+        }
+
         $data['id'] = $id;
         $f = new OSDN_Filter_Input(array(
             'id'        => 'int'
@@ -275,6 +288,12 @@ class OSDN_Accounts
     public function updatePersonalInformation($id, array $data = array())
     {
         $response = new OSDN_Response();
+
+        if ($this->isRemoteauthEnabled() && $this->isAdmin($id)) {
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::ACCOUNT_IS_PROTECTED));
+        }
+
         $data['id'] = $id;
         $f = new OSDN_Filter_Input(array(
             'id'    => 'int'
@@ -310,6 +329,12 @@ class OSDN_Accounts
     public function updateByField($id, $field, $value)
     {
         $response = new OSDN_Response();
+
+        if ($this->isRemoteauthEnabled() && $this->isAdmin($id)) {
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::ACCOUNT_IS_PROTECTED));
+        }
+
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
             return $response->addStatus(new OSDN_Acl_Status(
@@ -461,8 +486,14 @@ class OSDN_Accounts
      */
     public function deleteAccount($id)
     {
-        $validate = new OSDN_Validate_Id();
         $response = new OSDN_Response();
+
+        if ($this->isRemoteauthEnabled() && $this->isAdmin($id)) {
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::ACCOUNT_IS_PROTECTED));
+        }
+
+        $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
             return $response->addStatus(new OSDN_Accounts_Status(
                 OSDN_Accounts_Status::INPUT_PARAMS_INCORRECT, 'id'));
@@ -490,6 +521,13 @@ class OSDN_Accounts
      */
     public function changePassword($id, $password)
     {
+        $response = new OSDN_Response();
+
+        if ($this->isRemoteauthEnabled() && $this->isAdmin($id)) {
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::ACCOUNT_IS_PROTECTED));
+        }
+
         $f = new OSDN_Filter_Input(array(
             'id'    => 'int'
         ), array(
@@ -500,7 +538,6 @@ class OSDN_Accounts
             'password'  => $password
         ));
 
-        $response = new OSDN_Response();
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
             return $response;
@@ -529,6 +566,12 @@ class OSDN_Accounts
     public function chPassword($id, array $data)
     {
         $response = new OSDN_Response();
+
+        if ($this->isRemoteauthEnabled() && $this->isAdmin($id)) {
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::ACCOUNT_IS_PROTECTED));
+        }
+
         $data['id'] = $id;
 
         $f = new OSDN_Filter_Input(array(
@@ -618,5 +661,32 @@ class OSDN_Accounts
 
         return $response->addStatus(new OSDN_Accounts_Status(
             OSDN_Accounts_Status::retrieveAffectedRowStatus($affectedRows)));
+    }
+
+    /*********************** Private methods ******************************/
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    private function isAdmin($id)
+    {
+        if (intval($id) < 1) {
+            return false;
+        }
+        $row = $this->_tableAccounts->findOne(intval($id));
+        if (!$row || is_null($row)) {
+            return false;
+        }
+        return ($row->role_id == ADMIN_ROLE && $row->login == 'admin');
+    }
+
+    /**
+     * @return bool
+     */
+    private function isRemoteauthEnabled()
+    {
+        $config = Zend_Registry::get('config');
+        return ($config->remoteauth->enable == 1);
     }
 }

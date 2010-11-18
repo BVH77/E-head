@@ -134,15 +134,15 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
                 title: 'Enable/disable remote authentification (default: flase)'
             },{
     			fieldLabel: 'Host',
-    			name: 'auth[remoteauth][host]',
+    			name: 'remoteauth[host]',
     			title: 'Host for remote authentification'
 			},{
     			fieldLabel: 'Login',
-    			name: 'auth[remoteauth][login]',
+    			name: 'remoteauth[login]',
     			title: 'Login for remote authentification'
 			},{
 				fieldLabel: 'Password',
-				name: 'auth[remoteauth][password]',
+				name: 'remoteauth[password]',
 				title: 'Password for remote authentification'
 			}]
 		}];

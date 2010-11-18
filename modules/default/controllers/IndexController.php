@@ -84,46 +84,79 @@ class IndexController extends OSDN_Controller_Action
         Zend_Auth::getInstance()->clearIdentity();
 
         $do = trim($this->_getParam('do'));
+        $login = trim($this->_getParam('login'));
+        $password = trim($this->_getParam('password'));
+        $errMes = 'ОШИБКА АВТОРИЗАЦИИ!';
+
         if (empty($do)) {
             $this->view->message = '';
             return;
         }
-
-        $login = trim($this->_getParam('login'));
-        $password = md5(trim($this->_getParam('password')));
-        $dbAdapter = OSDN_Db_Table_Abstract::getDefaultAdapter();
-        $authAdapter = new Zend_Auth_Adapter_DbTable($dbAdapter);
-
-        $errMes = 'ОШИБКА АВТОРИЗАЦИИ!';
 
         if (empty($login) || empty($password)) {
             $this->view->message = $errMes;
             return;
         }
 
+        $dbAdapter = OSDN_Db_Table_Abstract::getDefaultAdapter();
+        $authAdapter = new Zend_Auth_Adapter_DbTable($dbAdapter);
+
         $authAdapter->setTableName(OSDN_Db_Table_Abstract::getDefaultPrefix() . 'accounts');
         $authAdapter->setIdentityColumn('login');
         $authAdapter->setCredentialColumn('password');
 
         $authAdapter->setIdentity($login);
-        $authAdapter->setCredential($password);
+        $authAdapter->setCredential(md5($password));
 
-        $auth = Zend_Auth::getInstance();
         $result = $authAdapter->authenticate();
 
         if (!$result->isValid()) {
-            $this->view->message = $errMes;
-            return;
+
+            // Check if remote authentication is enabled
+            $config = Zend_Registry::get('config');
+            if ($config->remoteauth->enable != 1) {
+                $this->view->message = $errMes;
+                return;
+            }
+
+            // Trying to authenticate by remotehost
+            try {
+                $httpClient = new Zend_Http_Client();
+                $httpClient->setConfig(array('timeout' => 180));
+                $httpClient->setAuth($config->remoteauth->login, $config->remoteauth->password);
+                OSDN_XmlRpc_Client::setLogDirectory(CACHE_DIR);
+                $xmlRpcClient = new OSDN_XmlRpc_Client((string) $config->remoteauth->host, $httpClient);
+                $xmlRpcClient->setResponseSerializable(true);
+
+                $xmlRpcResult = $xmlRpcClient->getProxy()->Accounts->authenticate($login, md5($password));
+
+                $response = new OSDN_Response();
+                $response->import($xmlRpcResult);
+                if ($response->isError()) {
+                    $this->view->message = $errMes;
+                    return;
+                }
+
+                // Remote authentication succes, login with default admin
+                $authAdapter->setIdentity('admin');
+                $authAdapter->setCredential(md5('password'));
+                $result = $authAdapter->authenticate();
+
+            } catch (Exception $e) {
+                if (OSDN_DEBUG) {
+                    throw $e;
+                }
+                $this->view->message = $errMes;
+                return;
+            }
         }
 
         // instance of stdClass
         $data = $authAdapter->getResultRowObject(null, 'password');
-        $config = Zend_Registry::get('config');
+        $roleId = $data->role_id;
 
         // try to create acl object and assign the permissions
         $acl = new OSDN_Acl();
-        $roleId = $data->role_id;
-
         $permissions = new OSDN_Acl_Permission();
         $response = $permissions->fetchByRoleId($roleId);
         if ($response->isSuccess()) {
@@ -142,16 +175,11 @@ class IndexController extends OSDN_Controller_Action
          */
         $data->acl = $acl;
 
-        /**
-         * Apply account locale
-         */
-//        $locale = $this->_getParam('locale');
-//        $language = new OSDN_Language();
-//        if ($language->isAvailableLocale($locale)) {
-//            OSDN_Language::setDefaultLocale($locale, true);
-//        }
-
+        $auth = Zend_Auth::getInstance();
         $auth->getStorage()->write($data);
+
+        //var_dump($auth->getStorage()); exit;
+
         header('Location: /');
     }
 
