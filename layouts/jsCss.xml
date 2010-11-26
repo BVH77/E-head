@@ -87,6 +87,8 @@
         
         <script src="/js/PMS/ContragentsListAbstract.js"/>
         <script src="/js/PMS/ContragentsFormAbstract.js"/>
+        
+        <script src="/js/PMS/Storage/Assets/Layout.js"/>
 
         <!-- Modules -->
         

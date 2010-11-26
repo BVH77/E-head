@@ -81,16 +81,25 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
     
     enableTabs: function() {
         
-        this.suppliers = new PMS.Orders.Edit.Suppliers({
-            orderId: this.orderId
-        }); 
+        if (acl.isView('orders', 'production')) this.tabPanel.add(this.formProduction);
+        if (acl.isView('orders', 'mount')) this.tabPanel.add(this.formMount);
         
-        this.files = new PMS.Orders.Files({
-            autoHeight: true,
-            allowEdit: this.permissions,
-            orderId: this.orderId, 
-            border: false
-        });
+        if (acl.isView('suppliers')) {
+            this.suppliers = new PMS.Orders.Edit.Suppliers({
+                orderId: this.orderId
+            }); 
+            this.tabPanel.add(this.suppliers);
+        }
+        
+        if (acl.isView('orders', 'files')) {
+            this.files = new PMS.Orders.Files({
+                autoHeight: true,
+                allowEdit: this.permissions,
+                orderId: this.orderId, 
+                border: false
+            });
+            this.tabPanel.add(this.files);
+        }
         
         this.notes = new PMS.Orders.Edit.Notes({
             height: 315,
@@ -103,9 +112,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         		scope: this
             }
         });
-        
-        this.tabPanel.add(this.formProduction, this.formMount, this.suppliers, this.files, this.notes);
-        
+        this.tabPanel.add(this.notes);
     },
     
     onSave: function() {

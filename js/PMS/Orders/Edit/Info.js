@@ -67,6 +67,8 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
         			name: 'production',
                     inputValue: 1,
                     checked: true,
+        			hidden: !acl.isView('orders', 'production'),
+        			hideLabel: !acl.isView('orders', 'production'),
         			disabled: !acl.isUpdate('orders', 'production'),
         			anchor: 0,
         			handler: function(cb, status) {
@@ -82,6 +84,8 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
         			name: 'mount',
                     inputValue: 1,
                     checked: true,
+        			hidden: !acl.isView('orders', 'mount'),
+        			hideLabel: !acl.isView('orders', 'mount'),
         			disabled: !acl.isUpdate('orders', 'mount'),
         			anchor: 0,
         			handler: function(cb, status) {

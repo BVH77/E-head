@@ -61,18 +61,60 @@ PMS.Menu = function(username, rolename, roleId) {
 	        }
 	    }]
 	}, {
+	    text: 'Склад',
+	    iconCls: 'suppliers-icon',
+        hidden: !acl.isView('storage'),
+	    menu: [{
+	        text: 'Список ТМЦ',
+	        iconCls: 'suppliers-icon',
+	        hidden: !acl.isView('storage'),
+	        handler: function() {
+	            PMS.System.Layout.getTabPanel().add({
+	                iconCls: 'suppliers-icon',
+	                xtype: 'PMS.Storage.Assets.Layout',
+	                id: 'PMS.Storage.Assets.Layout'
+	            });
+	        }
+	    }, {
+	        text: 'Остаток на складе',
+	        iconCls: 'suppliers-icon',
+	        hidden: !acl.isView('storage'),
+	        handler: function() {
+	            PMS.System.Layout.getTabPanel().add({
+	                title: 'Остаток на складе',
+	                iconCls: 'suppliers-icon',
+	                xtype: 'PMS.Storage.Availability.List',
+	                id: 'PMS.Storage.Availability.List'
+	            });
+	        }
+	    }, {
+	        text: 'Заявки на снабжение',
+	        iconCls: 'suppliers-icon',
+	        hidden: !acl.isView('storage'),
+	        handler: function() {
+	            PMS.System.Layout.getTabPanel().add({
+	                title: 'Заявки на снабжение',
+	                iconCls: 'suppliers-icon',
+	                xtype: 'PMS.Storage.Request.List',
+	                id: 'PMS.Storage.Requests.List'
+	            });
+	        }
+	    }]
+	}, {
 	    text: 'Отчёты',
 	    iconCls: 'prod_schd-icon',
 	    hidden: !acl.isView('orders'),
 	    menu: [{
 	        text: 'План производственных работ',
 	        iconCls: 'prod_schd-icon',
+            hidden: !acl.isView('orders', 'production'),
 	        handler: function() {
 	            window.open('/orders/report/schedule-production');
 	        }
 	    }, {
 	        text: 'План монтажных работ',
 	        iconCls: 'mount_schd-icon',
+            hidden: !acl.isView('orders', 'mount'),
 	        handler: function() {
 	            window.open('/orders/report/schedule-mount');
 	        }
