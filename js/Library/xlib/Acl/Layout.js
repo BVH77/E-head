@@ -46,6 +46,7 @@ xlib.Acl.Layout = Ext.extend(Ext.Panel, {
         
         xlib.Acl.Layout.superclass.initComponent.apply(this, arguments);
         this.roles.on('click', this.onRolesClick, this);
+        this.roles.on('firstnodeselected', this.onRolesClick, this);
     },
         
     onRolesClick: function(node) {
