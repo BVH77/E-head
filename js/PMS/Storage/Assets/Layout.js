@@ -10,21 +10,38 @@ PMS.Storage.Assets.Layout = Ext.extend(Ext.Panel, {
     
 	initComponent: function() {
         
-        this.tree = new PMS.Storage.Assets.Tree({
+        this.categories = new PMS.Storage.Assets.Tree({
             region: 'west',
-            width: 200,
+            minWidth: 200,
+            width: 300,
+            split: true,
             border: false,
             margins: '0 2 0 0',
             cls: 'x-border-right'
         });
         
-        this.list = new PMS.Storage.Assets.List({
+        this.assets = new PMS.Storage.Assets.List({
             region: 'center',
             border: false,
             cls: 'x-border-left'
         });
         
-	    this.items = [this.tree, this.list];
+	    this.items = [this.categories, this.assets];
+        
+        var loadNodeItems = function(node) {
+            this.assets.load(node.id, node.text);
+        } 
+        
+        this.categories.on({
+            click: loadNodeItems,
+            contextmenu: loadNodeItems,
+            firstnodeselected: loadNodeItems,
+            textchange: function(node, text, oldText) {
+                this.assets.setTitle(this.assets.baseTitle + '"' + text + '"');
+            },
+            scope: this
+        });
+        
 		PMS.Storage.Assets.Layout.superclass.initComponent.apply(this, arguments);
 	}
 });

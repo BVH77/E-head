@@ -127,6 +127,9 @@ xlib.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
                 this.getStore().reload();
             }, this);
         }
+        if (this.selectFirst && this.mode == 'local') {
+            this.doSelectFirst();
+        }
     },
     
     initList: function() {

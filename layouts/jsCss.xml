@@ -88,6 +88,9 @@
         <script src="/js/PMS/ContragentsListAbstract.js"/>
         <script src="/js/PMS/ContragentsFormAbstract.js"/>
         
+        <script src="/js/PMS/Storage/Assets/Measures.js"/>
+        <script src="/js/PMS/Storage/Assets/Tree.js"/>
+        <script src="/js/PMS/Storage/Assets/List.js"/>
         <script src="/js/PMS/Storage/Assets/Layout.js"/>
 
         <!-- Modules -->

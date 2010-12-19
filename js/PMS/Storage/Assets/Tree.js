@@ -6,13 +6,13 @@ PMS.Storage.Assets.Tree = Ext.extend(xlib.TreePanel, {
 
     untitledNodeName: 'Новая категория',
     
-    loadURL: link('storage', 'assets', 'get-categories'),
+    loadURL: link('storage', 'categories', 'get'),
     
-    addURL: link('storage', 'assets', 'add-category'),
+    addURL: link('storage', 'categories', 'add'),
     
-    updateURL: link('storage', 'assets', 'update-category'),
+    updateURL: link('storage', 'categories', 'update'),
     
-    deleteURL: link('storage', 'assets', 'delete-category'),
+    deleteURL: link('storage', 'categories', 'delete'),
     
     firstNodeSelected: true,
     
@@ -29,6 +29,7 @@ PMS.Storage.Assets.Tree = Ext.extend(xlib.TreePanel, {
         this.root = new Ext.tree.AsyncTreeNode({
             text: 'Все категории',
             id: '0',
+            leaf: false,
             expanded: true,
             allowRemove: false,
             allowRename: false
@@ -46,7 +47,7 @@ PMS.Storage.Assets.Tree = Ext.extend(xlib.TreePanel, {
         this.loader = new Ext.tree.TreeLoader({
             url: this.loadURL,
             baseAttrs: {
-                leaf: true 
+                leaf: false
             }
         });
         
@@ -55,18 +56,19 @@ PMS.Storage.Assets.Tree = Ext.extend(xlib.TreePanel, {
     
     onContextMenu: function(node, e) {
         e.stopEvent();
-        
+        node.select();
         var menu = new Ext.menu.Menu();
-        if (this.isRoot(node)) {
-            menu.add({
-                text: 'Добавить',
-                iconCls: 'add',
-                handler: function() {
-                    this.createProcess(node);
-                },
-                scope: this
-            });
-        } else {
+        
+        menu.add({
+            text: 'Добавить',
+            iconCls: 'add',
+            handler: function() {
+                this.createProcess(node);
+            },
+            scope: this
+        });
+        
+        if (!this.isRoot(node)) {
             menu.add({
                 text: 'Переименовать',
                 iconCls: 'edit',
@@ -75,6 +77,7 @@ PMS.Storage.Assets.Tree = Ext.extend(xlib.TreePanel, {
                 }, 
                 scope: this
             });
+            
             menu.add({
                 text: 'Удалить',
                 iconCls: 'delete',
@@ -84,20 +87,23 @@ PMS.Storage.Assets.Tree = Ext.extend(xlib.TreePanel, {
                 scope: this
             });
         }
+        
         menu.showAt(e.getXY());
     },
     
     createProcess: function(node) {
-        var text = this.generateNodeName(this.getRootNode());
+        var text = 'Новая категория';
         Ext.Ajax.request({
             url: this.addURL,
             params: {
+        		parent: node.id,
                 name: text
             },
             callback: function(options, success, response) {
                 var r = xlib.decode(response.responseText);
                 if (success && r && r.success && r.id > 0) {
                     var newNode = new Ext.tree.TreeNode({
+                        expanded: true,
                         text: text,
                         id: r.id 
                     });
@@ -117,7 +123,7 @@ PMS.Storage.Assets.Tree = Ext.extend(xlib.TreePanel, {
             url: this.updateURL,
             params: {
                 node: node.id,
-                text: value
+                name: value
             },
             callback: function(options, success, response) {
                 var r = xlib.decode(response.responseText);
@@ -139,12 +145,23 @@ PMS.Storage.Assets.Tree = Ext.extend(xlib.TreePanel, {
                 id: node.id
             },
             callback: function(options, success, response) {
-                var r = xlib.decode(response.responseText);
-                if (success && r && r.success) {
-                    this.removeNode(node);
-                    return;
+                var msg = 'Ошибка при удалении.';
+                if (true == success) {
+                    var res = xlib.decode(response.responseText);
+                    if (true == res.success) {
+                        this.removeNode(node);
+                        return;
+                    } else if (res.errors) {
+                        var msg;
+                        switch (res.errors[0].code) {
+                            case -20:
+                                msg = 'Невозможно удалить. Категория не пустая.'
+                                break;
+                            default:
+                        }
+                    }
                 }
-                xlib.Msg.error('Не удалось удалить категорию.');
+                xlib.Msg.error(msg);
             },
             scope: this
         });

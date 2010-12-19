@@ -81,6 +81,15 @@ Ext.onReady(function(){
             xtype: 'PMS.Orders.Layout',
             id: 'PMS.Orders.Layout'
         });
+        
+        /*
+        PMS.System.Layout.getTabPanel().add({
+            iconCls: 'suppliers-icon',
+            xtype: 'PMS.Storage.Assets.Layout',
+            id: 'PMS.Storage.Assets.Layout'
+        });
+        */
+        
         PMS.System.Layout.doLayout();
     });
     

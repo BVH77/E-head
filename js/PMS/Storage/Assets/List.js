@@ -2,7 +2,7 @@ Ext.ns('PMS.Storage.Assets');
 
 PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
 
-    title:      'Список ТМЦ из категории "Все категории" ',
+    title:      'Список ТМЦ из категории',
     
     baseTitle:  'Список ТМЦ из категории ',
 
@@ -30,9 +30,9 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                 categoryId: this.categoryId
             },
             reader: new Ext.data.JsonReader({
-                root: 'rows',
+                root: 'data',
                 id: 'id',
-                totalProperty: 'total'
+                totalProperty: 'totalCount'
             }, ['id', 'name', 'measure'])
         });
         
@@ -61,7 +61,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             dataIndex: 'name',
             id: this.autoExpandColumn
         }, {
-            header: 'Ед. изм.',
+            header: 'Ед. измерения',
             dataIndex: 'measure',
             width: 100
         }];
@@ -92,24 +92,13 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
     },
     
     onAdd: function(b, e) {
-        
-        var f = new xlib.form.FormPanel({
-        	permissions: this.permissions,
-            items: [{
-                fieldLabel: 'Наименование',
-                name: 'name'
-            }, PMS.Storage.Assets.Measures.getCombo({
-                fieldLabel: 'Ед. изм.',
-                name: 'measure',
-                hiddenName: 'measure'
-            })]
-        });
+        var formPanel = this.getForm();
         
         var okButton = new Ext.Button({
-            text: 'Добавить',
+            text: 'Сохранить',
             iconCls: 'add',
             handler: function() {
-                f.getForm().submit({
+                formPanel.getForm().submit({
                     url: this.addURL,
                     params: {
                         categoryId: this.categoryId
@@ -117,7 +106,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                     success: function(form, options) {
                         var o = options.result;
                         if (true == o.success) {
-                            w.close();
+                            this.formWindow.close();
                             this.getStore().reload();
                             return;
                         }
@@ -134,43 +123,29 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.showWindow({
             title: 'Добавление записи',
-            items: [f],
+            items: [formPanel],
             okButton: okButton
         });
     },
     
     onUpdate: function(g, rowIndex) {
-        
+        var formPanel = this.getForm();
         var record = g.getStore().getAt(rowIndex);
-        
-        var f = new xlib.form.FormPanel({
-            permissions: this.permissions,
-            items: [{
-                xtype: 'textfield',
-                fieldLabel: 'Наименование',
-                name: 'name',
-                value: record.get('name')
-            }, PMS.Storage.Assets.Measures.getCombo({
-                fieldLabel: 'Ед. изм.',
-                name: 'measure',
-                hiddenName: 'measure',
-                value: record.get('measure')
-            })]
-        });
+        formPanel.getForm().loadRecord(record);
         
         var okButton = new Ext.Button({
             text: 'Сохранить',
             iconCls: 'add',
             handler: function() {
-                f.getForm().submit({
-                    url: this.addURL,
+                formPanel.getForm().submit({
+                    url: this.updateURL,
                     params: {
                         id: record.get('id')
                     },
                     success: function(form, options) {
                         var o = options.result;
                         if (true == o.success) {
-                            w.close();
+                            this.formWindow.close();
                             this.getStore().reload();
                             return;
                         }
@@ -187,15 +162,14 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.showWindow({
             title: 'Добавление ТМЦ',
-            items: [f],
-            okButton: okButton
+            items: [formPanel],
+            okButton: okButton,
+            scope: this
         });
     },
     
     onDelete: function(g, rowIndex) {
-        
         var record = g.getStore().getAt(rowIndex);
-        
         xlib.Msg.confirm('Вы уверены?', function() {
             Ext.Ajax.request({
                 url: this.deleteURL,
@@ -203,43 +177,70 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                     id: record.get('id')
                 },
                 callback: function (options, success, response) {
-                    if (true == success) {
-                        var res = xlib.decode(response.responseText);
+                    var msg = 'Ошибка при удалении.';
+                    var res = xlib.decode(response.responseText);
+                    if (true == success && res) {
                         if (true == res.success) {
                             g.getStore().reload();
                             return;
+                        } else if (errors) {
+                            var msg;
+                            switch (errors[0].code) {
+                                case -20:
+                                    msg = 'Невозможно удалить. ' +
+                                        'Субъект связан с одним или более заказами.'
+                                    break;
+                                default:
+                            }
                         }
                     }
-                    xlib.Msg.error('Не удалось удаление.');
+                    xlib.Msg.error(msg);
                 },
                 scope: this
             });    
         }, this);
     },
     
+    // ------------------------ Private functions ------------------------------
+    
+    getForm: function() {
+        return new xlib.form.FormPanel({
+            permissions: this.permissions,
+            labelWidth: 100,
+            items: [{
+                xtype: 'textfield',
+                fieldLabel: 'Наименование',
+                name: 'name'
+            }, PMS.Storage.Assets.Measures.getCombo({
+                fieldLabel: 'Ед. измерения',
+                name: 'measure',
+                hiddenName: 'measure'
+            })]
+        });
+    },
+    
     showWindow: function(config) {
-        var w = Ext.apply(new Ext.Window({
+        this.formWindow = new Ext.Window(Ext.apply({
             resizable: false,
-            width: 300,
+            width: 500,
             modal: true,
             items: [],
-            buttons: [config.okButton || {}, {
+            buttons: [config.okButton || '', {
                 text: 'Отмена',
                 handler: function() {
-                    w.close();
+                    this.formWindow.close();
                 },
                 scope: this
             }]
-        }), conffig || {});
-        
-        w.show();
+        }, config || {}));
+        this.formWindow.show();
     },
     
     load: function(categoryId, categoryName) {
         this.setTitle(this.baseTitle + '"' + (categoryName || '') + '"');
         this.categoryId = categoryId;
-        this.ds.setBaseParam('categoryId', categoryId);
-        this.ds.load();
+        this.getStore().setBaseParam('categoryId', categoryId);
+        this.getStore().load();
     }
 });
 

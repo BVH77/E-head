@@ -16,19 +16,20 @@ PMS.Storage.Assets.Measures = function() {
                 storeId: 'MeasuresStore',
                 idIndex: 0,  
                 fields: ['name'],
-                data: data
+                data: this.getData()
             });
         },
         
         getCombo: function(config) {
-            return Ext.apply(new Ext.form.ComboBox({
+            return Ext.apply(new xlib.form.ComboBox({
                 typeAhead: true,
                 editable: false,
                 triggerAction: 'all',
                 lazyRender: true,
                 mode: 'local',
-                store: this.getData()                
-            }), conffig || {});
+                selectFirst: true,
+                store: this.getData()
+            }), config || {});
         }
     };
 }();
