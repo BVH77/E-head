@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `acl_permissions` (
   UNIQUE KEY `role_id_2` (`role_id`,`resource_id`,`privilege_id`),
   KEY `fk_role_id` (`role_id`),
   KEY `fk_resource_id` (`resource_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1591 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1593 ;
 
 -- 
 -- Дамп данных таблицы `acl_permissions`
@@ -293,8 +293,8 @@ INSERT INTO `acl_permissions` (`id`, `role_id`, `resource_id`, `privilege_id`) V
 (1519, 7, 147, 1),
 (1523, 7, 148, 1),
 (1565, 7, 149, 1),
-(1566, 1, 152, 1),
-(1567, 1, 152, 3);
+(1591, 1, 152, 1),
+(1592, 1, 152, 3);
 
 -- --------------------------------------------------------
 
