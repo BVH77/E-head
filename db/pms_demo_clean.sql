@@ -543,7 +543,7 @@ CREATE TABLE IF NOT EXISTS `suppliers` (
 -- 
 
 DROP TABLE IF EXISTS `storage_assets`;
-    CREATE TABLE `storage_assets` (
+CREATE TABLE `storage_assets` (
     `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `name` VARCHAR( 250 ) NOT NULL ,
     `measure` VARCHAR( 50 ) NULL DEFAULT NULL,
@@ -552,13 +552,14 @@ DROP TABLE IF EXISTS `storage_assets`;
 ) ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `storage_assets_categories`;
-    CREATE TABLE `storage_assets_categories` (
+CREATE TABLE `storage_assets_categories` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `name` VARCHAR( 250 ) NOT NULL ,
     `parent_id` INT UNSIGNED NULL DEFAULT NULL ,
     INDEX ( `parent_id` )
 ) ENGINE = InnoDB;
 
+DROP TABLE IF EXISTS `storage_availability`;
 CREATE TABLE `storage_availability` (
      `id` int(10) unsigned NOT NULL auto_increment,
      `asset_id` int(10) unsigned NOT NULL,
@@ -567,6 +568,7 @@ CREATE TABLE `storage_availability` (
      KEY `asset_id` (`asset_id`)
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS `storage_requests`; 
 CREATE TABLE `storage_requests` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `asset_id` INT UNSIGNED NOT NULL ,
