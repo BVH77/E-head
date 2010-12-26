@@ -292,7 +292,9 @@ INSERT INTO `acl_permissions` (`id`, `role_id`, `resource_id`, `privilege_id`) V
 (1588, 7, 146, 3),
 (1519, 7, 147, 1),
 (1523, 7, 148, 1),
-(1565, 7, 149, 1);
+(1565, 7, 149, 1),
+(1566, 1, 152, 1),
+(1567, 1, 152, 3);
 
 -- --------------------------------------------------------
 
@@ -309,7 +311,7 @@ CREATE TABLE IF NOT EXISTS `acl_resources` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`,`parent_id`),
   KEY `fk_parent_id` (`parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=152 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=153 ;
 
 -- 
 -- Дамп данных таблицы `acl_resources`
@@ -339,7 +341,8 @@ INSERT INTO `acl_resources` (`id`, `name`, `title`, `parent_id`) VALUES (50, 'ad
 (148, 'files', 'Файлы', 123),
 (149, 'start_fact', 'Начало (факт)', 131),
 (150, 'hideproduction', 'Скрывать заказы без производства', 123),
-(151, 'hidemount', 'Скрывать заказы без монтажа', 123);
+(151, 'hidemount', 'Скрывать заказы без монтажа', 123),
+(152, 'storage', 'Склад', NULL);
 
 -- --------------------------------------------------------
 
