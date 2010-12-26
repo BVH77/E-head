@@ -539,6 +539,41 @@ CREATE TABLE IF NOT EXISTS `suppliers` (
 -- Дамп данных таблицы `suppliers`
 -- 
 
+DROP TABLE IF EXISTS `storage_assets`;
+    CREATE TABLE `storage_assets` (
+    `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `name` VARCHAR( 250 ) NOT NULL ,
+    `measure` VARCHAR( 50 ) NULL DEFAULT NULL,
+    `category_id` INT( 11 ) UNSIGNED NULL,
+    INDEX ( `category_id` )
+) ENGINE = InnoDB;
+
+DROP TABLE IF EXISTS `storage_assets_categories`;
+    CREATE TABLE `storage_assets_categories` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `name` VARCHAR( 250 ) NOT NULL ,
+    `parent_id` INT UNSIGNED NULL DEFAULT NULL ,
+    INDEX ( `parent_id` )
+) ENGINE = InnoDB;
+
+CREATE TABLE `storage_availability` (
+     `id` int(10) unsigned NOT NULL auto_increment,
+     `asset_id` int(10) unsigned NOT NULL,
+     `qty` int(10) unsigned NOT NULL,
+     PRIMARY KEY  (`id`),
+     KEY `asset_id` (`asset_id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `storage_requests` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `asset_id` INT UNSIGNED NOT NULL ,
+    `account_id` INT UNSIGNED NOT NULL,
+    `qty` REAL NOT NULL ,
+    `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    `request_on` DATE NOT NULL ,
+    INDEX ( `asset_id`), 
+    INDEX ( `account_id` )
+) ENGINE = InnoDB;
 
 -- 
 -- Constraints for dumped tables
@@ -589,5 +624,14 @@ ALTER TABLE `orders`
 ALTER TABLE `orders_suppliers`
   ADD CONSTRAINT `orders_suppliers_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `orders_suppliers_ibfk_2` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `storage_availability` 
+  ADD FOREIGN KEY ( `asset_id` ) REFERENCES `storage_assets` (`id`) ON DELETE RESTRICT ;
+
+ALTER TABLE `storage_requests` 
+  ADD FOREIGN KEY ( `asset_id` ) REFERENCES `storage_assets` (`id`) ON DELETE RESTRICT ;
+
+ALTER TABLE `storage_requests` 
+  ADD FOREIGN KEY ( `account_id` ) REFERENCES `accounts` (`id`) ON DELETE RESTRICT ;
 
 SET FOREIGN_KEY_CHECKS=1;

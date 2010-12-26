@@ -93,6 +93,10 @@
         <script src="/js/PMS/Storage/Assets/List.js"/>
         <script src="/js/PMS/Storage/Assets/Layout.js"/>
 
+        <script src="/js/PMS/Storage/Availability/List.js"/>
+        
+        <script src="/js/PMS/Storage/Requests/List.js"/>
+        
         <!-- Modules -->
         
         <script src="/js/PMS/menu.js"/>

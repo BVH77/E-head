@@ -6,7 +6,7 @@ class PMS_Orders
     {
         $this->_table = new PMS_Orders_Table_Orders();
     }
-    
+
     public function add(array $params)
     {
         $f = new OSDN_Filter_Input(array(
@@ -33,14 +33,14 @@ class PMS_Orders
         $response->addData('id', $id);
         return $response->addStatus(new PMS_Status($status));
     }
-    
+
     public function update(array $params)
     {
         $f = new OSDN_Filter_Input(array(
             '*'             => 'StringTrim'
         ), array(
-            'id'                        => array('int', 'presence' => 'required'),
-            'customer_id'               => array('int', 'allowEmpty' => true),
+            'id'                        => array('Int', 'presence' => 'required'),
+            'customer_id'               => array('Int', 'allowEmpty' => true),
             'address'                   => array(array('StringLength', 1, 255)),
             'description'               => array(array('StringLength', 0, 4096)),
             'cost'                      => array('Int', 'allowEmpty' => true),
@@ -73,18 +73,18 @@ class PMS_Orders
     public function archive($params, $dir = true)
     {
         $response = new OSDN_Response();
-        
+
         $validate = new OSDN_Validate_Id();
-        
+
         if (!$validate->isValid($params['id'])) {
             return $response->addStatus(new PMS_Status(
                 PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
-        
+
     	$data = array();
-    	
+
     	if ($dir) {
-    		
+
 	        $f = new OSDN_Filter_Input(array(
 	            'id'   => 'Int',
 	            '*'    => 'StringTrim'
@@ -96,24 +96,24 @@ class PMS_Orders
 	            'act_date'         => array(array('StringLength', 1, 255))
 	        ), $params);
 	        $response->addInputStatus($f);
-	        
+
 	        if ($response->hasNotSuccess()) {
 	            return $response;
 	        }
-	        
+
 	        $data = $f->getData();
             $data['archive_date'] = new Zend_Db_Expr('NOW()');
     	}
-    	
+
         $data['archive'] = $dir ? 1 : 0;
-        
+
         $res = $this->_table->updateByPk($data, $params['id']);
-        
+
         return $response->addStatus(new PMS_Status(
             $res === false ? PMS_Status::FAILURE : PMS_Status::OK
         ));
     }
-    
+
     public function delete($id)
     {
         $response = new OSDN_Response();
@@ -127,7 +127,7 @@ class PMS_Orders
             PMS_Status::retrieveAffectedRowStatus($affectedRows)
         ));
     }
-    
+
     /**
      * Retrieve orders
      *
@@ -161,51 +161,51 @@ class PMS_Orders
         $accounts = new OSDN_Accounts_Table_Accounts();
         $customers = new PMS_Customers_Table_Customers();
         $select->from(array('o' => $this->_table->getTableName()), array(
-            '*', 'conflict' => 'IF(success_date_planned IS NULL' 
+            '*', 'conflict' => 'IF(success_date_planned IS NULL'
             . ' OR success_date_planned < production_start_planned'
             . ' OR success_date_planned < production_end_planned'
             . ' OR success_date_planned < mount_start_planned'
             . ' OR success_date_planned < mount_end_planned, 0, 1)',
             'success' => 'IF(success_date_fact IS NULL, 0, 1)'));
         $select->joinLeft(array(
-            'u' => $accounts->getTableName()), 
-            'o.creator_id=u.id', 
+            'u' => $accounts->getTableName()),
+            'o.creator_id=u.id',
             array('creator_name' => 'u.name')
         );
         $select->join(array(
-            'c' => $customers->getTableName()), 
-            'o.customer_id=c.id', 
+            'c' => $customers->getTableName()),
+            'o.customer_id=c.id',
             array('customer_name' => 'c.name')
         );
         $acl = OSDN_Accounts_Prototype::getAcl();
-        
+
         // Show only orders created by this account for managers
         if ($acl->isAllowed(
-            OSDN_Acl_Resource_Generator::getInstance()->orders->owncheck, 
+            OSDN_Acl_Resource_Generator::getInstance()->orders->owncheck,
             OSDN_Acl_Privilege::VIEW)
         ) {
             $userId = OSDN_Accounts_Prototype::getId();
             $select->where('creator_id = ?', $userId);
         }
-        
+
         // Hide orders with production disabled
         if ($acl->isAllowed(
-            OSDN_Acl_Resource_Generator::getInstance()->orders->hideproduction, 
+            OSDN_Acl_Resource_Generator::getInstance()->orders->hideproduction,
             OSDN_Acl_Privilege::VIEW)
         ) {
             $select->where('production = 1');
         }
-        
+
         // Hide orders with mountage disabled
         if ($acl->isAllowed(
-            OSDN_Acl_Resource_Generator::getInstance()->orders->hidemount, 
+            OSDN_Acl_Resource_Generator::getInstance()->orders->hidemount,
             OSDN_Acl_Privilege::VIEW)
         ) {
             $select->where('mount = 1');
         }
-        
+
         $select->where('archive = ?', (int)$archive);
-        
+
         switch($params['Xfilter']) {
         	case 1: // Current
         		$select->where('success_date_fact IS NULL');
@@ -222,8 +222,8 @@ class PMS_Orders
         $select->order('success');
         $select->order('conflict');
         //$select->order('success_date_fact');
-        $plugin = new OSDN_Db_Plugin_Select($this->_table, $select, 
-            array('o.id' => 'id', 'address', 'success_date_fact', 'success_date_planned', 
+        $plugin = new OSDN_Db_Plugin_Select($this->_table, $select,
+            array('o.id' => 'id', 'address', 'success_date_fact', 'success_date_planned',
                 'created', 'creator_name', 'customer_name', 'conflict', 'success')
         );
         $plugin->parse($params);
@@ -239,16 +239,16 @@ class PMS_Orders
 	                $rowset = $resp->getRowset();
 	            } else {
 	                $data['suppliers_errors'] = $resp->getStatusCollection();
-	                $rowset = array(); 
+	                $rowset = array();
 	            }
 	            $data['suppliers'] = $rowset;
-	            
+
 	            $resp = $files->getAll($data['id']);
 	            if ($resp->isSuccess()) {
 	                $rowset = $resp->getRowset();
 	            } else {
 	                $data['files_errors'] = $resp->getStatusCollection();
-	                $rowset = array(); 
+	                $rowset = array();
 	            }
 	            $data['files'] = $rowset;
         	}
@@ -263,7 +263,7 @@ class PMS_Orders
         }
         return $response->addStatus(new PMS_Status($status));
     }
-    
+
     public function get($id)
     {
         $response = new OSDN_Response();
@@ -277,13 +277,13 @@ class PMS_Orders
         $customers = new PMS_Customers_Table_Customers();
         $select->from(array('o' => $this->_table->getTableName()), '*');
         $select->join(array(
-            'u' => $accounts->getTableName()), 
-            'o.creator_id=u.id', 
+            'u' => $accounts->getTableName()),
+            'o.creator_id=u.id',
             array('creator_name' => 'name')
         );
         $select->join(array(
-            'c' => $customers->getTableName()), 
-            'o.customer_id=c.id', 
+            'c' => $customers->getTableName()),
+            'o.customer_id=c.id',
             array('customer_name' => 'name')
         );
         $select->where('o.id = ?', $id);
@@ -291,27 +291,27 @@ class PMS_Orders
         try {
         	$suppliers = new PMS_Suppliers();
             $files = new PMS_Files();
-            
+
         	$row = $select->query()->fetch();
-        	
+
             $resp = $suppliers->getByOrderId($id);
             if ($resp->isSuccess()) {
                 $rowset = $resp->getRowset();
             } else {
                 $row['suppliers_errors'] = $resp->getStatusCollection();
-                $rowset = array(); 
+                $rowset = array();
             }
             $row['suppliers'] = $rowset;
-            
+
             $resp = $files->getAll($id);
             if ($resp->isSuccess()) {
                 $rowset = $resp->getRowset();
             } else {
                 $row['files_errors'] = $resp->getStatusCollection();
-                $rowset = array(); 
+                $rowset = array();
             }
             $row['files'] = $rowset;
-            
+
             $response->setRow($row);
             $status = PMS_Status::OK;
         } catch (Exception $e) {
@@ -322,7 +322,7 @@ class PMS_Orders
         }
         return $response->addStatus(new PMS_Status($status));
     }
-    
+
     public function changeUser($orderId, $userId)
     {
         $response = new OSDN_Response();
@@ -337,9 +337,9 @@ class PMS_Orders
         }
         $res = $this->_table->updateByPk(array('creator_id' => $userId), $orderId);
         $status = $res === false ? PMS_Status::FAILURE : PMS_Status::OK;
-        return $response->addStatus(new PMS_Status($status));        
+        return $response->addStatus(new PMS_Status($status));
     }
-    
+
     public function getNotes($orderId)
     {
         $response = new OSDN_Response();
@@ -357,9 +357,9 @@ class PMS_Orders
         } catch (Exception $e) {
             $status = PMS_Status::DATABASE_ERROR;
         }
-        return $response->addStatus(new PMS_Status($status));    
+        return $response->addStatus(new PMS_Status($status));
     }
-    
+
     public function addNote($orderId, $text)
     {
         $response = new OSDN_Response();
@@ -372,7 +372,7 @@ class PMS_Orders
         $data = array('order_id' => $orderId, 'text' => $text);
         $tableNotes = new PMS_Orders_Table_Notes();
         $id = $tableNotes->insert($data);
-        $status = $id ? PMS_Status::OK : PMS_Status::FAILURE; 
+        $status = $id ? PMS_Status::OK : PMS_Status::FAILURE;
         return $response->addStatus(new PMS_Status($status));
     }
 }

@@ -80,30 +80,24 @@ PMS.Menu = function(username, rolename, roleId) {
 	        iconCls: 'suppliers-icon',
 	        hidden: !acl.isView('storage'),
 	        handler: function() {
-                xlib.Msg.info('Модуль в разработке...');
-                /*
 	            PMS.System.Layout.getTabPanel().add({
-	                title: 'Остаток на складе',
+	                title: 'Наличие на складе',
 	                iconCls: 'suppliers-icon',
 	                xtype: 'PMS.Storage.Availability.List',
 	                id: 'PMS.Storage.Availability.List'
 	            });
-                */
 	        }
 	    }, {
 	        text: 'Заявки на снабжение',
 	        iconCls: 'suppliers-icon',
 	        hidden: !acl.isView('storage'),
 	        handler: function() {
-                xlib.Msg.info('Модуль в разработке...');
-                /*
 	            PMS.System.Layout.getTabPanel().add({
 	                title: 'Заявки на снабжение',
 	                iconCls: 'suppliers-icon',
-	                xtype: 'PMS.Storage.Request.List',
+	                xtype: 'PMS.Storage.Requests.List',
 	                id: 'PMS.Storage.Requests.List'
 	            });
-                */
 	        }
 	    }]
 	}, {

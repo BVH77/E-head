@@ -24,16 +24,16 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.autoExpandColumn = Ext.id();
         
-        this.ds = new Ext.data.Store({
+        this.ds = new Ext.data.JsonStore({
             url: this.listURL,
+            remoteSort: true,
             baseParams: {
                 categoryId: this.categoryId
             },
-            reader: new Ext.data.JsonReader({
-                root: 'data',
-                id: 'id',
-                totalProperty: 'totalCount'
-            }, ['id', 'name', 'measure'])
+            root: 'data',
+            id: 'id',
+            totalProperty: 'totalCount',
+            fields: ['id', 'name', 'measure']
         });
         
         this.sm = new Ext.grid.RowSelectionModel();
@@ -59,10 +59,12 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         this.columns = [{
             header: 'Наименование',
             dataIndex: 'name',
+            sortable: true,
             id: this.autoExpandColumn
         }, {
             header: 'Ед. измерения',
             dataIndex: 'measure',
+            sortable: true,
             width: 100
         }];
         
@@ -96,7 +98,6 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         
         var okButton = new Ext.Button({
             text: 'Сохранить',
-            iconCls: 'add',
             handler: function() {
                 formPanel.getForm().submit({
                     url: this.addURL,
@@ -135,7 +136,6 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         
         var okButton = new Ext.Button({
             text: 'Сохранить',
-            iconCls: 'add',
             handler: function() {
                 formPanel.getForm().submit({
                     url: this.updateURL,
@@ -244,4 +244,4 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
     }
 });
 
-Ext.reg('xlib.acl.accounts.list', xlib.Acl.Accounts.List);
+Ext.reg('PMS.Storage.Assets.List', PMS.Storage.Assets.List);
