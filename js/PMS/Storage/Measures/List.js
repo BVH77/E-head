@@ -1,39 +1,31 @@
-Ext.ns('PMS.Storage.Assets');
+Ext.ns('PMS.Storage.Measures');
 
-PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
+PMS.Storage.Measures.List = Ext.extend(Ext.grid.GridPanel, {
 
-    title:      'Список ТМЦ из категории',
+    title:      'Единицы измерения',
     
-    baseTitle:  'Список ТМЦ из категории ',
-
-    listURL:    link('storage', 'assets', 'get-list'),
+    listURL:    link('storage', 'measures', 'get-all'),
     
-    addURL:     link('storage', 'assets', 'add'),
+    addURL:     link('storage', 'measures', 'add'),
     
-    updateURL:  link('storage', 'assets', 'update'),
-    
-    deleteURL:  link('storage', 'assets', 'delete'),
+    deleteURL:  link('storage', 'measures', 'delete'),
     
     loadMask: true,
-
-    categoryId: null,
     
+    viewConfig: {
+        forceFit: true
+    },
+
     permissions: acl.isUpdate('storage'),
     
     initComponent: function() {
         
-        this.autoExpandColumn = Ext.id();
-        
         this.ds = new Ext.data.JsonStore({
             url: this.listURL,
-            remoteSort: true,
-            baseParams: {
-                categoryId: this.categoryId
-            },
+            autoLoad: true,
             root: 'data',
-            id: 'id',
-            totalProperty: 'totalCount',
-            fields: ['id', 'name', 'measure', 'qty', 'unit_price']
+            idProperty: 'name',
+            fields: ['name']
         });
         
         this.sm = new Ext.grid.RowSelectionModel();
@@ -41,12 +33,6 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         var actions = new xlib.grid.Actions({
             autoWidth: true,
             items: [{
-                text: 'Редактировать',
-                iconCls: 'edit',
-                hidden: !this.permissions,
-                handler: this.onUpdate,
-                scope: this
-            }, {
                 text: 'Удалить',
                 iconCls: 'delete',
                 hidden: !this.permissions,
@@ -60,136 +46,78 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             header: 'Наименование',
             dataIndex: 'name',
             sortable: true,
-            id: this.autoExpandColumn
-        }, {
-            header: 'Ед. измерения',
-            dataIndex: 'measure',
-            sortable: true,
             width: 100
-        }, {
-            header: 'Количество',
-            dataIndex: 'qty',
-            sortable: true,
-            width: 100,
-            renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-                return Ext.util.Format.number(value, '0,000').replace(/,/g, ' ');
-            }
-        }, {
-            header: 'Цена за единицу (р.)',
-            dataIndex: 'unit_price',
-            sortable: true,
-            width: 120,
-            renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-                return Ext.util.Format.number(value, '0,000').replace(/,/g, ' ');
-            }
-        }, {
-            header: 'Сумма (р.)',
-            width: 120,
-            renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-                var summ = record.get('qty') * record.get('unit_price');
-                summ = Ext.util.Format.number(summ, '0,000');
-                return summ.replace(/,/g, ' ');
-            }
         }];
         
-        this.filtersPlugin = new Ext.grid.GridFilters({
-            filters: [{type: 'string',  dataIndex: 'name'}]
-        });
-        
-        this.plugins = [actions, this.filtersPlugin];
+        this.plugins = [actions];
 
-        this.tbar = [new Ext.Toolbar.Button({
-                text: 'Добавить',
-                iconCls: 'add',
-                hidden: !this.permissions,
-                qtip: 'Добавить ТМЦ',
-                handler: this.onAdd,
-                scope: this
-            }), ' ',
-            this.filtersPlugin.getSearchField({width: 400})
-        ];
+        this.tbar = [{
+            iconCls: 'x-tbar-loading',
+            qtip: 'Обновить',
+            handler: function() {
+                this.getStore().reload();
+            },
+            scope: this
+        }, {
+            text: 'Добавить единицу измерения',
+            iconCls: 'add',
+            hidden: !this.permissions,
+            qtip: 'Добавить',
+            handler: this.onAdd,
+            scope: this
+        }];
         
-        this.bbar = new xlib.PagingToolbar({
-            plugins: [this.filtersPlugin],
-            store: this.ds
-        });
-        
-        PMS.Storage.Assets.List.superclass.initComponent.apply(this, arguments);
+        PMS.Storage.Measures.List.superclass.initComponent.apply(this, arguments);
     },
     
     onAdd: function(b, e) {
-        var formPanel = this.getForm();
         
-        var okButton = new Ext.Button({
-            text: 'Сохранить',
-            handler: function() {
-                formPanel.getForm().submit({
-                    url: this.addURL,
-                    params: {
-                        categoryId: this.categoryId
-                    },
-                    success: function(form, options) {
-                        var o = options.result;
-                        if (true == o.success) {
-                            this.formWindow.close();
-                            this.getStore().reload();
-                            return;
-                        }
-                        xlib.Msg.error('Не удалось добавить ТМЦ.')
-                    },
-                    failure: function() {
-                        xlib.Msg.error('Не удалось добавить ТМЦ.')
-                    },
-                    scope: this
-                });
-            },
-            scope: this
-        });
-        
-        this.showWindow({
-            title: 'Добавление записи',
+        var formPanel = new xlib.form.FormPanel({
+            permissions: this.permissions,
+            labelWidth: 100,
+            items: [{
+                xtype: 'textfield',
+                fieldLabel: 'Наименование',
+                name: 'name'
+            }]
+        })
+            
+        this.formWindow = new Ext.Window({
+            title: 'Добавление единицы измерения',
+            resizable: false,
+            width: 300,
+            modal: true,
             items: [formPanel],
-            okButton: okButton
+            buttons: [{
+                text: 'Сохранить',
+                handler: function() {
+                    formPanel.getForm().submit({
+                        url: this.addURL,
+                        success: function(form, options) {
+                            var o = options.result;
+                            if (true == o.success) {
+                                this.formWindow.close();
+                                this.getStore().reload();
+                                return;
+                            }
+                            xlib.Msg.error('Не удалось добавить.')
+                        },
+                        failure: function() {
+                            xlib.Msg.error('Не удалось добавить.')
+                        },
+                        scope: this
+                    });
+                },
+                scope: this
+            }, {
+                text: 'Отмена',
+                handler: function() {
+                    this.formWindow.close();
+                },
+                scope: this
+            }]
         });
-    },
-    
-    onUpdate: function(g, rowIndex) {
-        var formPanel = this.getForm();
-        var record = g.getStore().getAt(rowIndex);
-        formPanel.getForm().loadRecord(record);
-        
-        var okButton = new Ext.Button({
-            text: 'Сохранить',
-            handler: function() {
-                formPanel.getForm().submit({
-                    url: this.updateURL,
-                    params: {
-                        id: record.get('id')
-                    },
-                    success: function(form, options) {
-                        var o = options.result;
-                        if (true == o.success) {
-                            this.formWindow.close();
-                            this.getStore().reload();
-                            return;
-                        }
-                        xlib.Msg.error('Не удалось сохранить ТМЦ.')
-                    },
-                    failure: function() {
-                        xlib.Msg.error('Не удалось сохранить ТМЦ.')
-                    },
-                    scope: this
-                });
-            },
-            scope: this
-        });
-        
-        this.showWindow({
-            title: 'Добавление ТМЦ',
-            items: [formPanel],
-            okButton: okButton,
-            scope: this
-        });
+        this.formWindow.show();
     },
     
     onDelete: function(g, rowIndex) {
@@ -198,7 +126,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             Ext.Ajax.request({
                 url: this.deleteURL,
                 params: {
-                    id: record.get('id')
+                    name: record.get('name')
                 },
                 callback: function (options, success, response) {
                     var msg = 'Ошибка при удалении.';
@@ -228,36 +156,6 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
     // ------------------------ Private functions ------------------------------
     
     getForm: function() {
-        
-        var updateSumm = function() {
-            var summ = qtyField.getValue() * unitPriceField.getValue();
-            summ = Ext.util.Format.number(summ, '0,000');
-            summField.setValue(summ.replace(/,/g, ' ') + ' р.');
-        };
-        
-        var summField = new Ext.form.DisplayField({
-            style: 'line-height: 18px;',
-            fieldLabel: 'Сумма'
-        });
-        
-        var qtyField = new Ext.form.NumberField({
-            fieldLabel: 'Количество',
-            name: 'qty',
-            enableKeyEvents: true,
-            listeners: {
-                keyup: updateSumm
-            }
-        });
-        
-        var unitPriceField = new Ext.form.NumberField({
-            fieldLabel: 'Цена за ед. (р.)',
-            name: 'unit_price',
-            enableKeyEvents: true,
-            listeners: {
-                keyup: updateSumm
-            }
-        });
-        
         return new xlib.form.FormPanel({
             permissions: this.permissions,
             labelWidth: 100,
@@ -265,71 +163,12 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                 xtype: 'textfield',
                 fieldLabel: 'Наименование',
                 name: 'name'
-            }, {
-                layout: 'column',
-                border: false,
-                columns: 2,
-                defaults: {
-                    border: false,
-                    layout: 'form',
-                    columnWidth: .5
-                },
-                items: [{
-                    items: [qtyField]
-                }, {
-                    padding: '0 0 0 10',
-                    items: [PMS.Storage.Assets.Measures.getCombo({
-                        fieldLabel: 'Ед. измерения',
-                        anchor: '100%',
-                        name: 'measure',
-                        hiddenName: 'measure'
-                    })]
-                }]
-            }, {
-                layout: 'column',
-                border: false,
-                columns: 2,
-                defaults: {
-                    border: false,
-                    layout: 'form',
-                    columnWidth: .5
-                },
-                items: [{
-                    items: [unitPriceField]
-                }, {
-                    padding: '0 0 0 10',
-                    items: [summField]
-                }]
-            }],
-            listeners: {
-                ready: updateSumm
-            }
+            }]
         });
     },
     
     showWindow: function(config) {
-        this.formWindow = new Ext.Window(Ext.apply({
-            resizable: false,
-            width: 500,
-            modal: true,
-            items: [],
-            buttons: [config.okButton || '', {
-                text: 'Отмена',
-                handler: function() {
-                    this.formWindow.close();
-                },
-                scope: this
-            }]
-        }, config || {}));
-        this.formWindow.show();
-    },
-    
-    load: function(categoryId, categoryName) {
-        this.setTitle(this.baseTitle + '"' + (categoryName || '') + '"');
-        this.categoryId = categoryId;
-        this.getStore().setBaseParam('categoryId', categoryId);
-        this.getStore().load();
     }
 });
 
-Ext.reg('PMS.Storage.Assets.List', PMS.Storage.Assets.List);
+Ext.reg('PMS.Storage.Measures.List', PMS.Storage.Measures.List);

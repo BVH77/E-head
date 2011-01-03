@@ -88,12 +88,12 @@
         <script src="/js/PMS/ContragentsListAbstract.js"/>
         <script src="/js/PMS/ContragentsFormAbstract.js"/>
         
-        <script src="/js/PMS/Storage/Assets/Measures.js"/>
         <script src="/js/PMS/Storage/Assets/Tree.js"/>
         <script src="/js/PMS/Storage/Assets/List.js"/>
         <script src="/js/PMS/Storage/Assets/Layout.js"/>
 
-        <script src="/js/PMS/Storage/Availability/List.js"/>
+        <script src="/js/PMS/Storage/Measures/ComboBox.js"/>
+        <script src="/js/PMS/Storage/Measures/List.js"/>
         
         <script src="/js/PMS/Storage/Requests/List.js"/>
         
