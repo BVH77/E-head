@@ -76,15 +76,14 @@ PMS.Menu = function(username, rolename, roleId) {
 	            });
 	        }
 	    }, {
-	        text: 'Наличие на складе',
+	        text: 'Единицы измерения',
 	        iconCls: 'suppliers-icon',
 	        hidden: !acl.isView('storage'),
 	        handler: function() {
 	            PMS.System.Layout.getTabPanel().add({
-	                title: 'Наличие на складе',
 	                iconCls: 'suppliers-icon',
-	                xtype: 'PMS.Storage.Availability.List',
-	                id: 'PMS.Storage.Availability.List'
+	                xtype: 'PMS.Storage.Measures.List',
+	                id: 'PMS.Storage.Measures.List'
 	            });
 	        }
 	    }, {
@@ -93,7 +92,6 @@ PMS.Menu = function(username, rolename, roleId) {
 	        hidden: !acl.isView('storage'),
 	        handler: function() {
 	            PMS.System.Layout.getTabPanel().add({
-	                title: 'Заявки на снабжение',
 	                iconCls: 'suppliers-icon',
 	                xtype: 'PMS.Storage.Requests.List',
 	                id: 'PMS.Storage.Requests.List'

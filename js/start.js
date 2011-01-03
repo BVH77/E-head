@@ -81,14 +81,13 @@ Ext.onReady(function(){
             xtype: 'PMS.Orders.Layout',
             id: 'PMS.Orders.Layout'
         });
-        /*
+        
         PMS.System.Layout.getTabPanel().add({
-        	title: 'Заявки на снабжение',
-            iconCls: 'suppliers-icon',
-            xtype: 'PMS.Storage.Requests.List',
-            id: 'PMS.Storage.Requests.List'
+        	iconCls: 'suppliers-icon',
+            xtype: 'PMS.Storage.Assets.Layout',
+            id: 'PMS.Storage.Assets.Layout'
         });
-        */
+        
         PMS.System.Layout.doLayout();
     });
     

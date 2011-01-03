@@ -278,13 +278,12 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                     items: [qtyField]
                 }, {
                     padding: '0 0 0 10',
-                    items: [{
-                        xtype: 'PMS.Storage.Measures.ComboBox',
+                    items: [PMS.Storage.Assets.Measures.getCombo({
                         fieldLabel: 'Ед. измерения',
                         anchor: '100%',
                         name: 'measure',
                         hiddenName: 'measure'
-                    }]
+                    })]
                 }]
             }, {
                 layout: 'column',
