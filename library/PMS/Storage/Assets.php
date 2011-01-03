@@ -38,12 +38,16 @@ class PMS_Storage_Assets
         $response = new OSDN_Response();
 
         $f = new OSDN_Filter_Input(array(
-            'categoryId' => 'Int',
-            '*'          => 'StringTrim'
+            'categoryId'    => 'Int',
+            'qty'           => 'Int',
+            'unit_price'    => 'Int',
+            '*'             => 'StringTrim'
         ), array(
-            'name'       => array(array('StringLength', 1, 250), 'presence' => 'required'),
-            'measure'    => array(array('StringLength', 1, 50), 'presence' => 'required'),
-            'categoryId' => array(array('Id', true))
+            'name'          => array(array('StringLength', 1, 250), 'presence' => 'required'),
+            'measure'       => array(array('StringLength', 1, 50), 'presence' => 'required'),
+            'qty'           => array('Int', 'allowEmpty' => true),
+            'unit_price'    => array('Int', 'allowEmpty' => true),
+            'categoryId'    => array(array('Id', true))
         ), $params);
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
@@ -87,12 +91,16 @@ class PMS_Storage_Assets
         $response = new OSDN_Response();
 
         $f = new OSDN_Filter_Input(array(
-            'id'        => 'Int',
-            '*'         => 'StringTrim'
+            'id'            => 'Int',
+            'qty'           => 'Int',
+            'unit_price'    => 'Int',
+            '*'             => 'StringTrim'
         ), array(
-            'id'        => array(array('Id', true)),
-            'name'      => array(array('StringLength', 1, 250), 'presence' => 'required'),
-            'measure'   => array(array('StringLength', 1, 50), 'presence' => 'required')
+            'id'            => array(array('Id', true)),
+            'name'          => array(array('StringLength', 1, 250), 'presence' => 'required'),
+            'measure'       => array(array('StringLength', 1, 50), 'presence' => 'required'),
+            'qty'           => array('Int', 'allowEmpty' => true),
+            'unit_price'    => array('Int', 'allowEmpty' => true)
         ), $params);
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
