@@ -33,7 +33,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             root: 'data',
             id: 'id',
             totalProperty: 'totalCount',
-            fields: ['id', 'name', 'measure']
+            fields: ['id', 'name', 'measure', 'qty', 'unit_price']
         });
         
         this.sm = new Ext.grid.RowSelectionModel();
@@ -66,6 +66,30 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             dataIndex: 'measure',
             sortable: true,
             width: 100
+        }, {
+            header: 'Количество',
+            dataIndex: 'qty',
+            sortable: true,
+            width: 100,
+            renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                return Ext.util.Format.number(value, '0,000').replace(/,/g, ' ');
+            }
+        }, {
+            header: 'Цена за единицу (р.)',
+            dataIndex: 'unit_price',
+            sortable: true,
+            width: 120,
+            renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                return Ext.util.Format.number(value, '0,000').replace(/,/g, ' ');
+            }
+        }, {
+            header: 'Сумма (р.)',
+            width: 120,
+            renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                var summ = record.get('qty') * record.get('unit_price');
+                summ = Ext.util.Format.number(summ, '0,000');
+                return summ.replace(/,/g, ' ');
+            }
         }];
         
         this.filtersPlugin = new Ext.grid.GridFilters({
@@ -204,6 +228,36 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
     // ------------------------ Private functions ------------------------------
     
     getForm: function() {
+        
+        var updateSumm = function() {
+            var summ = qtyField.getValue() * unitPriceField.getValue();
+            summ = Ext.util.Format.number(summ, '0,000');
+            summField.setValue(summ.replace(/,/g, ' ') + ' р.');
+        };
+        
+        var summField = new Ext.form.DisplayField({
+            style: 'line-height: 18px;',
+            fieldLabel: 'Сумма'
+        });
+        
+        var qtyField = new Ext.form.NumberField({
+            fieldLabel: 'Количество',
+            name: 'qty',
+            enableKeyEvents: true,
+            listeners: {
+                keyup: updateSumm
+            }
+        });
+        
+        var unitPriceField = new Ext.form.NumberField({
+            fieldLabel: 'Цена за ед. (р.)',
+            name: 'unit_price',
+            enableKeyEvents: true,
+            listeners: {
+                keyup: updateSumm
+            }
+        });
+        
         return new xlib.form.FormPanel({
             permissions: this.permissions,
             labelWidth: 100,
@@ -211,11 +265,45 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                 xtype: 'textfield',
                 fieldLabel: 'Наименование',
                 name: 'name'
-            }, PMS.Storage.Assets.Measures.getCombo({
-                fieldLabel: 'Ед. измерения',
-                name: 'measure',
-                hiddenName: 'measure'
-            })]
+            }, {
+                layout: 'column',
+                border: false,
+                columns: 2,
+                defaults: {
+                    border: false,
+                    layout: 'form',
+                    columnWidth: .5
+                },
+                items: [{
+                    items: [qtyField]
+                }, {
+                    padding: '0 0 0 10',
+                    items: [PMS.Storage.Assets.Measures.getCombo({
+                        fieldLabel: 'Ед. измерения',
+                        anchor: '100%',
+                        name: 'measure',
+                        hiddenName: 'measure'
+                    })]
+                }]
+            }, {
+                layout: 'column',
+                border: false,
+                columns: 2,
+                defaults: {
+                    border: false,
+                    layout: 'form',
+                    columnWidth: .5
+                },
+                items: [{
+                    items: [unitPriceField]
+                }, {
+                    padding: '0 0 0 10',
+                    items: [summField]
+                }]
+            }],
+            listeners: {
+                ready: updateSumm
+            }
         });
     },
     
