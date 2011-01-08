@@ -45,8 +45,9 @@ class PMS_Storage_Assets
             'name'          => array(array('StringLength', 1, 250), 'presence' => 'required'),
             'measure'       => array(array('StringLength', 1, 50), 'presence' => 'required'),
             'qty'           => array('Int', 'allowEmpty' => true),
-            'unit_price'    => array('Float', 'allowEmpty' => true),
-            'categoryId'    => array(array('Id', true))
+            'categoryId'    => array(array('Id', true)),
+            'unit_price'    => array(array('Float', 'en'), 'allowEmpty' => true)
+            // Here we use en locale to set "."(point) as deciminal separator
         ), $params);
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
