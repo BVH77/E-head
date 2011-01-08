@@ -70,24 +70,21 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             header: 'Количество',
             dataIndex: 'qty',
             sortable: true,
-            width: 100,
-            renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-                return Ext.util.Format.number(value, '0,000').replace(/,/g, ' ');
-            }
+            width: 100
         }, {
             header: 'Цена за единицу (р.)',
             dataIndex: 'unit_price',
             sortable: true,
             width: 120,
             renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-                return Ext.util.Format.number(value, '0,000').replace(/,/g, ' ');
+                return Ext.util.Format.number(value, '0,000.00').replace(/,/g, ' ');
             }
         }, {
             header: 'Сумма (р.)',
             width: 120,
             renderer: function(value, metaData, record, rowIndex, colIndex, store) {
                 var summ = record.get('qty') * record.get('unit_price');
-                summ = Ext.util.Format.number(summ, '0,000');
+                summ = Ext.util.Format.number(summ, '0,000.00');
                 return summ.replace(/,/g, ' ');
             }
         }];
@@ -154,9 +151,13 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
     },
     
     onUpdate: function(g, rowIndex) {
+        
         var formPanel = this.getForm();
         var record = g.getStore().getAt(rowIndex);
-        formPanel.getForm().loadRecord(record);
+        formPanel.on('ready', function(fp) {
+            fp.getForm().loadRecord(record);
+            fp.updateSumm();
+        }, formPanel);
         
         var okButton = new Ext.Button({
             text: 'Сохранить',
@@ -231,7 +232,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         
         var updateSumm = function() {
             var summ = qtyField.getValue() * unitPriceField.getValue();
-            summ = Ext.util.Format.number(summ, '0,000');
+            summ = Ext.util.Format.number(summ, '0,000.00');
             summField.setValue(summ.replace(/,/g, ' ') + ' р.');
         };
         
@@ -243,6 +244,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         var qtyField = new Ext.form.NumberField({
             fieldLabel: 'Количество',
             name: 'qty',
+            allowDecimals: false,
             enableKeyEvents: true,
             listeners: {
                 keyup: updateSumm
@@ -260,6 +262,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         
         return new xlib.form.FormPanel({
             permissions: this.permissions,
+            updateSumm: updateSumm,
             labelWidth: 100,
             items: [{
                 xtype: 'textfield',
@@ -303,7 +306,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                 }]
             }],
             listeners: {
-                ready: updateSumm
+                load: updateSumm
             }
         });
     },

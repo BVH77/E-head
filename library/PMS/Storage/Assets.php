@@ -40,13 +40,12 @@ class PMS_Storage_Assets
         $f = new OSDN_Filter_Input(array(
             'categoryId'    => 'Int',
             'qty'           => 'Int',
-            'unit_price'    => 'Int',
             '*'             => 'StringTrim'
         ), array(
             'name'          => array(array('StringLength', 1, 250), 'presence' => 'required'),
             'measure'       => array(array('StringLength', 1, 50), 'presence' => 'required'),
             'qty'           => array('Int', 'allowEmpty' => true),
-            'unit_price'    => array('Int', 'allowEmpty' => true),
+            'unit_price'    => array('Float', 'allowEmpty' => true),
             'categoryId'    => array(array('Id', true))
         ), $params);
         $response->addInputStatus($f);
@@ -93,14 +92,14 @@ class PMS_Storage_Assets
         $f = new OSDN_Filter_Input(array(
             'id'            => 'Int',
             'qty'           => 'Int',
-            'unit_price'    => 'Int',
             '*'             => 'StringTrim'
         ), array(
             'id'            => array(array('Id', true)),
             'name'          => array(array('StringLength', 1, 250), 'presence' => 'required'),
             'measure'       => array(array('StringLength', 1, 50), 'presence' => 'required'),
             'qty'           => array('Int', 'allowEmpty' => true),
-            'unit_price'    => array('Int', 'allowEmpty' => true)
+            'unit_price'    => array(array('Float', 'en'), 'allowEmpty' => true)
+            // Here we use en locale to set "."(point) as deciminal separator
         ), $params);
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
@@ -108,8 +107,8 @@ class PMS_Storage_Assets
         }
 
         try {
-            $id = $this->_table->updateByPk($f->getData(), $f->id);
-            $status = $id ? PMS_Status::OK : PMS_Status::FAILURE;
+            $this->_table->updateByPk($f->getData(), $f->id);
+            $status = PMS_Status::OK;
         } catch (Exception $e) {
             if (OSDN_DEBUG) {
                 throw $e;
@@ -117,7 +116,6 @@ class PMS_Storage_Assets
             $status = PMS_Status::DATABASE_ERROR;
         }
 
-        $response->id = $id;
         return $response->addStatus(new PMS_Status($status));
     }
 

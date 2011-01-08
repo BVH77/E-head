@@ -6,28 +6,19 @@ PMS.Storage.Measures.ComboBox = Ext.extend(xlib.form.ComboBox, {
     editable: false,
     triggerAction: 'all',
     lazyRender: true,
-    mode: 'local',
+    mode: 'remote',
     displayField: 'name',
     selectFirst: true,
 
     initComponent: function() {
         
         this.store = new Ext.data.JsonStore({
+            url: link('storage', 'measures', 'get-all'),
             autoDestroy: true,
             storeId: 'MeasuresStore',
             root: 'data',
             idProperty: 'name',
-            fields: ['name'],
-            data: { 
-                data: [
-                    {name: 'шт.'}, 
-                    {name: 'л'}, 
-                    {name: 'кг'}, 
-                    {name: 'м'}, 
-                    {name: 'кв.м'}, 
-                    {name: 'куб.м'}
-                ]
-            }
+            fields: ['name']
         })
         
         PMS.Storage.Measures.ComboBox.superclass.initComponent.apply(this, arguments);

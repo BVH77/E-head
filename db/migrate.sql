@@ -11,3 +11,5 @@ PRIMARY KEY ( `name` )
 INSERT INTO `storage_measures` (`name`) VALUES ('шт.'), ('л'), ('кг'), ('м'), ('кв.м'), ('куб.м');
 
 -- Migrated on pms_quarant
+
+ALTER TABLE `storage_assets` CHANGE `unit_price` `unit_price` DOUBLE( 10, 2 ) NOT NULL;
