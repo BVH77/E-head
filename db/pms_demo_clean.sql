@@ -548,8 +548,10 @@ CREATE TABLE `storage_assets` (
     `name` VARCHAR( 250 ) NOT NULL ,
     `measure` VARCHAR( 50 ) NULL DEFAULT NULL,
     `category_id` INT( 11 ) UNSIGNED NULL,
+    `qty` INT( 11 ) UNSIGNED NULL,
+    `unit_price` DOUBLE( 10, 2 ) NOT NULL,
     INDEX ( `category_id` )
-) ENGINE = InnoDB;
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `storage_assets_categories`;
 CREATE TABLE `storage_assets_categories` (
@@ -557,16 +559,28 @@ CREATE TABLE `storage_assets_categories` (
     `name` VARCHAR( 250 ) NOT NULL ,
     `parent_id` INT UNSIGNED NULL DEFAULT NULL ,
     INDEX ( `parent_id` )
-) ENGINE = InnoDB;
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `storage_availability`;
-CREATE TABLE `storage_availability` (
-     `id` int(10) unsigned NOT NULL auto_increment,
-     `asset_id` int(10) unsigned NOT NULL,
-     `qty` int(10) unsigned NOT NULL,
-     PRIMARY KEY  (`id`),
-     KEY `asset_id` (`asset_id`)
-) ENGINE=InnoDB;
+--
+-- Структура таблицы `storage_measures`
+--
+
+DROP TABLE IF EXISTS `storage_measures`;
+CREATE TABLE IF NOT EXISTS `storage_measures` (
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY  (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `storage_measures`
+--
+
+INSERT INTO `storage_measures` (`name`) VALUES 
+    ('кв.м'), ('кг'), ('куб.м'), ('л'), ('м'), ('шт.');
+
+--
+-- Структура таблицы `storage_requests`
+--
 
 DROP TABLE IF EXISTS `storage_requests`; 
 CREATE TABLE `storage_requests` (
@@ -578,7 +592,7 @@ CREATE TABLE `storage_requests` (
     `request_on` DATE NOT NULL ,
     INDEX ( `asset_id`), 
     INDEX ( `account_id` )
-) ENGINE = InnoDB;
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
 -- 
 -- Constraints for dumped tables
