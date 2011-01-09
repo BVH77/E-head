@@ -553,8 +553,8 @@ CREATE TABLE `storage_assets` (
     INDEX ( `category_id` )
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `storage_assets_categories`;
-CREATE TABLE `storage_assets_categories` (
+DROP TABLE IF EXISTS `storage_categories`;
+CREATE TABLE `storage_categories` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `name` VARCHAR( 250 ) NOT NULL ,
     `parent_id` INT UNSIGNED NULL DEFAULT NULL ,
