@@ -9,7 +9,7 @@ class Storage_CategoriesController extends OSDN_Controller_Action
 
 	public function init()
 	{
-		$this->_class = new PMS_Storage_Assets_Categories();
+		$this->_class = new PMS_Storage_Categories();
 		parent::init();
 	}
 

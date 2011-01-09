@@ -11,3 +11,5 @@ PRIMARY KEY ( `name` )
 INSERT INTO `storage_measures` (`name`) VALUES ('шт.'), ('л'), ('кг'), ('м'), ('кв.м'), ('куб.м');
 
 -- Migrated on: pms_quarant & demo
+
+RENAME TABLE `storage_assets_categories` TO `storage_categories`;

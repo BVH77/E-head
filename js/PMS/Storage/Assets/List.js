@@ -144,7 +144,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         });
         
         this.showWindow({
-            title: 'Добавление записи',
+            title: 'Добавление ТМЦ',
             items: [formPanel],
             okButton: okButton
         });
@@ -186,7 +186,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         });
         
         this.showWindow({
-            title: 'Добавление ТМЦ',
+            title: 'Редактирование ТМЦ',
             items: [formPanel],
             okButton: okButton,
             scope: this
