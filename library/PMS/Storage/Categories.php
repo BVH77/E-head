@@ -48,8 +48,9 @@ class PMS_Storage_Categories
         $nodes = array();
         foreach ($rowset as $row) {
             $nodes[] = array(
-                'id'    => $row['id'],
-                'text'  => $row['name']
+                'id'        => $row['id'],
+                //'checked'   => false,
+                'text'      => $row['name']
             );
         }
         $response->setRowset($nodes);

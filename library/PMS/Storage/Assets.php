@@ -58,7 +58,7 @@ class PMS_Storage_Assets
 
         // If category specified, check existing
         if ($data['categoryId'] > 0) {
-            $categories = new PMS_Storage_Assets_Categories();
+            $categories = new PMS_Storage_Categories();
             $resp = $categories->get($data['categoryId']);
             if (!$resp->isSuccess()) {
                 return $response->import($resp);
