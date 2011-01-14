@@ -65,7 +65,7 @@ PMS.Menu = function(username, rolename, roleId) {
 	    iconCls: 'suppliers-icon',
         hidden: !acl.isView('storage'),
 	    menu: [{
-	        text: 'Список ТМЦ',
+	        text: 'Наличие ТМЦ',
 	        iconCls: 'suppliers-icon',
 	        hidden: !acl.isView('storage'),
 	        handler: function() {
@@ -73,17 +73,6 @@ PMS.Menu = function(username, rolename, roleId) {
 	                iconCls: 'suppliers-icon',
 	                xtype: 'PMS.Storage.Assets.Layout',
 	                id: 'PMS.Storage.Assets.Layout'
-	            });
-	        }
-	    }, {
-	        text: 'Единицы измерения',
-	        iconCls: 'suppliers-icon',
-	        hidden: !acl.isView('storage'),
-	        handler: function() {
-	            PMS.System.Layout.getTabPanel().add({
-	                iconCls: 'suppliers-icon',
-	                xtype: 'PMS.Storage.Measures.List',
-	                id: 'PMS.Storage.Measures.List'
 	            });
 	        }
 	    }, {
