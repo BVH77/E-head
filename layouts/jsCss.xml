@@ -93,7 +93,6 @@
         <script src="/js/PMS/Storage/Assets/Layout.js"/>
 
         <script src="/js/PMS/Storage/Measures/ComboBox.js"/>
-        <script src="/js/PMS/Storage/Measures/List.js"/>
         
         <script src="/js/PMS/Storage/Requests/List.js"/>
         
