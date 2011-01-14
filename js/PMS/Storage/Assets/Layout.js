@@ -2,7 +2,7 @@ Ext.ns('PMS.Storage.Assets');
 
 PMS.Storage.Assets.Layout = Ext.extend(Ext.Panel, {
 	
-	title: 'Список ТМЦ',
+	title: 'Наличие ТМЦ',
 	
     border: false,
     
