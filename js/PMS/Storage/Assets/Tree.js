@@ -2,7 +2,7 @@ Ext.ns('PMS.Storage.Assets');
 
 PMS.Storage.Assets.Tree = Ext.extend(xlib.TreePanel, {
 
-    title: 'Ктегории',
+    title: 'Категории',
 
     untitledNodeName: 'Новая категория',
     
