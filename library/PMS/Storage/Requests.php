@@ -18,7 +18,7 @@ class PMS_Storage_Requests
             ->joinLeft(array('as' => 'storage_assets'),
                 'av.asset_id=as.id', array('name', 'measure'))
             ->joinLeft(array('ac' => 'accounts'),
-                'av.asset_id=as.id', array('account_name' => 'ac.name'));
+                'av.account_id=ac.id', array('account_name' => 'ac.name'));
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select,
             array('name', 'measure', 'qty', 'account_name', 'request_on', 'created'));
         $plugin->parse($params);
