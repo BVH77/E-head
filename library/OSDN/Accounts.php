@@ -402,6 +402,14 @@ class OSDN_Accounts
      */
     public function createAccount(array $data)
     {
+        $response = new OSDN_Response();
+
+        $max_accounts = Zend_Registry::get('config')->accounts->max;
+        if ($this->getCount() >= $max_accounts) {
+            return $response->addStatus(new OSDN_Accounts_Status(
+                OSDN_Accounts_Status::ACCOUNT_MAX_REACHED));
+        }
+
         $f = new OSDN_Filter_Input(array(
             '*'     => array('StringTrim')
         ), array(
@@ -410,7 +418,6 @@ class OSDN_Accounts
             'roleId'    => array(array('Id', array(true)))
         ), $data);
 
-        $response = new OSDN_Response();
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
             return $response;
@@ -688,5 +695,13 @@ class OSDN_Accounts
     {
         $config = Zend_Registry::get('config');
         return ($config->remoteauth->enable == 1);
+    }
+
+    /**
+     * @return int
+     */
+    private function getCount()
+    {
+        return $this->_tableAccounts->count();
     }
 }
