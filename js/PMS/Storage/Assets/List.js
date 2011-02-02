@@ -115,6 +115,12 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
     },
     
     onAdd: function(b, e) {
+        
+        var editAsset = new PMS.Storage.Assets.Edit.Layout({
+            inWindow: true
+        });
+        
+        /*
         var formPanel = this.getForm();
         
         var okButton = new Ext.Button({
@@ -148,10 +154,17 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             items: [formPanel],
             okButton: okButton
         });
+        */
     },
     
     onUpdate: function(g, rowIndex) {
+        var record = g.getStore().getAt(rowIndex);
+        var editAsset = new PMS.Storage.Assets.Edit.Layout({
+            assetId: record.get('id'),
+            inWindow: true
+        });
         
+        /*
         var formPanel = this.getForm();
         var record = g.getStore().getAt(rowIndex);
         formPanel.on('ready', function(fp) {
@@ -191,6 +204,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             okButton: okButton,
             scope: this
         });
+        */
     },
     
     onDelete: function(g, rowIndex) {
@@ -222,7 +236,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                     xlib.Msg.error(msg);
                 },
                 scope: this
-            });    
+            });
         }, this);
     },
     

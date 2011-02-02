@@ -16,10 +16,21 @@ class Storage_CategoriesController extends OSDN_Controller_Action
     public function permission(OSDN_Controller_Action_Helper_Acl $acl)
     {
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->storage);
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-complete-tree-checked');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');
+    }
+
+	public function getCompleteTreeCheckedAction()
+    {
+        $response = $this->_class->getCompleteTreeChecked();
+        if ($response->isSuccess()) {
+            $this->view->assign($response->getRowset());
+        } else {
+            $this->_collectErrors($response);
+        }
     }
 
 	public function getAction()

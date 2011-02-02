@@ -30,17 +30,25 @@ class PMS_Storage_Categories
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
+    public function getCompleteTreeChecked()
+    {
+        $response = new OSDN_Response();
+        $nodes = $this->_walkTree(0, true);
+        if (false === $nodes) {
+            $status = PMS_Status::DATABASE_ERROR;
+            $response->setRowset(array());
+        } else {
+            $status = PMS_Status::OK;
+            $response->setRowset($nodes);
+        }
+        return $response->addStatus(new PMS_Status($status));
+    }
+
     public function getListByParent($parent = 0)
     {
-        $parent = intval($parent);
         $response = new OSDN_Response();
-        $where = $parent ? array('parent_id = ?' => $parent) : array('parent_id IS NULL');
-        try {
-            $rowset = $this->_table->fetchAll($where)->toArray();
-        } catch (Exception $e) {
-            if (OSDN_DEBUG) {
-                throw $e;
-            }
+        $rowset = $this->_getChildNodes($parent);
+        if (false === $rowset) {
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
 
@@ -49,7 +57,6 @@ class PMS_Storage_Categories
         foreach ($rowset as $row) {
             $nodes[] = array(
                 'id'        => $row['id'],
-                //'checked'   => false,
                 'text'      => $row['name']
             );
         }
@@ -134,5 +141,48 @@ class PMS_Storage_Categories
             }
         }
         return $response->addStatus(new PMS_Status(PMS_Status::retrieveAffectedRowStatus($result)));
+    }
+
+    /* Private methods */
+
+    private function _getChildNodes($parent = 0)
+    {
+        $parent = intval($parent);
+        $where = $parent ? array('parent_id = ?' => $parent) : array('parent_id IS NULL');
+        try {
+            $rowset = $this->_table->fetchAll($where, 'name ASC')->toArray();
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            return false;
+        }
+        return $rowset;
+    }
+
+    private function _walkTree($parent = 0, $check = false)
+    {
+        $parent = intval($parent);
+        $where = $parent ? array('parent_id = ?' => $parent) : array('parent_id IS NULL');
+        try {
+            $rowset = $this->_table->fetchAll($where, 'name ASC')->toArray();
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            return false;
+        }
+
+        // Form array for tree node
+        $nodes = array();
+        foreach ($rowset as $row) {
+            $nodes[] = array(
+                'id'        => $row['id'],
+                'checked'   => false,
+                'text'      => $row['name'],
+                'children'  => $this->_walkTree($row['id'], $check)
+            );
+        }
+        return $nodes;
     }
 }
