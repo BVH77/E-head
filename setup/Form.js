@@ -45,6 +45,12 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
                 editable: true,
                 forceSelection: true,
                 store: this.timeZones
+            },{
+            	xtype: 'numberfield',
+            	fieldLabel: 'Max accounts',
+            	name: 'accounts[max]',
+            	value: 10,
+            	title: 'The maximum number of allowed accounts'
             }]
         },{
 			xtype: 'fieldset',
