@@ -603,7 +603,7 @@ class OSDN_Accounts
 
         if ($f->new_password1 !== $f->new_password2) {
             return $response->addStatus(new OSDN_Accounts_Status(
-                OSDN_Accounts_Status::UNCORRECT_NEW_PASSWORD, 'new_password2'));
+                OSDN_Accounts_Status::INCORRECT_NEW_PASSWORD, 'new_password2'));
         }
 
         $affectedRows = $this->_tableAccounts->updateByPk(array(
