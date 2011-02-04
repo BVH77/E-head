@@ -69,6 +69,7 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
 			},{
     			fieldLabel: 'Username',
     			name: 'db[username]',
+    			value: 'pms'
                 allowBlank: false,
                 title: 'Username for connect to database'
 			},{
@@ -78,6 +79,7 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
 			},{
     			fieldLabel: 'DB name',
     			name: 'db[dbname]',
+    			value: 'pms_'
                 allowBlank: false,
                 title: 'Database name'
 			},{
