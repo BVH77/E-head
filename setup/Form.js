@@ -96,6 +96,7 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
 			items: [{
                 fieldLabel: 'From address',
                 name: 'mail[from][address]',
+                value: 'robot@e-head.ru',
                 title: 'Email address from system messages will be sent'
             },{
     			fieldLabel: 'From caption',
@@ -105,6 +106,7 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
 			},{
                 fieldLabel: 'SMTP server',
                 name: 'mail[SMTP]',
+                value: 'e-head.ru',
                 allowBlank: false,
                 title: 'SMTP server name from which emails sent'
 			},{
@@ -115,11 +117,13 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
 			},{
                 fieldLabel: 'Username',
                 name: 'mail[authentificate][username]',
+                value: '1',
                 allowBlank: false,
                 title: 'Username for mail sending'
 			},{
                 fieldLabel: 'Password',
                 name: 'mail[authentificate][password]',
+                value: '1',
                 allowBlank: false,
                 title: 'Password for mail sending'
 			}]
