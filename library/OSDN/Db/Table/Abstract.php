@@ -6,7 +6,7 @@
  * @category        OSDN
  * @package         OSDN_Db
  * @subpackage      OSDN_Db_Table
- * @version         $Id: Abstract.php 9986 2009-07-01 11:07:52Z vasya $
+ * @version         $Id: Abstract.php 17666 2010-03-19 15:14:31Z yaroslav $
  */
 abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
 {
@@ -17,21 +17,28 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
      * @var mixed
      */
     protected $_sequence = null;
-    
+
     /**
      * The table prefix
      *
      * @var string
      */
     protected $_prefix = "";
-    
+
     /**
      * Clear primary key on insert operation
      *
      * @var boolean
      */
     protected $_clearPkOnInsert = true;
-    
+
+    /**
+     * Clear primary key on update operation
+     *
+     * @var boolean
+     */
+    protected $_clearPkOnUpdate = true;
+
     /**
      * Contain nullable fields
      * which will be removed on insert or set "NULL" in SQL query
@@ -39,21 +46,21 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
      * @var array
      */
     protected $_nullableFields = array();
-    
+
     /**
      * The default table prefix using for each OSDN_Db_Table_Abstract object
      *
      * @var string
      */
     protected static $_defaultPrefix = "";
-    
+
     /**
      * The default talbe sequense
      *
      * @var mixed
      */
     protected static $_defaultSequence = null;
-    
+
     /**
      * Constructor
      *
@@ -70,11 +77,11 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
         if (is_null($this->_sequence) && !is_null(self::getDefaultSequence())) {
         	$this->_sequence = self::getDefaultSequence();
         }
-        
+
         parent::__construct($config);
-        
+
     }
-    
+
     /**
      * Initialize table name with prefix if last is not empty
      *
@@ -86,7 +93,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
             $this->_name = (string) $this->_prefix . $this->_name;
         }
     }
-    
+
     /**
      * Retrieve the table prefix
      *
@@ -96,7 +103,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
     {
         return $this->_prefix;
     }
-    
+
     /**
      * Set the default prefix for all OSDN_Db_Table objects
      *
@@ -117,7 +124,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
     {
         return self::$_defaultPrefix;
     }
-    
+
     /**
      * Set the default sequense for all OSDN_Db_Table objects
      * Sequense will be used only in insert operations
@@ -132,7 +139,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
     {
     	self::$_defaultSequence = $sequence;
     }
-    
+
     /**
      * Retrieve the default sequense
      *
@@ -142,7 +149,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
     {
         return self::$_defaultSequence;
     }
-    
+
     /**
      * Insert data into table
      *
@@ -165,11 +172,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
                 unset($data[$key]);
                 continue;
             }
-            
-            if (isset($data['presence']) && $data['presence'] == 0) {
-                $data['requested_date'] = new Zend_Db_Expr('Now()');
-            }
-        
+
             // if primary key then not needed and the sequense is not user defined unset it
             if (
                 true === $this->_clearPkOnInsert &&
@@ -181,7 +184,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
                 continue;
             }
         }
-        
+
         try {
             return parent::insert($data);
         } catch (Exception $e) {
@@ -191,7 +194,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
             return false;
         }
     }
-    
+
     /**
      * Update existings rows
      *
@@ -203,18 +206,23 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
     public function update(array $data, $where)
     {
         foreach ($data as $key => $value) {
-            if (is_null($value) || !$this->hasColumn($key)) {
+            if (
+            	is_null($value) || !$this->hasColumn($key) || (
+            	true === $this->_clearPkOnInsert &&
+                true === $this->_metadata[$key]['PRIMARY'] &&
+                true === $this->_metadata[$key]['IDENTITY']
+            )) {
                 unset($data[$key]);
                 continue;
             }
-            
+
             if (in_array($key, $this->_nullableFields) && empty($data[$key])) {
                 $data[$key] = new Zend_Db_Expr('NULL');
                 continue;
             }
-            
+
         }
-        
+
         try {
             return parent::update($data, $where);
         } catch (Exception $e) {
@@ -224,7 +232,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
             return false;
         }
     }
-    
+
     /**
      * Deletes existing rows.
      *
@@ -239,11 +247,11 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
             if (OSDN_DEBUG) {
                 throw $e;
             }
-            
+
             return false;
         }
     }
-    
+
     /**
      * Update existing rows
      *
@@ -270,7 +278,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
         }
         return $this->update($data, $preparedClause);
     }
-    
+
     /**
      * Delete existing rows
      *
@@ -290,10 +298,10 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
         foreach ($clause as $cond => $value) {
             $preparedClause[] = $this->_db->quoteInto($cond, $value);
         }
-        
+
         return $this->delete($preparedClause);
     }
-    
+
     /**
      * Delete records by primary key
      *
@@ -307,23 +315,23 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
         if (count($keyNames) == 0) {
             throw new OSDN_Db_Exception('Primary key is not defined');
         }
-        
+
         if (count($keyNames) > 1) {
             throw new OSDN_Db_Exception('Too many primary key are defined');
         }
-        
+
         reset($keyNames);
         $key = current($keyNames);
-        
+
         $collection = $this->_preparePkCollection($pkValue);
         if (0 === count($collection)) {
             return 0;
         }
-        
-        $where = "`{$key}` IN (" . join(', ', $collection) . ')';
-        return $this->delete($where);
+
+        $clause = $this->_db->quoteInto("`$key` IN(?)", $collection);
+        return $this->delete($clause);
     }
-    
+
     /**
      * Update records by primary key
      *
@@ -342,24 +350,23 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
         if (count($keyNames) == 0) {
             throw new OSDN_Db_Exception('Primary key is not defined');
         }
-        
+
         if (count($keyNames) > 1) {
             throw new OSDN_Db_Exception('Too many primary key are defined');
         }
-        
+
         reset($keyNames);
         $key = current($keyNames);
-        
+
         $collection = $this->_preparePkCollection($pkValue);
         if (0 === count($collection)) {
         	return 0;
         }
-        
-        $where = "`$key` IN (" . join(', ', $collection) . ')';
 
-    	return $this->update($data, $where);
+        $clause = $this->_db->quoteInto("`$key` IN(?)", $collection);
+    	return $this->update($data, $clause);
     }
-    
+
     /**
      * Prepare the collection values
      * @param mixed $pkValue
@@ -372,20 +379,20 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
         } else {
             $validate = new OSDN_Validate_SecureId();
         }
-        
+
         if (!is_array($pkValue)) {
             $pkValue = (array) $pkValue;
         }
-        
+
         $collection = array();
         foreach ($pkValue as $v) {
             if ($validate->isValid($v)) {
-                array_push($collection, $this->getAdapter()->quote($v));
+                array_push($collection, $v);
             }
         }
         return $collection;
     }
-    
+
     /**
      * Return one row by primary key
      *
@@ -411,7 +418,29 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
     	}
         return null;
     }
-    
+
+    /**
+     * Retrieve "any" column by primary key
+     *
+     * Here we using the db query for retrieveing
+     * because sometimes we wants to add in _fetch method
+     * some omit columns
+     *
+     * @return string|false if column is not found in row model definition
+     */
+    public function findColumn($primaryId, $field)
+    {
+        if (!$this->hasColumn($field)) {
+            return false;
+        }
+
+        $select = $this->_db->select()
+            ->from($this->getTableName(), $field)
+            ->where('id = ?', $primaryId);
+
+        return $select->query()->fetchColumn();
+    }
+
     /**
      * Retrieve the table name
      *
@@ -421,7 +450,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
     {
         return $this->_name;
     }
-    
+
     /**
      * Check if column is present in table metadata
      *
@@ -432,7 +461,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
     {
         return in_array($name, $this->_getCols());
     }
-    
+
     /**
      * Build the order query
      *
@@ -457,7 +486,7 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
         }
         return $orderCollection;
     }
-    
+
     /**
      * Retrieve the count rows from table by some where condition.
      * If condition are empty then return count of all rows
@@ -470,15 +499,16 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
      *      $this->count($this->getAdapter()->quoteInto('testfield = ?', 1));
      * </code>
      *
-     * @param string|array $where
+     * @param string|array  $where
+     * @param int           $limit
      * @return int
      * @throws Zend_Db_Exception
      */
-    public function count($where = null)
+    public function count($where = null, $limit = null)
     {
         $select = $this->select()->from($this->getTableName(),
             array('count' => new Zend_Db_Expr('COUNT(*)')));
-        
+
         if (is_array($where)) {
             foreach ($where as $condition => $value) {
                 $select->where($condition, $value);
@@ -486,7 +516,11 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
         } elseif (null !== $where) {
             $select->where($where);
         }
-        
+
+        if (!is_null($limit)) {
+            $select->limit($limit);
+        }
+
         try {
             return (int) $select->query()->fetchColumn();
         } catch (Exception $e) {
@@ -495,5 +529,62 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
         	}
         	return false;
         }
+    }
+
+    public function fetchAllColumns($where = null, $order = null, array $columns)
+    {
+        if (!($where instanceof Zend_Db_Table_Select)) {
+            $select = $this->select(self::SELECT_WITHOUT_FROM_PART);
+
+            $select->reset(OSDN_Db_Select::FROM);
+
+            if ($where !== null) {
+                $this->_where($select, $where);
+            }
+
+            if ($order !== null) {
+                $this->_order($select, $order);
+            }
+        } else {
+            $select = $where;
+        }
+
+        $select->from($this->getTableName(), array());
+        $select->columns($columns);
+
+        return $this->fetchAll($select);
+    }
+
+    /**
+     * Clone the row by pkId and return pkId of new row
+     *
+     * @param int $pkId
+     * @param array $exclude
+     * @return  int|false         SQL last inserted id
+     */
+    public function cloneRow($pkId, array $exclude = array())
+    {
+        $this->_setupPrimaryKey();
+
+        $primary = (array) $this->_primary;
+
+        /**
+         * @todo 	Is it correct to change identity to int?
+         *			Because when sequense is not autoincrement it will work uncorrect!!!
+         */
+        $pkIdentity = $primary[(int)$this->_identity];
+
+        $row = $this->findOne($pkId)->toArray();
+        if(isset($row[$pkIdentity])){
+            unset($row[$pkIdentity]);
+        }
+
+        foreach ($exclude as $k => $v){
+            if(isset($row[$v])){
+                unset($row[$v]);
+            }
+        }
+
+        return $this->insert($row);
     }
 }

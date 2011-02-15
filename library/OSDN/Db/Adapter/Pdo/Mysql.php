@@ -40,4 +40,14 @@ class OSDN_Db_Adapter_Pdo_Mysql extends Zend_Db_Adapter_Pdo_Mysql
         
         return parent::lastInsertId($tableName, $primaryKey);
     }
+    
+	/**
+     * Creates and returns a new Zend_Db_Select object for this adapter.
+     *
+     * @return Zend_Db_Select
+     */
+    public function select()
+    {
+        return new OSDN_Db_Select($this);
+    }
 }
