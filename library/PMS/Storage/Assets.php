@@ -13,7 +13,7 @@ class PMS_Storage_Assets
     {
         $response = new OSDN_Response();
 
-        $select = $this->_table->getAdapter()->select()
+        $select = $this->_table->getDefaultAdapter()->select()
             ->from(array('a' => $this->_table->getTableName()));
 
         if (isset($params['categoryId']) && intval($params['categoryId']) > 0) {
