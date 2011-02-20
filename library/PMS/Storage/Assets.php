@@ -27,6 +27,9 @@ class PMS_Storage_Assets
         $plugin = new OSDN_Db_Plugin_Select(null, $select);
         $plugin->setSqlCalcFoundRows(true);
         $plugin->parse($params);
+
+        die($select);
+
         try {
             $rows = $select->query();
             $response->totalCount = $plugin->getTotalCountSql();
