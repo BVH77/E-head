@@ -24,11 +24,11 @@ class PMS_Storage_Assets
                 ),
             null);
         }
-        $plugin = new OSDN_Db_Plugin_Select(null, $select);
+        $plugin = new OSDN_Db_Plugin_Select($this->_table, $select);
         $plugin->setSqlCalcFoundRows(true);
         $plugin->parse($params);
 
-        die($select);
+        //die($select);
 
         try {
             $rows = $select->query();
