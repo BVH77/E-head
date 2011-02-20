@@ -1,15 +1,18 @@
-ALTER TABLE `storage_assets` ADD `qty` INT( 11 ) UNSIGNED NOT NULL;
-ALTER TABLE `storage_assets` ADD `unit_price` DOUBLE( 10, 2 ) NOT NULL;
-UPDATE `storage_assets` SET `qty` = (SELECT `qty` FROM `storage_availability` WHERE `asset_id`=`storage_assets`.`id` LIMIT 1);
-DROP TABLE `storage_availability`;
-
-CREATE TABLE `storage_measures` (
-`name` VARCHAR( 50 ) NOT NULL ,
-PRIMARY KEY ( `name` )
-) ENGINE = InnoDB;
-
-INSERT INTO `storage_measures` (`name`) VALUES ('шт.'), ('л'), ('кг'), ('м'), ('кв.м'), ('куб.м');
-
-RENAME TABLE `storage_assets_categories` TO `storage_categories`;
-
 -- Migrated on: pms_quarant & pms_demo
+
+CREATE TABLE `storage_assets_categories` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`asset_id` INT UNSIGNED NOT NULL ,
+`category_id` INT UNSIGNED NOT NULL ,
+INDEX ( `asset_id` ), 
+INDEX (`category_id` )
+) ENGINE = InnoDB;
+ALTER TABLE `storage_assets_categories` ADD UNIQUE `pair` ( `asset_id` , `category_id` );
+ALTER TABLE `storage_assets_categories` ADD FOREIGN KEY ( `asset_id` ) REFERENCES `storage_assets` (`id`) ON DELETE CASCADE ;
+ALTER TABLE `storage_assets_categories` ADD FOREIGN KEY ( `category_id` ) REFERENCES `storage_categories` (`id`) ON DELETE CASCADE ;
+
+INSERT INTO `storage_assets_categories` (`asset_id`, `category_id`) SELECT `id`, `category_id` FROM `storage_assets` WHERE `category_id` IS NOT NULL;
+
+ALTER TABLE `storage_assets` DROP `category_id`;
+
+ALTER TABLE `storage_assets` ADD `checked` TINYINT( 1 ) NOT NULL ;
