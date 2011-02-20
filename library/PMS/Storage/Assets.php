@@ -32,7 +32,7 @@ class PMS_Storage_Assets
 
         try {
             $rows = $select->query();
-            $response->totalCount = $plugin->getTotalCountSql();
+            //$response->totalCount = $plugin->getTotalCountSql();
             $response->setRowset($rows->fetchAll());
             $status = PMS_Status::OK;
         } catch (Exception $e) {
