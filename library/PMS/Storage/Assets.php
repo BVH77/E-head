@@ -25,11 +25,11 @@ class PMS_Storage_Assets
             null);
         }
         $plugin = new OSDN_Db_Plugin_Select(null, $select);
-        //$plugin->setSqlCalcFoundRows(true);
+        $plugin->setSqlCalcFoundRows(true);
         $plugin->parse($params);
         try {
             $rows = $select->query();
-            $response->totalCount = $plugin->getTotalCount();
+            $response->totalCount = $plugin->getTotalCountSql();
             $response->setRowset($rows->fetchAll());
             $status = PMS_Status::OK;
         } catch (Exception $e) {
