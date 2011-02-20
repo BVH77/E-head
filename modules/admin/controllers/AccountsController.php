@@ -82,7 +82,7 @@ class Admin_AccountsController extends OSDN_Controller_Action
         $response = $this->_accounts->createAccount(array(
             'login'     => $this->_getParam('login'),
             'password'  => $this->_getParam('password'),
-            'roleId'   => $this->_getParam('roleId')
+            'roleId'    => $this->_getParam('roleId')
         ));
 
         if ($response->isError()) {

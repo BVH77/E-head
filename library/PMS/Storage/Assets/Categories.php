@@ -9,12 +9,16 @@ class PMS_Storage_Assets_Categories
         $this->_table = new PMS_Storage_Assets_Categories_Table();
     }
 
-    public function get($id)
+    public function getAssetCategories($id)
     {
         $id = intval($id);
         $response = new OSDN_Response();
         try {
-            $row = $this->_table->findOne($id);
+            $data = $this->_table->select()
+                ->from($this->_table->getTableName(), 'category_id')
+                ->distinct(true)
+                ->where('asset_id = ?', $id)
+                ->query()->fetchAll(Zend_Db::FETCH_COLUMN);
         } catch (Exception $e) {
             if (OSDN_DEBUG) {
                 throw $e;
@@ -22,111 +26,55 @@ class PMS_Storage_Assets_Categories
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
 
-        if ($row === false) {
-            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
-        }
-
-        $response->setRow(is_null($row) ? array() : $row->toArray());
+        $response->setRowset($data);
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
-    public function getListByParent($parent = 0)
-    {
-        $parent = intval($parent);
-        $response = new OSDN_Response();
-        $where = $parent ? array('parent_id = ?' => $parent) : array('parent_id IS NULL');
-        try {
-            $rowset = $this->_table->fetchAll($where)->toArray();
-        } catch (Exception $e) {
-            if (OSDN_DEBUG) {
-                throw $e;
-            }
-            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
-        }
-
-        // Form array for tree node
-        $nodes = array();
-        foreach ($rowset as $row) {
-            $nodes[] = array(
-                'id'    => $row['id'],
-                'text'  => $row['name']
-            );
-        }
-        $response->setRowset($nodes);
-        return $response->addStatus(new PMS_Status(PMS_Status::OK));
-    }
-
-    public function add($name = '', $parent = 0)
-    {
-        $parent = intval($parent);
-        $response = new OSDN_Response();
-        $data = array('name' => $name);
-        if ($parent) {
-            $data['parent_id'] = $parent;
-        }
-        try {
-            $id = $this->_table->insert($data);
-        } catch (Exception $e) {
-            if (OSDN_DEBUG) {
-                throw $e;
-            }
-            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
-        }
-        $response->id = $id;
-        return $response->addStatus(new PMS_Status(PMS_Status::OK));
-    }
-
-    public function update($name, $id)
+    public function setAssetCategories($id, $categories = array())
     {
         $id = intval($id);
-        $name = trim($name);
-        $response = new OSDN_Response();
-        $validator = new Zend_Validate_StringLength(1, 250);
-        if ($id == 0 || !$validator->isValid($name)) {
-            return $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT));
+        $response = $this->deleteAssetCategories($id);
+
+        if ($response->hasNotSuccess()) {
+            return $response;
         }
-        $data = array('name' => $name);
+
+        if (!is_array($categories)) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'categories'));
+        }
+
         try {
-            $result = $this->_table->updateByPk($data, $id);
+            foreach ($categories as $c) {
+                $result = $this->_table->insert(array(
+                    'asset_id'      => $id,
+                    'category_id'   => intval($c)
+                ));
+                if ($result === false) {
+                    return $response->addStatus(new PMS_Status(
+                        PMS_Status::DATABASE_ERROR));
+                }
+            }
         } catch (Exception $e) {
             if (OSDN_DEBUG) {
                 throw $e;
             }
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
-        return $response->addStatus(new PMS_Status(PMS_Status::retrieveAffectedRowStatus($result)));
+
+        return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
-    public function delete($id)
+    public function deleteAssetCategories($id)
     {
         $id = intval($id);
         $response = new OSDN_Response();
         if (!$id) {
-            return $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT));
-        }
-
-        // Check if category contain subcategories
-        $resp = $this->getListByParent($id);
-        if ($resp->isSuccess()) {
-            $rows = $resp->getRowset();
-            if (count($rows) > 0) {
-                return $response->addStatus(new PMS_Status(PMS_Status::DELETE_FAILED));
-            }
-        } else {
-            return $response->import($resp);
-        }
-        // Check if category contain assets
-        $assets = new PMS_Storage_Assets();
-        $resp = $assets->getList(array('categoryId' => $id));
-        if ($resp->isSuccess()) {
-            if ($resp->totalCount > 0) {
-                return $response->addStatus(new PMS_Status(PMS_Status::DELETE_FAILED));
-            }
-        } else {
-            return $response->import($resp);
+            return $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'asset_id'));
         }
 
         try {
-            $result = $this->_table->deleteByPk($id);
+            $result = $this->_table->deleteQuote(array('asset_id = ?' => $id));
         } catch (Exception $e) {
             if (OSDN_DEBUG) {
                 throw $e;
@@ -134,5 +82,4 @@ class PMS_Storage_Assets_Categories
         }
         return $response->addStatus(new PMS_Status(PMS_Status::retrieveAffectedRowStatus($result)));
     }
-
 }

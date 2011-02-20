@@ -1,5 +1,9 @@
 Ext.ns('PMS');
 
+PMS.menuMessage = function() {
+    xlib.Msg.info('Модуль доступен в платных тарифах'); 
+}
+
 PMS.Menu = function(username, rolename, roleId) {
 	username = username || '';
 	rolename = rolename || '';
@@ -61,33 +65,6 @@ PMS.Menu = function(username, rolename, roleId) {
 	        }
 	    }]
 	}, {
-	    text: 'Склад',
-	    iconCls: 'suppliers-icon',
-        hidden: !acl.isView('storage'),
-	    menu: [{
-	        text: 'Наличие ТМЦ',
-	        iconCls: 'suppliers-icon',
-	        hidden: !acl.isView('storage'),
-	        handler: function() {
-	            PMS.System.Layout.getTabPanel().add({
-	                iconCls: 'suppliers-icon',
-	                xtype: 'PMS.Storage.Assets.Layout',
-	                id: 'PMS.Storage.Assets.Layout'
-	            });
-	        }
-	    }, {
-	        text: 'Заявки на снабжение',
-	        iconCls: 'suppliers-icon',
-	        hidden: !acl.isView('storage'),
-	        handler: function() {
-	            PMS.System.Layout.getTabPanel().add({
-	                iconCls: 'suppliers-icon',
-	                xtype: 'PMS.Storage.Requests.List',
-	                id: 'PMS.Storage.Requests.List'
-	            });
-	        }
-	    }]
-	}, {
 	    text: 'Отчёты',
 	    iconCls: 'prod_schd-icon',
 	    hidden: !acl.isView('orders'),
@@ -112,17 +89,42 @@ PMS.Menu = function(username, rolename, roleId) {
 	            window.open('/orders/report/planning');
 	        }
 	    }]
+	}, '-', {
+	    text: 'Склад',
+	    iconCls: 'suppliers-icon',
+        handler: acl.isView('storage') ? null : PMS.menuMessage,
+        // hidden: !acl.isView('storage'),
+	    menu: [{
+	        text: 'Наличие ТМЦ',
+	        iconCls: 'suppliers-icon',
+	        // hidden: !acl.isView('storage'),
+	        handler: acl.isView('storage') ? function() {
+	            PMS.System.Layout.getTabPanel().add({
+	                iconCls: 'suppliers-icon',
+	                xtype: 'PMS.Storage.Assets.Layout',
+	                id: 'PMS.Storage.Assets.Layout'
+	            });
+	        } : PMS.menuMessage
+	    }, {
+	        text: 'Заявки на снабжение',
+	        iconCls: 'suppliers-icon',
+	        // hidden: !acl.isView('storage'),
+            handler: acl.isView('storage') ? function() {
+	            PMS.System.Layout.getTabPanel().add({
+	                iconCls: 'suppliers-icon',
+	                xtype: 'PMS.Storage.Requests.List',
+	                id: 'PMS.Storage.Requests.List'
+	            });
+	        } : PMS.menuMessage
+	    }]
 	}, {
-		text: 'Менеджер доступа',
-		iconCls: 'accounts_manager-icon',
-		hidden: !acl.isView('admin'),
-		handler: function() {
-			PMS.System.Layout.getTabPanel().add({
-				iconCls: 'accounts_manager-icon',
-				xtype: 'xlib.acl.layout',
-				id: 'xlib.acl.layout'
-			});
-		}
+	    text: 'Кадры',
+	    iconCls: 'customers-icon',
+        handler: PMS.menuMessage
+	}, {
+	    text: 'Приказы и объявления',
+	    iconCls: 'work_schd-icon',
+        handler: PMS.menuMessage 
 	}, '->', {
 		text: 'Учебник',
         iconCls: 'work_schd-icon',
@@ -143,11 +145,23 @@ PMS.Menu = function(username, rolename, roleId) {
 			}
             window.open(url + role);
         }
-	}, '-', {
-        text: 'Выход - <i>' + username + ' (' + rolename + ')</i>',
+	}, {
+		text: 'Менеджер доступа',
+		iconCls: 'accounts_manager-icon',
+		hidden: !acl.isView('admin'),
+		handler: function() {
+			PMS.System.Layout.getTabPanel().add({
+				iconCls: 'accounts_manager-icon',
+				xtype: 'xlib.acl.layout',
+				id: 'xlib.acl.layout'
+			});
+		}
+	}, new Ext.Toolbar.Button({
+        text: 'Выход',
+        tooltip: username + ' (' + rolename + ')',
         iconCls: 'exit-icon',
         handler: function() {
             window.location.href = '/index/logout';
         }
-    }];
+    })];
 }

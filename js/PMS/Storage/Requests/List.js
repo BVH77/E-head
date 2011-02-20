@@ -111,7 +111,7 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
                 text: 'Добавить заявку',
                 iconCls: 'add',
                 hidden: !this.permissions,
-                qtip: 'Добавить заявку',
+                tooltip: 'Добавить заявку',
                 handler: this.onAdd,
                 scope: this
             }), ' ',

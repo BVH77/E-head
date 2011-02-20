@@ -2,7 +2,7 @@ Ext.ns('PMS.Storage.Assets.Edit');
 
 PMS.Storage.Assets.Edit.Layout = Ext.extend(Ext.Panel, {
     
-    assetId: null,
+    record: null,
 	
     border: false,
     
@@ -11,6 +11,8 @@ PMS.Storage.Assets.Edit.Layout = Ext.extend(Ext.Panel, {
     layout: 'border',
     
     inWindow: false,
+    
+    categoryId: null,
     
 	initComponent: function() {
         
@@ -28,19 +30,37 @@ PMS.Storage.Assets.Edit.Layout = Ext.extend(Ext.Panel, {
         
         this.categories.on('load', this.categories.expandAll);
         
-        this.assets = new PMS.Storage.Assets.Edit.Form({
+        this.asset = new PMS.Storage.Assets.Edit.Form({
             region: 'center',
             border: false,
             cls: 'x-border-left'
         });
         
-	    this.items = [this.categories, this.assets];
+	    this.items = [this.categories, this.asset];
+        
+        if (Ext.isObject(this.record)) {
+            var loader = this.categories.getLoader();
+            loader.on("beforeload", function(treeLoader, node) {
+                loader.baseParams.asset_id = this.record.get('id');
+            }, this);
+            this.categories.getRootNode().on('load', function() {
+                this.loadData(this.record);
+            }, this);
+        } else if (null != this.categoryId) {
+            // if creating inside category, make this category checked by default
+            this.categories.on('load', function() {
+                var node = this.categories.getRootNode().findChild('id', this.categoryId, true);
+                if (null != node) {
+                    node.getUI().toggleCheck(true);
+                }
+            }, this);
+        }
         
 		PMS.Storage.Assets.Edit.Layout.superclass.initComponent.apply(this, arguments);
         
         if (this.inWindow) {
             
-            var editWindow = new Ext.Window({
+            this.editWindow = new Ext.Window({
                 layout: 'fit',
                 title: this.defaultTitle,
                 resizable: false,
@@ -48,29 +68,55 @@ PMS.Storage.Assets.Edit.Layout = Ext.extend(Ext.Panel, {
                 height: 400,
                 modal: true,
                 buttons: [{
-                    text: this.assetId ? 'Сохранить' : 'Добавить',
+                    text: Ext.isObject(this.record) ? 'Сохранить' : 'Добавить',
                     handler: this.saveData,
                     scope: this
                 }, {
                     text: 'Отмена',
                     handler: function() {
-                        editWindow.close();
-                    }
+                        this.editWindow.close();
+                    },
+                    scope: this
                 }]
             });
             
             this.title = false;
-            editWindow.add(this);
-            editWindow.show();
+            this.editWindow.add(this);
+            this.editWindow.show();
         }
 	},
     
-    loadData: function() {
-        
+    loadData: function(record) {
+        this.asset.getForm().loadRecord(record);
     },
     
     saveData: function() {
-        
+        var params = {
+            categories: [this.categories.getChecked('id')]
+        }; 
+        if (Ext.isObject(this.record)) {
+            params.id = this.record.get('id');
+        }
+        this.asset.getForm().submit({
+            url: Ext.isObject(this.record) 
+                ? link('storage', 'assets', 'update') 
+                : link('storage', 'assets', 'add'),
+            params: params,
+            success: function(form, action) {
+                this.fireEvent('saved');
+                this.editWindow.close();
+            },
+            failure: function(form, action) {
+                switch (action.failureType) {
+                    case Ext.form.Action.CLIENT_INVALID:
+                    case Ext.form.Action.CONNECT_FAILURE:
+                    case Ext.form.Action.SERVER_INVALID:
+                    default:
+                        xlib.Msg.error('Ошибка сохранения.');
+               }
+            },
+            scope: this
+        });
     }
 });
 

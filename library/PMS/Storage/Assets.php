@@ -13,16 +13,24 @@ class PMS_Storage_Assets
     {
         $response = new OSDN_Response();
 
-        $select = $this->_table->select()->from($this->_table->getTableName());
+        $select = $this->_table->getAdapter()->select()
+            ->from(array('a' => $this->_table->getTableName()));
+
         if (isset($params['categoryId']) && intval($params['categoryId']) > 0) {
-            $select->where('category_id = ?', $params['categoryId']);
+            $tableAC = new PMS_Storage_Assets_Categories_Table();
+            $select->join(array('c' => $tableAC->getTableName()),
+                $tableAC->getAdapter()->quoteInto(
+                    'c.asset_id = a.id AND c.category_id = ?', $params['categoryId']
+                ),
+            null);
         }
-        $plugin = new OSDN_Db_Plugin_Select($this->_table, $select);
+        $plugin = new OSDN_Db_Plugin_Select(null, $select);
+        $plugin->setSqlCalcFoundRows(true);
         $plugin->parse($params);
         try {
-            $rows = $select->query()->fetchAll();
-            $response->setRowset($rows);
-            $response->totalCount = $plugin->getTotalCount();
+            $rows = $select->query();
+            $response->totalCount = $plugin->getTotalCountSql();
+            $response->setRowset($rows->fetchAll());
             $status = PMS_Status::OK;
         } catch (Exception $e) {
             if (OSDN_DEBUG) {
@@ -38,15 +46,14 @@ class PMS_Storage_Assets
         $response = new OSDN_Response();
 
         $f = new OSDN_Filter_Input(array(
-            'categoryId'    => 'Int',
             'qty'           => 'Int',
             '*'             => 'StringTrim'
         ), array(
             'name'          => array(array('StringLength', 1, 250), 'presence' => 'required'),
             'measure'       => array(array('StringLength', 1, 50), 'presence' => 'required'),
             'qty'           => array('Int', 'allowEmpty' => true),
-            'categoryId'    => array(array('Id', true)),
-            'unit_price'    => array(array('Float', 'en'), 'allowEmpty' => true)
+            'unit_price'    => array(array('Float', 'en'), 'allowEmpty' => true),
+            'categories'    => array(array('StringLength', 0, 1000), 'presence' => 'required')
             // Here we use en locale to set "."(point) as deciminal separator
         ), $params);
         $response->addInputStatus($f);
@@ -56,26 +63,18 @@ class PMS_Storage_Assets
 
         $data = $f->getData();
 
-        // If category specified, check existing
-        if ($data['categoryId'] > 0) {
-            $categories = new PMS_Storage_Categories();
-            $resp = $categories->get($data['categoryId']);
-            if (!$resp->isSuccess()) {
-                return $response->import($resp);
-            }
-            $row = $resp->getRow();
-            if (empty($row)) {
-                return $response->addStatus(new PMS_Status(
-                    PMS_Status::INPUT_PARAMS_INCORRECT, 'categoryId'));
-            }
-            $data['category_id'] = $data['categoryId'];
-        }
-        unset($data['categoryId']);
-
         try {
             $id = $this->_table->insert($data);
             $status = $id ? PMS_Status::OK : PMS_Status::FAILURE;
             $response->id = $id;
+            if ($id && !empty($f->categories)) {
+                $categories = array_map('intval', split(',', $f->categories));
+                $ac = new PMS_Storage_Assets_Categories();
+                $resp = $ac->setAssetCategories($id, $categories);
+                if ($resp->hasNotSuccess()) {
+                    return $response->importStatuses($resp->getStatusCollection());
+                }
+            }
         } catch (Exception $e) {
             if (OSDN_DEBUG) {
                 throw $e;
@@ -99,8 +98,8 @@ class PMS_Storage_Assets
             'name'          => array(array('StringLength', 1, 250), 'presence' => 'required'),
             'measure'       => array(array('StringLength', 1, 50), 'presence' => 'required'),
             'qty'           => array('Int', 'allowEmpty' => true),
-            'unit_price'    => array(array('Float', 'en'), 'allowEmpty' => true)
-            // Here we use en locale to set "."(point) as deciminal separator
+            'unit_price'    => array(array('Float', 'en'), 'allowEmpty' => true),
+            'categories'    => array(array('StringLength', 0, 1000), 'presence' => 'required')
         ), $params);
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
@@ -109,6 +108,14 @@ class PMS_Storage_Assets
 
         try {
             $this->_table->updateByPk($f->getData(), $f->id);
+            if (!empty($f->categories)) {
+                $categories = array_map('intval', split(',', $f->categories));
+                $ac = new PMS_Storage_Assets_Categories();
+                $resp = $ac->setAssetCategories($f->id, $categories);
+                if ($resp->hasNotSuccess()) {
+                    return $response->importStatuses($resp->getStatusCollection());
+                }
+            }
             $status = PMS_Status::OK;
         } catch (Exception $e) {
             if (OSDN_DEBUG) {
@@ -131,6 +138,42 @@ class PMS_Storage_Assets
         // TODO: check relations
         try {
             $this->_table->deleteByPk($id);
+            $status = PMS_Status::OK;
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            $status = PMS_Status::DATABASE_ERROR;
+        }
+        return $response->addStatus(new PMS_Status($status));
+    }
+
+    public function check($params)
+    {
+        $id = intval($params['id']);
+        $value = intval($params['value']);
+        $response = new OSDN_Response();
+        if ($id == 0) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
+        }
+        try {
+            $this->_table->updateByPk(array('checked' => $value), $id);
+            $status = PMS_Status::OK;
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            $status = PMS_Status::DATABASE_ERROR;
+        }
+        return $response->addStatus(new PMS_Status($status));
+    }
+
+    public function resetChecks()
+    {
+        $response = new OSDN_Response();
+        try {
+            $this->_table->update(array('checked' => 0), '');
             $status = PMS_Status::OK;
         } catch (Exception $e) {
             if (OSDN_DEBUG) {

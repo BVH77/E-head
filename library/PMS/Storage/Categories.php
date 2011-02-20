@@ -30,10 +30,11 @@ class PMS_Storage_Categories
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
-    public function getCompleteTreeChecked()
+    public function getCompleteTreeChecked($checked = array())
     {
         $response = new OSDN_Response();
-        $nodes = $this->_walkTree(0, true);
+
+        $nodes = $this->_walkTree(0, $checked);
         if (false === $nodes) {
             $status = PMS_Status::DATABASE_ERROR;
             $response->setRowset(array());
@@ -160,7 +161,7 @@ class PMS_Storage_Categories
         return $rowset;
     }
 
-    private function _walkTree($parent = 0, $check = false)
+    private function _walkTree($parent = 0, &$checked = array())
     {
         $parent = intval($parent);
         $where = $parent ? array('parent_id = ?' => $parent) : array('parent_id IS NULL');
@@ -178,9 +179,9 @@ class PMS_Storage_Categories
         foreach ($rowset as $row) {
             $nodes[] = array(
                 'id'        => $row['id'],
-                'checked'   => false,
+                'checked'   => in_array($row['id'], $checked),
                 'text'      => $row['name'],
-                'children'  => $this->_walkTree($row['id'], $check)
+                'children'  => $this->_walkTree($row['id'], $checked)
             );
         }
         return $nodes;

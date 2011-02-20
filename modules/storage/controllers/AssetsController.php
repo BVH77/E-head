@@ -21,7 +21,8 @@ class Storage_AssetsController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'change-category');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'check');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'reset-checks');
     }
 
 	public function getListAction()
@@ -78,14 +79,23 @@ class Storage_AssetsController extends OSDN_Controller_Action
     	}
     }
 
-    public function changeCategoryAction()
+    public function checkAction()
     {
-        $response = $this->_class->changeCategory($this->_getParam('id'), $this->_getParam('categoryId'));
-        if ($response->isSuccess()) {
-            $this->view->succces = true;
-            $this->view->data = $response->getRowset();
-        } else {
-            $this->_collectErrors($response);
-        }
+    	$response = $this->_class->check($this->_getAllParams());
+    	if ($response->isSuccess()) {
+    	    $this->view->success = true;
+    	} else {
+    	   $this->_collectErrors($response);
+    	}
+    }
+
+    public function resetChecksAction()
+    {
+    	$response = $this->_class->resetChecks();
+    	if ($response->isSuccess()) {
+    	    $this->view->success = true;
+    	} else {
+    	   $this->_collectErrors($response);
+    	}
     }
 }

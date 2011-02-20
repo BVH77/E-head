@@ -25,7 +25,19 @@ class Storage_CategoriesController extends OSDN_Controller_Action
 
 	public function getCompleteTreeCheckedAction()
     {
-        $response = $this->_class->getCompleteTreeChecked();
+        $asset = intval($this->_getParam('asset_id'));
+
+        $checked = array();
+        if (0 < $asset) {
+            $assetsCategories = new PMS_Storage_Assets_Categories();
+            $response = $assetsCategories->getAssetCategories($asset);
+            if ($response->hasNotSuccess()) {
+                $this->_collectErrors($response);
+            }
+            $checked = $response->getRowset();
+        }
+
+        $response = $this->_class->getCompleteTreeChecked($checked);
         if ($response->isSuccess()) {
             $this->view->assign($response->getRowset());
         } else {

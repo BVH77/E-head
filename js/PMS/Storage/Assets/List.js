@@ -2,17 +2,21 @@ Ext.ns('PMS.Storage.Assets');
 
 PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
 
-    title:      'Список ТМЦ из категории',
+    title: 'Список ТМЦ из категории',
     
-    baseTitle:  'Список ТМЦ из категории ',
+    baseTitle: 'Список ТМЦ из категории ',
 
-    listURL:    link('storage', 'assets', 'get-list'),
+    listURL: link('storage', 'assets', 'get-list'),
     
-    addURL:     link('storage', 'assets', 'add'),
+    addURL: link('storage', 'assets', 'add'),
     
-    updateURL:  link('storage', 'assets', 'update'),
+    updateURL: link('storage', 'assets', 'update'),
     
-    deleteURL:  link('storage', 'assets', 'delete'),
+    deleteURL: link('storage', 'assets', 'delete'),
+    
+    checkURL: link('storage', 'assets', 'check'),
+    
+    resetChecksURL: link('storage', 'assets', 'reset-checks'),
     
     loadMask: true,
 
@@ -33,10 +37,17 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             root: 'data',
             id: 'id',
             totalProperty: 'totalCount',
-            fields: ['id', 'name', 'measure', 'qty', 'unit_price']
+            fields: ['id', 'name', 'measure', 'qty', 'unit_price', 'checked']
         });
         
         this.sm = new Ext.grid.RowSelectionModel();
+        
+        var checkColumn = new xlib.grid.CheckColumn({
+            header: 'Пометка',
+            width: 65,
+            dataIndex: 'checked',
+            disabled: !acl.isUpdate('storage')
+        });
         
         var actions = new xlib.grid.Actions({
             autoWidth: true,
@@ -56,7 +67,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             scope: this
         })
         
-        this.columns = [{
+        this.columns = [checkColumn, {
             header: 'Наименование',
             dataIndex: 'name',
             sortable: true,
@@ -93,122 +104,71 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             filters: [{type: 'string',  dataIndex: 'name'}]
         });
         
-        this.plugins = [actions, this.filtersPlugin];
+        this.plugins = [checkColumn, actions, this.filtersPlugin];
 
-        this.tbar = [new Ext.Toolbar.Button({
-                text: 'Добавить',
-                iconCls: 'add',
-                hidden: !this.permissions,
-                qtip: 'Добавить ТМЦ',
-                handler: this.onAdd,
-                scope: this
-            }), ' ',
-            this.filtersPlugin.getSearchField({width: 400})
-        ];
+        this.tbar = [{
+            text: 'Добавить',
+            iconCls: 'add',
+            hidden: !this.permissions,
+            qtip: 'Добавить ТМЦ',
+            handler: this.onAdd,
+            scope: this
+        }, ' ', this.filtersPlugin.getSearchField({width: 400}), ' ', ' ', ' ', {
+            text: 'Сброс пометок',
+            iconCls: 'settings',
+            hidden: !this.permissions,
+            qtip: 'Сбросить все пометки со всех ТМЦ',
+            handler: this.resetChecks,
+            scope: this
+        }];
         
         this.bbar = new xlib.PagingToolbar({
             plugins: [this.filtersPlugin],
             store: this.ds
         });
         
+        this.on({
+            afteredit: function(params) {
+                if ('checked' == params.field) {
+                    this.onCheck(params.record);
+                }
+            },
+            scope: this
+        });
+
         PMS.Storage.Assets.List.superclass.initComponent.apply(this, arguments);
     },
     
     onAdd: function(b, e) {
-        
+
         var editAsset = new PMS.Storage.Assets.Edit.Layout({
-            inWindow: true
+            inWindow: true,
+            categoryId: this.categoryId,
+            listeners: {
+                saved: this.getStore().reload,
+                scope: this
+            }
         });
-        
-        /*
-        var formPanel = this.getForm();
-        
-        var okButton = new Ext.Button({
-            text: 'Сохранить',
-            handler: function() {
-                formPanel.getForm().submit({
-                    url: this.addURL,
-                    params: {
-                        categoryId: this.categoryId
-                    },
-                    success: function(form, options) {
-                        var o = options.result;
-                        if (true == o.success) {
-                            this.formWindow.close();
-                            this.getStore().reload();
-                            return;
-                        }
-                        xlib.Msg.error('Не удалось добавить ТМЦ.')
-                    },
-                    failure: function() {
-                        xlib.Msg.error('Не удалось добавить ТМЦ.')
-                    },
-                    scope: this
-                });
-            },
-            scope: this
-        });
-        
-        this.showWindow({
-            title: 'Добавление ТМЦ',
-            items: [formPanel],
-            okButton: okButton
-        });
-        */
+
     },
     
     onUpdate: function(g, rowIndex) {
-        var record = g.getStore().getAt(rowIndex);
+
         var editAsset = new PMS.Storage.Assets.Edit.Layout({
-            assetId: record.get('id'),
-            inWindow: true
+            record: g.getStore().getAt(rowIndex), 
+            inWindow: true,
+            listeners: {
+                saved: this.getStore().reload,
+                scope: this
+            }
         });
-        
-        /*
-        var formPanel = this.getForm();
-        var record = g.getStore().getAt(rowIndex);
-        formPanel.on('ready', function(fp) {
-            fp.getForm().loadRecord(record);
-            fp.updateSumm();
-        }, formPanel);
-        
-        var okButton = new Ext.Button({
-            text: 'Сохранить',
-            handler: function() {
-                formPanel.getForm().submit({
-                    url: this.updateURL,
-                    params: {
-                        id: record.get('id')
-                    },
-                    success: function(form, options) {
-                        var o = options.result;
-                        if (true == o.success) {
-                            this.formWindow.close();
-                            this.getStore().reload();
-                            return;
-                        }
-                        xlib.Msg.error('Не удалось сохранить ТМЦ.')
-                    },
-                    failure: function() {
-                        xlib.Msg.error('Не удалось сохранить ТМЦ.')
-                    },
-                    scope: this
-                });
-            },
-            scope: this
-        });
-        
-        this.showWindow({
-            title: 'Редактирование ТМЦ',
-            items: [formPanel],
-            okButton: okButton,
-            scope: this
-        });
-        */
+
     },
     
     onDelete: function(g, rowIndex) {
+        
         var record = g.getStore().getAt(rowIndex);
+        
         xlib.Msg.confirm('Вы уверены?', function() {
             Ext.Ajax.request({
                 url: this.deleteURL,
@@ -238,6 +198,64 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                 scope: this
             });
         }, this);
+        
+    },
+    
+    onCheck: function(record) {
+        
+        this.disable();
+        
+        Ext.Ajax.request({
+           url: this.checkURL,
+           params: { 
+                id: record.get('id'),
+                value: record.get('checked')
+           },
+           success: function(res) {
+                var errors = Ext.decode(res.responseText).errors;
+                if (errors) {
+                    xlib.Msg.error(errors[0].msg);
+                    record.reject();
+                    this.el.unmask();
+                    return;
+                }
+                record.commit();
+                this.enable();
+            },
+            failure: function() {
+                xlib.Msg.error('Ошибка связи с сервером.');
+                record.reject();
+                this.enable();
+            },
+            scope: this
+        });
+        
+    },
+    
+    resetChecks: function(b) {
+        
+        xlib.Msg.confirm(b.qtip + '?', function() {
+            
+            Ext.Ajax.request({
+                url: this.resetChecksURL,
+                callback: function (options, success, response) {
+                    var msg = 'Ошибка сброса.';
+                    var res = xlib.decode(response.responseText);
+                    if (true == success && res) {
+                        if (true == res.success) {
+                            this.getStore().reload();
+                            return;
+                        } else if (errors) {
+                            var msg;
+                        }
+                    }
+                    xlib.Msg.error(msg);
+                },
+                scope: this
+            });
+            
+        }, this);
+        
     },
     
     // ------------------------ Private functions ------------------------------
@@ -326,6 +344,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
     },
     
     showWindow: function(config) {
+        
         this.formWindow = new Ext.Window(Ext.apply({
             resizable: false,
             width: 500,
@@ -339,10 +358,12 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                 scope: this
             }]
         }, config || {}));
+        
         this.formWindow.show();
     },
     
     load: function(categoryId, categoryName) {
+        
         this.setTitle(this.baseTitle + '"' + (categoryName || '') + '"');
         this.categoryId = categoryId;
         this.getStore().setBaseParam('categoryId', categoryId);
