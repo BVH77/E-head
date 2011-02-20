@@ -13,7 +13,7 @@ class PMS_Storage_Assets
     {
         $response = new OSDN_Response();
 
-        $select = $this->_table->getDefaultAdapter()->select()
+        $select = $this->_table->getAdapter()->select()
             ->from(array('a' => $this->_table->getTableName()));
 
         if (isset($params['categoryId']) && intval($params['categoryId']) > 0) {
@@ -31,9 +31,9 @@ class PMS_Storage_Assets
         //die($select);
 
         try {
-            $rows = $select->query();
+            $rows = $select->query()->fetchAll();
             $response->totalCount = $plugin->getTotalCountSql();
-            $response->setRowset($rows->fetchAll());
+            $response->setRowset($rows);
             $status = PMS_Status::OK;
         } catch (Exception $e) {
             if (OSDN_DEBUG) {
