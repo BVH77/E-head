@@ -81,6 +81,7 @@ Zend_Loader::loadClass('OSDN_Db_Adapter_Pdo_Mysql');
 
 $dbConfig = $config->db->toArray();
 $dbConfig['adapterNamespace'] = 'OSDN_Db_Adapter';
+$dbConfig[PDO::MYSQL_ATTR_USE_BUFFERED_QUERY] = true;
 
 $db = Zend_Db::factory('PDO_MYSQL', $dbConfig);
 Zend_Db_Table_Abstract::setDefaultAdapter($db);
