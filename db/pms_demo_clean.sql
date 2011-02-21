@@ -686,9 +686,6 @@ ALTER TABLE `storage_requests`
   ADD FOREIGN KEY ( `account_id` ) REFERENCES `accounts` (`id`) ON DELETE RESTRICT ;
 
 ALTER TABLE `storage_assets_categories` 
-    ADD UNIQUE `pair` ( `asset_id` , `category_id` );
-    
-ALTER TABLE `storage_assets_categories` 
     ADD FOREIGN KEY ( `asset_id` ) REFERENCES `storage_assets` (`id`) ON DELETE CASCADE ;
     
 ALTER TABLE `storage_assets_categories` 
