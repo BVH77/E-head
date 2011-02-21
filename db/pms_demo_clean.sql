@@ -555,8 +555,7 @@ CREATE TABLE `storage_assets` (
     `measure` VARCHAR( 50 ) NULL DEFAULT NULL,
     `qty` INT( 11 ) UNSIGNED NULL,
     `unit_price` DOUBLE( 10, 2 ) NOT NULL,
-    `checked` TINYINT( 1 ) NOT NULL,
-    INDEX ( `category_id` )
+    `checked` TINYINT( 1 ) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
 -- 
