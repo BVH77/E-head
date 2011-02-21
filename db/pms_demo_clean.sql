@@ -542,6 +542,12 @@ CREATE TABLE IF NOT EXISTS `suppliers` (
 -- Дамп данных таблицы `suppliers`
 -- 
 
+-- --------------------------------------------------------
+
+-- 
+-- Структура таблицы `storage_assets`
+-- 
+
 DROP TABLE IF EXISTS `storage_assets`;
 CREATE TABLE `storage_assets` (
     `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -554,7 +560,13 @@ CREATE TABLE `storage_assets` (
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
 -- 
--- Дамп данных таблицы `suppliers`
+-- Дамп данных таблицы `storage_assets`
+-- 
+
+-- --------------------------------------------------------
+
+-- 
+-- Структура таблицы `storage_categories`
 -- 
 
 DROP TABLE IF EXISTS `storage_categories`;
@@ -564,6 +576,12 @@ CREATE TABLE `storage_categories` (
     `parent_id` INT UNSIGNED NULL DEFAULT NULL ,
     INDEX ( `parent_id` )
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+-- 
+-- Дамп данных таблицы `storage_categories`
+-- 
+
+-- --------------------------------------------------------
 
 --
 -- Структура таблицы `storage_measures`
