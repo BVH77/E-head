@@ -64,37 +64,33 @@ PMS.Menu = function(username, rolename, roleId) {
 	            });
 	        }
 	    }]
-	}, '-', {
+	}, {
 	    text: 'Планы',
 	    iconCls: 'prod_schd-icon',
-	    //hidden: !acl.isView('orders'),
+	    hidden: !acl.isView('orders'),
 	    menu: [{
 	        text: 'План производственных работ',
 	        iconCls: 'prod_schd-icon',
-            //hidden: !acl.isView('orders', 'production'),
-	        handler: PMS.menuMessage
-//	        handler: function() {
-//            function() {
-//	            window.open('/orders/report/schedule-production');
-//	        }
+            hidden: !acl.isView('orders', 'production'),
+            handler: function() {
+	            window.open('/orders/report/schedule-production');
+	        }
 	    }, {
 	        text: 'План монтажных работ',
 	        iconCls: 'mount_schd-icon',
-            //hidden: !acl.isView('orders', 'mount'),
-	        handler: PMS.menuMessage
-//	        handler: function() {
-//	            window.open('/orders/report/schedule-mount');
-//	        }
+            hidden: !acl.isView('orders', 'mount'),
+	        handler: function() {
+	            window.open('/orders/report/schedule-mount');
+	        }
 	    }, {
 	        text: 'Сводный план работ',
 	        iconCls: 'work_schd-icon',
-            //hidden: !acl.isView('orders'),
-            handler: PMS.menuMessage
-//	        handler: function() {
-//	            window.open('/orders/report/planning');
-//	        }
+            hidden: !acl.isView('orders'),
+	        handler: function() {
+	            window.open('/orders/report/planning');
+	        }
 	    }]
-	}, {
+	}, '-', {
 	    text: 'Склад',
 	    iconCls: 'suppliers-icon',
         // hidden: !acl.isView('storage'),
@@ -121,6 +117,10 @@ PMS.Menu = function(username, rolename, roleId) {
 	            });
 	        } : PMS.menuMessage
 	    }]
+	}, {
+	    text: 'Отчёты',
+	    iconCls: 'prod_schd-icon',
+        handler: PMS.menuMessage
 	}, {
 	    text: 'Кадры',
 	    iconCls: 'customers-icon',
