@@ -29,7 +29,7 @@ PMS.Storage.Assets.Layout = Ext.extend(Ext.Panel, {
 	    this.items = [this.categories, this.assets];
         
         var loadNodeItems = function(node) {
-            this.assets.load(node.id, node.text);
+            this.assets.loadList(node.id, node.text);
         } 
         
         this.categories.on({

@@ -31,9 +31,6 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         this.ds = new Ext.data.JsonStore({
             url: this.listURL,
             remoteSort: true,
-            baseParams: {
-                categoryId: this.categoryId
-            },
             root: 'data',
             id: 'id',
             totalProperty: 'totalCount',
@@ -145,7 +142,9 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             inWindow: true,
             categoryId: this.categoryId,
             listeners: {
-                saved: this.getStore().reload,
+                saved: function() {
+                    this.getStore().reload();
+                },
                 scope: this
             }
         });
@@ -158,7 +157,9 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             record: g.getStore().getAt(rowIndex), 
             inWindow: true,
             listeners: {
-                saved: this.getStore().reload,
+                saved: function() {
+                    this.getStore().reload();
+                },
                 scope: this
             }
         });
@@ -362,8 +363,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         this.formWindow.show();
     },
     
-    load: function(categoryId, categoryName) {
-        
+    loadList: function(categoryId, categoryName) {
         this.setTitle(this.baseTitle + '"' + (categoryName || '') + '"');
         this.categoryId = categoryId;
         this.getStore().setBaseParam('categoryId', categoryId);
