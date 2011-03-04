@@ -21,6 +21,8 @@ class Orders_ReportController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'schedule-mount');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'schedule-production');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'planning');
+
+        $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->reports);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'managers');
     }
 
