@@ -1,0 +1,23 @@
+<center>
+<h3>Отчёт о деятельности менеджеров за период с <?=$this->data['start'];?> по <?=$this->data['end'];?></h3>
+<table cellspacing="0" cellpadding="5" border="1">
+    <tr valign="bottom" align="center">
+        <td><b>Менеджер</b></td>
+        <td><b>Сумма выполненных заказов<br>Рубль РФ</b></td>
+        <td><b>Сумма добавленных заказов<br>Рубль РФ</b></td>
+        <td><b>Количество просроченных заказов</b></td>
+    </tr>
+        <?php foreach ($this->data['rows'] as $row) :?>
+            <tr>
+                <td><?=$row['name']?></td>
+                <td align="right"><?=$row['summ_success']?>,00</td>
+                <td align="right"><?=$row['summ_total']?>,00</td>
+                <td align="right"><?=$row['failed_orders_count']?></td>
+            </tr>
+        <?php endforeach;?>
+</table>
+</center>
+
+<pre>
+<?php //print_r($this->data);?>
+</pre>
