@@ -21,6 +21,7 @@ class Orders_ReportController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'schedule-mount');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'schedule-production');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'planning');
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'managers');
     }
 
     public function scheduleMountAction()
@@ -64,6 +65,17 @@ class Orders_ReportController extends OSDN_Controller_Action
                 $this->view->enableMount = true;
             }
 	        $this->view->content = $this->view->render('report/planning.phtml');
+    	} else {
+    		$this->_collectErrors($response);
+    	}
+    }
+
+    public function managersAction()
+    {
+    	$response = $this->_reports->generateManagers($this->_getAllParams());
+    	if ($response->isSuccess()) {
+	    	$this->view->data = $response->data;
+	        $this->view->content = $this->view->render('report/managers.phtml');
     	} else {
     		$this->_collectErrors($response);
     	}
