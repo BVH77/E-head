@@ -120,7 +120,13 @@ PMS.Menu = function(username, rolename, roleId) {
 	}, {
 	    text: 'Отчёты',
 	    iconCls: 'prod_schd-icon',
-        handler: PMS.menuMessage
+        menu: [{
+            text: 'Деятелность менеджеров',
+            iconCls: 'work_schd-icon',
+            handler: acl.isView('reports') ? function() {
+                window.open('/orders/report/managers');
+            } : PMS.menuMessage
+        }]
 	}, {
 	    text: 'Кадры',
 	    iconCls: 'customers-icon',
