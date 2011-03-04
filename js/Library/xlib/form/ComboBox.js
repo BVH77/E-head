@@ -232,7 +232,7 @@ xlib.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
                 },
                 scope: this 
             });
-            return;
+            return this;
         }
         if (null === v) {
             v = '';
@@ -257,6 +257,7 @@ xlib.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
         } else {
         	xlib.form.ComboBox.superclass.setValue.call(this, v);
         }
+        return this;
     },
     
     getDisplayField: function() {
