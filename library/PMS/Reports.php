@@ -81,6 +81,55 @@ class PMS_Reports
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
+    public function generateManagers($data)
+    {
+        /*
+
+        SELECT `accounts`.`name`,
+                SUM(IF(`orders`.`success_date_fact` IS NOT NULL,`orders`.`cost`,0))
+                    AS `summ_success`,
+                SUM(`orders`.`cost`)
+                    AS `summ_total`,
+                SUM(IF(`orders`.`success_date_fact` IS NOT NULL,0,1))
+                    AS `failed_orders_count`
+        FROM `orders`
+        LEFT JOIN `accounts` ON `orders`.`creator_id`=`accounts`.`id`
+        GROUP BY `creator_id`
+
+         */
+        $response = new OSDN_Response();
+        $select = $this->_tableOrders->getAdapter()->select()
+        ->from(array('o' => $this->_tableOrders->getTableName()),
+            array(
+                'summ_total'    => new Zend_Db_Expr('SUM(`cost`)'),
+                'summ_success'  => new Zend_Db_Expr('SUM(
+                    IF(`success_date_fact` IS NOT NULL,`cost`,0))'),
+                'failed_orders_count'  => new Zend_Db_Expr('SUM(
+                    IF(`success_date_planned` < NOW()
+                        AND `success_date_fact` IS NOT NULL,
+                    0,1))')
+            )
+        )
+        ->joinLeft(array('a' => $this->_tableAccounts->getTableName()), 'o.creator_id=a.id', 'name')
+        ->group('creator_id')
+        ;
+        //die($select);
+        try {
+            $rows = $select->query()->fetchAll();
+        } catch (Exception $e) {
+            //throw $e;
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+        }
+        $result = array(
+            'rows'  => $rows,
+            'start' => new Zend_Date(),
+            'end'   => new Zend_Date()
+        );
+        $response->data = $result;
+        return $response->addStatus(new PMS_Status(PMS_Status::OK));
+
+    }
+
     //--------------------------------------------------------------------------
 
     private function getMonthDays($date)
