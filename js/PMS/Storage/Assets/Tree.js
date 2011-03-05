@@ -18,14 +18,16 @@ PMS.Storage.Assets.Tree = Ext.extend(xlib.TreePanel, {
     
     ddAppendOnly: true,
     
-    enableDrop: true,
+    enableDrop: false,
     
     enableDD: false,
     
     rootVisible: true,
     
+    readOnly: false,
+    
     initComponent: function() {
-        
+    
         this.root = new Ext.tree.AsyncTreeNode({
             text: 'Все категории',
             id: '0',
@@ -55,8 +57,14 @@ PMS.Storage.Assets.Tree = Ext.extend(xlib.TreePanel, {
     },
     
     onContextMenu: function(node, e) {
+        
         e.stopEvent();
         node.select();
+        
+        if (this.readOnly) {
+            return;        
+        }
+        
         var menu = new Ext.menu.Menu();
         
         menu.add({

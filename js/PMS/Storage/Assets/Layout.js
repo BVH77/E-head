@@ -8,6 +8,8 @@ PMS.Storage.Assets.Layout = Ext.extend(Ext.Panel, {
     
     layout: 'border',
     
+    readOnly: false,
+    
 	initComponent: function() {
         
         this.categories = new PMS.Storage.Assets.Tree({
@@ -17,12 +19,14 @@ PMS.Storage.Assets.Layout = Ext.extend(Ext.Panel, {
             split: true,
             border: false,
             margins: '0 2 0 0',
+            readOnly: this.readOnly,
             cls: 'x-border-right'
         });
         
         this.assets = new PMS.Storage.Assets.List({
             region: 'center',
             border: false,
+            readOnly: this.readOnly,
             cls: 'x-border-left'
         });
         
@@ -43,7 +47,12 @@ PMS.Storage.Assets.Layout = Ext.extend(Ext.Panel, {
         });
         
 		PMS.Storage.Assets.Layout.superclass.initComponent.apply(this, arguments);
-	}
+	},
+    
+    getSelected: function() {
+        var record = this.assets.getSelectionModel().getSelected();
+        return (Ext.isObject(record) && parseInt(record.get('id')) > 0) ? record : false;
+    }
 });
 
 Ext.reg('PMS.Storage.Assets.Layout', PMS.Storage.Assets.Layout);

@@ -24,47 +24,15 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
     
     permissions: acl.isUpdate('storage'),
     
+    readOnly: false,
+    
     initComponent: function() {
-        
-        this.autoExpandColumn = Ext.id();
-        
-        this.ds = new Ext.data.JsonStore({
-            url: this.listURL,
-            remoteSort: true,
-            root: 'data',
-            id: 'id',
-            totalProperty: 'totalCount',
-            fields: ['id', 'name', 'measure', 'qty', 'unit_price', 'checked']
-        });
         
         this.sm = new Ext.grid.RowSelectionModel();
         
-        var checkColumn = new xlib.grid.CheckColumn({
-            header: 'Пометка',
-            width: 65,
-            dataIndex: 'checked',
-            disabled: !acl.isUpdate('storage')
-        });
+        this.autoExpandColumn = Ext.id();
         
-        var actions = new xlib.grid.Actions({
-            autoWidth: true,
-            items: [{
-                text: 'Редактировать',
-                iconCls: 'edit',
-                hidden: !this.permissions,
-                handler: this.onUpdate,
-                scope: this
-            }, {
-                text: 'Удалить',
-                iconCls: 'delete',
-                hidden: !this.permissions,
-                handler: this.onDelete,
-                scope: this
-            }],
-            scope: this
-        })
-        
-        this.columns = [checkColumn, {
+        this.columns = [{
             header: 'Наименование',
             dataIndex: 'name',
             sortable: true,
@@ -97,42 +65,86 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             }
         }];
         
+        this.ds = new Ext.data.JsonStore({
+            url: this.listURL,
+            remoteSort: true,
+            root: 'data',
+            id: 'id',
+            totalProperty: 'totalCount',
+            fields: ['id', 'name', 'measure', 'qty', 'unit_price', 'checked']
+        });
+        
         this.filtersPlugin = new Ext.grid.GridFilters({
             filters: [{type: 'string',  dataIndex: 'name'}]
         });
         
-        this.plugins = [checkColumn, actions, this.filtersPlugin];
+        this.plugins = [this.filtersPlugin];
 
         this.tbar = [{
             text: 'Добавить',
             iconCls: 'add',
-            hidden: !this.permissions,
+            hidden: !(this.permissions && !this.readOnly),
             qtip: 'Добавить ТМЦ',
             handler: this.onAdd,
             scope: this
-        }, ' ', this.filtersPlugin.getSearchField({width: 400}), ' ', ' ', ' ', {
-            text: 'Сброс пометок',
-            iconCls: 'settings',
-            hidden: !this.permissions,
-            qtip: 'Сбросить все пометки со всех ТМЦ',
-            handler: this.resetChecks,
-            scope: this
-        }];
+        }, ' ', this.filtersPlugin.getSearchField({width: 400}), ' ', ' ', ' '];
         
         this.bbar = new xlib.PagingToolbar({
             plugins: [this.filtersPlugin],
             store: this.ds
         });
         
-        this.on({
-            afteredit: function(params) {
-                if ('checked' == params.field) {
-                    this.onCheck(params.record);
-                }
-            },
-            scope: this
-        });
-
+        if (!this.readOnly) {
+            
+            var actions = new xlib.grid.Actions({
+                autoWidth: true,
+                items: [{
+                    text: 'Редактировать',
+                    iconCls: 'edit',
+                    hidden: !this.permissions ,
+                    handler: this.onUpdate,
+                    scope: this
+                }, {
+                    text: 'Удалить',
+                    iconCls: 'delete',
+                    hidden: !this.permissions,
+                    handler: this.onDelete,
+                    scope: this
+                }],
+                scope: this
+            });
+            
+            var checkColumn = new xlib.grid.CheckColumn({
+                header: 'Пометка',
+                width: 65,
+                dataIndex: 'checked'
+            });
+            
+            this.tbar.push({
+                text: 'Сброс пометок',
+                iconCls: 'settings',
+                qtip: 'Сбросить все пометки со всех ТМЦ',
+                handler: this.resetChecks,
+                scope: this
+            });
+            
+            this.plugins.push(checkColumn);
+            
+            this.plugins.push(actions);
+            
+            this.columns = [checkColumn].concat(this.columns);
+            
+            this.on({
+                afteredit: function(params) {
+                    if ('checked' == params.field) {
+                        this.onCheck(params.record);
+                    }
+                },
+                scope: this
+            });
+            
+        }
+        
         PMS.Storage.Assets.List.superclass.initComponent.apply(this, arguments);
     },
     

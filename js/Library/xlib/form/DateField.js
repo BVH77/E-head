@@ -53,6 +53,10 @@ xlib.form.DateField = Ext.extend(Ext.form.DateField, {
     
     onBlur: function() {
         this.updateHidden();
+    },
+    
+    getHiddenValue: function() {
+    	return (this.hiddenField)? this.hiddenField.value : '';
     }
 });
 

@@ -94,8 +94,13 @@
         <script src="/js/PMS/Storage/Assets/Edit/Form.js"/>
         <script src="/js/PMS/Storage/Assets/Edit/Tree.js"/>
         <script src="/js/PMS/Storage/Assets/Edit/Layout.js"/>
+        
         <script src="/js/PMS/Storage/Measures/ComboBox.js"/>
+        
+        <script src="/js/PMS/Storage/Requests/Form.js"/>
         <script src="/js/PMS/Storage/Requests/List.js"/>
+        
+        <script src="/js/PMS/Reports/Managers.js"/>
         
         <!-- Modules -->
         

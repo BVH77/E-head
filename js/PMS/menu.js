@@ -90,6 +90,17 @@ PMS.Menu = function(username, rolename, roleId) {
 	            window.open('/orders/report/planning');
 	        }
 	    }]
+    }, {
+	    text: 'Отчёты',
+	    iconCls: 'prod_schd-icon',
+        menu: [{
+            text: 'Деятелность менеджеров',
+            iconCls: 'work_schd-icon',
+            hidden: !acl.isView('reports'),
+            handler: function() {
+                new PMS.Reports.Managers();
+            }
+        }]
 	}, '-', {
 	    text: 'Склад',
 	    iconCls: 'suppliers-icon',
@@ -117,16 +128,6 @@ PMS.Menu = function(username, rolename, roleId) {
 	            });
 	        } : PMS.menuMessage
 	    }]
-	}, {
-	    text: 'Отчёты',
-	    iconCls: 'prod_schd-icon',
-        menu: [{
-            text: 'Деятелность менеджеров',
-            iconCls: 'work_schd-icon',
-            handler: acl.isView('reports') ? function() {
-                window.open('/orders/report/managers');
-            } : PMS.menuMessage
-        }]
 	}, {
 	    text: 'Кадры',
 	    iconCls: 'customers-icon',

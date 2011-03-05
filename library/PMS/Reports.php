@@ -20,11 +20,13 @@ class PMS_Reports
     {
         $response = new OSDN_Response();
         if ($type != 'mount' && $type != 'production') {
-            return $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'type'));
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'type'));
         }
     	$date = date_create();
     	$select = $this->_tableOrders->getAdapter()->select();
-    	$select->from(array('o' => $this->_tableOrders->getTableName()), array('id', 'address'));
+    	$select->from(array('o' => $this->_tableOrders->getTableName()),
+    	               array('id', 'address'));
     	$select->joinLeft(array('a' => $this->_tableAccounts->getTableName()),
                       'o.creator_id=a.id', array('creator_name' => 'name'));
     	$select->joinLeft(array('c' => $this->_tableCustomers->getTableName()),
@@ -66,7 +68,8 @@ class PMS_Reports
     	$out = array();
     	$today = new Zend_Date();
     	for ($i = 0; $i < 2; $i++) {
-            $startDate = new Zend_Date('01.' . (string)($today->get('M') + $i) . '.' . $today->get('Y'));
+            $startDate = new Zend_Date('01.' . (string)($today->get('M') + $i)
+                       . '.' . $today->get('Y'));
             $days = $this->getMonthDays($startDate);
             $orders = $this->prepareOrders($orders, $days, $startDate);
             if ($orders !== false) {
@@ -81,23 +84,17 @@ class PMS_Reports
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
-    public function generateManagers($data)
+    public function generateManagers(array $params)
     {
-        /*
-
-        SELECT `accounts`.`name`,
-                SUM(IF(`orders`.`success_date_fact` IS NOT NULL,`orders`.`cost`,0))
-                    AS `summ_success`,
-                SUM(`orders`.`cost`)
-                    AS `summ_total`,
-                SUM(IF(`orders`.`success_date_fact` IS NOT NULL,0,1))
-                    AS `failed_orders_count`
-        FROM `orders`
-        LEFT JOIN `accounts` ON `orders`.`creator_id`=`accounts`.`id`
-        GROUP BY `creator_id`
-
-         */
         $response = new OSDN_Response();
+
+        $f = new OSDN_Filter_Input(array(
+            '*' => 'StringTrim'
+        ), array(
+            'start'  => array(array('StringLength', 0, 10), 'allowEmpty' => true),
+            'end'    => array(array('StringLength', 0, 10), 'allowEmpty' => true)
+        ), $params);
+
         $select = $this->_tableOrders->getAdapter()->select()
         ->from(array('o' => $this->_tableOrders->getTableName()),
             array(
@@ -110,10 +107,16 @@ class PMS_Reports
                     0,1))')
             )
         )
-        ->joinLeft(array('a' => $this->_tableAccounts->getTableName()), 'o.creator_id=a.id', 'name')
+        ->joinLeft(array('a' => $this->_tableAccounts->getTableName()),
+            'o.creator_id=a.id', 'name')
         ->group('creator_id')
         ;
-        //die($select);
+        if (!empty($f->start)) {
+            $select->where('created >= ?', $f->start);
+        }
+        if (!empty($f->end)) {
+            $select->where('created <= ?', $f->end);
+        }
         try {
             $rows = $select->query()->fetchAll();
         } catch (Exception $e) {
@@ -122,8 +125,8 @@ class PMS_Reports
         }
         $result = array(
             'rows'  => $rows,
-            'start' => new Zend_Date(),
-            'end'   => new Zend_Date()
+            'start' => $f->start,
+            'end'   => $f->end
         );
         $response->data = $result;
         return $response->addStatus(new PMS_Status(PMS_Status::OK));

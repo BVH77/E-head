@@ -14,7 +14,7 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
     
     loadMask: true,
 
-    permissions: acl.isUpdate('storage'),
+    permissions: acl.isView('storage'),
     
     initComponent: function() {
         
@@ -114,8 +114,7 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
                 tooltip: 'Добавить заявку',
                 handler: this.onAdd,
                 scope: this
-            }), ' ',
-            this.filtersPlugin.getSearchField({width: 400})
+            }), ' ', this.filtersPlugin.getSearchField({width: 400})
         ];
         
         this.bbar = new xlib.PagingToolbar({
@@ -127,70 +126,47 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
     },
     
     onAdd: function(b, e) {
-        
-        var updatePosititon = function(g, rowIndex) {
-            var assetRecord = g.getStore().getAt(rowIndex);
-            var recordClass = this.getStore().recordType; 
-            var record = new recordClass({
-                name:           assetRecord.get('name'),
-                measure:        assetRecord.get('measure'),
-                asset_id:       assetRecord.get('id'),
-                account_name:   '',
-                created:        (new Date()).format(xlib.date.DATE_TIME_FORMAT),
-                request_on:     '',
-                qty:            ''
-            }, 0);
-            
-            w.close();
-            this.getStore().insert(0, record);
-            this.onUpdate(this, 0);
-        }; 
-        
-        var assets = new PMS.Storage.Assets.Layout({
-            title: false
-        });
-        
-        assets.assets.on('rowdblclick', updatePosititon, this);
-        
-        var w = new Ext.Window({
-            title: 'Добавление ТМЦ на склад',
-            resizable: false,
-            layout: 'fit',
-            width: 900,
-            height: 500,
-            modal: true,
-            items: [assets],
-            buttons: [{
-                text: 'Выбрать',
-                handler: function() {
-                    var sm = assets.assets.getSelectionModel();
-                    var record = sm.getSelected();
-                    var st = assets.assets.getStore();
-                    var rowIndex = st.indexOf(record);
-                    updatePosititon.createDelegate(this, [assets.assets, rowIndex])();
-                },
-                scope: this
-            }, {
-                text: 'Отмена',
-                handler: function() {
-                    w.close();
-                },
-                scope: this
-            }],
-            scope: this
-        });
-
+        var formPanel = new PMS.Storage.Requests.Form();
+        var w = this.getWindow(formPanel, this.addURL, this.getStore(), false);
         w.show();
-        
     },
     
     onUpdate: function(g, rowIndex) {
+        var formPanel = new PMS.Storage.Requests.Form();
         var record = g.getStore().getAt(rowIndex);
         var id = parseInt(record.get('id'));
+        var w = this.getWindow(formPanel, this.updateURL, this.getStore(), id);
+        w.show();
+        formPanel.getForm().loadRecord(record);
+    },
+    
+    onDelete: function(g, rowIndex) {
+        var record = g.getStore().getAt(rowIndex);
+        var id = parseInt(record.get('id'));
+        xlib.Msg.confirm('Вы уверены?', function() {
+            Ext.Ajax.request({
+                url: this.deleteURL,
+                params: {
+                    id: id
+                },
+                callback: function (options, success, response) {
+                    var res = xlib.decode(response.responseText);
+                    if (true == success && res && true == res.success) {
+                        g.getStore().reload();
+                        return;
+                    }
+                    xlib.Msg.error('Ошибка при удалении.');
+                },
+                scope: this
+            });    
+        }, this);
+    },
+    
+    // Private functions 
+    
+    getWindow: function(formPanel, url, store, id) {
         
-        var formPanel = this.getForm();
-        
-        var w = new Ext.Window({
+       var w = new Ext.Window({
             title: 'Заявка на ТМЦ',
             resizable: false,
             width: 500,
@@ -200,139 +176,31 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
                 text: 'Сохранить',
                 handler: function() {
                     formPanel.getForm().submit({
-                        params: {
-                            id: id
-                        },
-                        url: id > 0 ? this.updateURL : this.addURL,
+                        params: !id ? {} : {id: id},
+                        url: url,
                         success: function(form, options) {
                             var o = options.result;
                             if (true == o.success) {
                                 w.close();
-                                this.getStore().reload();
+                                store.reload();
                                 return;
                             }
                             xlib.Msg.error('Не удалось сохранить.')
                         },
                         failure: function() {
                             xlib.Msg.error('Не удалось сохранить.')
-                        },
-                        scope: this
+                        }
                     });
-                },
-                scope: this
+                }
             }, {
                 text: 'Отмена',
                 handler: function() {
-                    g.getStore().reload();
                     w.close();
-                },
-                scope: this
-            }],
-            scope: this
-        });
-
-        w.show();
-        
-        formPanel.getForm().loadRecord(record);
-    },
-    
-    onDelete: function(g, rowIndex) {
-        var record = g.getStore().getAt(rowIndex);
-        xlib.Msg.confirm('Вы уверены?', function() {
-            Ext.Ajax.request({
-                url: this.deleteURL,
-                params: {
-                    id: record.get('id')
-                },
-                callback: function (options, success, response) {
-                    var res = xlib.decode(response.responseText);
-                    if (true == success && res) {
-                        if (true == res.success) {
-                            g.getStore().reload();
-                            return;
-                        }
-                    }
-                    xlib.Msg.error('Ошибка при удалении.');
-                },
-                scope: this
-            });    
-        }, this);
-    },
-    
-    // ------------------------ Private functions ------------------------------
-    
-    getForm: function() {
-        return new xlib.form.FormPanel({
-            permissions: this.permissions,
-            labelWidth: 100,
-            items: [{
-                xtype: 'hidden',
-                name: 'asset_id'
-            }, {
-                xtype: 'displayfield',
-                fieldLabel: 'Наименование',
-                name: 'name'
-            }, {
-                layout: 'column',
-                border: false,
-                columns: 2,
-                defaults: {
-                    border: false,
-                    layout: 'form'
-                },
-                items: [{
-                    columnWidth: .9,
-                    items: [{
-                        xtype: 'numberfield',
-                        fieldLabel: 'Количество',
-                        name: 'qty',
-                        validator: function(value) {
-                            return value > 0 ? true : 'Значение должно быть больше нуля';
-                        },
-                        anchor: '100%'
-                    }]
-                }, {
-                    columnWidth: .1,
-                    labelWidth: 1, 
-                    items: [{
-                        xtype: 'displayfield',
-                        name: 'measure'
-                    }]
-                }]
-            }, {
-                layout: 'column',
-                border: false,
-                columns: 2,
-                defaults: {
-                    border: false,
-                    layout: 'form'
-                },
-                items: [{
-                    columnWidth: .5,
-                    items: [{
-                        xtype: 'xlib.form.DateField',
-                        format: xlib.date.DATE_FORMAT,
-                        fieldLabel: 'Заказ на дату',
-                        allowBlank: false,
-                        minValue: new Date().clearTime(),
-                        name: 'request_on',
-                        hiddenName: 'request_on'
-                    }]
-                }, {
-                    columnWidth: .5,
-                    labelWidth: 60,
-                    items: [{
-                        xtype: 'displayfield',
-                        fieldLabel: 'Подано',
-                        name: 'created',
-                        anchor: '100%'
-                    }]
-                }]
+                }
             }]
         });
-    },
-    
-    showWindow: function(config) {
+        
+        return w;
     }
 });
 
