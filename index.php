@@ -63,6 +63,7 @@ Zend_Registry::set('config', $config);
 define('ADMIN_ROLE', 1);
 define('OSDN_DEBUG', (boolean) $config->debug);
 define('MYSQL_DATE_TIME_FORMAT', 'Y-m-d H:i:s');
+define('MYSQL_DATE_FORMAT', 'Y-m-d');
 define('OSDN_DATE_TIME_FORMAT', 'YY-MM-DD HH:mm:ss');
 define('OSDN_TIME_FORMAT', 'HH:mm:ss');
 define('OSDN_DATE_FORMAT', 'YYYY-MM-DD');
