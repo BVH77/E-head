@@ -95,7 +95,7 @@ PMS.Menu = function(username, rolename, roleId) {
 	    iconCls: 'prod_schd-icon',
         hidden: !acl.isView('reports'),
         menu: [{
-            text: 'Деятелность менеджеров',
+            text: 'Менеджеры',
             iconCls: 'work_schd-icon',
             handler: function() {
                 new PMS.Reports.Managers();
