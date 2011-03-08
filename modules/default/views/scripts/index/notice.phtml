@@ -1,0 +1,4 @@
+<br /><i>№ <?php echo @$this->noticeData['id']?> от <?php
+$date = @date_create($this->noticeData['created']);
+echo !$date ? '' : $date->format(OSDN_DATE_DISPLAY_FORMAT);
+?> Автор: <?php echo @$this->noticeData['account_name']?></i><br /><br /><center><h1><?php echo @$this->noticeData['title']?></h1></center><br /><?php echo @$this->noticeData['text']; ?>

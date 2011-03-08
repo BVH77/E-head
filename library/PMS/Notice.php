@@ -1,12 +1,62 @@
 <?php
 
-class PMS_Storage_Requests
+class PMS_Notice
 {
 	protected $_table;
 
     public function __construct()
     {
-        $this->_table = new PMS_Storage_Requests_Table();
+        $this->_table = new PMS_Notice_Table();
+    }
+
+    public function getNewest()
+    {
+        $response = new OSDN_Response();
+
+        try {
+            $select = $this->_table->getAdapter()->select()
+                ->from(array('n' => $this->_table->getTableName()), '*')
+                ->joinLeft(array('a' => 'accounts'),
+                    'n.account_id=a.id', array('account_name' => 'a.name'))
+                ->order('id DESC')
+                ->limit(1);
+            $rows = $select->query()->fetchAll();
+            $response->setRowset($rows);
+            $status = PMS_Status::OK;
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            $status = PMS_Status::DATABASE_ERROR;
+        }
+        return $response->addStatus(new PMS_Status($status));
+    }
+
+    public function get($id)
+    {
+        $id = intval($id);
+        $response = new OSDN_Response();
+        if ($id == 0) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
+        }
+
+        $select = $this->_table->getAdapter()->select()
+            ->from(array('n' => $this->_table->getTableName()), '*')
+            ->joinLeft(array('a' => 'accounts'),
+                'n.account_id=a.id', array('account_name' => 'a.name'))
+            ->where('n.id = ?', $id);
+        try {
+            $rows = $select->query()->fetchAll();
+            $response->setRowset($rows);
+            $status = PMS_Status::OK;
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            $status = PMS_Status::DATABASE_ERROR;
+        }
+        return $response->addStatus(new PMS_Status($status));
     }
 
     public function getList($params)
@@ -14,13 +64,11 @@ class PMS_Storage_Requests
         $response = new OSDN_Response();
 
         $select = $this->_table->getAdapter()->select()
-            ->from(array('av' => $this->_table->getTableName()), '*')
-            ->joinLeft(array('as' => 'storage_assets'),
-                'av.asset_id=as.id', array('name', 'measure'))
-            ->joinLeft(array('ac' => 'accounts'),
-                'av.account_id=ac.id', array('account_name' => 'ac.name'));
+            ->from(array('n' => $this->_table->getTableName()), '*')
+            ->joinLeft(array('a' => 'accounts'),
+                'n.account_id=a.id', array('account_name' => 'a.name'));
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select,
-            array('name', 'measure', 'qty', 'account_name', 'request_on', 'created'));
+            array('title', 'account_name', 'created'));
         $plugin->parse($params);
         try {
             $rows = $select->query()->fetchAll();
@@ -41,15 +89,10 @@ class PMS_Storage_Requests
         $response = new OSDN_Response();
 
         $f = new OSDN_Filter_Input(array(
-            'asset_id'      => 'Int',
-            'qty'           => 'Int',
             '*'             => 'StringTrim'
         ), array(
-            'asset_id'      => array('Id', 'allowEmpty' => true),
-            'name'          => array(array('StringLength', 0, 250), 'allowEmpty' => true),
-            'measure'       => array(array('StringLength', 0, 50), 'allowEmpty' => true),
-            'qty'           => array('Int', 'allowEmpty' => true),
-            'request_on'    => array(array('Date', OSDN_DATE_FORMAT), 'presence' => 'required')
+            'title'          => array(array('StringLength', 0, 250), 'presence' => 'required'),
+            'text'           => array(array('StringLength', 0, 65535), 'presence' => 'required')
         ), $params);
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
@@ -74,16 +117,11 @@ class PMS_Storage_Requests
     {
         $f = new OSDN_Filter_Input(array(
             'id'            => 'Int',
-            'asset_id'      => 'Int',
-            'qty'           => 'Int',
             '*'             => 'StringTrim'
         ), array(
             'id'            => array('Id', 'presence' => 'required'),
-            'asset_id'      => array('Int', 'allowEmpty' => true),
-            'name'          => array(array('StringLength', 0, 250), 'allowEmpty' => true),
-            'measure'       => array(array('StringLength', 0, 50), 'allowEmpty' => true),
-            'qty'           => array('Int', 'allowEmpty' => true),
-            'request_on'    => array(array('Date', OSDN_DATE_FORMAT), 'presence' => 'required')
+            'title'          => array(array('StringLength', 0, 250), 'presence' => 'required'),
+            'text'           => array(array('StringLength', 0, 65535), 'presence' => 'required')
         ), $params);
 
         $response = new OSDN_Response();

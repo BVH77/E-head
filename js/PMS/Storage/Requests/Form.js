@@ -169,13 +169,15 @@ PMS.Storage.Requests.Form = Ext.extend(xlib.form.FormPanel, {
     processName: function() {
         
         var assetField = this.getForm().findField('asset_id');
-        if (null === assetField || 0 === parseInt(assetField.getValue())) {
+        if (null === assetField 
+        || Ext.isEmpty(assetField.getValue()) 
+        || 0 === parseInt(assetField.getValue())) {
             return;
         }
                 
         var nameField = this.getForm().findField('name');
         var measureField = this.getForm().findField('measure');
-        if (null === nameField || null === measureField) {
+        if (null === nameField || null === measureField || Ext.isEmpty(nameField.getValue())) {
             return;
         }
         nameField.disable();

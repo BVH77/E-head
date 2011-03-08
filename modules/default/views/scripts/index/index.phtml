@@ -3,3 +3,17 @@
     xlib.rolename = '<?=$this->rolename; ?>';
     xlib.roleId = '<?=$this->roleId; ?>';
 </script>
+
+<?php if (true === $this->showNotice): ?>
+
+    <script>
+        xlib.onReady(function() {
+            new PMS.Notice.Show({
+                items:[{
+                    html: '<?php echo $this->notice; ?>'
+                }]
+            });
+        });
+    </script>
+
+<?php endif;?>

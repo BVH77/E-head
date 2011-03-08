@@ -33,6 +33,25 @@ class IndexController extends OSDN_Controller_Action
                 $this->view->assemble = $this->view->render('/orders/views/scripts/index/assemble.phtml');
             }
         }
+
+        //Use for notifications
+
+        $acl = OSDN_Accounts_Prototype::getAcl();
+
+        // Show only orders created by this account for managers
+        if ($acl->isAllowed(
+            OSDN_Acl_Resource_Generator::getInstance()->notice,
+            OSDN_Acl_Privilege::VIEW)
+        ) {
+            $notice = new PMS_Notice();
+            $response = $notice->getNewest();
+            if ($response->hasNotSuccess() || 0 === count($response->getRow())) {
+                return;
+            }
+            $this->view->noticeData = $response->getRow();
+            $this->view->showNotice = true;
+            $this->view->notice = str_replace("\n", "<br />", $this->view->render('index/notice.phtml'));
+        }
     }
 
     public function changesAction()

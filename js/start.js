@@ -76,6 +76,7 @@ Ext.onReady(function(){
         PMS.System.Layout = new xlib.Layout.Workspace({
     		mainMenu: PMS.Menu(xlib.username || '', xlib.rolename || '', xlib.roleId || '')
         });
+        
         PMS.OrdersTab = PMS.System.Layout.getTabPanel().add({
             iconCls: 'orders-icon',
             closable: false,
@@ -89,7 +90,13 @@ Ext.onReady(function(){
             xtype: 'PMS.Storage.Requests.List',
             id: 'PMS.Storage.Requests.List'
         });
-        */
+        
+        PMS.System.Layout.getTabPanel().add({
+        	iconCls: 'suppliers-icon',
+            xtype: 'PMS.Notice.List',
+            id: 'PMS.Notice.List'
+        });
+	     */
         
         PMS.System.Layout.doLayout();
     });

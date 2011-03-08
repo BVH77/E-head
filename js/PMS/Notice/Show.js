@@ -1,23 +1,44 @@
+Ext.ns('PMS.Notice');
 
-Ext.ns('PMS.Storage.Requests');
+PMS.Notice.Show = Ext.extend(Ext.Window, {
 
-PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
-
-    title:      'Заявки на снабжение',
+    title: 'Объявление',
     
-    listURL:    link('storage', 'requests', 'get-list'),
+    resizable: false,
     
-    addURL:     link('storage', 'requests', 'add'),
+    hidden: false,
     
-    updateURL:  link('storage', 'requests', 'update'),
+    width: 800,
     
-    deleteURL:  link('storage', 'requests', 'delete'),
+    height: 500,
     
-    loadMask: true,
-
-    permissions: acl.isView('storage'),
+    modal: true,
+    
+    layout: 'fit',
+    
+    defaults: {
+        border: false,
+        autoScroll: true,
+        padding: '10'
+    },
+    
+    autoScroll: true,
     
     initComponent: function() {
+        
+        this.buttons = [{
+            text: 'ОK',
+            handler: function() {
+                this.close();
+            },
+            scope: this
+        }]
+        
+        PMS.Notice.Show.superclass.initComponent.apply(this, arguments);
+    }
+    
+});
+/*    
         
         this.autoExpandColumn = Ext.id();
         
@@ -28,13 +49,11 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
             root: 'data',
             id: 'id',
             sortInfo: {
-                field: 'request_on',
-                direction: 'ASC'
+                field: 'id',
+                direction: 'DESC'
             },
             totalProperty: 'totalCount',
-            fields: ['id', 'asset_id', 'account_name', 'name', 'measure', 'qty', 
-                {name: 'request_on', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
-                {
+            fields: ['id', 'title', 'account_name', {
                     name: 'created', 
                     type: 'date', 
                     dateFormat: xlib.date.DATE_TIME_FORMAT_SERVER,
@@ -69,49 +88,41 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
         })
         
         this.columns = [{
-            header: 'Заказ на дату',
-            dataIndex: 'request_on',
-            renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
+            header: '№',
+            dataIndex: 'id',
             sortable: true,
-            width: 100
+            width: 40
         }, {
-            header: 'Наименование',
-            dataIndex: 'name',
+            header: 'Название',
+            dataIndex: 'title',
             sortable: true,
             id: this.autoExpandColumn
         }, {
-            header: 'Количество',
-            dataIndex: 'qty',
-            sortable: true,
-            width: 100
-        }, {
-            header: 'Ед. измерения',
-            dataIndex: 'measure',
-            sortable: true,
-            width: 100
-        }, {
-            header: 'Кем подана заявка',
+            header: 'Кем добавлено',
             dataIndex: 'account_name',
             sortable: true,
             width: 150
         }, {
-            header: 'Дата подачи',
+            header: 'Когда добавлено',
             dataIndex: 'created',
             sortable: true,
             width: 150
         }];
         
         this.filtersPlugin = new Ext.grid.GridFilters({
-            filters: [{type: 'string',  dataIndex: 'name'}]
+            filters: [
+                {type: 'string',  dataIndex: 'title'},
+                {type: 'string',  dataIndex: 'text'}
+            ]
         });
         
         this.plugins = [actions, this.filtersPlugin];
 
         this.tbar = [new Ext.Toolbar.Button({
-                text: 'Добавить заявку',
+                text: 'Добавить объявление',
                 iconCls: 'add',
                 hidden: !this.permissions,
-                tooltip: 'Добавить заявку',
+                tooltip: 'Добавить объявление',
                 handler: this.onAdd,
                 scope: this
             }), ' ', this.filtersPlugin.getSearchField({width: 400})
@@ -122,22 +133,26 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
             store: this.ds
         });
         
-        PMS.Storage.Requests.List.superclass.initComponent.apply(this, arguments);
+        PMS.Notice.List.superclass.initComponent.apply(this, arguments);
     },
     
     onAdd: function(b, e) {
-        var formPanel = new PMS.Storage.Requests.Form();
-        var w = this.getWindow(formPanel, this.addURL, this.getStore(), false);
-        w.show();
+        this.getWindow(this.getNoticeForm(), this.addURL, this.getStore(), false);
     },
     
     onUpdate: function(g, rowIndex) {
-        var formPanel = new PMS.Storage.Requests.Form();
+        var formPanel = this.getNoticeForm();
         var record = g.getStore().getAt(rowIndex);
         var id = parseInt(record.get('id'));
-        var w = this.getWindow(formPanel, this.updateURL, this.getStore(), id);
-        w.show();
-        formPanel.getForm().loadRecord(record);
+        
+        this.getWindow(formPanel, this.updateURL, this.getStore(), id);
+        
+        formPanel.getForm().load({
+            url: this.itemURL,
+            params: {
+                id: id
+            }
+        });
     },
     
     onDelete: function(g, rowIndex) {
@@ -167,13 +182,16 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
     getWindow: function(formPanel, url, store, id) {
         
        var w = new Ext.Window({
-            title: 'Заявка на ТМЦ',
+            title: !id ? 'Новое объявление' : 'Объявление № ' + id,
             resizable: false,
-            width: 500,
+            hidden: false,
+            width: 800,
+            height: 500,
             modal: true,
             items: [formPanel],
             buttons: [{
                 text: 'Сохранить',
+                hidden: !this.permissions,
                 handler: function() {
                     formPanel.getForm().submit({
                         params: !id ? {} : {id: id},
@@ -201,7 +219,47 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
         });
         
         return w;
+    },
+    
+    getNoticeForm: function() {
+        return new xlib.form.FormPanel({
+            permissions: acl.isUpdate('notice'),
+            labelWidth: 70,
+            defaults: {
+                disabledClass: ''
+            },
+            items: [{
+                xtype: 'hidden',
+                name: 'id'
+            }, {
+                xtype: 'textfield',
+                fieldLabel: 'Название',
+                name: 'title',
+                allowBlank: false
+            }, {
+                xtype: 'textarea',
+                hideLabel: true,
+                name: 'title',
+                anchor: '100%',
+                height: 345,
+                allowBlank: false
+            }, {
+                xtype: 'displayfield',
+                fieldLabel: 'Автор',
+                name: 'account_name',
+                submitValue: false,
+                value: xlib.username || ''
+            }, {
+                xtype: 'displayfield',
+                fieldLabel: 'Дата',
+                name: 'created',
+                submitValue: false,
+                value: (new Date()).format(xlib.date.DATE_TIME_FORMAT)
+            }]
+        });
     }
+    
 });
 
-Ext.reg('PMS.Storage.Requests.List', PMS.Storage.Requests.List);
+Ext.reg('PMS.Notice.List', PMS.Notice.List);
+*/
