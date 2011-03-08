@@ -52,7 +52,7 @@ PMS.Notice.List = Ext.extend(Ext.grid.GridPanel, {
         var actions = new xlib.grid.Actions({
             autoWidth: true,
             items: [{
-                text: 'Редактировать',
+                text: acl.isUpdate('notice') ? 'Редактировать' : 'Читать',
                 iconCls: 'edit',
                 hidden: !this.permissions,
                 handler: this.onUpdate,
@@ -60,7 +60,7 @@ PMS.Notice.List = Ext.extend(Ext.grid.GridPanel, {
             }, {
                 text: 'Удалить',
                 iconCls: 'delete',
-                hidden: !this.permissions,
+                hidden: !acl.isUpdate('notice'),
                 handler: this.onDelete,
                 scope: this
             }],
@@ -114,6 +114,8 @@ PMS.Notice.List = Ext.extend(Ext.grid.GridPanel, {
         });
         
         PMS.Notice.List.superclass.initComponent.apply(this, arguments);
+        
+        this.on('rowdblclick', this.onUpdate, this);
     },
     
     onAdd: function(b, e) {
