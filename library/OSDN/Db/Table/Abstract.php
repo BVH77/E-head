@@ -534,9 +534,9 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
     public function fetchAllColumns($where = null, $order = null, array $columns)
     {
         if (!($where instanceof Zend_Db_Table_Select)) {
-            $select = $this->select(self::SELECT_WITHOUT_FROM_PART);
+            $select = $this->select()->from($this->getTableName());
 
-            $select->reset(OSDN_Db_Select::FROM);
+            $select->reset();
 
             if ($where !== null) {
                 $this->_where($select, $where);
@@ -553,6 +553,31 @@ abstract class OSDN_Db_Table_Abstract extends Zend_Db_Table_Abstract
         $select->columns($columns);
 
         return $this->fetchAll($select);
+    }
+
+    public function fetchAllColumn($where = null, $order = null, $column)
+    {
+        if (!($where instanceof Zend_Db_Table_Select)) {
+            $select = $this->select()->from($this->getTableName());
+
+            $select->reset();
+
+            if ($where !== null) {
+                $this->_where($select, $where);
+            }
+
+            if ($order !== null) {
+                $this->_order($select, $order);
+            }
+        } else {
+            $select = $where;
+        }
+
+        $select->from($this->getTableName(), array());
+        $select->columns($column);
+
+        $stmt = $this->_db->query($select);
+        return $stmt->fetchAll(Zend_Db::FETCH_COLUMN);
     }
 
     /**
