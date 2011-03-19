@@ -8,7 +8,7 @@ class OSDN_Acl_Roles
      * @var OSDN_Acl_Table_Roles
      */
     protected $_tableRoles;
-    
+
     public function __construct()
     {
         $this->_tableRoles = new OSDN_Acl_Table_Roles();
@@ -27,12 +27,11 @@ class OSDN_Acl_Roles
     public function fetchRoles()
     {
         $response = new OSDN_Response();
-        $rowset = $this->_tableRoles->fetchAll();
-        $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::OK));
-        $response->rows = $rowset->toArray();
-        return $response;
+        $rowset = $this->_tableRoles->fetchAll()->toArray();
+        $response->setRowset($rowset);
+        return $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::OK));
     }
-    
+
     /**
      * Retrieve the role by id
      *
@@ -42,23 +41,23 @@ class OSDN_Acl_Roles
     public function fetchRole($id)
     {
         $response = new OSDN_Response();
-        
+
         $validate = new OSDN_Validate_Id();
         if (!$validate->isValid($id)) {
             $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'id'));
             return $response;
         }
-        
+
         $row = $this->_tableRoles->findOne($id);
         if (!empty($row)) {
             $row = $row->toArray();
         }
-        
+
         $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::OK));
         $response->setRow($row);
         return $response;
     }
-    
+
     /**
      * Rename role
      *
@@ -74,14 +73,14 @@ class OSDN_Acl_Roles
             $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'id'));
             return $response;
         }
-        
+
         $affectedRows = $this->_tableRoles->updateByPk(array(
             'name'  => $name
         ), $id);
         $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::retrieveAffectedRowStatus($affectedRows)));
         return $response;
     }
-    
+
     /**
      * Create new role
      *
@@ -100,7 +99,7 @@ class OSDN_Acl_Roles
         $response->id = $id;
         return $response;
     }
-    
+
     /**
      * Delete role
      *
@@ -115,12 +114,12 @@ class OSDN_Acl_Roles
             $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'id'));
             return $response;
         }
-        
+
         $affectedRows = $this->_tableRoles->deleteByPk($id);
         $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::retrieveAffectedRowStatus($affectedRows)));
         return $response;
     }
-    
+
     /**
      * Update role by id
      *
@@ -140,14 +139,14 @@ class OSDN_Acl_Roles
             'alias' => array('allowEmpty' => true),
             'id'    => array('id', 'presence' => 'required')
         ), $data);
-        
+
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
             return $response;
         }
-        
+
         unset($data['id']);
-        
+
         $affectedRows = $this->_tableRoles->updateByPk($data, $id);
         $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::retrieveAffectedRowStatus($affectedRows)));
         return $response;
