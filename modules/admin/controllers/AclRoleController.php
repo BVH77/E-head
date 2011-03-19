@@ -16,7 +16,7 @@ class Admin_AclRoleController extends OSDN_Controller_Action
     public function fetchRolesAction()
     {
         $parentId = $this->_getParam('node');
-        
+
         // allowed for future supporting parents
         if ($parentId) {
             return;
@@ -27,15 +27,15 @@ class Admin_AclRoleController extends OSDN_Controller_Action
             $this->_collectErrors($response);
             return;
         }
-        
-        $rows = $response->rows;
+
+        $rows = $response->getRowset();
         foreach ($rows as & $row) {
             $row['text'] = $row['name'];
             unset($row['name']);
         }
         $this->view->assign($rows);
     }
-    
+
     public function renameRoleAction()
     {
         $roleId = $this->_getParam('node');
@@ -46,10 +46,10 @@ class Admin_AclRoleController extends OSDN_Controller_Action
             $this->_collectErrors($response);
             return;
         }
-        
+
         $this->view->success = true;
     }
-    
+
     public function createRoleAction()
     {
         $name = $this->_getParam('name');
@@ -62,7 +62,7 @@ class Admin_AclRoleController extends OSDN_Controller_Action
         $this->view->id = $response->id;
         $this->view->success = true;
     }
-    
+
     public function removeRoleAction()
     {
         $id = $this->_getParam('id');
@@ -72,34 +72,34 @@ class Admin_AclRoleController extends OSDN_Controller_Action
             $this->_collectErrors($response);
             return;
         }
-        
+
         $this->view->success = true;
     }
-    
+
     public function fetchRoleAction()
     {
         $id = $this->_getParam('id');
         $roles = new OSDN_Acl_Roles();
         $response = $roles->fetchRole($id);
         $rowset = array();
-        
+
         $this->view->success = $success = $response->isSuccess();
         if ($success) {
             $rowset = array($response->getRow());
         } else {
             $this->_collectErrors($response);
         }
-        
+
         $this->view->rowset = $rowset;
     }
-    
+
     public function updateRoleAction()
     {
         $roles = new OSDN_Acl_Roles();
         $response = $roles->update($this->_getParam('id'), $this->_getAllParams());
         $success = $response->isSuccess();
         $this->view->rowset = array();
-        
+
         $this->view->success = $success;
         if (!$success) {
             $this->_collectErrors($response);
