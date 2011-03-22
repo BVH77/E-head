@@ -2,18 +2,5 @@
     xlib.username = '<?=$this->username; ?>';
     xlib.rolename = '<?=$this->rolename; ?>';
     xlib.roleId = '<?=$this->roleId; ?>';
+    xlib.measseges = '[<?=join(',', $this->messages); ?>]';
 </script>
-
-<?php if (true === $this->showNotice): ?>
-
-    <script>
-        xlib.onReady(function() {
-            new PMS.Notice.Show({
-                items:[{
-                    html: '<?php echo $this->notice; ?>'
-                }]
-            });
-        });
-    </script>
-
-<?php endif;?>
