@@ -100,6 +100,12 @@ PMS.Menu = function(username, rolename, roleId) {
             handler: function() {
                 new PMS.Reports.Managers();
             }
+        }, {
+            text: 'Клиенты',
+            iconCls: 'work_schd-icon',
+            handler: function() {
+                new PMS.Reports.Customers();
+            }
         }]
 	}, '-', {
 	    text: 'Склад',

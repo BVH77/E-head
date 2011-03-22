@@ -95,6 +95,11 @@ class PMS_Reports
             'end'    => array(array('StringLength', 0, 10), 'allowEmpty' => true)
         ), $params);
 
+        $response->addInputStatus($f);
+        if ($response->hasNotSuccess()) {
+            return $response;
+        }
+
         $select = $this->_tableOrders->getAdapter()->select()
         ->from(array('o' => $this->_tableOrders->getTableName()),
             array(

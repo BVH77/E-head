@@ -15,7 +15,7 @@ class PMS_Notice_Table extends OSDN_Db_Table_Abstract
     public function insert(array $data)
     {
         $data['account_id'] = OSDN_Accounts_Prototype::getId();
-        unset($data['created']);
+        unset($data['date']);
         return parent::insert($data);
     }
 }

@@ -16,3 +16,15 @@
 .edit {
     background-image:url(/images/cog_edit.png) !important;
 }
+.check-box-checked {
+	width: 19px; 
+	height: 16px;
+	background-repeat: no-repeat;
+    background-image:url(/images/checkboxChecked.gif) !important;
+}
+.check-box-unchecked {
+	width: 19px; 
+	height: 16px;
+	background-repeat: no-repeat;
+    background-image:url(/images/checkboxUnchecked.gif) !important;
+}

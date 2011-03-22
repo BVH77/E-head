@@ -101,9 +101,13 @@
         <script src="/js/PMS/Storage/Requests/List.js"/>
         
         <script src="/js/PMS/Reports/Managers.js"/>
+        <script src="/js/PMS/Reports/Customers.js"/>
         
         <script src="/js/PMS/Notice/List.js"/>
-        <script src="/js/PMS/Notice/Show.js"/>
+        <script src="/js/PMS/Notice/Form.js"/>
+        <script src="/js/PMS/Notice/DstPicker.js"/>
+        <script src="/js/PMS/Notice/DstInfo.js"/>
+        <script src="/js/PMS/Notice/Reader.js"/>
         
         <!-- Modules -->
         

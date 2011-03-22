@@ -34,24 +34,18 @@ class IndexController extends OSDN_Controller_Action
             }
         }
 
-        //Use for notifications
+        // Use for notifications. Get unread message id`s.
+        $messages = array();
 
         $acl = OSDN_Accounts_Prototype::getAcl();
-
-        // Show only orders created by this account for managers
         if ($acl->isAllowed(
             OSDN_Acl_Resource_Generator::getInstance()->notice,
             OSDN_Acl_Privilege::VIEW)
         ) {
             $notice = new PMS_Notice();
-            $response = $notice->getNewest();
-            if ($response->hasNotSuccess() || 0 === count($response->getRow())) {
-                return;
-            }
-            $this->view->noticeData = $response->getRow();
-            $this->view->showNotice = true;
-            $this->view->notice = str_replace("\n", "<br />", $this->view->render('index/notice.phtml'));
+            $messages = $notice->getUnreadMessages(OSDN_Accounts_Prototype::getId());
         }
+        $this->view->messages = $messages;
     }
 
     public function changesAction()

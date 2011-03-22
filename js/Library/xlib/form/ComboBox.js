@@ -106,7 +106,7 @@ xlib.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
     initComponent: function() {
     	xlib.form.ComboBox.superclass.initComponent.call(this);
         this.on('beforequery', this.onBeforeQuery);
-		this.store.on('load', function () {
+		this.store.on('load', function() {
 			this._storeLoaded = true;
             this.prepareDefaultValue(this.getStore());
 		}, this, {single: true});
@@ -206,7 +206,8 @@ xlib.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
         if ('object' == Ext.type(s)) {
 			s.setBaseParam('value', v);
         }
-        if (this.preloadRecords && this.preloadOnNullValue && 'remote' === this.mode && !this.isLoaded()) {
+        if (this.preloadRecords && this.preloadOnNullValue 
+        && 'remote' === this.mode && !this.isLoaded()) {
             this.initList();
             var args = arguments;
             this.onBeforeLoad();
@@ -242,7 +243,8 @@ xlib.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
             if (this.valueField) {
                 var r = this.findRecord(this.valueField, v);
                 if (r) {
-                	var tpl = new Ext.XTemplate(this.getDisplayField(), this.displayRawFieldOptions || {});
+                	var tpl = new Ext.XTemplate(this.getDisplayField(), 
+                        this.displayRawFieldOptions || {});
                     text = tpl.apply(r.data);
                 } else if (this.valueNotFoundText !== undefined) {
                     text = this.valueNotFoundText;
@@ -287,7 +289,7 @@ xlib.form.ComboBox = Ext.extend(Ext.form.ComboBox, {
     	var fields = [];
         var names = {};
         if (this.getStore()) {
-            this.getStore().fields.each(function(i){
+            this.getStore().fields.each(function(i) {
                 fields.push({
                     name: i.name,
                     dateFormat: i.dateFormat,

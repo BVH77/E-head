@@ -20,7 +20,7 @@ Ext.onReady(function(){
     Ext.form.Field.prototype.stateful = false;
     Ext.form.FieldSet.prototype.stateful = false;
     
-    Ext.namespace('xlib.date');
+    Ext.ns('xlib.date');
     xlib.date.TIME_FORMAT = 'H:i';
     xlib.date.DATE_FORMAT = 'd-m-Y';
     xlib.date.DATE_WEEK_FORMAT = 'd-m-Y, l';
@@ -90,15 +90,15 @@ Ext.onReady(function(){
             xtype: 'PMS.Storage.Requests.List',
             id: 'PMS.Storage.Requests.List'
         });
-        
-        PMS.System.Layout.getTabPanel().add({
-        	iconCls: 'suppliers-icon',
-            xtype: 'PMS.Notice.List',
-            id: 'PMS.Notice.List'
-        });
 	     */
         
         PMS.System.Layout.doLayout();
+        
+        if (Ext.isArray(xlib.messages) && xlib.messages.length > 0) {
+            Ext.each(xlib.messages, function(item) {
+                new PMS.Notice.Reader().show().loadData(item);
+            });
+        }
     });
     
 });
