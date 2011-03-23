@@ -1,6 +1,6 @@
 Ext.ns('PMS.Notice');
 
-PMS.Notice.Types = [ ['объявление'], ['уведомление'], ['приказ'] ];
+PMS.Notice.Types = [ ['объявление'], ['приказ'] ];
 
 PMS.Notice.Form = Ext.extend(xlib.form.FormPanel, {
 

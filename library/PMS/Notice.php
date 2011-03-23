@@ -4,7 +4,7 @@ class PMS_Notice
 {
 	protected $_table;
 
-	static $TYPES = array('объявление', 'уведомление', 'приказ');
+	static $TYPES = array('объявление', 'приказ');
 
     public function __construct()
     {
