@@ -31,8 +31,11 @@
         <!-- Ext Plugins -->
         
         <!-- Ext ux -->
-        <style href="/js/Library/extjs/ux/UploadDialog/Ext.ux.UploadDialog.css"/>
-        <script src="/js/Library/extjs/ux/UploadDialog/Ext.ux.UploadDialog.js"/>
+        <style href="/js/Library/extjs/ux/UploadDialog/UploadDialog.css"/>
+        <script src="/js/Library/extjs/ux/UploadDialog/UploadDialog.js"/>
+        
+        <style href="/js/Library/extjs/ux/form/FileUploadField.css"/>
+        <script src="/js/Library/extjs/ux/form/FileUploadField.js"/>
         <!-- Ext ux -->
         
 		<!-- ================ xlib ================ -->
@@ -108,6 +111,9 @@
         <script src="/js/PMS/Notice/DstPicker.js"/>
         <script src="/js/PMS/Notice/DstInfo.js"/>
         <script src="/js/PMS/Notice/Reader.js"/>
+        
+        <script src="/js/PMS/Staff/List.js"/>
+        <script src="/js/PMS/Staff/Form.js"/>
         
         <!-- Modules -->
         

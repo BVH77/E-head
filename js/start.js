@@ -86,11 +86,11 @@ Ext.onReady(function(){
         
         /*
         PMS.System.Layout.getTabPanel().add({
-        	iconCls: 'suppliers-icon',
-            xtype: 'PMS.Storage.Requests.List',
-            id: 'PMS.Storage.Requests.List'
+        	iconCls: 'customers-icon',
+                xtype: 'PMS.Staff.List',
+                id: 'PMS.Staff.List'
         });
-	     */
+        */
         
         PMS.System.Layout.doLayout();
         

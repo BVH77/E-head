@@ -137,7 +137,13 @@ PMS.Menu = function(username, rolename, roleId) {
 	}, {
 	    text: 'Кадры',
 	    iconCls: 'customers-icon',
-        handler: PMS.menuMessage 
+        handler: acl.isView('staff') ? function() {
+            PMS.System.Layout.getTabPanel().add({
+                iconCls: 'customers-icon',
+                xtype: 'PMS.Staff.List',
+                id: 'PMS.Staff.List'
+            });
+        } : PMS.menuMessage 
 	}, {
 	    text: 'Приказы и объявления',
 	    iconCls: 'work_schd-icon',
