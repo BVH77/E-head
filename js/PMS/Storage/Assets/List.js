@@ -2,7 +2,7 @@ Ext.ns('PMS.Storage.Assets');
 
 PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
 
-    title: 'Список ТМЦ из категории',
+    title: true,
     
     baseTitle: 'Список ТМЦ из категории ',
 
@@ -144,8 +144,12 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             });
             
         }
-        
+     
         PMS.Storage.Assets.List.superclass.initComponent.apply(this, arguments);
+        
+        if (!this.title) {
+            this.setTitle(this.baseTitle);
+        }
     },
     
     onAdd: function(b, e) {
