@@ -120,10 +120,11 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
             }, {
                 header: 'Резюме',
                 dataIndex: 'cv_file',
-                width: 160
-//                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-//                    return Ext.util.Format.number(value, '0,000.00').replace(/,/g, ' ');
-//                }
+                width: 160,
+                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                    return Ext.isEmpty(value) ? '' 
+                    : '<a href="/files/' + value + '" target="_blank">' + value + '</a>';
+                }
             }]
         });
         
