@@ -15,10 +15,12 @@ class PMS_Staff
     {
         $response = new OSDN_Response();
 
-        $currentAccountId = OSDN_Accounts_Prototype::getId();
-
         $select = $this->_table->getAdapter()->select();
         $select->from($this->_table->getTableName());
+
+        if (isset($params['categoryId']) && intval($params['categoryId']) > 0) {
+            $select->where('category_id = ?', intval($params['categoryId']));
+        }
 
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select);
         $plugin->parse($params);
@@ -55,9 +57,11 @@ class PMS_Staff
     public function add(array $params)
     {
         $f = new OSDN_Filter_Input(array(
+            'category_id'   => 'Int',
             'pay_rate'      => 'Int',
             '*'             => 'StringTrim'
         ), array(
+            'category_id'   => array('Id', 'presence' => 'required'),
             'pay_period'    => array(array('InArray', self::$PAY_PERIODS), 'presence' => 'required'),
             'name'          => array(array('StringLength', 0, 250), 'presence' => 'required'),
             'function'      => array(array('StringLength', 0, 250), 'presence' => 'required'),
@@ -109,12 +113,16 @@ class PMS_Staff
 
     public function update(array $params)
     {
+        unset($params['category_id']);
+
         $f = new OSDN_Filter_Input(array(
             'id'            => 'Int',
+            //'category_id'   => 'Int',
             'pay_rate'      => 'Int',
             '*'             => 'StringTrim'
         ), array(
             'id'            => array('Id', 'presence' => 'required'),
+            //'category_id'   => array('Id', 'presence' => 'required'),
             'pay_period'    => array(array('InArray', self::$PAY_PERIODS), 'presence' => 'required'),
             'name'          => array(array('StringLength', 0, 250), 'presence' => 'required'),
             'function'      => array(array('StringLength', 0, 250), 'presence' => 'required'),
@@ -161,7 +169,6 @@ class PMS_Staff
                 return $response->addStatus(new PMS_Status(PMS_Status::FAILURE));
             }
         }
-
         $rows = $this->_table->updateByPk($f->getData(), $f->id);
         $status = PMS_Status::retrieveAffectedRowStatus($rows);
         return $response->addStatus(new PMS_Status($status));

@@ -140,8 +140,8 @@ PMS.Menu = function(username, rolename, roleId) {
         handler: acl.isView('staff') ? function() {
             PMS.System.Layout.getTabPanel().add({
                 iconCls: 'customers-icon',
-                xtype: 'PMS.Staff.List',
-                id: 'PMS.Staff.List'
+                xtype: 'PMS.Staff.Layout',
+                id: 'PMS.Staff.Layout'
             });
         } : PMS.menuMessage 
 	}, {

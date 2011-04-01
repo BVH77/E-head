@@ -20,7 +20,7 @@ class PMS_Storage_Assets
             $tableAC = new PMS_Storage_Assets_Categories_Table();
             $select->join(array('c' => $tableAC->getTableName()),
                 $tableAC->getAdapter()->quoteInto(
-                    'c.asset_id = a.id AND c.category_id = ?', $params['categoryId']
+                    'c.asset_id = a.id AND c.category_id = ?', intval($params['categoryId'])
                 ),
             null);
         }

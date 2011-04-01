@@ -8,7 +8,9 @@ PMS.Staff.PayPeriods = [
 
 PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
 
-    title:      'Кадры',
+    title: true,
+    
+    baseTitle:  'Список сотрудников из категории ',
     
     listURL:    link('staff', 'index', 'get-list'),
     
@@ -16,9 +18,11 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
     
     loadMask: true,
 
-    permissions: acl.isView('staff'),
+    permissions: acl.isUpdate('staff'),
 
     defaultSortable: true,
+    
+    categoryId: null,
     
     initComponent: function() {
         
@@ -138,22 +142,22 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.plugins = [actions, this.filtersPlugin];
 
+        this.addBtn = new Ext.Toolbar.Button({
+            text: 'Добавить',
+            iconCls: 'add',
+            hidden: !this.permissions,
+            tooltip: 'Добавить',
+            handler: this.onAdd,
+            scope: this
+        });
+        
         this.tbar = new Ext.Toolbar({
-            items: [new Ext.Toolbar.Button({
-                    text: 'Добавить',
-                    iconCls: 'add',
-                    hidden: !this.permissions,
-                    tooltip: 'Добавить',
-                    handler: this.onAdd,
-                    scope: this
-                }), ' ', this.filtersPlugin.getSearchField({width: 400}), ' '
-            ]//,
-//            plugins: [new xlib.Legend.Plugin({
-//                items: [{
-//                    color: '#99FF99',
-//                    text: 'Новые'
-//                }]
-//            })]
+            items: [
+                this.addBtn, 
+                ' ', 
+                this.filtersPlugin.getSearchField({width: 400}), 
+                ' '
+            ]
         });
         
         this.bbar = new xlib.PagingToolbar({
@@ -163,13 +167,20 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
         
         PMS.Staff.List.superclass.initComponent.apply(this, arguments);
         
-        this.on('rowdblclick', this.onUpdate, this);
+        if (this.permissions) {
+            this.on('rowdblclick', this.onUpdate, this);
+        }
         
+        if (!this.title) {
+            this.setTitle(this.baseTitle);
+        }
     },
     
     onAdd: function(b, e) {
         
-        var formPanel = new PMS.Staff.Form();
+        var formPanel = new PMS.Staff.Form({
+            categoryId: this.categoryId
+        });
         
         formPanel.getForm().on('saved', function() {
             this.getStore().reload();
@@ -182,7 +193,8 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
         var id = parseInt(record.get('id'));
         
         var formPanel = new PMS.Staff.Form({
-            itemId: id
+            itemId: id,
+            categoryId: this.categoryId
         });
         
         formPanel.getForm().on('saved', function() {
@@ -219,6 +231,7 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
     onHR: function(g, rowIndex) {
         var record = g.getStore().getAt(rowIndex);
         var id = parseInt(record.get('id'));
+        xlib.Msg.info('Функционал в разработке');
         //new PMS.Notice.DstInfo({itemId: id}).getWindow().show();
     },
     
@@ -226,6 +239,14 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
         var record = g.getStore().getAt(rowIndex);
         var id = parseInt(record.get('id'));
         //new PMS.Notice.DstInfo({itemId: id}).getWindow().show();
+    },
+    
+    loadList: function(categoryId, categoryName) {
+        this.addBtn.setDisabled(!(categoryId > 0));
+        this.setTitle(this.baseTitle + '"' + (categoryName || '') + '"');
+        this.categoryId = categoryId;
+        this.getStore().setBaseParam('categoryId', categoryId);
+        this.getStore().load();
     }
 });
 

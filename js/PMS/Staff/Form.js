@@ -4,6 +4,8 @@ PMS.Staff.Form = Ext.extend(xlib.form.FormPanel, {
 
     itemId: null,
     
+    categoryId: null,
+    
     itemURL:    link('staff', 'index', 'get'),
     
     addURL:     link('staff', 'index', 'add'),
@@ -133,7 +135,8 @@ PMS.Staff.Form = Ext.extend(xlib.form.FormPanel, {
                     
                     this.getForm().submit({
                         params: {
-                            id: this.itemId
+                            id: this.itemId,
+                            category_id: this.categoryId
                         },
                         url: !this.itemId ? this.addURL : this.updateURL,
                         success: function(form, options) {

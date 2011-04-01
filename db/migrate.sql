@@ -31,15 +31,27 @@ UNIQUE `notice_account` ( `notice_id`, `account_id` )
 ALTER TABLE `notice_dst` ADD FOREIGN KEY ( `notice_id` ) REFERENCES `notice` (`id`) ON DELETE CASCADE ;
 ALTER TABLE `notice_dst` ADD FOREIGN KEY ( `account_id` ) REFERENCES `accounts` (`id`) ON DELETE CASCADE ;
 
+-- Updated on quarant, kovshilov
+
 CREATE TABLE `staff` (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`category_id` INT UNSIGNED NOT NULL ,
 `name` VARCHAR( 250 ) NOT NULL ,
 `function` VARCHAR( 250 ) NOT NULL ,
 `hire_date` DATE NOT NULL ,
 `pay_period` ENUM( 'hour', 'day', 'month' ) NOT NULL ,
 `pay_rate` INT UNSIGNED NOT NULL ,
-`cv_file` VARCHAR( 250 ) NULL
+`cv_file` VARCHAR( 250 ) NULL,
+INDEX ( category_id )
 ) ENGINE = InnoDB ;
 
+CREATE TABLE `staff_categories` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`name` VARCHAR( 250 ) NOT NULL ,
+`parent_id` INT UNSIGNED NULL DEFAULT NULL
+) ENGINE = InnoDB ;
 
--- Updated on quarant, kovshilov
+ALTER TABLE `staff` ADD FOREIGN KEY ( `category_id` ) REFERENCES `staff_categories` (`id`) ON DELETE RESTRICT ;
+
+
+-- Updated on quarant
