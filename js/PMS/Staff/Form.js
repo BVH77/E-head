@@ -18,12 +18,6 @@ PMS.Staff.Form = Ext.extend(xlib.form.FormPanel, {
     
     markFieldsDirty: false,
     
-//    labelWidth: 70,
-    
-//    defaults: {
-//        disabledClass: ''
-//    },
-    
     permissions: acl.isUpdate('staff'),
     
     initComponent: function() {
@@ -96,6 +90,34 @@ PMS.Staff.Form = Ext.extend(xlib.form.FormPanel, {
             buttonCfg: {
                 iconCls: 'x-form-file-btn-icon'
             }
+        }, {
+            layout: 'column',
+            border: false,
+            columns: 3,
+            defaults: {
+                border: false,
+                layout: 'form',
+                anchor: '100%'
+            },
+            items: [{
+                columnWidth: .85,
+                items: [{
+                    xtype: 'displayfield',
+                    fieldLabel: 'Категория',
+                    name: 'category_name',
+                    allowBlank: true,
+                    submitValue: false
+                }]
+            }, {
+                columnWidth: .15,
+                items: [{
+                    text: 'Сменить категорию',
+                    xtype: 'button',
+                    disabled: !this.permissions,
+                    handler: this.onChangeCategory,
+                    scope: this
+                }]
+            }]
         }];
         
         PMS.Staff.Form.superclass.initComponent.apply(this, arguments);
@@ -121,7 +143,7 @@ PMS.Staff.Form = Ext.extend(xlib.form.FormPanel, {
             resizable: false,
             hidden: false,
             width: 750,
-            height: 178,
+            height: 200,
             modal: true,
             items: [this],
             buttons: [{
@@ -163,6 +185,72 @@ PMS.Staff.Form = Ext.extend(xlib.form.FormPanel, {
         });
         
         return w;
+    },
+    
+    onChangeCategory: function() {
+        
+        var self = this;
+        
+        var changeCategory = function(categoryId) {
+            
+            if (!(parseInt(categoryId) > 0)) {
+                return;
+            }
+            
+            Ext.Ajax.request({
+                url: link('staff', 'index', 'change-category'),
+                params: {
+                    id: self.itemId,
+                    category_id: categoryId
+                },
+                callback: function() {
+                    tw.close();
+                    self.getForm().load({
+                        url: self.itemURL,
+                        params: {
+                            id: self.itemId
+                        }
+                    });
+                }
+            });
+        }
+        
+        var tree = new PMS.Staff.Tree({
+            border: false,
+            title: false,
+            header: false,
+            readOnly: true,
+            listeners: {
+                beforedblclick: function(node, e) {
+                    e.stopEvent();
+                    changeCategory(node.id);
+                    return false;
+                }
+            }
+        })
+        
+        var tw = new Ext.Window({
+            title: 'Категории',
+            resizable: false,
+            hidden: false,
+            layout: 'fit',
+            width: 300,
+            height: 400,
+            modal: true,
+            items: [tree],
+            buttons: [{
+                text: 'Выбрать',
+                handler: function() {
+                    changeCategory(tree.getSelectionModel().getSelectedNode().id);
+                },
+                scope: this
+            }, {
+                text: 'Отмена',
+                handler: function() {
+                    tw.close();
+                }
+            }]
+        });
     }
 });
 

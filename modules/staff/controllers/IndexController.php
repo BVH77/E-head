@@ -21,6 +21,7 @@ class Staff_IndexController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'change-category');
     }
 
 	public function getListAction()
@@ -75,5 +76,18 @@ class Staff_IndexController extends OSDN_Controller_Action
     	} else {
     	   $this->_collectErrors($response);
     	}
+    }
+
+    public function changeCategoryAction()
+    {
+        $response = $this->_class->changeCategory(
+            $this->_getParam('id'),
+            $this->_getParam('category_id')
+        );
+        if ($response->isSuccess()) {
+            $this->view->success = true;
+        } else {
+           $this->_collectErrors($response);
+        }
     }
 }

@@ -46,11 +46,17 @@ class PMS_Staff
             return $response->addStatus(new PMS_Status(
                 PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
-        $row = $this->_table->findOne($id);
+        $select = $this->_table->getAdapter()->select();
+        $select->from(array('s' => $this->_table->getTableName()));
+        $select->join(array('c' => 'staff_categories'), 's.category_id=c.id',
+                      array('category_name' => 'c.name'));
+        $select->where('s.id = ?', $id);
+
+        $row = $select->query()->fetchAll();
         if (!$row) {
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
-        $response->setRow($row->toArray());
+        $response->setRow($row[0]);
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
@@ -199,5 +205,22 @@ class PMS_Staff
             unlink(FILES_DIR . DIRECTORY_SEPARATOR . $row['cv_file']);
         }
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
+    }
+
+    public function changeCategory($id, $categoryId)
+    {
+        $id = intval($id);
+        $categoryId = intval($categoryId);
+
+        $response = new OSDN_Response();
+        if (0 == $id || 0 == $categoryId) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT));
+        }
+
+        $rows = $this->_table->updateByPk(array('category_id' => $categoryId), $id);
+        return $response->addStatus(new PMS_Status(
+            PMS_Status::retrieveAffectedRowStatus($rows)
+        ));
     }
 }
