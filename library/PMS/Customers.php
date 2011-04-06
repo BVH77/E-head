@@ -3,25 +3,25 @@
 class PMS_Customers
 {
 	protected $_table;
-	
+
     public function __construct()
     {
         $this->_table = new PMS_Customers_Table_Customers();
     }
-    
+
     public function add(array $params)
     {
         $f = new OSDN_Filter_Input(array(
         ), array(
             'name' => array(array('StringLength', 1, 255), 'presence' => 'required')
         ), $params);
-        
+
         $response = new OSDN_Response();
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
             return $response;
         }
-        
+
         try {
             $id = $this->_table->insert($f->getData());
             $status = $id ? PMS_Status::OK : PMS_Status::FAILURE;
@@ -34,7 +34,7 @@ class PMS_Customers
         $response->id = $id;
         return $response;
     }
-    
+
     public function update(array $params)
     {
         $f = new OSDN_Filter_Input(array(
@@ -48,7 +48,7 @@ class PMS_Customers
         if ($response->hasNotSuccess()) {
             return $response;
         }
-        
+
         try {
             $updatedRows = $this->_table->updateByPk($f->getData(), $f->getEscaped('id'));
 	        if ($updatedRows > 0) {
@@ -59,14 +59,15 @@ class PMS_Customers
 	            $status = PMS_Status::FAILURE;
 	        }
         } catch (Exception $e) {
-            $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
-            return $response;
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
 
-        $response->addStatus(new PMS_Status($status));
-        return $response;
+        return $response->addStatus(new PMS_Status($status));
     }
-    
+
     public function delete($id)
     {
         $response = new OSDN_Response();
@@ -88,7 +89,7 @@ class PMS_Customers
         }
         return $response->addStatus(new PMS_Status($status));
     }
-    
+
     public function get($id)
     {
         $response = new OSDN_Response();
@@ -109,11 +110,11 @@ class PMS_Customers
             }
             $status = PMS_Status::DATABASE_ERROR;
         }
-        
+
         $response->addStatus(new PMS_Status($status));
         return $response;
     }
-    
+
     /**
      * Retrieve orders
      *
@@ -135,7 +136,7 @@ class PMS_Customers
      *  );</code>
      *
      * @return OSDN_Response
-     * Details of contain data 
+     * Details of contain data
      * <code>
      *      rows array  the rows collection
      *      total int   the total count of rows
@@ -161,12 +162,12 @@ class PMS_Customers
         }
         return $response->addStatus(new PMS_Status($status));
     }
-    
+
     // ----------------------- Private methods ---------------------------------
-    
+
     /**
      * Check subject if assigned to orders
-     * 
+     *
      * @param $id int
      * @return bool
      */
@@ -174,6 +175,6 @@ class PMS_Customers
     {
         $ordersTable = new PMS_Orders_Table_Orders();
         $row = $ordersTable->fetchRow(array('customer_id = ?' => intval($id)));
-        return $row === null; 
+        return $row === null;
     }
 }
