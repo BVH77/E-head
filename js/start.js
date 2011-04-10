@@ -87,8 +87,8 @@ Ext.onReady(function(){
         /*
         PMS.System.Layout.getTabPanel().add({
         	iconCls: 'customers-icon',
-                xtype: 'PMS.Staff.List',
-                id: 'PMS.Staff.List'
+                xtype: 'PMS.Staff.Layout',
+                id: 'PMS.Staff.Layout'
         });
         */
         

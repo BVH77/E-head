@@ -7,9 +7,7 @@ xlib.grid.Actions = function(config){
 
 Ext.extend(xlib.grid.Actions, Ext.util.Observable, {
     
-    rowConfig: {
-        actionsType: 'context'
-    },
+    rowConfig: {},
     
     init : function(grid) {
 
@@ -24,52 +22,6 @@ Ext.extend(xlib.grid.Actions, Ext.util.Observable, {
             rowcontextmenu: this.onRowContextMenu,
             scope: this
         });
-        
-        if (this.rowConfig.actionsType == 'context' && !Ext.isOpera) {
-            return;
-        }
-        
-        var actions = [];
-        var handlers = {};
-
-        if (!Ext.isArray(this.rowConfig.items)) {
-            this.rowConfig.items = [this.rowConfig.items];
-        }
-        
-        Ext.each(this.rowConfig.items, function(item) {
-            if ('function' == Ext.type(item) || item.hidden || item.disabled) {
-                return;
-            }
-            
-            var isSeparator = item instanceof Ext.menu.Separator || item == '-';
-            if (item && !isSeparator) {
-                actions.push({iconCls: item.iconCls, qtip: item.text});
-                handlers[item.iconCls] = item.handler || Ext.emptyFn;
-            }
-        }, this);
-        
-        if (0 == actions.length) {
-            return;
-        }
-        
-        var rowAction = new Ext.ux.grid.RowActions({
-            header: this.rowConfig.header || '&nbsp;',
-            autoWidth: this.rowConfig.autoWidth,
-            actions: actions,
-            listeners: {
-                'action': function(grid, record, action, row, col) {
-                    if (handlers[action]) {
-                        handlers[action](grid, row);
-                    }
-                }
-            }
-        });
-        
-        var cm = grid.getColumnModel().config;
-        cm = cm.concat(rowAction);
-        grid.getColumnModel().setConfig(cm);
-        
-        rowAction.init(grid);
     },
 
     onRowContextMenu: function (g, rowIndex, e) {

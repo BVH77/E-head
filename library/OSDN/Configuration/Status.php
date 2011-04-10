@@ -35,7 +35,7 @@ class OSDN_Configuration_Status extends OSDN_Response_Status_Storage_Abstract
         self::DELETE_FAILED                 => 'Deleting failed',
         
         self::UPDATED                       => 'Updated successfully',
-        self::UPDATED_FAILURE               => 'Update failed',
+        self::UPDATE_FAILED               => 'Update failed',
         self::UPDATED_NO_ONE_ROWS_UPDATED   => 'No rows were updated'
     );
 }

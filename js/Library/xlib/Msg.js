@@ -19,7 +19,7 @@ xlib.Msg = {
     
     confirm: function(msg, fn, scope){
         msg = msg || 'Вы уверены?';
-        Ext.Msg.confirm('Подтверждение', msg, function(b){
+        Ext.Msg.confirm('Подтверждение', msg, function(b) {
             
             if (b == 'yes' && typeof fn === 'function') {
                 fn.createDelegate(scope)();

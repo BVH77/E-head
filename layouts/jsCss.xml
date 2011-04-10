@@ -112,6 +112,10 @@
         <script src="/js/PMS/Notice/DstInfo.js"/>
         <script src="/js/PMS/Notice/Reader.js"/>
         
+        <script src="/js/PMS/Staff/HR/Info.js"/>
+        <script src="/js/PMS/Staff/HR/Table.js"/>
+        <script src="/js/PMS/Staff/HR/Layout.js"/>
+        
         <script src="/js/PMS/Staff/Tree.js"/>
         <script src="/js/PMS/Staff/List.js"/>
         <script src="/js/PMS/Staff/Form.js"/>

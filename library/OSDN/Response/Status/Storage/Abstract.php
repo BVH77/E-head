@@ -31,7 +31,7 @@ abstract class OSDN_Response_Status_Storage_Abstract implements OSDN_Response_St
     const DELETE_FAILED             = -20;
     
     const UPDATED                   = 30;
-    const UPDATED_FAILURE           = -31;
+    const UPDATE_FAILED           = -31;
     const UPDATED_NO_ONE_ROWS_UPDATED = 31;
     const NO_ONE_ROWS_AFFECTED      = 32;
     
@@ -98,7 +98,7 @@ abstract class OSDN_Response_Status_Storage_Abstract implements OSDN_Response_St
         
         
         self::UPDATED                       => 'Complete successfully.',
-        self::UPDATED_FAILURE               => 'Update failed.',
+        self::UPDATE_FAILED               => 'Update failed.',
         self::UPDATED_NO_ONE_ROWS_UPDATED   => 'Complete successfully. No one rows updated.',
         
         self::DELETED                       => 'Deleted successfully.',

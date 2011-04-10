@@ -53,5 +53,19 @@ CREATE TABLE `staff_categories` (
 
 ALTER TABLE `staff` ADD FOREIGN KEY ( `category_id` ) REFERENCES `staff_categories` (`id`) ON DELETE RESTRICT ;
 
+CREATE TABLE `staff_hr` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`staff_id` INT UNSIGNED NOT NULL ,
+`date` DATE NOT NULL ,
+`value` INT UNSIGNED NOT NULL ,
+`pay_period` ENUM( 'hour', 'day', 'month' ) NOT NULL ,
+`pay_rate` INT UNSIGNED NOT NULL ,
+INDEX ( `staff_id` ),
+INDEX ( `date` ),
+UNIQUE `hr` ( `staff_id`, `date` ) 
+) ENGINE = InnoDB ;
+
+ALTER TABLE `staff_hr` ADD FOREIGN KEY ( `staff_id` ) REFERENCES `staff` (`id`) ON DELETE CASCADE ;
+
 
 -- Updated on quarant

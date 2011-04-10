@@ -35,7 +35,6 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.ds = new Ext.data.JsonStore({
             url: this.listURL,
-            autoLoad: true,
             remoteSort: true,
             root: 'data',
             sortInfo: {
@@ -231,8 +230,7 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
     onHR: function(g, rowIndex) {
         var record = g.getStore().getAt(rowIndex);
         var id = parseInt(record.get('id'));
-        xlib.Msg.info('Функционал в разработке');
-        //new PMS.Notice.DstInfo({itemId: id}).getWindow().show();
+        new PMS.Staff.HR.Layout({personId: id});
     },
     
     onReport: function(g, rowIndex) {
