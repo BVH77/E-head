@@ -2,7 +2,7 @@
 
 /**
  * Reports conroller
- * @version $Id: IndexController.php 10173 2009-07-03 13:28:06Z uerter $
+ * @version $Id: $
  */
 class Orders_ReportController extends OSDN_Controller_Action
 {
@@ -78,6 +78,17 @@ class Orders_ReportController extends OSDN_Controller_Action
     	if ($response->isSuccess()) {
 	    	$this->view->data = $response->data;
 	        $this->view->content = $this->view->render('report/managers.phtml');
+    	} else {
+    		$this->_collectErrors($response);
+    	}
+    }
+
+    public function staffAction()
+    {
+    	$response = $this->_reports->generateStaff($this->_getAllParams());
+    	if ($response->isSuccess()) {
+	    	$this->view->data = $response->data;
+	        $this->view->content = $this->view->render('report/staff.phtml');
     	} else {
     		$this->_collectErrors($response);
     	}

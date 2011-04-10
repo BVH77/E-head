@@ -100,6 +100,12 @@ PMS.Menu = function(username, rolename, roleId) {
             handler: function() {
                 new PMS.Reports.Managers();
             }
+        }, {
+            text: 'Кадры',
+            iconCls: 'work_schd-icon',
+            handler: acl.isUpdate('staff') ? function() {
+                new PMS.Reports.Staff();
+            } : PMS.menuMessage
 //        }, {
 //            text: 'Клиенты',
 //            iconCls: 'work_schd-icon',
