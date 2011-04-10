@@ -26,11 +26,15 @@ class PMS_Reports
     	$date = date_create();
     	$select = $this->_tableOrders->getAdapter()->select();
     	$select->from(array('o' => $this->_tableOrders->getTableName()),
-    	               array('id', 'address'));
+            array('id', 'address'));
     	$select->joinLeft(array('a' => $this->_tableAccounts->getTableName()),
-                      'o.creator_id=a.id', array('creator_name' => 'name'));
+            'o.creator_id=a.id', array(
+                'creator_name' => new Zend_Db_Expr('CONCAT(a.name, ", тел. ", a.phone)')
+            )
+        );
     	$select->joinLeft(array('c' => $this->_tableCustomers->getTableName()),
-                      'o.customer_id=c.id', array('customer_name' => 'name'));
+            'o.customer_id=c.id', array('customer_name' => 'name')
+        );
     	$select->where($type . '_start_planned <= ?', date_format($date, 'Y-m-d'));
     	$select->where($type . '_end_fact IS NULL');
     	$select->where('success_date_fact IS NULL');
@@ -38,6 +42,9 @@ class PMS_Reports
     	try {
             $orders = $select->query()->fetchAll();
     	} catch (Exception $e) {
+    	   if (OSDN_DEBUG) {
+                throw $e;
+            }
     		return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
     	}
     	$response->data = array(
