@@ -23,7 +23,9 @@
         <td><b>Отработанных часов</b></td>
         <td><b>Сумма оплаты (руб.)</b></td>
     </tr>
-        <?php foreach ($this->data['rows'] as $row) :?>
+        <?php
+        $grandTotal = 0;
+        foreach ($this->data['rows'] as $row) :?>
             <tr>
                 <td><?=$row['name']?></td>
                 <td><?=$row['function']?></td>
@@ -32,7 +34,12 @@
                 <td align="right"><?=$row['hours_total']?></td>
                 <td align="right"><?=$row['summ_total']?>,00</td>
             </tr>
-        <?php endforeach;?>
+        <?php
+        $grandTotal = $grandTotal + $row['summ_total'];
+        endforeach;?>
+    <tr><td colspan="6" align="right">
+        Итого к выплате: <b><?=$grandTotal?>,00</b>
+    </td></tr>
 </table>
 
 </center>
