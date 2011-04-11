@@ -31,7 +31,7 @@ class PMS_Staff_Reports
             array(
                 'hours_total'   => new Zend_Db_Expr('SUM(value)'),
                 'summ_total'    => new Zend_Db_Expr('IF(s.pay_period = "month",
-                    s.pay_rate,SUM(value*hr.pay_rate))'),
+                    s.pay_rate,SUM(value*s.pay_rate))'),
             )
         )
         ->joinLeft(array('s' => $this->_tableStaff->getTableName()),
