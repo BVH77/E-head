@@ -33,9 +33,6 @@ require_once 'Zend/Loader/Autoloader.php';
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->setFallbackAutoloader(true);
 
-//require_once 'Base/src/base.php';
-//$autoloader->pushAutoloader(array('ezcBase', 'autoload'), 'ezc');
-
 Zend_Session::start();
 
 /**
