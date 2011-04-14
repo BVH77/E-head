@@ -311,7 +311,7 @@ CREATE TABLE IF NOT EXISTS `acl_resources` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`,`parent_id`),
   KEY `fk_parent_id` (`parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=153 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=154 ;
 
 -- 
 -- Дамп данных таблицы `acl_resources`
@@ -342,7 +342,8 @@ INSERT INTO `acl_resources` (`id`, `name`, `title`, `parent_id`) VALUES (50, 'ad
 (149, 'start_fact', 'Начало (факт)', 131),
 (150, 'hideproduction', 'Скрывать заказы без производства', 123),
 (151, 'hidemount', 'Скрывать заказы без монтажа', 123),
-(152, 'storage', 'Склад', NULL);
+(152, 'storage', 'Склад', NULL),
+(153, 'notice', 'Приказы и объявления', NULL);
 
 -- --------------------------------------------------------
 
@@ -629,54 +630,103 @@ CREATE TABLE `storage_assets_categories` (
     UNIQUE `pair` ( `asset_id` , `category_id` )
 ) ENGINE = InnoDB;
 
+--
+-- Структура таблицы `notice`
+--
+
+CREATE TABLE `notice` (
+    `id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `type` ENUM( 'объявление', 'приказ' ) NOT NULL ,
+    `is_personal` TINYINT( 1 ) NOT NULL DEFAULT '0' ,
+    `text` TEXT NOT NULL ,
+    `account_id` INT( 10 ) UNSIGNED NOT NULL ,
+    `date` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    INDEX ( `account_id` )
+) ENGINE = InnoDB;
+
+--
+-- Структура таблицы `notice_dst`
+--
+
+CREATE TABLE `notice_dst` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `notice_id` INT UNSIGNED NOT NULL ,
+    `account_id` INT UNSIGNED NOT NULL ,
+    `date` TIMESTAMP NULL DEFAULT NULL ,
+    INDEX ( `notice_id` ) ,
+    INDEX ( `account_id` ),
+    UNIQUE `notice_account` ( `notice_id`, `account_id` ) 
+) ENGINE = InnoDB ;
+
+--
+-- Структура таблицы `staff`
+--
+
+CREATE TABLE `staff` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `category_id` INT UNSIGNED NOT NULL ,
+    `name` VARCHAR( 250 ) NOT NULL ,
+    `function` VARCHAR( 250 ) NOT NULL ,
+    `hire_date` DATE NOT NULL ,
+    `pay_period` ENUM( 'hour', 'day', 'month' ) NOT NULL ,
+    `pay_rate` INT UNSIGNED NOT NULL ,
+    `cv_file` VARCHAR( 250 ) NULL,
+    INDEX ( category_id )
+) ENGINE = InnoDB ;
+
+--
+-- Структура таблицы `staff_categories`
+--
+
+CREATE TABLE `staff_categories` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `name` VARCHAR( 250 ) NOT NULL ,
+    `parent_id` INT UNSIGNED NULL DEFAULT NULL
+) ENGINE = InnoDB ;
+
+--
+-- Структура таблицы `staff_hr`
+--
+
+CREATE TABLE `staff_hr` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `staff_id` INT UNSIGNED NOT NULL ,
+    `date` DATE NOT NULL ,
+    `value` INT UNSIGNED NOT NULL ,
+    `pay_period` ENUM( 'hour', 'day', 'month' ) NOT NULL ,
+    `pay_rate` INT UNSIGNED NOT NULL ,
+    INDEX ( `staff_id` ),
+    INDEX ( `date` ),
+    UNIQUE `hr` ( `staff_id`, `date` ) 
+) ENGINE = InnoDB ;
+
 -- 
 -- Constraints for dumped tables
 -- 
 
--- 
--- Constraints for table `accounts`
--- 
 ALTER TABLE `accounts`
   ADD CONSTRAINT `accounts_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `acl_roles` (`id`);
 
--- 
--- Constraints for table `acl_permissions`
--- 
 ALTER TABLE `acl_permissions`
   ADD CONSTRAINT `acl_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `acl_roles` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `acl_permissions_ibfk_2` FOREIGN KEY (`resource_id`) REFERENCES `acl_resources` (`id`) ON DELETE CASCADE;
 
--- 
--- Constraints for table `acl_resources`
--- 
 ALTER TABLE `acl_resources`
   ADD CONSTRAINT `acl_resources_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `acl_resources` (`id`) ON DELETE CASCADE;
 
--- 
--- Constraints for table `files`
--- 
 ALTER TABLE `files`
   ADD CONSTRAINT `files_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
-
--- 
--- Constraints for table `notes`
--- 
+ 
 ALTER TABLE `notes`
   ADD CONSTRAINT `notes_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
-
--- 
--- Constraints for table `orders`
--- 
+ 
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`creator_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `accounts` (`id`),
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`);
 
--- 
--- Constraints for table `orders_suppliers`
--- 
 ALTER TABLE `orders_suppliers`
-  ADD CONSTRAINT `orders_suppliers_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `orders_suppliers_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE RESTRICT,
   ADD CONSTRAINT `orders_suppliers_ibfk_2` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE;
 
 ALTER TABLE `storage_requests` 
@@ -690,5 +740,20 @@ ALTER TABLE `storage_assets_categories`
     
 ALTER TABLE `storage_assets_categories` 
     ADD FOREIGN KEY ( `category_id` ) REFERENCES `storage_categories` (`id`) ON DELETE CASCADE ;
+
+ALTER TABLE `notice` 
+    ADD FOREIGN KEY ( `account_id` ) REFERENCES `accounts` (`id`) ON DELETE RESTRICT ;
+
+ALTER TABLE `notice_dst` 
+    ADD FOREIGN KEY ( `notice_id` ) REFERENCES `notice` (`id`) ON DELETE CASCADE ;
+
+ALTER TABLE `notice_dst` 
+    ADD FOREIGN KEY ( `account_id` ) REFERENCES `accounts` (`id`) ON DELETE CASCADE ;
+
+ALTER TABLE `staff_hr` 
+    ADD FOREIGN KEY ( `staff_id` ) REFERENCES `staff` (`id`) ON DELETE CASCADE ;
+    
+ALTER TABLE `staff` 
+    ADD FOREIGN KEY ( `category_id` ) REFERENCES `staff_categories` (`id`) ON DELETE RESTRICT ;
 
 SET FOREIGN_KEY_CHECKS=1;
