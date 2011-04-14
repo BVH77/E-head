@@ -23,9 +23,7 @@ if (!file_exists(CONFIG_FILE)) {
 }
 
 set_include_path(join(PATH_SEPARATOR, array(
-    ROOT_DIR, API_DIR,
-//    ROOT_DIR . '/library/PEAR',
-//    ROOT_DIR . '/library/ezComponents'
+    ROOT_DIR, API_DIR
 )));
 
 require_once 'Zend/Loader/Autoloader.php';
@@ -98,12 +96,6 @@ $db->query('SET names utf8');
 // migration from 1.6 -> 1.7
 Zend_Locale::$compatibilityMode = false;
 Zend_Locale::disableCache(true);
-//OSDN_Language::setDefaultLocale($config->ui->language->default);
-
-Zend_Registry::set('dynamic_config', OSDN_Config::getInstance());
-
-//Zend_Translate::setCache($cacheCore);
-//OSDN_Translation::factory(null, null, OSDN_Language::getDefaultLocale());
 
 // configure mail
 //$transport = new Zend_Mail_Transport_Smtp($config->mail->SMTP, $config->mail->authentificate->toArray());
