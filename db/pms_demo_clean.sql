@@ -594,7 +594,6 @@ CREATE TABLE `storage_categories` (
 --
 -- Структура таблицы `storage_measures`
 --
-
 DROP TABLE IF EXISTS `storage_measures`;
 CREATE TABLE IF NOT EXISTS `storage_measures` (
   `name` varchar(50) NOT NULL,
@@ -607,6 +606,8 @@ CREATE TABLE IF NOT EXISTS `storage_measures` (
 
 INSERT INTO `storage_measures` (`name`) VALUES 
     ('кв.м'), ('кг'), ('куб.м'), ('л'), ('м'), ('шт.');
+
+-- --------------------------------------------------------
 
 --
 -- Структура таблицы `storage_requests`
@@ -642,6 +643,7 @@ CREATE TABLE `storage_assets_categories` (
 -- Структура таблицы `notice`
 --
 
+DROP TABLE IF EXISTS `notice`; 
 CREATE TABLE `notice` (
     `id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `type` ENUM( 'объявление', 'приказ' ) NOT NULL ,
@@ -656,6 +658,7 @@ CREATE TABLE `notice` (
 -- Структура таблицы `notice_dst`
 --
 
+DROP TABLE IF EXISTS `notice_dst`; 
 CREATE TABLE `notice_dst` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `notice_id` INT UNSIGNED NOT NULL ,
@@ -670,6 +673,7 @@ CREATE TABLE `notice_dst` (
 -- Структура таблицы `staff`
 --
 
+DROP TABLE IF EXISTS `staff`; 
 CREATE TABLE `staff` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `category_id` INT UNSIGNED NOT NULL ,
@@ -686,6 +690,7 @@ CREATE TABLE `staff` (
 -- Структура таблицы `staff_categories`
 --
 
+DROP TABLE IF EXISTS `staff_categories`; 
 CREATE TABLE `staff_categories` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `name` VARCHAR( 250 ) NOT NULL ,
@@ -696,6 +701,7 @@ CREATE TABLE `staff_categories` (
 -- Структура таблицы `staff_hr`
 --
 
+DROP TABLE IF EXISTS `staff_hr`;
 CREATE TABLE `staff_hr` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `staff_id` INT UNSIGNED NOT NULL ,
