@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `acl_permissions` (
   UNIQUE KEY `role_id_2` (`role_id`,`resource_id`,`privilege_id`),
   KEY `fk_role_id` (`role_id`),
   KEY `fk_resource_id` (`resource_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1595 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1599 ;
 
 -- 
 -- Дамп данных таблицы `acl_permissions`
@@ -296,7 +296,12 @@ INSERT INTO `acl_permissions` (`id`, `role_id`, `resource_id`, `privilege_id`) V
 (1591, 1, 152, 1),
 (1592, 1, 152, 3),
 (1593, 1, 153, 1),
-(1594, 1, 153, 3);
+(1594, 1, 153, 3),
+(1595, 1, 154, 1),
+(1596, 1, 154, 3),
+(1597, 1, 155, 1),
+(1598, 1, 155, 3),
+;
 
 -- --------------------------------------------------------
 
@@ -313,7 +318,7 @@ CREATE TABLE IF NOT EXISTS `acl_resources` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`,`parent_id`),
   KEY `fk_parent_id` (`parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=154 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=156 ;
 
 -- 
 -- Дамп данных таблицы `acl_resources`
@@ -345,7 +350,9 @@ INSERT INTO `acl_resources` (`id`, `name`, `title`, `parent_id`) VALUES (50, 'ad
 (150, 'hideproduction', 'Скрывать заказы без производства', 123),
 (151, 'hidemount', 'Скрывать заказы без монтажа', 123),
 (152, 'storage', 'Склад', NULL),
-(153, 'notice', 'Приказы и объявления', NULL);
+(153, 'notice', 'Приказы и объявления', NULL),
+(154, 'reports', 'Отчёты', NULL),
+(155, 'staff', 'Кадры', NULL);
 
 -- --------------------------------------------------------
 
