@@ -5,7 +5,6 @@
  *
  * @category		OSDN
  * @package		OSDN_Script
- * @version		$Id: Script.php 8494 2009-05-04 10:00:44Z uerter $
  */
 class OSDN_Script
 {
