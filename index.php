@@ -116,21 +116,26 @@ $options = array(
     'locale'        => OSDN_Language::getDefaultLocale()
 );
 
-if(!OSDN_Accounts_Prototype::isAuthenticated()) {
+if (!OSDN_Accounts_Prototype::isAuthenticated()) {
     $options['layout'] = 'auth';
 } else {
-	$roles = new OSDN_Acl_Roles();
-	try {
-		$role = $roles->fetchRole(OSDN_Accounts_Prototype::getRoleId());
-		$roleRow = $role->getRow();
-		$roleName = $roleRow['name'];
-	} catch (Exception $e) {$roleName = '';}
+
+    $roleName = '';
+
+    $roles = new OSDN_Acl_Roles();
+    $response = $roles->fetchRole(OSDN_Accounts_Prototype::getRoleId());
+    if ($response->isSuccess()) {
+        $roleRow = $response->getRow();
+        $roleName = $roleRow['name'];
+    }
+
     $options += array(
         'roleId' => OSDN_Accounts_Prototype::getRoleId(),
         'username' => OSDN_Accounts_Prototype::getInformation()->name,
         'rolename' => $roleName
     );
 }
+
 $fc->registerPlugin(new OSDN_Controller_Plugin_ViewEngine($options));
 $fc->registerPlugin(new OSDN_Controller_Plugin_Authorization());
 Zend_Controller_Action_HelperBroker::addPrefix('OSDN_Controller_Action_Helper');
