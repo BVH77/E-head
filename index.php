@@ -1,10 +1,10 @@
 <?php
-ini_set('session.gc_maxlifetime', 28800);
-
 //die('This resource is temporary unreachable.');
 
+ini_set('session.gc_maxlifetime', 28800);
+
 if (!empty($argv[1])) {
-$_SERVER['REQUEST_URI'] = $argv[1];
+    $_SERVER['REQUEST_URI'] = $argv[1];
 }
 
 error_reporting(E_ALL | E_STRICT);
@@ -109,7 +109,6 @@ $fc = Zend_Controller_Front::getInstance();
 $fc->throwExceptions(OSDN_DEBUG);
 $fc->addModuleDirectory(MODULES_DIR);
 
-$config = Zend_Registry::get('config');
 $options = array(
     'layoutPath'    => LAYOUT_DIR,
     'debug'         => OSDN_DEBUG,
