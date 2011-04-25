@@ -4,10 +4,14 @@ body {
 }
 
 .planning_production {
+    font-weight: 700;
+    color: white;
     background-color: #33CCCC;
 }
 
 .planning_mount {
+    font-weight: 700;
+    color: white;
     background-color: red;
 }
 </style>
@@ -23,7 +27,9 @@ body {
             <td><b>Адрес монтажа</b></td>
             <td><b>Ответственный</b></td>
             <?php foreach ($month['days'] as $number => $day) :?>
-                <td align="center"><?=$day?><br/><b><?=$number?></b></td>
+                <td align="center" style="color: <?=('Сб' == $day || 'Вс' == $day) ? 'red' : '';?>;">
+                    <?=$day?><br/><b><?=$number?></b>
+                </td>
             <?php endforeach;?>
         </tr>
 		<?php foreach ($month['orders'] as $order) :?>
@@ -32,8 +38,14 @@ body {
                 <td><nobr><?=$order['customer_name']?></nobr></td>
                 <td><?=$order['address']?></td>
                 <td><nobr><?=$order['creator_name']?></nobr></td>
-                <?php foreach ($order['days'] as $day) :?>
-	                <td align="center" class="<?=$day?>">&nbsp</td>
+                <?php foreach ($order['days'] as $number => $day) :?>
+	                <td align="center" class="<?=$day?>">
+	                   <?php switch ($month['days'][$number]) {
+	                       case 'Сб': echo 'Сб'; break;
+	                       case 'Вс': echo 'Вс'; break;
+	                       default: echo '&nbsp;';
+                       }?>
+                    </td>
                 <?php endforeach;?>
            </tr>
 		<?php endforeach;?>
