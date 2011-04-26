@@ -254,4 +254,4 @@ PMS.Staff.Form = Ext.extend(xlib.form.FormPanel, {
     }
 });
 
-Ext.reg('PMS.Notice.Form', PMS.Notice.Form);
+Ext.reg('PMS.Staff.Form', PMS.Staff.Form);
