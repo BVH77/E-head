@@ -1,4 +1,4 @@
-Ext.namespace('xlib');
+Ext.ns('xlib');
 
 xlib.TreePanel = Ext.extend(Ext.tree.TreePanel, {
     
