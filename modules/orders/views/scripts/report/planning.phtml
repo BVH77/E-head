@@ -40,8 +40,9 @@ body {
                 <td><nobr><?=$order['creator_name']?></nobr></td>
                 <?php foreach ($order['days'] as $number => $day) :?>
 	                <td align="center" class="<?=$day?>"
-	                   style="border-style: <?=('Сб' == $month['days'][$number]
-	                       || 'Вс' == $month['days'][$number]) ? 'dashed' : '';?>;">
+	                   style="border-style: <?=(('Сб' == $month['days'][$number]
+	                       || 'Вс' == $month['days'][$number]) && !empty($day))
+	                       ? 'dashed' : '';?>;">
                     </td>
                 <?php endforeach;?>
            </tr>
