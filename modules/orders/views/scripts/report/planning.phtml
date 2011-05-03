@@ -39,12 +39,9 @@ body {
                 <td><?=$order['address']?></td>
                 <td><nobr><?=$order['creator_name']?></nobr></td>
                 <?php foreach ($order['days'] as $number => $day) :?>
-	                <td align="center" class="<?=$day?>">
-	                   <?php switch ($month['days'][$number]) {
-	                       case 'Сб': echo 'Сб'; break;
-	                       case 'Вс': echo 'Вс'; break;
-	                       default: echo '&nbsp;';
-                       }?>
+	                <td align="center" class="<?=$day?>"
+	                   style="border-style: <?=('Сб' == $month['days'][$number]
+	                       || 'Вс' == $month['days'][$number]) ? 'dashed' : '';?>;">
                     </td>
                 <?php endforeach;?>
            </tr>
