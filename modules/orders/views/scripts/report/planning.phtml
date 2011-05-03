@@ -1,3 +1,8 @@
+<?php
+    function el($text, $number = 20) {
+        return mb_substr($text, 0, $number) . '...';
+    }
+?>
 <style>
 body {
     font-size: 10pt;
@@ -13,6 +18,9 @@ body {
     font-weight: 700;
     color: white;
     background-color: red;
+}
+row td {
+    height: 20px !important;
 }
 </style>
 <center>
@@ -33,11 +41,11 @@ body {
             <?php endforeach;?>
         </tr>
 		<?php foreach ($month['orders'] as $order) :?>
-	        <tr>
+	        <tr class="row">
                 <td><?=$order['id']?></td>
-                <td><nobr><?=$order['customer_name']?></nobr></td>
-                <td><?=$order['address']?></td>
-                <td><nobr><?=$order['creator_name']?></nobr></td>
+                <td><nobr><?=el($order['customer_name'])?></nobr></td>
+                <td title="<?=$order['address']?>"><?=el($order['address'])?></td>
+                <td><nobr><?=el($order['creator_name'])?></nobr></td>
                 <?php foreach ($order['days'] as $number => $day) :?>
 	                <td align="center" class="<?=$day?>"
 	                   style="border-style: <?=(('Сб' == $month['days'][$number]
