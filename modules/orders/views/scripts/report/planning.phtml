@@ -1,6 +1,7 @@
 <?php
-    function el($text, $number = 15) {
-        return mb_substr($text, 0, $number) . ' ...';
+    mb_internal_encoding("UTF-8");
+    function el($text, $number = 18) {
+        return mb_strcut($text, 0, $number) . '...';
     }
 ?>
 <style>
@@ -18,9 +19,6 @@ body {
     font-weight: 700;
     color: white;
     background-color: red;
-}
-row td {
-    height: 20px !important;
 }
 </style>
 <center>
@@ -43,9 +41,9 @@ row td {
 		<?php foreach ($month['orders'] as $order) :?>
 	        <tr class="row">
                 <td><?=$order['id']?></td>
-                <td title="<?=$order['customer_name']?>"><?=el($order['customer_name'])?></td>
-                <td title="<?=$order['address']?>"><?=el($order['address'])?></td>
-                <td title="<?=$order['creator_name']?>"><?=el($order['creator_name'])?></td>
+                <td title="<?=$order['customer_name']?>"><nobr><?=el($order['customer_name'])?></nobr></td>
+                <td title="<?=$order['address']?>"><nobr><?=el($order['address'])?></nobr></td>
+                <td title="<?=$order['creator_name']?>"><nobr><?=el($order['creator_name'])?></nobr></td>
                 <?php foreach ($order['days'] as $number => $day) :?>
 	                <td align="center" class="<?=$day?>"
 	                   style="border-style: <?=(('Сб' == $month['days'][$number]
