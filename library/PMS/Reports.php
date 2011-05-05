@@ -140,9 +140,9 @@ class PMS_Reports
             'start' => $f->start,
             'end'   => $f->end
         );
+
         $response->data = $result;
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
-
     }
 
     //--------------------------------------------------------------------------
