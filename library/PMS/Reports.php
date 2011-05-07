@@ -107,41 +107,122 @@ class PMS_Reports
             return $response;
         }
 
-        $select = $this->_tableOrders->getAdapter()->select()
-        ->from(array('o' => $this->_tableOrders->getTableName()),
-            array(
-                'summ_total'    => new Zend_Db_Expr('SUM(`cost`)'),
-                'summ_success'  => new Zend_Db_Expr('SUM(
-                    IF(`success_date_fact` IS NOT NULL,`cost`,0))'),
-                'failed_orders_count'  => new Zend_Db_Expr('SUM(
-                    IF(`success_date_planned` < NOW()
-                        AND `success_date_fact` IS NOT NULL,
-                    0,1))')
-            )
+        $tableOrders    = $this->_tableOrders->getTableName();
+        $tableAccounts  = $this->_tableAccounts->getTableName();
+        $rowsMerged     = array();
+
+        $select = $this->_tableOrders->getAdapter()->select();
+
+        // Get total summ of success orders by account for given period
+        $select->reset()
+        ->from(array('o' => $tableOrders),
+            array('value' => new Zend_Db_Expr('SUM(cost)'), 'creator_id')
         )
-        ->joinLeft(array('a' => $this->_tableAccounts->getTableName()),
-            'o.creator_id=a.id', 'name')
-        ->group('creator_id')
-        ;
+        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name')
+        ->where('success_date_fact IS NOT NULL')
+        ->group('creator_id');
+
+        if (!empty($f->start)) {
+            $select->where('success_date_fact >= ?', $f->start);
+        }
+        if (!empty($f->end)) {
+            $select->where('success_date_fact <= ?', $f->end);
+        }
+
+        try {
+            $rows = $select->query()->fetchAll();
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+        }
+
+        foreach ($rows as $row) {
+            $rowsMerged[$row['creator_id']] = array(
+                'summ_success' => $row['value'],
+                'name'         => $row['name']
+            );
+        }
+
+        // Get total summ of added orders by account for given period
+        $select->reset()
+        ->from(array('o' => $tableOrders),
+            array('value' => new Zend_Db_Expr('SUM(cost)'), 'creator_id')
+        )
+        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name')
+        ->group('creator_id');
+
         if (!empty($f->start)) {
             $select->where('created >= ?', $f->start);
         }
         if (!empty($f->end)) {
             $select->where('created <= ?', $f->end);
         }
+
         try {
             $rows = $select->query()->fetchAll();
         } catch (Exception $e) {
-            //throw $e;
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
-        $result = array(
-            'rows'  => $rows,
+
+        foreach ($rows as $row) {
+            if (isset($rowsMerged[$row['creator_id']])) {
+                $rowsMerged[$row['creator_id']]['summ_added'] = $row['value'];
+            } else {
+                $rowsMerged[$row['creator_id']] = array(
+                    'summ_added' => $row['value'],
+                    'name'       => $row['name']
+                );
+            }
+        }
+
+        // Get total count of failed orders by account for given period
+        $select->reset()
+        ->from(array('o' => $tableOrders),
+            array('value'  => new Zend_Db_Expr('COUNT(*)'), 'creator_id')
+        )
+        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name')
+        ->where('success_date_fact IS NULL')
+        ->orWhere('success_date_fact IS NOT NULL
+            AND success_date_planned < success_date_fact')
+        ->group('creator_id');
+
+        if (!empty($f->start)) {
+            $select->where('success_date_planned >= ?', $f->start);
+        }
+        if (!empty($f->end)) {
+            $select->where('success_date_planned <= ?', $f->end);
+        }
+
+        try {
+            $rows = $select->query()->fetchAll();
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+        }
+
+        foreach ($rows as $row) {
+            if (isset($rowsMerged[$row['creator_id']])) {
+                $rowsMerged[$row['creator_id']]['failed_count'] = $row['value'];
+            } else {
+                $rowsMerged[$row['creator_id']] = array(
+                    'failed_count'  => $row['value'],
+                    'name'          => $row['name']
+                );
+            }
+        }
+
+        $response->data = array(
+            'rows'  => array_values($rowsMerged),
             'start' => $f->start,
             'end'   => $f->end
         );
-
-        $response->data = $result;
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
