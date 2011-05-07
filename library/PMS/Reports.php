@@ -110,6 +110,12 @@ class PMS_Reports
         $tableOrders    = $this->_tableOrders->getTableName();
         $tableAccounts  = $this->_tableAccounts->getTableName();
         $rowsMerged     = array();
+        $rowStructure   = array(
+            'name'          => '',
+            'summ_success'  => '',
+            'summ_added'    => '',
+            'failed_count'  => '',
+        );
 
         $select = $this->_tableOrders->getAdapter()->select();
 
@@ -139,10 +145,9 @@ class PMS_Reports
         }
 
         foreach ($rows as $row) {
-            $rowsMerged[$row['creator_id']] = array(
-                'summ_success' => $row['value'],
-                'name'         => $row['name']
-            );
+            $rowsMerged[$row['creator_id']] = $rowStructure;
+            $rowsMerged[$row['creator_id']]['name'] = $row['name'];
+            $rowsMerged[$row['creator_id']]['summ_success'] = $row['value'];
         }
 
         // Get total summ of added orders by account for given period
@@ -173,10 +178,9 @@ class PMS_Reports
             if (isset($rowsMerged[$row['creator_id']])) {
                 $rowsMerged[$row['creator_id']]['summ_added'] = $row['value'];
             } else {
-                $rowsMerged[$row['creator_id']] = array(
-                    'summ_added' => $row['value'],
-                    'name'       => $row['name']
-                );
+                $rowsMerged[$row['creator_id']] = $rowStructure;
+                $rowsMerged[$row['creator_id']]['name'] = $row['name'];
+                $rowsMerged[$row['creator_id']]['summ_added'] = $row['value'];
             }
         }
 
@@ -211,10 +215,9 @@ class PMS_Reports
             if (isset($rowsMerged[$row['creator_id']])) {
                 $rowsMerged[$row['creator_id']]['failed_count'] = $row['value'];
             } else {
-                $rowsMerged[$row['creator_id']] = array(
-                    'failed_count'  => $row['value'],
-                    'name'          => $row['name']
-                );
+                $rowsMerged[$row['creator_id']] = $rowStructure;
+                $rowsMerged[$row['creator_id']]['name'] = $row['name'];
+                $rowsMerged[$row['creator_id']]['failed_count'] = $row['value'];
             }
         }
 
