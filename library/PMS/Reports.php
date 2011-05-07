@@ -116,12 +116,10 @@ class PMS_Reports
             'failed_count'  => 0,
             'name'          => ''
         );
-
         $select = $this->_tableOrders->getAdapter()->select();
 
         // Get total summ of success orders by account for given period
-        $select->reset()
-        ->from(array('o' => $tableOrders),
+        $select->reset()->from(array('o' => $tableOrders),
             array('value' => new Zend_Db_Expr('SUM(cost)'), 'creator_id')
         )
         ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name')
@@ -144,6 +142,7 @@ class PMS_Reports
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
 
+        // Parse result rows into one merged array
         foreach ($rows as $row) {
             $rowsMerged[$row['creator_id']] = $rowStructure;
             $rowsMerged[$row['creator_id']]['name'] = $row['name'];
@@ -151,8 +150,7 @@ class PMS_Reports
         }
 
         // Get total summ of added orders by account for given period
-        $select->reset()
-        ->from(array('o' => $tableOrders),
+        $select->reset()->from(array('o' => $tableOrders),
             array('value' => new Zend_Db_Expr('SUM(cost)'), 'creator_id')
         )
         ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name')
@@ -174,6 +172,7 @@ class PMS_Reports
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
 
+        // Parse result rows into one merged array
         foreach ($rows as $row) {
             if (isset($rowsMerged[$row['creator_id']])) {
                 $rowsMerged[$row['creator_id']]['summ_added'] = $row['value'];
@@ -185,8 +184,7 @@ class PMS_Reports
         }
 
         // Get total count of failed orders by account for given period
-        $select->reset()
-        ->from(array('o' => $tableOrders),
+        $select->reset()->from(array('o' => $tableOrders),
             array('value'  => new Zend_Db_Expr('COUNT(*)'), 'creator_id')
         )
         ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name')
@@ -211,6 +209,7 @@ class PMS_Reports
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
 
+        // Parse result rows into one merged array
         foreach ($rows as $row) {
             if (isset($rowsMerged[$row['creator_id']])) {
                 $rowsMerged[$row['creator_id']]['failed_count'] = $row['value'];
