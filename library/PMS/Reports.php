@@ -111,10 +111,10 @@ class PMS_Reports
         $tableAccounts  = $this->_tableAccounts->getTableName();
         $rowsMerged     = array();
         $rowStructure   = array(
-            'name'          => '',
-            'summ_success'  => '',
-            'summ_added'    => '',
-            'failed_count'  => '',
+            'summ_success'  => 0,
+            'summ_added'    => 0,
+            'failed_count'  => 0,
+            'name'          => ''
         );
 
         $select = $this->_tableOrders->getAdapter()->select();
