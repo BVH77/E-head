@@ -32,12 +32,7 @@ PMS.Reports.Customers = Ext.extend(xlib.form.FormPanel, {
             hiddenName: 'end'
         });
         
-        this.items = [{
-            
-            items: [{
-                items:[this.periodStart, this.periodEnd]
-            }]
-        }]
+        this.items = [this.periodStart, this.periodEnd];
         
         PMS.Reports.Customers.superclass.initComponent.apply(this, arguments);
         
@@ -45,7 +40,6 @@ PMS.Reports.Customers = Ext.extend(xlib.form.FormPanel, {
             title: 'Отчёт о сотрудничестве за период:',
             resizable: false,
             width: 200,
-            //height: 100,
             modal: true,
             items: [this],
             buttons: [{
