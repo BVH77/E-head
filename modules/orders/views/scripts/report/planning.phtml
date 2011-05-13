@@ -18,7 +18,13 @@ body {
 }
 
 .day-off {
-    background-color: #DDD;
+    color: white;
+    border-style: dashed;
+}
+
+.day-off-title {
+    color: red;
+    border-style: dashed;
 }
 </style>
 <center>
@@ -37,7 +43,7 @@ body {
                        switch($day) {
                            case 'Сб':
                            case 'Вс':
-                               echo 'day-off';
+                               echo 'day-off-title';
                                break;
                            default:
                                echo '';
@@ -70,7 +76,7 @@ body {
 	                   switch($month['days'][$number]) {
 	                       case 'Сб':
                            case 'Вс':
-                               echo 'day-off';
+                               echo 'day-off ' . $day;
                                break;
                            default:
                                echo $day;
