@@ -66,7 +66,7 @@ class PMS_Reports
         $select->joinLeft(array('c' => $this->_tableCustomers->getTableName()),
                       'o.customer_id=c.id', array('customer_name' => 'name'));
         $select->where('success_date_fact IS NULL');
-        $select->order('id');
+        $select->order('success_date_fact');
     	try {
             $orders = $select->query()->fetchAll();
     	} catch (Exception $e) {
