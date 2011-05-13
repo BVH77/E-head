@@ -41,9 +41,14 @@ body {
 		<?php foreach ($month['orders'] as $order) :?>
 	        <tr class="row">
                 <td><?=$order['id']?></td>
+                <!--
                 <td title="<?=$order['customer_name']?>"><nobr><?=el($order['customer_name'])?></nobr></td>
                 <td title="<?=$order['address']?>"><nobr><?=el($order['address'])?></nobr></td>
                 <td title="<?=$order['creator_name']?>"><nobr><?=el($order['creator_name'])?></nobr></td>
+                -->
+                <td><nobr><?=$order['customer_name']?></nobr></td>
+                <td><nobr><?=$order['address']?></nobr></td>
+                <td><nobr><?=$order['creator_name']?></nobr></td>
                 <?php foreach ($order['days'] as $number => $day) :?>
 	                <td align="center" class="<?=$day?>"
 	                   style="border-style: <?=(('Сб' == $month['days'][$number]
