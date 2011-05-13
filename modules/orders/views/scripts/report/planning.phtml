@@ -10,15 +10,15 @@ body {
 }
 
 .planning_production {
-    font-weight: 700;
-    color: white;
     background-color: #33CCCC;
 }
 
 .planning_mount {
-    font-weight: 700;
-    color: white;
     background-color: red;
+}
+
+.day-off {
+    background-color: #DDD;
 }
 </style>
 <center>
@@ -30,10 +30,19 @@ body {
         <tr valign="bottom">
             <td><b>№</b></td>
             <td><b>Заказчик</b></td>
-            <td><b>Адрес монтажа</b></td>
-            <td><b>Ответственный</b></td>
+            <td><b>Адрес работ</b></td>
+            <td><b>Менеджер</b></td>
             <?php foreach ($month['days'] as $number => $day) :?>
-                <td align="center" style="color: <?=('Сб' == $day || 'Вс' == $day) ? 'red' : '';?>;">
+                <td align="center" class="<?
+                       switch($day) {
+                           case 'Сб':
+                           case 'Вс':
+                               echo 'day-off';
+                               break;
+                           default:
+                               echo '';
+                       }
+                       ?>">
                     <?=$day?><br/><b><?=$number?></b>
                 </td>
             <?php endforeach;?>
@@ -50,10 +59,23 @@ body {
                 <td><nobr><?=$order['address']?></nobr></td>
                 <td><nobr><?=$order['creator_name']?></nobr></td>
                 <?php foreach ($order['days'] as $number => $day) :?>
+                    <!--
 	                <td align="center" class="<?=$day?>"
 	                   style="border-style: <?=(('Сб' == $month['days'][$number]
 	                       || 'Вс' == $month['days'][$number]) && !empty($day))
 	                       ? 'dashed' : '';?>;">
+                    </td>
+                    -->
+	                <td class="<?
+	                   switch($month['days'][$number]) {
+	                       case 'Сб':
+                           case 'Вс':
+                               echo 'day-off';
+                               break;
+                           default:
+                               echo $day;
+	                   }
+                       ?>">
                     </td>
                 <?php endforeach;?>
            </tr>
