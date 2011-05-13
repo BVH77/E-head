@@ -10,15 +10,21 @@ body {
 }
 
 .planning_production {
+    border-color: white !important;
     background-color: #33CCCC;
 }
 
 .planning_mount {
+    border-color: white !important;
     background-color: red;
 }
 
+.day {
+    border-color: black;
+}
+
 .day-off {
-    color: white;
+    border-color: black;
     border-style: dashed;
 }
 
@@ -79,7 +85,7 @@ body {
                                echo 'day-off ' . $day;
                                break;
                            default:
-                               echo $day;
+                               echo 'day ' . $day;
 	                   }
                        ?>">
                     </td>
