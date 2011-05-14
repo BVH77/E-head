@@ -58,6 +58,7 @@ class PMS_Reports
 
     public function generatePlanning()
     {
+        $debug = array();
     	$response = new OSDN_Response();
     	$select = $this->_tableOrders->getAdapter()->select();
         $select->from(array('o' => $this->_tableOrders->getTableName()));
@@ -74,20 +75,22 @@ class PMS_Reports
     	}
     	$out = array();
     	$today = new Zend_Date();
-    	for ($i = 0; $i < 2; $i++) {
-            $startDate = new Zend_Date('01.' . (string)($today->get('M') + $i)
-                       . '.' . $today->get('Y'));
-            $days = $this->getMonthDays($startDate);
-            $orders = $this->prepareOrders($orders, $days, $startDate);
-            if ($orders !== false) {
-                $out[] = array(
-                    'days'   => $days,
-                    'name'   => $this->_monthNames[intval($startDate->get('M'))],
-                    'orders' => $orders
-                );
-            }
-    	}
-    	$response->data = array('data' => $out, 'date' => $today->get('d.M.Y'));
+        $startDate = $today->setDay(1);
+        $days = $this->getMonthDays($startDate);
+            $debug[] = microtime(true);
+        $orders = $this->prepareOrders($orders, $days, $startDate);
+            $debug[] = microtime(true);
+        if ($orders !== false) {
+            $out[] = array(
+                'days'   => $days,
+                'orders' => $orders
+            );
+        }
+    	$response->data = array(
+    	   'debug' => $debug,
+    	   'data' => $out,
+    	   'date' => $this->_monthNames[$today->get('M')] . $today->get(' Y')
+    	);
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
@@ -442,43 +445,32 @@ class PMS_Reports
 
         $today = new Zend_Date();
 
-        $acl = OSDN_Accounts_Prototype::getAcl();
-        if ($acl->isAllowed(
-            OSDN_Acl_Resource_Generator::getInstance()->orders->production,
-            OSDN_Acl_Privilege::VIEW)
-        ) {
-            if ($psp && $pep) {
-                if ($date >= $psp && $date <= $pep) {
+        if ($psp && $pep) {
+            if ($date >= $psp && $date <= $pep) {
+                return 'planning_production';
+            }
+            if ($pef === false) {
+                if ($date <= $today && $date >= $psp) {
                     return 'planning_production';
                 }
-                if ($pef === false) {
-                    if ($date <= $today && $date >= $psp) {
-                        return 'planning_production';
-                    }
-                } else {
-                    if ($date <= $pef && $date >= $psp) {
-                        return 'planning_production';
-                    }
+            } else {
+                if ($date <= $pef && $date >= $psp) {
+                    return 'planning_production';
                 }
             }
         }
 
-        if ($acl->isAllowed(
-            OSDN_Acl_Resource_Generator::getInstance()->orders->mount,
-            OSDN_Acl_Privilege::VIEW)
-        ) {
-            if ($msp != false && $mep != false) {
-                if ($date >= $msp && $date <= $mep) {
+        if ($msp != false && $mep != false) {
+            if ($date >= $msp && $date <= $mep) {
+                return 'planning_mount';
+            }
+            if ($mef === false) {
+                if ($date <= $today  && $date >= $msp) {
                     return 'planning_mount';
                 }
-                if ($mef === false) {
-                    if ($date <= $today  && $date >= $msp) {
-                        return 'planning_mount';
-                    }
-                } else {
-                    if ($date <= $mef && $date >= $msp) {
-                        return 'planning_mount';
-                    }
+            } else {
+                if ($date <= $mef && $date >= $msp) {
+                    return 'planning_mount';
                 }
             }
         }
