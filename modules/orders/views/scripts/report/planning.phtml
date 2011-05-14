@@ -78,17 +78,13 @@ body {
 
 <table cellspacing="0" cellpadding="5" border="1" style="border: none;">
     <tr>
-        <?php if ($this->enableProduction): ?>
-            <td class="planning_production" style="width: 20px;"></td>
-            <td style="border: none;">- производство</td>
-        <?php endif; ?>
-        <?php if ($this->enableMount): ?>
-            <td class="planning_mount" style="width: 20px;"></td>
-            <td style="border: none;">- монтаж</td>
-        <?php endif; ?>
+        <td class="planning_production" style="width: 20px;"></td>
+        <td style="border: none;">- производство</td>
+        <td class="planning_mount" style="width: 20px;"></td>
+        <td style="border: none;">- монтаж</td>
     </tr>
 </table>
 
 <pre>
-<?php var_dump($this->data['debug']);?>
+<?php //var_dump($this->data);?>
 </pre>

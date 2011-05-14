@@ -77,9 +77,7 @@ class PMS_Reports
     	$today = new Zend_Date();
         $startDate = $today->setDay(1);
         $days = $this->getMonthDays($startDate);
-            $debug[] = microtime(true);
         $orders = $this->prepareOrders($orders, $days, $startDate);
-            $debug[] = microtime(true);
         if ($orders !== false) {
             $out[] = array(
                 'days'   => $days,
@@ -87,7 +85,6 @@ class PMS_Reports
             );
         }
     	$response->data = array(
-    	   'debug' => $debug,
     	   'data' => $out,
     	   'date' => $this->_monthNames[$today->get('M')] . $today->get(' Y')
     	);

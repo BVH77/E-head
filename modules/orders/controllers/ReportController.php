@@ -54,19 +54,6 @@ class Orders_ReportController extends OSDN_Controller_Action
     	$response = $this->_reports->generatePlanning();
     	if ($response->isSuccess()) {
 	    	$this->view->data = $response->data;
-            $acl = OSDN_Accounts_Prototype::getAcl();
-            if ($acl->isAllowed(
-                OSDN_Acl_Resource_Generator::getInstance()->orders->production,
-                OSDN_Acl_Privilege::VIEW)
-            ) {
-                $this->view->enableProduction = true;
-            }
-            if ($acl->isAllowed(
-                OSDN_Acl_Resource_Generator::getInstance()->orders->mount,
-                OSDN_Acl_Privilege::VIEW)
-            ) {
-                $this->view->enableMount = true;
-            }
 	        $this->view->content = $this->view->render('report/planning.phtml');
     	} else {
     		$this->_collectErrors($response);
