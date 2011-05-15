@@ -26,11 +26,19 @@ body {
     color: red;
     border-style: dashed;
 }
+
+.today-title {
+    background-color: #DDD;
+}
 </style>
 <center>
 <h3>Сводный план работ на <?=$this->data['date']?></h3>
 </center>
-<?php foreach ($this->data['data'] as $monthNumber => $month) :?>
+<?php
+    $date = new Zend_Date();
+    $today = $date->toValue(Zend_Date::DAY_SHORT);
+
+    foreach ($this->data['data'] as $monthNumber => $month) :?>
     <div align="center"><b><?=$month['title']; ?></b></div><br/>
     <table cellspacing="0" cellpadding="5" border="1">
         <tr valign="bottom">
@@ -43,11 +51,12 @@ body {
                        switch($day) {
                            case 'Сб':
                            case 'Вс':
-                               echo 'day-off-title';
+                               echo 'day-off-title ';
                                break;
                            default:
-                               echo '';
+                               echo ' ';
                        }
+                       echo $number == $today ? 'today-title' : '';
                        ?>">
                     <?=$day?><br/><b><?=$number?></b>
                 </td>
