@@ -31,6 +31,7 @@ body {
 <h3>Сводный план работ на <?=$this->data['date']?></h3>
 </center>
 <?php foreach ($this->data['data'] as $monthNumber => $month) :?>
+    <div align="center"><?=$month['title']; ?></div>
     <table cellspacing="0" cellpadding="5" border="1">
         <tr valign="bottom">
             <td><b>№</b></td>

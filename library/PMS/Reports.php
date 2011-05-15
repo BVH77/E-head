@@ -58,32 +58,65 @@ class PMS_Reports
 
     public function generatePlanning()
     {
-        $debug = array();
     	$response = new OSDN_Response();
-    	$select = $this->_tableOrders->getAdapter()->select();
-        $select->from(array('o' => $this->_tableOrders->getTableName()));
-        $select->joinLeft(array('a' => $this->_tableAccounts->getTableName()),
-                      'o.creator_id=a.id', array('creator_name' => 'name'));
-        $select->joinLeft(array('c' => $this->_tableCustomers->getTableName()),
-                      'o.customer_id=c.id', array('customer_name' => 'name'));
-        $select->where('success_date_fact IS NULL');
-        $select->order('success_date_planned');
+
+    	$out = array();
+
+    	$today = new Zend_Date();
+        $startDate = $today->setDay(1);
+
+        $days = $this->getMonthDays($startDate);
+
+        // Fetch orders with full cycle
+    	$select = $this->_tableOrders->getAdapter()->select()
+            ->from(array('o' => $this->_tableOrders->getTableName()))
+            ->joinLeft(array('a' => $this->_tableAccounts->getTableName()),
+                      'o.creator_id=a.id', array('creator_name' => 'name'))
+            ->joinLeft(array('c' => $this->_tableCustomers->getTableName()),
+                      'o.customer_id=c.id', array('customer_name' => 'name'))
+            ->where('success_date_fact IS NULL')
+            ->where('production = 1')
+            ->order('success_date_planned');
     	try {
             $orders = $select->query()->fetchAll();
     	} catch (Exception $e) {
     		return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
     	}
-    	$out = array();
-    	$today = new Zend_Date();
-        $startDate = $today->setDay(1);
-        $days = $this->getMonthDays($startDate);
+
         $orders = $this->prepareOrders($orders, $days, $startDate);
         if ($orders !== false) {
             $out[] = array(
+                'title'  => 'Заказы с полным циклом',
                 'days'   => $days,
                 'orders' => $orders
             );
         }
+
+        // Fetch orders only with montage
+    	$select = $this->_tableOrders->getAdapter()->select()
+            ->from(array('o' => $this->_tableOrders->getTableName()))
+            ->joinLeft(array('a' => $this->_tableAccounts->getTableName()),
+                      'o.creator_id=a.id', array('creator_name' => 'name'))
+            ->joinLeft(array('c' => $this->_tableCustomers->getTableName()),
+                      'o.customer_id=c.id', array('customer_name' => 'name'))
+            ->where('success_date_fact IS NULL')
+            ->where('production = 0')
+            ->order('success_date_planned');
+    	try {
+            $orders = $select->query()->fetchAll();
+    	} catch (Exception $e) {
+    		return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+    	}
+
+        $orders = $this->prepareOrders($orders, $days, $startDate);
+        if ($orders !== false) {
+            $out[] = array(
+                'title'  => 'Заказы только на монтаж',
+                'days'   => $days,
+                'orders' => $orders
+            );
+        }
+
     	$response->data = array(
     	   'data' => $out,
     	   'date' => $this->_monthNames[$today->get('M')] . $today->get(' Y')
