@@ -30,6 +30,11 @@ body {
 .today-title {
     background-color: #DDD;
 }
+.header {
+    font-weight: 700;
+    text-align: center;
+    border: 0;
+}
 </style>
 <center>
 <h3>Сводный план работ на <?=$this->data['date']?></h3>
@@ -37,10 +42,10 @@ body {
 <?php
     $date = new Zend_Date();
     $today = $date->toValue(Zend_Date::DAY_SHORT);
-
-    foreach ($this->data['data'] as $monthNumber => $month) :?>
-    <div align="center"><b><?=$month['title']; ?></b></div><br/>
-    <table cellspacing="0" cellpadding="5" border="1">
+?>
+<table cellspacing="0" cellpadding="5" border="1">
+    <?php foreach ($this->data['data'] as $monthNumber => $month) :?>
+        <tr><td colspan="100" class="header"><?=$month['title']; ?></td></tr>
         <tr valign="bottom">
             <td><b>№</b></td>
             <td><b>Заказчик</b></td>
@@ -73,7 +78,7 @@ body {
 	                   switch($month['days'][$number]) {
 	                       case 'Сб':
                            case 'Вс':
-                               echo 'day-off ' . $day;
+                               echo !empty($day) ? 'day-off '  . $day : 'day';
                                break;
                            default:
                                echo 'day ' . $day;
@@ -83,8 +88,8 @@ body {
                 <?php endforeach;?>
            </tr>
 		<?php endforeach;?>
-	    </table><br/><br/>
 <?php endforeach;?>
+</table><br/><br/>
 
 <table cellspacing="0" cellpadding="5" border="1" style="border: none;">
     <tr>
