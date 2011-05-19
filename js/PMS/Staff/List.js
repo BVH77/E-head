@@ -77,6 +77,12 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
                 handler: this.onDelete,
                 scope: this
             }, '-', {
+                text: 'Выплаты',
+                iconCls: 'prod_schd-icon',
+                hidden: !acl.isUpdate('staff'),
+                handler: this.onPayments,
+                scope: this
+            }, '-', {
                 text: 'Учёт времени',
                 iconCls: 'prod_schd-icon',
                 hidden: !acl.isUpdate('staff'),
@@ -231,6 +237,12 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
         var record = g.getStore().getAt(rowIndex);
         var id = parseInt(record.get('id'));
         new PMS.Staff.HR.Layout({personId: id});
+    },
+    
+    onPayments: function(g, rowIndex) {
+        var record = g.getStore().getAt(rowIndex);
+        var id = parseInt(record.get('id'));
+        new PMS.Staff.Payments.Layout({personId: id});
     },
     
     onReport: function(g, rowIndex) {

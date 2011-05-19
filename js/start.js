@@ -83,7 +83,6 @@ Ext.onReady(function(){
             xtype: 'PMS.Orders.Layout',
             id: 'PMS.Orders.Layout'
         });
-        
         /*
         PMS.System.Layout.getTabPanel().add({
         	iconCls: 'customers-icon',
@@ -91,7 +90,6 @@ Ext.onReady(function(){
                 id: 'PMS.Staff.Layout'
         });
         */
-        
         PMS.System.Layout.doLayout();
         
         if (Ext.isArray(xlib.messages) && xlib.messages.length > 0) {

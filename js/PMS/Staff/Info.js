@@ -1,6 +1,6 @@
-Ext.ns('PMS.Staff.HR');
+Ext.ns('PMS.Staff');
 
-PMS.Staff.HR.Info = Ext.extend(xlib.form.FormPanel, {
+PMS.Staff.Info = Ext.extend(xlib.form.FormPanel, {
 	
     title: false,
     
@@ -28,7 +28,7 @@ PMS.Staff.HR.Info = Ext.extend(xlib.form.FormPanel, {
                 }
             },
             items: [{
-                columnWidth: .75,
+                columnWidth: .6,
                 labelWidth: 80,
                 items: [{
                     xtype: 'displayfield',
@@ -44,7 +44,7 @@ PMS.Staff.HR.Info = Ext.extend(xlib.form.FormPanel, {
                     name: 'category_name'
                 }]
             }, {
-                columnWidth: .25,
+                columnWidth: .4,
                 items: [{
                     xtype: 'displayfield',
                     fieldLabel: 'Принят на работу',
@@ -99,10 +99,10 @@ PMS.Staff.HR.Info = Ext.extend(xlib.form.FormPanel, {
             })
         };
         
-		PMS.Staff.HR.Info.superclass.initComponent.apply(this, arguments);
+		PMS.Staff.Info.superclass.initComponent.apply(this, arguments);
         
         this.getForm().load();
 	}
 });
 
-Ext.reg('PMS.Staff.HR.Info', PMS.Staff.HR.Info);
+Ext.reg('PMS.Staff.Info', PMS.Staff.Info);

@@ -480,9 +480,11 @@ class PMS_Reports
                 return 'planning_production';
             }
             if ($pef === false) {
+                // TODO: add classname "late"
                 if ($date <= $today && $date >= $psp) {
-                    return 'planning_production';
+                    $class = 'planning_production';
                 }
+                return $class;
             } else {
                 if ($date <= $pef && $date >= $psp) {
                     return 'planning_production';

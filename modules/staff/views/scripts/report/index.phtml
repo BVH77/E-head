@@ -22,9 +22,11 @@
         <td><b>Текущий тариф (руб.)</b></td>
         <td><b>Отработанных часов</b></td>
         <td><b>Сумма оплаты (руб.)</b></td>
+        <td><b>Выплачено (руб.)</b></td>
+        <td><b>Остаток (руб.)</b></td>
     </tr>
         <?php
-        $grandTotal = 0;
+        $hoursTotal = $summTotal = $paysTotal = $restTotal = 0;
         foreach ($this->data['rows'] as $row) :?>
             <tr>
                 <td><?=$row['name']?></td>
@@ -33,12 +35,20 @@
                 <td align="right"><?=$row['rate']?>,00</td>
                 <td align="right"><?=$row['hours_total']?></td>
                 <td align="right"><?=$row['summ_total']?>,00</td>
+                <td align="right"><?=$row['pays_total']?>,00</td>
+                <td align="right"><?=($row['summ_total'] - $row['pays_total'])?>,00</td>
             </tr>
         <?php
-        $grandTotal = $grandTotal + $row['summ_total'];
+        $hoursTotal = $hoursTotal + $row['hours_total'];
+        $summTotal = $summTotal + $row['summ_total'];
+        $paysTotal = $paysTotal + $row['pays_total'];
+        $restTotal = $restTotal + ($row['summ_total'] - $row['pays_total']);
         endforeach;?>
-    <tr><td colspan="6" align="right">
-        Итого к выплате: <b><?=$grandTotal?>,00</b>
+    <tr><td colspan="4"><b>Итого:</b></td>
+        <td align="right"><b><?=$hoursTotal?></b>
+        <td align="right"><b><?=$summTotal?>,00</b>
+        <td align="right"><b><?=$paysTotal?>,00</b>
+        <td align="right"><b><?=$restTotal?>,00</b>
     </td></tr>
 </table>
 

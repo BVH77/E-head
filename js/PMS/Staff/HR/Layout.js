@@ -22,9 +22,9 @@ PMS.Staff.HR.Layout = Ext.extend(Ext.Window, {
             throw 'personId is required!';
         }
         
-        this.title = 'Табель №' + this.personId;
+        this.title = 'Табель учёта времени №' + this.personId;
         
-        this.info = new PMS.Staff.HR.Info({
+        this.info = new PMS.Staff.Info({
             region: 'north',
             height: 180,
             border: false,
