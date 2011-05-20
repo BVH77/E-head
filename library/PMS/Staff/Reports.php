@@ -54,6 +54,7 @@ class PMS_Staff_Reports
             'h.staff_id=s.id', array()
         )
         ->group('s.id')
+        ->where('archive = 0')
         ->where('h.date >= ?', $f->start)
         ->where('h.date <= ?', $f->end)
         ;
@@ -92,6 +93,7 @@ class PMS_Staff_Reports
             'p.staff_id=s.id', array()
         )
         ->group('s.id')
+        ->where('archive = 0')
         ->where('p.date >= ?', $f->start)
         ->where('p.date <= ?', $f->end)
         ;

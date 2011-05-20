@@ -16,6 +16,8 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
     
     deleteURL:  link('staff', 'index', 'delete'),
     
+    archiveURL:  link('staff', 'index', 'archive'),
+    
     loadMask: true,
 
     permissions: acl.isUpdate('staff'),
@@ -56,7 +58,8 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
                             xlib.date.DATE_FORMAT
                         );
                     }
-                }
+                },
+                {name: 'archive', type: 'int'}
             ]
         });
         
@@ -70,12 +73,16 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
                 hidden: !acl.isUpdate('staff'),
                 handler: this.onUpdate,
                 scope: this
-            }, {
-                text: 'Удалить',
-                iconCls: 'delete',
-                hidden: !acl.isUpdate('staff'),
-                handler: this.onDelete,
-                scope: this
+            }, function(g, rowIndex, e) {
+                var record = g.getStore().getAt(rowIndex);
+                var archive = parseInt(record.get('archive'));
+                return {
+                    text: archive ? 'Извлечь из архива' : 'Перенести в архив',
+                    iconCls: archive ? 'add' : 'delete',
+                    hidden: !acl.isUpdate('staff'),
+                    handler: g.onArchive,
+                    scope: g
+                };
             }, '-', {
                 text: 'Выплаты',
                 iconCls: 'prod_schd-icon',
@@ -147,12 +154,21 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.plugins = [actions, this.filtersPlugin];
 
-        this.addBtn = new Ext.Toolbar.Button({
+        this.addBtn = new Ext.Button({
             text: 'Добавить',
             iconCls: 'add',
             hidden: !this.permissions,
             tooltip: 'Добавить',
             handler: this.onAdd,
+            scope: this
+        });
+
+        this.archiveBtn = new Ext.Button({
+            text: 'Архив',
+            iconCls: 'archive-icon',
+            tooltip: 'Добавить',
+            enableToggle: true,
+            handler: this.showArchive,
             scope: this
         });
         
@@ -161,7 +177,8 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
                 this.addBtn, 
                 ' ', 
                 this.filtersPlugin.getSearchField({width: 400}), 
-                ' '
+                ' ', '-', ' ',
+                this.archiveBtn
             ]
         });
         
@@ -207,32 +224,6 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
         }, this);
     },
     
-    onDelete: function(g, rowIndex) {
-        
-        var record = g.getStore().getAt(rowIndex);
-        var id = parseInt(record.get('id'));
-        
-        xlib.Msg.confirm('Вы уверены?', function() {
-            
-            Ext.Ajax.request({
-                url: this.deleteURL,
-                params: {
-                    id: id
-                },
-                callback: function(options, success, response) {
-                    var res = xlib.decode(response.responseText);
-                    if (true == success && res && true == res.success) {
-                        g.getStore().reload();
-                        return;
-                    }
-                    xlib.Msg.error('Ошибка при удалении.');
-                },
-                scope: this
-            });
-            
-        }, this);
-    },
-    
     onHR: function(g, rowIndex) {
         var record = g.getStore().getAt(rowIndex);
         var id = parseInt(record.get('id'));
@@ -256,6 +247,38 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
         this.setTitle(this.baseTitle + '"' + (categoryName || '') + '"');
         this.categoryId = categoryId;
         this.getStore().setBaseParam('categoryId', categoryId);
+        this.getStore().setBaseParam('archive', 0);
+        this.getStore().load();
+    },
+    
+    onArchive: function(g, rowIndex) {
+        var record = g.getStore().getAt(rowIndex);
+        var id = parseInt(record.get('id'));
+        var archive = parseInt(record.get('archive'));
+        xlib.Msg.confirm('Вы уверены?', function() {
+            
+            Ext.Ajax.request({
+                url: this.archiveURL,
+                params: {
+                    id: id,
+                    archive: archive == 1 ? 0 : 1
+                },
+                callback: function(options, success, response) {
+                    var res = xlib.decode(response.responseText);
+                    if (true == success && res && true == res.success) {
+                        g.getStore().reload();
+                        return;
+                    }
+                    xlib.Msg.error('Ошибка при сохранении.');
+                },
+                scope: this
+            });
+            
+        }, this);
+    },
+    
+    showArchive: function(b, e) {
+        this.getStore().setBaseParam('archive', b.pressed ? 1 : 0);
         this.getStore().load();
     }
 });

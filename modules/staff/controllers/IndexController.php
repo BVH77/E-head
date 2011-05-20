@@ -21,6 +21,7 @@ class Staff_IndexController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'archive');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'change-category');
     }
 
@@ -71,6 +72,19 @@ class Staff_IndexController extends OSDN_Controller_Action
     public function deleteAction()
     {
     	$response = $this->_class->delete($this->_getParam('id'));
+    	if ($response->isSuccess()) {
+    	    $this->view->success = true;
+    	} else {
+    	   $this->_collectErrors($response);
+    	}
+    }
+
+    public function archiveAction()
+    {
+    	$response = $this->_class->archive(
+    	   $this->_getParam('id'),
+    	   $this->_getParam('archive')
+        );
     	if ($response->isSuccess()) {
     	    $this->view->success = true;
     	} else {

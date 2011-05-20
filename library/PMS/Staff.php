@@ -22,6 +22,12 @@ class PMS_Staff
             $select->where('category_id = ?', intval($params['categoryId']));
         }
 
+        $archive = 0;
+        if (isset($params['archive']) && intval($params['archive']) == 1) {
+            $archive = 1;
+        }
+        $select->where('archive = ?', $archive);
+
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select);
         $plugin->parse($params);
         try {
@@ -204,6 +210,32 @@ class PMS_Staff
         && is_file(FILES_DIR . DIRECTORY_SEPARATOR . $row['cv_file'])) {
             unlink(FILES_DIR . DIRECTORY_SEPARATOR . $row['cv_file']);
         }
+        return $response->addStatus(new PMS_Status(PMS_Status::OK));
+    }
+
+    public function archive($id, $archive)
+    {
+        $id = intval($id);
+        $response = new OSDN_Response();
+        if ($id == 0) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
+        }
+
+        $archive = intval($archive);
+        if (!in_array($archive, array(0, 1))) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'archive'));
+        }
+
+        $res = $this->_table->updateByPk(array(
+            'archive'       => $archive,
+            'archive_date'  => new Zend_Db_Expr($archive ? 'NOW()' : 'NULL')
+        ), $id);
+        if (!$res) {
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+        }
+
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 

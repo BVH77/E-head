@@ -124,7 +124,6 @@ PMS.Staff.Payments.List = Ext.extend(Ext.grid.GridPanel, {
     onUpdate: function(g, rowIndex) {
         
         var record = g.getStore().getAt(rowIndex);
-        //var id = parseInt(record.get('id'));
         
         var formPanel = new PMS.Staff.Payments.Form({
             record: record
