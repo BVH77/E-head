@@ -4,7 +4,9 @@ body {
 }
 
 .late:after {
-    content: "!!!";
+    content: "!";
+    font-weight: 700;
+    color: white;
 }
 
 .planning_production {
@@ -78,7 +80,7 @@ body {
                 <td><nobr><?=$order['address']?></nobr></td>
                 <td><nobr><?=$order['creator_name']?></nobr></td>
                 <?php foreach ($order['days'] as $number => $day) :?>
-	                <td class="<?
+	                <td align="center" class="<?
 	                   switch($month['days'][$number]) {
 	                       case 'Сб':
                            case 'Вс':
