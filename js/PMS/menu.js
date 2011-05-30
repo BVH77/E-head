@@ -163,7 +163,7 @@ PMS.Menu = function(username, rolename, roleId) {
 	}, '-', {
 	    text: 'Мониторинг автотранспорта',
 	    iconCls: 'suppliers-icon',
-        hidden: !acl.isView('notice'),
+        hidden: !acl.isView('admin'),
         handler: function() {
             window.open(link('admin', 'map', 'open', {}, 'html'));
         } 
