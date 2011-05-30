@@ -160,6 +160,13 @@ PMS.Menu = function(username, rolename, roleId) {
                 id: 'PMS.Notice.List'
             });
         } 
+	}, '-', {
+	    text: 'Мониторинг автотранспорта',
+	    iconCls: 'suppliers-icon',
+        hidden: !acl.isView('notice'),
+        handler: function() {
+            window.open(link('admin', 'map', 'open', {}, 'html'));
+        } 
 	}, '->', {
 		text: 'Учебник',
         iconCls: 'work_schd-icon',
