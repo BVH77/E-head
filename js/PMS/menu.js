@@ -109,57 +109,57 @@ PMS.Menu = function(username, rolename, roleId) {
         }, {
             text: 'Кадры',
             iconCls: 'work_schd-icon',
-            handler: acl.isUpdate('staff') ? function() {
+            handler: function() {
                 new PMS.Reports.Staff();
-            } : PMS.menuMessage
+            }
         }]
 	}, '-', {
 	    text: 'Склад',
 	    iconCls: 'suppliers-icon',
-        // hidden: !acl.isView('storage'),
+        hidden: !acl.isView('storage'),
 	    menu: [{
 	        text: 'Наличие ТМЦ',
 	        iconCls: 'suppliers-icon',
-	        // hidden: !acl.isView('storage'),
-	        handler: acl.isView('storage') ? function() {
+	        handler: function() {
 	            PMS.System.Layout.getTabPanel().add({
 	                iconCls: 'suppliers-icon',
 	                xtype: 'PMS.Storage.Assets.Layout',
 	                id: 'PMS.Storage.Assets.Layout'
 	            });
-	        } : PMS.menuMessage
+	        }
 	    }, {
 	        text: 'Заявки на снабжение',
 	        iconCls: 'suppliers-icon',
-	        // hidden: !acl.isView('storage'),
-            handler: acl.isView('storage') ? function() {
+            handler: function() {
 	            PMS.System.Layout.getTabPanel().add({
 	                iconCls: 'suppliers-icon',
 	                xtype: 'PMS.Storage.Requests.List',
 	                id: 'PMS.Storage.Requests.List'
 	            });
-	        } : PMS.menuMessage
+	        }
 	    }]
 	}, {
 	    text: 'Кадры',
 	    iconCls: 'customers-icon',
-        handler: acl.isView('staff') ? function() {
+        hidden: !acl.isView('staff'),
+        handler: function() {
             PMS.System.Layout.getTabPanel().add({
                 iconCls: 'customers-icon',
                 xtype: 'PMS.Staff.Layout',
                 id: 'PMS.Staff.Layout'
             });
-        } : PMS.menuMessage 
+        } 
 	}, {
 	    text: 'Приказы и объявления',
 	    iconCls: 'work_schd-icon',
-        handler: acl.isView('notice') ? function() {
+        hidden: !acl.isView('notice'),
+        handler: function() {
             PMS.System.Layout.getTabPanel().add({
                 iconCls: 'work_schd-icon',
                 xtype: 'PMS.Notice.List',
                 id: 'PMS.Notice.List'
             });
-        } : PMS.menuMessage 
+        } 
 	}, '->', {
 		text: 'Учебник',
         iconCls: 'work_schd-icon',
