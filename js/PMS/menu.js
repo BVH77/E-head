@@ -170,7 +170,10 @@ PMS.Menu = function(params) {
 	    iconCls: 'suppliers-icon',
         hidden: !(acl.isView('admin') && enableMap),
         handler: function() {
-            window.open(link('admin', 'map', 'open', {}, 'html'));
+            var win = window.open(link('admin', 'map', 'open', {}, 'html'));
+            (function(){
+                win.location.href = 'http://my.gdemoi.ru/map.php';
+            }).defer(2000);
         } 
 	}, '->', {
 		text: 'Учебник',
