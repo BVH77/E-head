@@ -128,10 +128,16 @@ if (!OSDN_Accounts_Prototype::isAuthenticated()) {
         $roleName = $roleRow['name'];
     }
 
+    $enableMap = false;
+    if ($config->map && $config->map->enable) {
+        $enableMap = !!$config->map->enable;
+    }
+
     $options += array(
-        'roleId' => OSDN_Accounts_Prototype::getRoleId(),
-        'username' => OSDN_Accounts_Prototype::getInformation()->name,
-        'rolename' => $roleName
+        'roleId'    => OSDN_Accounts_Prototype::getRoleId(),
+        'username'  => OSDN_Accounts_Prototype::getInformation()->name,
+        'rolename'  => $roleName,
+        'enableMap' => $enableMap
     );
 }
 

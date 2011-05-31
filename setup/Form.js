@@ -157,6 +157,34 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
 				name: 'remoteauth[password]',
 				title: 'Password for remote authentification'
 			}]
+        },{
+        	xtype: 'fieldset',
+        	title: 'Map settings',
+        	autoHeight: true,
+        	defaults: {
+	        	xtype: 'textfield',
+	        	anchor: '100%'
+	        },
+	        items: [{
+	        	xtype: 'checkbox',
+	        	fieldLabel: 'Enabled',
+	        	name: 'map[enable]',
+	        	anchor: 0,
+	        	checked: false,
+	        	title: 'Enable/disable map module (default: flase)'
+	        },{
+	        	fieldLabel: 'Host',
+	        	name: 'map[host]',
+	        	title: 'Host for map service (slash at the end requiried)'
+	        },{
+	        	fieldLabel: 'Login',
+	        	name: 'map[login]',
+	        	title: 'Login for map service'
+	        },{
+	        	fieldLabel: 'Password',
+	        	name: 'map[password]',
+	        	title: 'Password for map service'
+	        }]
 		}];
         
         this.buttons = [{
@@ -166,7 +194,7 @@ Setup.Form = Ext.extend(Ext.form.FormPanel, {
         }];
         
         // Init titles
-        this.on('render', function(fp){
+        this.on('render', function(fp) {
             fp.getForm().items.each(function(item){
                 item.on('render', function(f) {f.getErrorCt().dom.title = f.title;});
             });

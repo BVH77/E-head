@@ -74,7 +74,12 @@ Ext.onReady(function(){
     	Ext.ns('PMS.System');
 
         PMS.System.Layout = new xlib.Layout.Workspace({
-    		mainMenu: PMS.Menu(xlib.username || '', xlib.rolename || '', xlib.roleId || '')
+    		mainMenu: PMS.Menu({
+                username:  xlib.username || '', 
+                rolename:  xlib.rolename || '', 
+                roleId:    xlib.roleId || '',
+                enableMap: xlib.enableMap || false
+            })
         });
         
         PMS.OrdersTab = PMS.System.Layout.getTabPanel().add({

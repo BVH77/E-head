@@ -4,10 +4,15 @@ PMS.menuMessage = function() {
     xlib.Msg.info('Модуль доступен в платных тарифах'); 
 }
 
-PMS.Menu = function(username, rolename, roleId) {
-	username = username || '';
-	rolename = rolename || '';
-	roleId = parseInt(roleId);
+PMS.Menu = function(params) {
+    
+    params = params || {};
+    
+	var username  = params.username || '';
+	var rolename  = params.rolename || '';
+	var roleId    = parseInt(params.roleId);
+    var enableMap = params.enableMap || false; 
+    
 	return [{
 	    xtype: 'box',
 	    autoEl: {
@@ -163,7 +168,7 @@ PMS.Menu = function(username, rolename, roleId) {
 	}, '-', {
 	    text: 'Мониторинг автотранспорта',
 	    iconCls: 'suppliers-icon',
-        hidden: !acl.isView('admin'),
+        hidden: !(acl.isView('admin') && enableMap),
         handler: function() {
             window.open(link('admin', 'map', 'open', {}, 'html'));
         } 

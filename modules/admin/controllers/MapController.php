@@ -11,5 +11,16 @@ class Admin_MapController extends OSDN_Controller_Action
 	public function openAction()
     {
         $this->disableLayout(true);
+        $config = Zend_Registry::get('config');
+
+        if ($config->map->enable != 1) {
+            $this->disableRender(true);
+            echo 'Ошибка! Модуль отключен либо отсутствует';
+            return;
+        }
+
+        $this->view->host = $config->map->host;
+        $this->view->login = $config->map->login;
+        $this->view->password = $config->map->password;
     }
 }
