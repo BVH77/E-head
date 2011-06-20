@@ -22,6 +22,7 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
         });
         
         this.field = new Ext.form.TextArea({
+            region: 'center',
             style: 'border: 0',
         	height: 60,
         	flex: 1
@@ -46,13 +47,14 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
             region: 'south',
             height: 60,
             cls: 'x-border-top',
-            layout: 'hbox',
+            layout: 'border',
             hidden: !this.permissions,
             margins: '2px 0 0 0',
             border: false,
             items: [this.field, {
-                columnWidth: '100px',
+                width: 50,
                 xtype: 'button',
+                region: 'east',
                 handleMouseEvents: false,
                 tooltip: 'Отослать', 
                 ctCls: 'chat-big-button',

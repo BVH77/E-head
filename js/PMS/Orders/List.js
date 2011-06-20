@@ -289,7 +289,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             this.fireEvent('orderselect', record);
         }, this);
 		
-        if (acl.isView('admin')) {
+        if (acl.isUpdate('admin')) {
             this.loadUsers();
         }
     },

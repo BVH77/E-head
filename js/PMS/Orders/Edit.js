@@ -102,7 +102,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         }
         
         this.notes = new PMS.Orders.Edit.Notes({
-            height: 315,
+            height: 313,
             permissions: this.permissions,
             orderId: this.orderId,
             listeners: {
