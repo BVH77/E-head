@@ -8,8 +8,6 @@ PMS.Staff.Payments.Form = Ext.extend(xlib.form.FormPanel, {
     
     updateURL:  link('staff', 'payments', 'update'),
     
-    fileUpload: true,
-    
     markFieldsDirty: false,
     
     permissions: acl.isUpdate('staff'),

@@ -72,7 +72,7 @@ PMS.Staff.Payments.List = Ext.extend(Ext.grid.GridPanel, {
                 scope: this
             }, '-', {
                 text: 'Добавить',
-                iconCls: 'prod_schd-icon',
+                iconCls: 'add',
                 hidden: !acl.isUpdate('staff'),
                 handler: this.onAdd,
                 scope: this
