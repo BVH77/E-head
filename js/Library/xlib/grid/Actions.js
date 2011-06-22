@@ -9,7 +9,7 @@ Ext.extend(xlib.grid.Actions, Ext.util.Observable, {
     
     rowConfig: {},
     
-    init : function(grid) {
+    init: function(grid) {
 
         this.grid = grid;
         if (!this.rowConfig.items) {
