@@ -99,9 +99,26 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             var actions = new xlib.grid.Actions({
                 autoWidth: true,
                 items: [{
+                    text: 'Оприходовать',
+                    iconCls: 'add',
+                    hidden: !this.permissions,
+                    handler: this.onIncome,
+                    scope: this
+                }, '-', {
+                    text: 'История движения ТМЦ',
+                    iconCls: 'details',
+                    handler: function(g, rowIndex) {
+                        var record = g.getStore().getAt(rowIndex);
+                        new PMS.Storage.Assets.History({
+                            assetId: record.get('id'),
+                            assetName: record.get('name')
+                        });
+                    },
+                    scope: this
+                }, '-', {
                     text: 'Редактировать',
                     iconCls: 'edit',
-                    hidden: !this.permissions ,
+                    hidden: !this.permissions,
                     handler: this.onUpdate,
                     scope: this
                 }, {
@@ -135,6 +152,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             this.columns = [checkColumn].concat(this.columns);
             
             this.on({
+                rowdblclick: this.permissions ? this.onUpdate : Ext.emptyFn,
                 afteredit: function(params) {
                     if ('checked' == params.field) {
                         this.onCheck(params.record);
@@ -218,6 +236,20 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
         
     },
     
+    onIncome: function(g, rowIndex) {
+
+        var editAsset = new PMS.Storage.Assets.Income({
+            record: g.getStore().getAt(rowIndex), 
+            listeners: {
+                saved: function() {
+                    this.getStore().reload();
+                },
+                scope: this
+            }
+        });
+
+    },
+    
     onCheck: function(record) {
         
         this.disable();
@@ -273,110 +305,6 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             
         }, this);
         
-    },
-    
-    // ------------------------ Private functions ------------------------------
-    
-    getForm: function() {
-        
-        var updateSumm = function() {
-            var summ = qtyField.getValue() * unitPriceField.getValue();
-            summ = Ext.util.Format.number(summ, '0,000.00');
-            summField.setValue(summ.replace(/,/g, ' ') + ' р.');
-        };
-        
-        var summField = new Ext.form.DisplayField({
-            style: 'line-height: 18px;',
-            fieldLabel: 'Сумма'
-        });
-        
-        var qtyField = new Ext.form.NumberField({
-            fieldLabel: 'Количество',
-            name: 'qty',
-            allowDecimals: false,
-            enableKeyEvents: true,
-            listeners: {
-                keyup: updateSumm
-            }
-        });
-        
-        var unitPriceField = new Ext.form.NumberField({
-            fieldLabel: 'Цена за ед. (р.)',
-            name: 'unit_price',
-            enableKeyEvents: true,
-            listeners: {
-                keyup: updateSumm
-            }
-        });
-        
-        return new xlib.form.FormPanel({
-            permissions: this.permissions,
-            updateSumm: updateSumm,
-            labelWidth: 100,
-            items: [{
-                xtype: 'textfield',
-                fieldLabel: 'Наименование',
-                name: 'name'
-            }, {
-                layout: 'column',
-                border: false,
-                columns: 2,
-                defaults: {
-                    border: false,
-                    layout: 'form',
-                    columnWidth: .5
-                },
-                items: [{
-                    items: [qtyField]
-                }, {
-                    padding: '0 0 0 10',
-                    items: [{
-                        xtype: 'PMS.Storage.Measures.ComboBox',
-                        fieldLabel: 'Ед. измерения',
-                        anchor: '100%',
-                        name: 'measure',
-                        hiddenName: 'measure'
-                    }]
-                }]
-            }, {
-                layout: 'column',
-                border: false,
-                columns: 2,
-                defaults: {
-                    border: false,
-                    layout: 'form',
-                    columnWidth: .5
-                },
-                items: [{
-                    items: [unitPriceField]
-                }, {
-                    padding: '0 0 0 10',
-                    items: [summField]
-                }]
-            }],
-            listeners: {
-                load: updateSumm
-            }
-        });
-    },
-    
-    showWindow: function(config) {
-        
-        this.formWindow = new Ext.Window(Ext.apply({
-            resizable: false,
-            width: 500,
-            modal: true,
-            items: [],
-            buttons: [config.okButton || '', {
-                text: 'Отмена',
-                handler: function() {
-                    this.formWindow.close();
-                },
-                scope: this
-            }]
-        }, config || {}));
-        
-        this.formWindow.show();
     },
     
     loadList: function(categoryId, categoryName) {

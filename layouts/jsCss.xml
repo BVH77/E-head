@@ -97,6 +97,8 @@
         <script src="/js/PMS/Storage/Assets/Edit/Form.js"/>
         <script src="/js/PMS/Storage/Assets/Edit/Tree.js"/>
         <script src="/js/PMS/Storage/Assets/Edit/Layout.js"/>
+        <script src="/js/PMS/Storage/Assets/History.js"/>
+        <script src="/js/PMS/Storage/Assets/Income.js"/>
         
         <script src="/js/PMS/Storage/Measures/ComboBox.js"/>
         
@@ -106,6 +108,7 @@
         <script src="/js/PMS/Reports/Managers.js"/>
         <script src="/js/PMS/Reports/Customers.js"/>
         <script src="/js/PMS/Reports/Staff.js"/>
+        <script src="/js/PMS/Reports/Vacations.js"/>
         
         <script src="/js/PMS/Notice/List.js"/>
         <script src="/js/PMS/Notice/Form.js"/>
@@ -118,16 +121,22 @@
         <script src="/js/PMS/Staff/List.js"/>
         <script src="/js/PMS/Staff/Form.js"/>
         <script src="/js/PMS/Staff/Layout.js"/>
-        
-        <script src="/js/PMS/Staff/HR/Table.js"/>
-        <script src="/js/PMS/Staff/HR/Layout.js"/>
+
+        <script src="/js/PMS/Staff/Vacations/Form.js"/>
+        <script src="/js/PMS/Staff/Vacations/List.js"/>
+        <script src="/js/PMS/Staff/Vacations/Layout.js"/>
 
         <script src="/js/PMS/Staff/Payments/Form.js"/>
         <script src="/js/PMS/Staff/Payments/List.js"/>
         <script src="/js/PMS/Staff/Payments/Layout.js"/>
+        
+        <script src="/js/PMS/Staff/HR/Table.js"/>
+        <script src="/js/PMS/Staff/HR/Layout.js"/>
+        
         <!-- Modules -->
         
         <script src="/js/PMS/menu.js"/>
+        <script src="/js/extensions.js"/>
         <script src="/js/start.js"/>
         
         <!-- localization files -->

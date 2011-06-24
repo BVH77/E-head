@@ -32,7 +32,7 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
                 direction: 'ASC'
             },
             totalProperty: 'totalCount',
-            fields: ['id', 'asset_id', 'account_name', 'name', 'measure', 'qty', 
+            fields: ['id', 'asset_id', 'order_id', 'account_name', 'name', 'measure', 'qty', 
                 {name: 'request_on', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
                 {
                     name: 'created', 
@@ -69,7 +69,7 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
         })
         
         this.columns = [{
-            header: 'Заказ на дату',
+            header: 'Заявка на дату',
             dataIndex: 'request_on',
             renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
             sortable: true,
@@ -90,7 +90,7 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
             sortable: true,
             width: 100
         }, {
-            header: 'Кем подана заявка',
+            header: 'Автор заявки',
             dataIndex: 'account_name',
             sortable: true,
             width: 150
@@ -99,6 +99,11 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
             dataIndex: 'created',
             sortable: true,
             width: 150
+        }, {
+            header: 'К заказу №',
+            dataIndex: 'order_id',
+            sortable: true,
+            width: 80
         }];
         
         this.filtersPlugin = new Ext.grid.GridFilters({
@@ -123,15 +128,25 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
         });
         
         PMS.Storage.Requests.List.superclass.initComponent.apply(this, arguments);
+        
+        this.on('rowdblclick', this.onUpdate, this);
     },
     
     onAdd: function(b, e) {
+        
+        if (!this.permissions) {
+            return;
+        }
         var formPanel = new PMS.Storage.Requests.Form();
         var w = this.getWindow(formPanel, this.addURL, this.getStore(), false);
         w.show();
     },
     
     onUpdate: function(g, rowIndex) {
+        
+        if (!this.permissions) {
+            return;
+        }
         var formPanel = new PMS.Storage.Requests.Form();
         var record = g.getStore().getAt(rowIndex);
         var id = parseInt(record.get('id'));

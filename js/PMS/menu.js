@@ -94,6 +94,13 @@ PMS.Menu = function(params) {
 	        handler: function() {
 	            window.open('/orders/report/planning');
 	        }
+	    }, {
+	        text: 'План отпусков сотрудников',
+	        iconCls: 'work_schd-icon',
+            hidden: !acl.isView('orders'),
+	        handler: function() {
+                new PMS.Reports.Vacations();
+            }
 	    }]
     }, {
 	    text: 'Отчёты',

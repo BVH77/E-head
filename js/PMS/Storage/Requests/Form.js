@@ -82,10 +82,10 @@ PMS.Storage.Requests.Form = Ext.extend(xlib.form.FormPanel, {
                 layout: 'form'
             },
             items: [{
-                columnWidth: .63,
+                columnWidth: .45,
                 items: [{
                     xtype: 'xlib.form.DateField',
-                    format: 'd-m-Y l',
+                    format: 'd-m-Y',
                     fieldLabel: 'Заявка на дату',
                     allowBlank: false,
                     name: 'request_on',
@@ -93,14 +93,48 @@ PMS.Storage.Requests.Form = Ext.extend(xlib.form.FormPanel, {
                     anchor: '95%'
                 }]
             }, {
-                columnWidth: .37,
-                labelWidth: 50,
+                columnWidth: .55,
+                labelWidth: 80,
                 items: [{
                     xtype: 'displayfield',
                     style: 'line-height: 18px;',
                     value: (new Date()).format(xlib.date.DATE_TIME_FORMAT),
-                    fieldLabel: 'Создана',
+                    fieldLabel: 'Дата подачи',
                     name: 'created',
+                    anchor: '100%'
+                }]
+            }]
+        }, {
+            layout: 'column',
+            border: false,
+            columns: 2,
+            defaults: {
+                border: false,
+                layout: 'form'
+            },
+            items: [{
+                columnWidth: .45,
+                items: [{
+                    xtype: 'numberfield',
+                    fieldLabel: 'К заказу №',
+                    name: 'order_id',
+                    validator: function(value) {
+                        return (value > 0 || Ext.isEmpty(value)) 
+                            ? true 
+                            : 'Значение должно быть больше нуля';
+                    },
+                    allowBlank: true,
+                    anchor: '95%'
+                }]
+            }, {
+                columnWidth: .55,
+                labelWidth: 80,
+                items: [{
+                    xtype: 'displayfield',
+                    style: 'line-height: 18px;',
+                    value: xlib.username || '',
+                    fieldLabel: 'Автор заявки',
+                    name: 'account_name',
                     anchor: '100%'
                 }]
             }]
@@ -182,6 +216,6 @@ PMS.Storage.Requests.Form = Ext.extend(xlib.form.FormPanel, {
         }
         nameField.disable();
         measureField.disable();
-        
+        measureField.hideTriggerItem('btn0');
     }
 });

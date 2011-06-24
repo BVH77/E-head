@@ -18,11 +18,13 @@ class Storage_AssetsController extends OSDN_Controller_Action
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->storage);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-list');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get');
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'history');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'check');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'reset-checks');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'income');
     }
 
 	public function getListAction()
@@ -97,5 +99,27 @@ class Storage_AssetsController extends OSDN_Controller_Action
     	} else {
     	   $this->_collectErrors($response);
     	}
+    }
+
+    public function historyAction()
+    {
+        $response = $this->_class->getHistoryByAssetId($this->_getAllParams());
+        if ($response->isSuccess()) {
+            $this->view->succces = true;
+            $this->view->data = $response->getRowset();
+        } else {
+            $this->_collectErrors($response);
+        }
+    }
+
+    public function incomeAction()
+    {
+        $response = $this->_class->income($this->_getAllParams());
+        if ($response->isSuccess()) {
+            $this->view->success = true;
+            $this->view->id = $response->id;
+        } else {
+           $this->_collectErrors($response);
+        }
     }
 }

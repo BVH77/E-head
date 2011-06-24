@@ -22,14 +22,12 @@ PMS.Storage.Assets.Edit.Form = Ext.extend(xlib.form.FormPanel, {
             fieldLabel: 'Сумма'
         });
         
-        var qtyField = new Ext.form.NumberField({
-            fieldLabel: 'Количество',
+        var qtyField = new Ext.form.DisplayField({
+            style: 'line-height: 18px;',
+            anchor: 0,
             name: 'qty',
-            allowDecimals: false,
-            enableKeyEvents: true,
-            listeners: {
-                keyup: updateSumm
-            }
+            value: 0,
+            fieldLabel: 'Количество'
         });
         
         var unitPriceField = new Ext.form.NumberField({
@@ -54,11 +52,11 @@ PMS.Storage.Assets.Edit.Form = Ext.extend(xlib.form.FormPanel, {
             fieldLabel: 'Ед. измерения',
             name: 'measure',
             hiddenName: 'measure'
-        }, qtyField, unitPriceField, summField];
+        }, unitPriceField, qtyField, summField];
         
         PMS.Storage.Assets.Edit.Form.superclass.initComponent.apply(this, arguments);
         
-        updateSumm();
+        this.on('ready', updateSumm, this, {delay: 200});
     }
     
 });

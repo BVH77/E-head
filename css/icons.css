@@ -28,3 +28,15 @@
 	background-repeat: no-repeat;
     background-image:url(/images/checkboxUnchecked.gif) !important;
 }
+
+.details {
+    background-image:url(/images/details.gif) !important;
+}
+.check-in {
+    background-image:url(/images/check-in_16x16.gif) !important;
+    background-repeat: no-repeat;
+}
+.check-out {
+    background-image:url(/images/check-out_16x16.gif) !important;
+    background-repeat: no-repeat;
+}

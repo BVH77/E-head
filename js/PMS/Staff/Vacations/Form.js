@@ -88,7 +88,7 @@ PMS.Staff.Vacations.Form = Ext.extend(xlib.form.FormPanel, {
                             from = this.getForm().findField('startdt').getValue(),
                             to = this.getForm().findField('enddt').getValue();
                         
-                        if ((to - from) > mksday * this.periodMaxLength) {
+                        if ((to - from) > mksday * (this.periodMaxLength - 1)) {
                             xlib.Msg.error('Период отпуска не может превышать '
                                 + this.periodMaxLength + '&nbsp;д.');
                             return;

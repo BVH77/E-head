@@ -2,15 +2,6 @@
 
 class PMS_Staff_Reports
 {
-	protected $_tableHr, $_tableStaff;
-
-    public function __construct()
-    {
-        $this->_tableHr = new PMS_Staff_Hr_Table();
-        $this->_tablePayments = new PMS_Staff_Payments_Table();
-        $this->_tableStaff = new PMS_Staff_Table();
-    }
-
     public function generateStaff(array $params)
     {
         $response = new OSDN_Response();
@@ -38,9 +29,13 @@ class PMS_Staff_Reports
             'function'      => ''
         );
 
+        $tableHr = new PMS_Staff_Hr_Table();
+        $tablePayments = new PMS_Staff_Payments_Table();
+        $tableStaff = new PMS_Staff_Table();
+
         // Get total summ of working hours by person for given period
-        $select = $this->_tableHr->getAdapter()->select()
-        ->from(array('s' => $this->_tableStaff->getTableName()),
+        $select = $tableHr->getAdapter()->select()
+        ->from(array('s' => $tableStaff->getTableName()),
             array(
                 'id', 'name', 'function',
                 'rate' => 's.pay_rate',
@@ -50,7 +45,7 @@ class PMS_Staff_Reports
                     s.pay_rate,SUM(h.value*s.pay_rate))')
             )
         )
-        ->joinLeft(array('h' => $this->_tableHr->getTableName()),
+        ->joinLeft(array('h' => $tableHr->getTableName()),
             'h.staff_id=s.id', array()
         )
         ->group('s.id')
@@ -80,8 +75,8 @@ class PMS_Staff_Reports
         }
 
         // Get total summ of payments by person for given period
-        $select = $this->_tableHr->getAdapter()->select()
-        ->from(array('s' => $this->_tableStaff->getTableName()),
+        $select = $tableHr->getAdapter()->select()
+        ->from(array('s' => $tableStaff->getTableName()),
             array(
                 'id', 'name', 'function',
                 'rate' => 's.pay_rate',
@@ -89,7 +84,7 @@ class PMS_Staff_Reports
                 'pays_total'   => new Zend_Db_Expr('SUM(p.value)')
             )
         )
-        ->joinLeft(array('p' => $this->_tablePayments->getTableName()),
+        ->joinLeft(array('p' => $tablePayments->getTableName()),
             'p.staff_id=s.id', array()
         )
         ->group('s.id')
@@ -123,6 +118,82 @@ class PMS_Staff_Reports
 
         $response->data = array(
             'rows'  => array_values($rowsMerged),
+            'start' => $f->start,
+            'end'   => $f->end
+        );
+        return $response->addStatus(new PMS_Status(PMS_Status::OK));
+    }
+
+    public function generateVacations($params)
+    {
+        $response = new OSDN_Response();
+
+        $f = new OSDN_Filter_Input(array(
+            '*' => 'StringTrim'
+        ), array(
+            'start'  => array('Date', 'allowEmpty' => false, 'presence' => 'required'),
+            'end'    => array('Date', 'allowEmpty' => false, 'presence' => 'required')
+        ), $params);
+
+        $response->addInputStatus($f);
+        if ($response->hasNotSuccess()) {
+            return $response;
+        }
+
+        $tableVacations = new PMS_Staff_Vacations_Table();
+        $tableStaff = new PMS_Staff_Table();
+        $result = array();
+
+        $persons = $tableStaff->fetchAllColumns(null, null, array('id', 'name', 'function'));
+
+        if ($persons->count()) {
+
+            $persons = $persons->toArray();
+
+            $debug = array();
+
+            foreach ($persons as $person) {
+
+                $select = $tableVacations->getAdapter()->select()
+                ->from(array('v' => $tableVacations->getTableName()), array('from', 'to'))
+                ->where('v.staff_id = ?', $person['id'])
+                ->where('(v.from >= ?', $f->start)
+                ->where('v.from <= ?', $f->end)
+                ->orWhere('v.to >= ?', $f->start)
+                ->where('v.to <= ?)', $f->end)
+                ;
+
+                $debug[] = $select->assemble();
+
+                try {
+                    $rows = $select->query()->fetchAll();
+                } catch (Exception $e) {
+                    if (OSDN_DEBUG) {
+                        throw $e;
+                    }
+                    return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+                }
+
+                if (count($rows) > 0) {
+
+                    $person['periods'] = array();
+
+                    foreach ($rows as $row) {
+                        $person['periods'][] = array(
+                            'from'  => new Zend_Date($row['from']),
+                            'to'    => new Zend_Date($row['to'])
+                        );
+                    }
+
+                    $result[$person['id']] = $person;
+                }
+            }
+        }
+
+        $response->data = array(
+            'debug' => $debug,
+            'rows'  => $result,
+            'days'  => array(),
             'start' => $f->start,
             'end'   => $f->end
         );

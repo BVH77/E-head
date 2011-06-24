@@ -29,6 +29,17 @@ Ext.onReady(function(){
     xlib.date.DATE_TIME_FORMAT_SERVER = 'Y-m-d H:i:s';
     xlib.date.DATE_FORMAT_SERVER = 'Y-m-d';
    
+    // FIX for IE9
+    if (!Range.prototype.createContextualFragment) {
+        Range.prototype.createContextualFragment = function(html) {
+            var frag = document.createDocumentFragment(),
+            div = document.createElement("div");
+            frag.appendChild(div);
+            div.outerHTML = html;
+            return frag;
+        };
+    }
+    
     Ext.Ajax.on({
         requestexception: function(conn, response, options) {
             switch (response.status) {
@@ -88,13 +99,24 @@ Ext.onReady(function(){
             xtype: 'PMS.Orders.Layout',
             id: 'PMS.Orders.Layout'
         });
+        
         /*
+        
+        PMS.System.Layout.getTabPanel().add({
+        	iconCls: 'customers-icon',
+                xtype: 'PMS.Storage.Assets.Layout',
+                id: 'PMS.Storage.Assets.Layout'
+        });
+        
+        
         PMS.System.Layout.getTabPanel().add({
         	iconCls: 'customers-icon',
                 xtype: 'PMS.Staff.Layout',
                 id: 'PMS.Staff.Layout'
         });
+        
         */
+        
         PMS.System.Layout.doLayout();
         
         if (Ext.isArray(xlib.messages) && xlib.messages.length > 0) {
@@ -103,5 +125,4 @@ Ext.onReady(function(){
             });
         }
     });
-    
 });

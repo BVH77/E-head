@@ -14,11 +14,16 @@ class PMS_Storage_Requests
         $response = new OSDN_Response();
 
         $select = $this->_table->getAdapter()->select()
-            ->from(array('av' => $this->_table->getTableName()), '*')
+            ->from(array('av' => $this->_table->getTableName()), array(
+                'id', 'asset_id', 'account_id', 'order_id', 'qty', 'created', 'request_on',
+                'name' => new Zend_Db_Expr('IF(asset_id IS NULL,av.name,as.name)'),
+                'measure' => new Zend_Db_Expr('IF(asset_id IS NULL,av.measure,as.measure)'),
+                'account_name' => 'ac.name'
+            ))
             ->joinLeft(array('as' => 'storage_assets'),
-                'av.asset_id=as.id', array('name', 'measure'))
+                'av.asset_id=as.id', array())
             ->joinLeft(array('ac' => 'accounts'),
-                'av.account_id=ac.id', array('account_name' => 'ac.name'));
+                'av.account_id=ac.id', array());
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select,
             array('name', 'measure', 'qty', 'account_name', 'request_on', 'created'));
         $plugin->parse($params);

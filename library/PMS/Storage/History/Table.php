@@ -1,14 +1,12 @@
 <?php
 
-class PMS_Storage_Requests_Table extends OSDN_Db_Table_Abstract
+class PMS_Storage_History_Table extends OSDN_Db_Table_Abstract
 {
     /**
      * Table name
      * @var string
      */
-    protected $_name = 'storage_requests';
-
-    protected $_nullableFields = array('asset_id', 'order_id', 'name', 'measure');
+    protected $_name = 'storage_history';
 
     /**
      * @param array $data
@@ -16,7 +14,9 @@ class PMS_Storage_Requests_Table extends OSDN_Db_Table_Abstract
      */
     public function insert(array $data)
     {
-        $data['account_id'] = OSDN_Accounts_Prototype::getId();
+        if (!isset($data['account_id']) || !$data['account_id']) {
+            $data['account_id'] = OSDN_Accounts_Prototype::getId();
+        }
         unset($data['created']);
         return parent::insert($data);
     }

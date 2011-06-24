@@ -84,12 +84,18 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
                     scope: g
                 };
             }, '-', {
+                text: 'Отпуска',
+                iconCls: 'prod_schd-icon',
+                hidden: !acl.isUpdate('staff'),
+                handler: this.onVacations,
+                scope: this
+            }, {
                 text: 'Выплаты',
                 iconCls: 'prod_schd-icon',
                 hidden: !acl.isUpdate('staff'),
                 handler: this.onPayments,
                 scope: this
-            }, '-', {
+            }, {
                 text: 'Учёт времени',
                 iconCls: 'prod_schd-icon',
                 hidden: !acl.isUpdate('staff'),
@@ -224,10 +230,10 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
         }, this);
     },
     
-    onHR: function(g, rowIndex) {
+    onVacations: function(g, rowIndex) {
         var record = g.getStore().getAt(rowIndex);
         var id = parseInt(record.get('id'));
-        new PMS.Staff.HR.Layout({personId: id});
+        new PMS.Staff.Vacations.Layout({personId: id});
     },
     
     onPayments: function(g, rowIndex) {
@@ -236,10 +242,10 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
         new PMS.Staff.Payments.Layout({personId: id});
     },
     
-    onReport: function(g, rowIndex) {
+    onHR: function(g, rowIndex) {
         var record = g.getStore().getAt(rowIndex);
         var id = parseInt(record.get('id'));
-        //new PMS.Notice.DstInfo({itemId: id}).getWindow().show();
+        new PMS.Staff.HR.Layout({personId: id});
     },
     
     loadList: function(categoryId, categoryName) {

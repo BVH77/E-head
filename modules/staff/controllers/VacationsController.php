@@ -9,13 +9,14 @@ class Staff_VacationsController extends OSDN_Controller_Action
 
 	public function init()
 	{
-		$this->_class = new PMS_Staff_Payments();
+		$this->_class = new PMS_Staff_Vacations();
 		parent::init();
 	}
 
     public function permission(OSDN_Controller_Action_Helper_Acl $acl)
     {
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->staff);
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'report');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-list');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');

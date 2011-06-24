@@ -19,6 +19,7 @@ class Staff_ReportController extends OSDN_Controller_Action
     {
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->staff);
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'index');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'vacations');
     }
 
     public function indexAction()
@@ -27,6 +28,17 @@ class Staff_ReportController extends OSDN_Controller_Action
     	if ($response->isSuccess()) {
 	    	$this->view->data = $response->data;
 	        $this->view->content = $this->view->render('report/index.phtml');
+    	} else {
+    		$this->_collectErrors($response);
+    	}
+    }
+
+    public function vacationsAction()
+    {
+    	$response = $this->_reports->generateVacations($this->_getAllParams());
+    	if ($response->isSuccess()) {
+	    	$this->view->data = $response->data;
+	        $this->view->content = $this->view->render('report/vacations.phtml');
     	} else {
     		$this->_collectErrors($response);
     	}

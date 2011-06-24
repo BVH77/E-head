@@ -45,23 +45,11 @@ PMS.Staff.Vacations.List = Ext.extend(Ext.grid.GridPanel, {
             }, {
                 name: 'from', 
                 type: 'date', 
-                dateFormat: xlib.date.DATE_FORMAT_SERVER,
-                convert: function(v, record) {
-                    return Ext.util.Format.date(
-                        Date.parseDate(v, xlib.date.DATE_FORMAT_SERVER), 
-                        xlib.date.DATE_FORMAT
-                    );
-                }
+                dateFormat: xlib.date.DATE_FORMAT_SERVER
             }, {
                 name: 'to', 
                 type: 'date', 
-                dateFormat: xlib.date.DATE_FORMAT_SERVER,
-                convert: function(v, record) {
-                    return Ext.util.Format.date(
-                        Date.parseDate(v, xlib.date.DATE_FORMAT_SERVER), 
-                        xlib.date.DATE_FORMAT
-                    );
-                }
+                dateFormat: xlib.date.DATE_FORMAT_SERVER
             }]
         });
         
@@ -95,12 +83,24 @@ PMS.Staff.Vacations.List = Ext.extend(Ext.grid.GridPanel, {
             defaultSortable: true,
             columns: [{
                 header: 'Начало',
-                dataIndex: 'date',
-                width: 140
+                dataIndex: 'from',
+                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                    return Ext.util.Format.date(value, xlib.date.DATE_FORMAT);
+                }
             }, {
                 header: 'Конец',
-                dataIndex: 'date',
-                width: 140
+                dataIndex: 'to',
+                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                    return Ext.util.Format.date(value, xlib.date.DATE_FORMAT);
+                }
+            }, {
+                header: 'Продолжительность (д.)',
+                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                    var mksday = 1000 * 60 * 60 * 24, 
+                        from = record.get('from'), 
+                        to = record.get('to');
+                    return ((to - from) / mksday + 1);
+                }
             }]
         });
                 
