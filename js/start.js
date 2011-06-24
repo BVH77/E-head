@@ -30,7 +30,8 @@ Ext.onReady(function(){
     xlib.date.DATE_FORMAT_SERVER = 'Y-m-d';
    
     // FIX for IE9
-    if (!Range.prototype.createContextualFragment) {
+    /*
+    if (Ext.isObject(Range) && !Range.prototype.createContextualFragment) {
         Range.prototype.createContextualFragment = function(html) {
             var frag = document.createDocumentFragment(),
             div = document.createElement("div");
@@ -39,7 +40,7 @@ Ext.onReady(function(){
             return frag;
         };
     }
-    
+    */
     Ext.Ajax.on({
         requestexception: function(conn, response, options) {
             switch (response.status) {
