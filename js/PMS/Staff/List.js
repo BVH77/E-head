@@ -84,7 +84,7 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
                     scope: g
                 };
             }, '-', {
-                text: 'Отпуска',
+                text: 'Отпуск',
                 iconCls: 'prod_schd-icon',
                 hidden: !acl.isUpdate('staff'),
                 handler: this.onVacations,
