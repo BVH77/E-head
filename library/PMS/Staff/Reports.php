@@ -50,8 +50,9 @@ class PMS_Staff_Reports
         )
         ->group('s.id')
         ->where('archive = 0')
-        ->orWhere('(h.date >= ?', $f->start)
+        ->where('((h.date >= ?', $f->start)
         ->where('h.date <= ?)', $f->end)
+        ->orWhere('1=1)')
         ;
 
         try {
