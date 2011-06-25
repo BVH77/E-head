@@ -37,8 +37,6 @@ class PMS_Staff_Reports
             )
         )->where('archive = 0');
 
-        //die($select->assemble());
-
         try {
             $rows = $select->query()->fetchAll();
         } catch (Exception $e) {
@@ -132,7 +130,8 @@ class PMS_Staff_Reports
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
-    public function generateStaff_NEW(array $params)
+    // DELETE ME
+    public function _generateStaff_NEW(array $params)
     {
         $response = new OSDN_Response();
 
