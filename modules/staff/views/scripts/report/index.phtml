@@ -46,7 +46,7 @@
         $paysTotal = $paysTotal + $row['pays_total'];
         $restTotal = $restTotal + ($row['summ_total'] - $row['pays_total']);
         endforeach;?>
-    <tr><td colspan="4"><b>Итого:</b></td>
+    <tr><td colspan="5"><b>Итого:</b></td>
         <td align="right"><b><?=$hoursTotal?></b>
         <td align="right"><b><?=$summTotal?>,00</b>
         <td align="right"><b><?=$paysTotal?>,00</b>
