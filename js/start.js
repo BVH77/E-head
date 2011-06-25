@@ -29,7 +29,7 @@ Ext.onReady(function(){
     xlib.date.DATE_TIME_FORMAT_SERVER = 'Y-m-d H:i:s';
     xlib.date.DATE_FORMAT_SERVER = 'Y-m-d';
    
-    // FIX for IE9
+    // FIX for IE9 (not working in < IE9 :( )
     /*
     if (Ext.isObject(Range) && !Range.prototype.createContextualFragment) {
         Range.prototype.createContextualFragment = function(html) {
