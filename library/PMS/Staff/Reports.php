@@ -50,8 +50,8 @@ class PMS_Staff_Reports
         )
         ->group('s.id')
         ->where('archive = 0')
-        ->where('h.date >= ?', $f->start)
-        ->where('h.date <= ?', $f->end)
+        ->orWhere('(h.date >= ?', $f->start)
+        ->where('h.date <= ?)', $f->end)
         ;
 
         try {
@@ -70,8 +70,8 @@ class PMS_Staff_Reports
             $rowsMerged[$row['id']]['function'] = $row['function'];
             $rowsMerged[$row['id']]['rate'] = $row['rate'];
             $rowsMerged[$row['id']]['period'] = $row['period'];
-            $rowsMerged[$row['id']]['hours_total'] = $row['hours_total'];
-            $rowsMerged[$row['id']]['summ_total'] = $row['summ_total'];
+            $rowsMerged[$row['id']]['hours_total'] = intval($row['hours_total']);
+            $rowsMerged[$row['id']]['summ_total'] = intval($row['summ_total']);
         }
 
         // Get total summ of payments by person for given period
@@ -124,6 +124,60 @@ class PMS_Staff_Reports
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
+    public function generateStaff_NEW(array $params)
+    {
+        $response = new OSDN_Response();
+
+        $f = new OSDN_Filter_Input(array(
+            '*' => 'StringTrim'
+        ), array(
+            'start'  => array('Date', 'allowEmpty' => false, 'presence' => 'required'),
+            'end'    => array('Date', 'allowEmpty' => false, 'presence' => 'required')
+        ), $params);
+
+        $response->addInputStatus($f);
+        if ($response->hasNotSuccess()) {
+            return $response;
+        }
+
+        $tableStaff = new PMS_Staff_Table();
+        $tableHr = new PMS_Staff_Hr_Table();
+        $tablePayments = new PMS_Staff_Payments_Table();
+        $response->data = array();
+
+        $persons = $tableStaff->fetchAll();
+        if (!$persons->count()) {
+            return $response->addStatus(new PMS_Status(PMS_Status::OK));
+        }
+
+        $tableVacations = new PMS_Staff_Vacations_Table();
+
+        $persons = $persons->toArray();
+        foreach ($persons as $person) {
+
+            // Get total summ of working hours by person for given period
+            $select = $tableHr->getAdapter()->select()
+            ->from(array('s' => $tableStaff->getTableName()),
+                array(
+                    'id', 'name', 'function',
+                    'rate' => 's.pay_rate',
+                    'period' => 's.pay_period',
+                    'hours_total'   => new Zend_Db_Expr('SUM(h.value)'),
+                    'summ_total'    => new Zend_Db_Expr('IF(s.pay_period = "month",
+                        s.pay_rate,SUM(h.value*s.pay_rate))')
+                )
+            )
+            ->joinLeft(array('h' => $tableHr->getTableName()),
+                'h.staff_id=s.id', array()
+            )
+            ->group('s.id')
+            ->where('archive = 0')
+            ->where('h.date >= ?', $f->start)
+            ->where('h.date <= ?', $f->end)
+            ;
+        }
+    }
+
     public function generateVacations($params)
     {
         $response = new OSDN_Response();
@@ -140,17 +194,17 @@ class PMS_Staff_Reports
             return $response;
         }
 
-        $tableVacations = new PMS_Staff_Vacations_Table();
         $tableStaff = new PMS_Staff_Table();
         $result = array();
+
+        $debug = array();
 
         $persons = $tableStaff->fetchAllColumns(null, null, array('id', 'name', 'function'));
 
         if ($persons->count()) {
 
+            $tableVacations = new PMS_Staff_Vacations_Table();
             $persons = $persons->toArray();
-
-            $debug = array();
 
             foreach ($persons as $person) {
 
