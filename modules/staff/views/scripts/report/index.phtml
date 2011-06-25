@@ -27,7 +27,7 @@
         <td><b>Остаток (руб.)</b></td>
     </tr>
         <?php
-        $hoursTotal = $summTotal = $paysTotal = $restTotal = 0;
+        $hoursTotal = $summTotal = $paysTotal = $restTotal = $counter = 0;
         foreach ($this->data['rows'] as $row) :?>
             <tr>
                 <td><?=++$counter?></td>
