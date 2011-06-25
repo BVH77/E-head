@@ -18,20 +18,40 @@ class PMS_Staff_Reports
             return $response;
         }
 
-        $rowsMerged     = array();
-        $rowStructure   = array(
-            'hours_total'   => 0,
-            'summ_total'    => 0,
-            'pays_total'    => 0,
-            'rate'          => 0,
-            'period'        => 0,
-            'name'          => '',
-            'function'      => ''
-        );
-
         $tableHr = new PMS_Staff_Hr_Table();
         $tablePayments = new PMS_Staff_Payments_Table();
         $tableStaff = new PMS_Staff_Table();
+
+        $result = array();
+
+        // Get list of persons for given period
+        $select = $tableHr->getAdapter()->select()
+        ->from(array('s' => $tableStaff->getTableName()),
+            array(
+                'id', 'name', 'function',
+                'rate' => 's.pay_rate',
+                'period' => 's.pay_period',
+                'hours_total'   => '(0)',
+                'summ_total'    => '(0)',
+                'pays_total'    => '(0)'
+            )
+        )->where('archive = 0');
+
+        //die($select->assemble());
+
+        try {
+            $rows = $select->query()->fetchAll();
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+        }
+
+        // Parse result rows into one result array with keys insertion
+        foreach ($rows as $row) {
+            $result[$row['id']] = $row;
+        }
 
         // Get total summ of working hours by person for given period
         $select = $tableHr->getAdapter()->select()
@@ -52,7 +72,6 @@ class PMS_Staff_Reports
         ->where('archive = 0')
         ->where('h.date >= ?', $f->start)
         ->where('h.date <= ?', $f->end)
-        //->orWhere('archive = 0)')
         ;
 
         //die($select->assemble());
@@ -68,13 +87,8 @@ class PMS_Staff_Reports
 
         // Parse result rows into one merged array
         foreach ($rows as $row) {
-            $rowsMerged[$row['id']] = $rowStructure;
-            $rowsMerged[$row['id']]['name'] = $row['name'];
-            $rowsMerged[$row['id']]['function'] = $row['function'];
-            $rowsMerged[$row['id']]['rate'] = $row['rate'];
-            $rowsMerged[$row['id']]['period'] = $row['period'];
-            $rowsMerged[$row['id']]['hours_total'] = intval($row['hours_total']);
-            $rowsMerged[$row['id']]['summ_total'] = intval($row['summ_total']);
+            $result[$row['id']]['hours_total'] = $row['hours_total'];
+            $result[$row['id']]['summ_total'] = $row['summ_total'];
         }
 
         // Get total summ of payments by person for given period
@@ -107,20 +121,11 @@ class PMS_Staff_Reports
 
         // Parse result rows into one merged array
         foreach ($rows as $row) {
-            if (isset($rowsMerged[$row['id']])) {
-                $rowsMerged[$row['id']]['pays_total'] = $row['pays_total'];
-            } else {
-                $rowsMerged[$row['id']] = $rowStructure;
-                $rowsMerged[$row['id']]['name'] = $row['name'];
-                $rowsMerged[$row['id']]['function'] = $row['function'];
-                $rowsMerged[$row['id']]['rate'] = $row['rate'];
-                $rowsMerged[$row['id']]['period'] = $row['period'];
-                $rowsMerged[$row['id']]['pays_total'] = $row['pays_total'];
-            }
+            $result[$row['id']]['pays_total'] = $row['pays_total'];
         }
 
         $response->data = array(
-            'rows'  => array_values($rowsMerged),
+            'rows'  => array_values($result),
             'start' => $f->start,
             'end'   => $f->end
         );
