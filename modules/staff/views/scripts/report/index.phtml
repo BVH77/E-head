@@ -29,6 +29,7 @@
         $hoursTotal = $summTotal = $paysTotal = $restTotal = 0;
         foreach ($this->data['rows'] as $row) :?>
             <tr>
+                <td><?=++$counter?></td>
                 <td><?=$row['name']?></td>
                 <td><?=$row['function']?></td>
                 <td><?=$PERIODS[$row['period']]?></td>
