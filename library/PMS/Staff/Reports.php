@@ -50,10 +50,12 @@ class PMS_Staff_Reports
         )
         ->group('s.id')
         ->where('archive = 0')
-        ->where('((h.date >= ?', $f->start)
-        ->where('h.date <= ?)', $f->end)
-        ->orWhere('1=1)')
+        ->where('(h.date >= ?', $f->start)
+        ->where('h.date <= ?', $f->end)
+        ->orWhere('archive = 0)')
         ;
+
+        //die($select->assemble());
 
         try {
             $rows = $select->query()->fetchAll();
