@@ -104,12 +104,15 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                     hidden: !this.permissions,
                     handler: this.onIncome,
                     scope: this
-                }, {
-                    text: 'Выдать',
-                    iconCls: 'check-out',
-                    hidden: !this.permissions,
-                    handler: this.onOutgo,
-                    scope: this
+                }, function(g, rowIndex) {
+                    return {
+                        text: 'Выдать',
+                        iconCls: 'check-out',
+                        hidden: !g.permissions,
+                        disabled: !(g.getStore().getAt(rowIndex).get('qty') > 0),
+                        handler: g.onOutgo,
+                        scope: g
+                    }
                 }, '-', {
                     text: 'История движения ТМЦ',
                     iconCls: 'details',
