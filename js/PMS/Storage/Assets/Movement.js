@@ -1,10 +1,8 @@
 Ext.ns('PMS.Storage.Assets');
 
-PMS.Storage.Assets.Income = Ext.extend(xlib.form.FormPanel, {
+PMS.Storage.Assets.Movement = Ext.extend(xlib.form.FormPanel, {
     
     title: false,
-    
-    defaultTitle: 'Оприходовать ТМЦ',
     
     permissions: acl.isUpdate('storage'),
     
@@ -14,7 +12,9 @@ PMS.Storage.Assets.Income = Ext.extend(xlib.form.FormPanel, {
     
     record: null,
     
-    URL: link('storage', 'assets', 'income'),
+    isIncome: true,
+    
+    URL: null, 
     
     autoHeight: true,
     
@@ -24,11 +24,12 @@ PMS.Storage.Assets.Income = Ext.extend(xlib.form.FormPanel, {
             throw 'Record is not set!';
         }
         
+        this.URL = link('storage', 'assets', this.isIncome ? 'income' : 'outgo');
+        
         this.qtyField = new Ext.form.NumberField({
-            fieldLabel: 'Добавить',
+            fieldLabel: 'Количество',
             allowDecimals: false,
-            minValue: 1,
-            name: 'qty_add'
+            minValue: 1
         });
         
         this.items = [{
@@ -52,17 +53,17 @@ PMS.Storage.Assets.Income = Ext.extend(xlib.form.FormPanel, {
             name: 'qty'
         },  this.qtyField];
         
-        PMS.Storage.Assets.Income.superclass.initComponent.apply(this, arguments);
+        PMS.Storage.Assets.Movement.superclass.initComponent.apply(this, arguments);
         
         this.w = new Ext.Window({
             layout: 'fit',
-            title: this.defaultTitle,
+            title: this.isIncome ? 'Оприходование ТМЦ' : 'Выдача ТМЦ',
             resizable: false,
             width: 300,
             modal: true,
             items: [this],
             buttons: [{
-                text: 'Добавить',
+                text: 'Сохранить',
                 handler: this.saveData,
                 scope: this
             }, {
@@ -91,7 +92,7 @@ PMS.Storage.Assets.Income = Ext.extend(xlib.form.FormPanel, {
            url: this.URL,
            params: { 
                 asset_id: this.record.get('id'),
-                qty_add: this.qtyField.getValue()
+                qty: this.qtyField.getValue()
            },
            success: function(res) {
                 var responseText = Ext.decode(res.responseText);

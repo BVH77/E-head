@@ -100,9 +100,15 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                 autoWidth: true,
                 items: [{
                     text: 'Оприходовать',
-                    iconCls: 'add',
+                    iconCls: 'check-in',
                     hidden: !this.permissions,
                     handler: this.onIncome,
+                    scope: this
+                }, {
+                    text: 'Выдать',
+                    iconCls: 'check-out',
+                    hidden: !this.permissions,
+                    handler: this.onOutgo,
                     scope: this
                 }, '-', {
                     text: 'История движения ТМЦ',
@@ -238,7 +244,23 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
     
     onIncome: function(g, rowIndex) {
 
-        var editAsset = new PMS.Storage.Assets.Income({
+        var editAsset = new PMS.Storage.Assets.Movement({
+            isIncome: true,
+            record: g.getStore().getAt(rowIndex), 
+            listeners: {
+                saved: function() {
+                    this.getStore().reload();
+                },
+                scope: this
+            }
+        });
+
+    },
+    
+    onOutgo: function(g, rowIndex) {
+
+        var editAsset = new PMS.Storage.Assets.Movement({
+            isIncome: false,
             record: g.getStore().getAt(rowIndex), 
             listeners: {
                 saved: function() {

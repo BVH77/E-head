@@ -143,33 +143,33 @@ class PMS_Storage_Assets
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
-    public function income($params)
+    public function assetQtyUpdate($asset_id, $qty)
     {
         $response = new OSDN_Response();
 
         $validator = new OSDN_Validate_Id();
-
-        if (!$validator->isValid($params['asset_id'])) {
+        if (!$validator->isValid($asset_id)) {
             return $response->addStatus(new PMS_Status(
                 PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
 
-        if (!$validator->isValid($params['qty_add'])) {
+        $validator = new Zend_Validate_Int();
+        if (!$validator->isValid($qty)) {
             return $response->addStatus(new PMS_Status(
-                PMS_Status::INPUT_PARAMS_INCORRECT, 'qty_add'));
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'qty'));
         }
 
         $historyTable = new PMS_Storage_History_Table();
 
         $id = $historyTable->insert(array(
-            'asset_id'  => $params['asset_id'],
-            'qty'       => $params['qty_add']
+            'asset_id'  => $asset_id,
+            'qty'       => $qty
         ));
         if (!$id) {
             return $response->addStatus(new PMS_Status(PMS_Status::ADD_FAILED));
         }
 
-        $result = $this->updateQty($params['asset_id'], $params['qty_add']);
+        $result = $this->updateQty($asset_id, $qty);
         if (!$result) {
             $historyTable->deleteByPk($id);
             return $response->addStatus(new PMS_Status(PMS_Status::ADD_FAILED));

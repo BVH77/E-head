@@ -25,6 +25,7 @@ class Storage_AssetsController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'check');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'reset-checks');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'income');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'outgo');
     }
 
 	public function getListAction()
@@ -114,7 +115,25 @@ class Storage_AssetsController extends OSDN_Controller_Action
 
     public function incomeAction()
     {
-        $response = $this->_class->income($this->_getAllParams());
+        $asset_id = $this->_getParam('asset_id');
+        $qty = $this->_getParam('qty');
+        $response = $this->_class->assetQtyUpdate($asset_id, $qty);
+        if ($response->isSuccess()) {
+            $this->view->success = true;
+            $this->view->id = $response->id;
+        } else {
+           $this->_collectErrors($response);
+        }
+    }
+
+    public function outgoAction()
+    {
+        $asset_id = $this->_getParam('asset_id');
+        $qty = $this->_getParam('qty');
+        if ($qty > 0) {
+            $qty = -$qty;
+        }
+        $response = $this->_class->assetQtyUpdate($asset_id, $qty);
         if ($response->isSuccess()) {
             $this->view->success = true;
             $this->view->id = $response->id;

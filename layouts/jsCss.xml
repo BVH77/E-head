@@ -98,7 +98,7 @@
         <script src="/js/PMS/Storage/Assets/Edit/Tree.js"/>
         <script src="/js/PMS/Storage/Assets/Edit/Layout.js"/>
         <script src="/js/PMS/Storage/Assets/History.js"/>
-        <script src="/js/PMS/Storage/Assets/Income.js"/>
+        <script src="/js/PMS/Storage/Assets/Movement.js"/>
         
         <script src="/js/PMS/Storage/Measures/ComboBox.js"/>
         
