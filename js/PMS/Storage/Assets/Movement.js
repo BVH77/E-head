@@ -26,11 +26,16 @@ PMS.Storage.Assets.Movement = Ext.extend(xlib.form.FormPanel, {
         
         this.URL = link('storage', 'assets', this.isIncome ? 'income' : 'outgo');
         
-        this.qtyField = new Ext.form.NumberField({
+        var qtyFieldConfig = {
             fieldLabel: 'Количество',
             allowDecimals: false,
             minValue: 1
-        });
+        };
+        if (!this.isIncome) {
+            qtyFieldConfig.maxValue = this.record.get('qty');
+        }
+        
+        this.qtyField = new Ext.form.NumberField(qtyFieldConfig);
         
         this.items = [{
             xtype: 'displayfield',
