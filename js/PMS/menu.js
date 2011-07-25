@@ -105,24 +105,33 @@ PMS.Menu = function(params) {
     }, {
 	    text: 'Отчёты',
 	    iconCls: 'prod_schd-icon',
-        hidden: !acl.isView('reports'),
         menu: [{
             text: 'Менеджеры',
             iconCls: 'work_schd-icon',
+            hidden: !acl.isView('reports'),
             handler: function() {
                 new PMS.Reports.Managers();
             }
         }, {
             text: 'Клиенты',
             iconCls: 'work_schd-icon',
+            hidden: !acl.isView('reports'),
             handler: function() {
                 new PMS.Reports.Customers();
             }
         }, {
             text: 'Кадры',
             iconCls: 'work_schd-icon',
+            hidden: !acl.isView('staff'),
             handler: function() {
                 new PMS.Reports.Staff();
+            }
+        }, {
+            text: 'Склад',
+            iconCls: 'work_schd-icon',
+            hidden: !acl.isView('storage'),
+            handler: function() {
+                 window.open(link('storage', 'report', 'index'));
             }
         }]
 	}, '-', {
