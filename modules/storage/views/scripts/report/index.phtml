@@ -26,13 +26,13 @@
                 <td><?=$row['name']?></td>
                 <td><?=$row['measure']?></td>
                 <td align="right"><?=$row['qty']?></td>
-                <td align="right"><?=$row['unit_price']?>,00</td>
-                <td align="right"><?=$summ?>,00</td>
+                <td align="right"><?=$row['unit_price']?></td>
+                <td align="right"><?=$summ?></td>
             </tr>
         <?php $summTotal += $summ;
         endforeach;?>
     <tr><td colspan="5"><b>Итого:</b></td>
-        <td align="right"><b><?=$summTotal?>,00</b>
+        <td align="right"><b><?=$summTotal?></b>
     </td></tr>
 </table>
 
