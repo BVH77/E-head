@@ -131,7 +131,7 @@ PMS.Menu = function(params) {
             iconCls: 'work_schd-icon',
             hidden: !acl.isView('storage'),
             handler: function() {
-                 window.open(link('storage', 'report', 'index'));
+                 window.open(link('storage', 'report', 'index', {}, 'html'));
             }
         }]
 	}, '-', {
