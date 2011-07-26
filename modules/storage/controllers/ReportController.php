@@ -25,7 +25,7 @@ class Storage_ReportController extends OSDN_Controller_Action
     {
     	$response = $this->_reports->generateReport($this->_getAllParams());
     	if ($response->isSuccess()) {
-	    	$this->view->data = $response->data;
+	    	$this->view->data = $response->getRowset();
 	        $this->view->content = $this->view->render('report/index.phtml');
     	} else {
     		$this->_collectErrors($response);
