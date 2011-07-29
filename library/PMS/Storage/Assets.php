@@ -172,7 +172,7 @@ class PMS_Storage_Assets
         $result = $this->updateQty($asset_id, $qty);
         if (!$result) {
             $historyTable->deleteByPk($id);
-            return $response->addStatus(new PMS_Status(PMS_Status::ADD_FAILED));
+            return $response->addStatus(new PMS_Status(PMS_Status::UPDATE_FAILED));
         }
 
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
