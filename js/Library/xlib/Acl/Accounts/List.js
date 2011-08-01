@@ -55,7 +55,7 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
                 },
                 scope: this
             }, {
-                text: 'Сменть пароль',
+                text: 'Сменить пароль',
                 iconCls: 'edit',
                 hidden: !this.permissions,
                 handler: this.onChangePassword,
