@@ -65,6 +65,7 @@
         <script src="/js/Library/xlib/Acl/Permission/TreeManager.js"/>
         <script src="/js/Library/xlib/Acl/Accounts/Form.js"/>
         <script src="/js/Library/xlib/Acl/Accounts/List.js"/>
+        <script src="/js/Library/xlib/Acl/Accounts/Combo.js"/>
         <script src="/js/Library/xlib/Acl/Roles/Tree.js"/>
         <script src="/js/Library/xlib/Acl/Layout.js"/>
         <!-- Widgets -->
