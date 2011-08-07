@@ -8,7 +8,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
     
     deleteLink: link('orders', 'index', 'delete'),
 
-    loadUsersURL: link('admin', 'accounts', 'get-accounts'),
+    loadUsersURL: link('orders', 'index', 'get-accounts'),
     
     changeUserURL: link('orders', 'index', 'change-user'),
     
@@ -305,7 +305,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             params: {roleId: 0},
             success: function(res){
                 try {
-                    var list = Ext.decode(res.responseText).rows;
+                    var list = Ext.decode(res.responseText).data;
                     Ext.each(list, function(item) {
                         if (item.active != '0') {
                             this.menuUsers.add({
