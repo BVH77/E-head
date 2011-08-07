@@ -6,23 +6,24 @@ class Orders_IndexController extends OSDN_Controller_Action
 	 * @var PMS_Orders
 	 */
 	protected $_class;
-	
+
 	public function init()
 	{
 		$this->_class = new PMS_Orders();
 		parent::init();
 	}
-	
+
     public function permission(OSDN_Controller_Action_Helper_Acl $acl)
     {
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->admin);
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-accounts');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'change-user');
-        
+
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->archive);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-archive-list');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'archive');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'un-archive');
-        
+
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->orders);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW,   'get-list');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW,   'get');
@@ -31,7 +32,7 @@ class Orders_IndexController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-notes');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add-note');
-        
+
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->suppliers);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW,   'get-suppliers');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'attach-supplier');
@@ -39,7 +40,7 @@ class Orders_IndexController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'check-supplier');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update-supplier');
     }
-    
+
 	public function getListAction()
     {
     	$response = $this->_class->getList($this->_getAllParams());
@@ -51,7 +52,7 @@ class Orders_IndexController extends OSDN_Controller_Action
     		$this->_collectErrors($response);
     	}
     }
-    
+
     public function getAction()
     {
     	$response = $this->_class->get($this->_getParam('id'));
@@ -62,7 +63,7 @@ class Orders_IndexController extends OSDN_Controller_Action
     	   $this->_collectErrors($response);
     	}
     }
-    
+
 
     public function getInfoAction()
     {
@@ -74,7 +75,7 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     public function addAction()
     {
         $response = $this->_class->add($this->_getAllParams());
@@ -86,7 +87,7 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     public function updateAction()
     {
     	$data = $this->_getAllParams();
@@ -102,7 +103,7 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     public function getArchiveListAction()
     {
         $response = $this->_class->getList($this->_getAllParams(), array(), 1);
@@ -114,7 +115,7 @@ class Orders_IndexController extends OSDN_Controller_Action
             $this->_collectErrors($response);
         }
     }
-    
+
     public function archiveAction()
     {
         $response = $this->_class->archive($this->_getAllParams());
@@ -124,7 +125,7 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     public function unArchiveAction()
     {
         $response = $this->_class->archive(array('id' => $this->_getParam('id')), false);
@@ -134,7 +135,7 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     public function deleteAction()
     {
         $response = $this->_class->delete($this->_getParam('id'));
@@ -144,7 +145,7 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     public function changeUserAction()
     {
         $response = $this->_class->changeUser($this->_getParam('orderId'), $this->_getParam('userId'));
@@ -154,10 +155,21 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
-    
+
+    public function getAccountsAction()
+    {
+        $accounts = new OSDN_Accounts();
+        $response = $accounts->fetchAllActiveNames();
+        if ($response->isError()) {
+            $this->_collectErrors($response);
+            return;
+        }
+        $this->view->data = $response->getRowset();
+        $this->view->success = true;
+    }
+
     // -------------------------------------------------------------------------
-    
+
     public function getSuppliersAction()
     {
     	$suppliers = new PMS_Suppliers();
@@ -169,12 +181,12 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     public function attachSupplierAction()
     {
         $suppliers = new PMS_Suppliers();
         $response = $suppliers->attach(
-            $this->_getParam('supplier_id'), 
+            $this->_getParam('supplier_id'),
             $this->_getParam('order_id')
         );
         if ($response->isSuccess()) {
@@ -183,7 +195,7 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     public function removeSupplierAction()
     {
         $suppliers = new PMS_Suppliers();
@@ -194,12 +206,12 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     public function checkSupplierAction()
     {
         $suppliers = new PMS_Suppliers();
         $response = $suppliers->check(
-            intval($this->_getParam('id')), 
+            intval($this->_getParam('id')),
             intval($this->_getParam('success'))
         );
         if ($response->isSuccess()) {
@@ -208,12 +220,12 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     public function updateSupplierAction()
     {
         $suppliers = new PMS_Suppliers();
         $response = $suppliers->updateByOrdersSuppliersId(array(
-            'id'   => $this->_getParam('id'), 
+            'id'   => $this->_getParam('id'),
             'cost' => $this->_getParam('cost'),
             'note' => $this->_getParam('note')
         ));
@@ -223,9 +235,9 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     // --------------------------------------------------
-    
+
     public function getNotesAction()
     {
         $response = $this->_class->getNotes($this->_getParam('orderId'));
@@ -236,7 +248,7 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     public function addNoteAction()
     {
         $response = $this->_class->addNote($this->_getParam('orderId'), $this->_getParam('text'));
@@ -246,12 +258,12 @@ class Orders_IndexController extends OSDN_Controller_Action
            $this->_collectErrors($response);
         }
     }
-    
+
     /*
      * =========================================================================
-     * 
+     *
      * Private methods
-     * 
+     *
      * =========================================================================
      */
     private function sendEmailOrderProcessed($type = '', $orderId)
@@ -267,29 +279,29 @@ class Orders_IndexController extends OSDN_Controller_Action
         if (empty($order) || empty($order['created'])) {
         	return;
         }
-        
+
         // check if order is younger than 1 hour, when return - no message
         if ($type == 'updated') {
 	        $now = new Zend_Date();
 	        $created = new Zend_date($order['created']);
-	        $diff = $now->getTimestamp() - $created->getTimestamp(); 
+	        $diff = $now->getTimestamp() - $created->getTimestamp();
 	        if ($diff < 60*60) {
 	        	return;
 	        }
         }
-        
+
         $orderAddress = $order['address'];
         $customer = $order['customer_name'];
-        
+
     	$currentPerson = OSDN_Accounts_Prototype::getInformation();
     	$username = $currentPerson->name;
-    	
+
     	$persons = array();
-    	
+
     	$accounts = new OSDN_Accounts();
-    	
+
     	// check if order have a production
-    	if ($order['production'] == 1) {  
+    	if ($order['production'] == 1) {
 	    	$response = $accounts->fetchByRole(4); // 4 = production
 	    	if ($response->isSuccess()) {
 	            $rows = $response->getRowset();
@@ -300,7 +312,7 @@ class Orders_IndexController extends OSDN_Controller_Action
 	    		}
 	    	}
     	}
-    	
+
     	// check if order have a moutage
         if ($order['mount'] == 1) {
 	    	$response = $accounts->fetchByRole(5); // 5 = mount
@@ -332,7 +344,7 @@ class Orders_IndexController extends OSDN_Controller_Action
 	            }
     		}
     	}
-    	
+
     	$config = Zend_Registry::get('config');
     	$server = $config->mail->SMTP;
         $mail = new Zend_Mail('UTF-8');
@@ -343,14 +355,14 @@ class Orders_IndexController extends OSDN_Controller_Action
         switch ($type) {
             case 'added':
                 $mail->setSubject("Новый заказ №$orderId");
-                $mail->setBodyHtml("Новый заказ №$orderId, заказчик: $customer, 
-                                   адрес: $orderAddress, был добавлен.\n\n  
+                $mail->setBodyHtml("Новый заказ №$orderId, заказчик: $customer,
+                                   адрес: $orderAddress, был добавлен.\n\n
                                    Автор: $username.\n\n http://$server/?id=$orderId");
                 break;
             case 'updated':
                 $mail->setSubject("Изменения в заказе №$orderId");
-                $mail->setBodyHtml("В заказ №$orderId, заказчик: $customer, 
-                                   адрес: $orderAddress были внесены изменения.\n\n  
+                $mail->setBodyHtml("В заказ №$orderId, заказчик: $customer,
+                                   адрес: $orderAddress были внесены изменения.\n\n
                                    Автор: $username.\n\n http://$server/?id=$orderId");
                 break;
         }
@@ -358,9 +370,9 @@ class Orders_IndexController extends OSDN_Controller_Action
             @$mail->send();
         } catch (Exception $e) {
             //echo $e->getMessage();
-        }    	
+        }
     }
-    
+
     private function sendEmailOrderSuccess($orderId)
     {
     	$accounts = new OSDN_Accounts();
@@ -380,7 +392,7 @@ class Orders_IndexController extends OSDN_Controller_Action
 	            @$mail->send();
 	        } catch (Exception $e) {
 	            //echo $e->getMessage();
-	        }    	
+	        }
     	}
     }
 }
