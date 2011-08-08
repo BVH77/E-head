@@ -135,7 +135,6 @@ class OSDN_Accounts
      * @param array $where      The array of where clauses<code>
      *  array(
      *      array('name = ?' => test),
-     *      array('company_id = ?' => 1)
      *  );</code>
      *
      * @return OSDN_Response
@@ -185,6 +184,33 @@ class OSDN_Accounts
     public function fetchAll(array $params = array())
     {
         return $this->_fetchAll(array(), $params);
+    }
+
+    /**
+     * @see _fetchAll()
+     *
+     * @return OSDN_Response
+     */
+    public function fetchAllActiveNames()
+    {
+        $response = new OSDN_Response();
+
+        $select = $this->_tableAccounts->getAdapter()->select()
+            ->from($this->_tableAccounts->getTableName(), array('id', 'name', 'login'))
+            ->where('active', 1);
+
+        try {
+            $rowset = $select->query()->fetchAll();
+            $response->setRowset($rowset);
+            $status = OSDN_Acl_Status::OK;
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            $status = OSDN_Acl_Status::DATABASE_ERROR;
+        }
+
+        return $response->addStatus(new OSDN_Acl_Status($status));
     }
 
     /**

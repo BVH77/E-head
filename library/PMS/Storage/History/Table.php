@@ -14,9 +14,6 @@ class PMS_Storage_History_Table extends OSDN_Db_Table_Abstract
      */
     public function insert(array $data)
     {
-        if (!isset($data['account_id']) || !$data['account_id']) {
-            $data['account_id'] = OSDN_Accounts_Prototype::getId();
-        }
         unset($data['created']);
         return parent::insert($data);
     }

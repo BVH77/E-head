@@ -28,8 +28,6 @@ class PMS_Storage_Assets
         $plugin->setSqlCalcFoundRows(true);
         $plugin->parse($params);
 
-        //die($select);
-
         try {
             $rows = $select->query()->fetchAll();
             $response->totalCount = $plugin->getTotalCountSql();

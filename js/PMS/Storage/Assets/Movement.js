@@ -34,7 +34,6 @@ PMS.Storage.Assets.Movement = Ext.extend(xlib.form.FormPanel, {
         if (!this.isIncome) {
             qtyFieldConfig.maxValue = this.record.get('qty');
         }
-        
         this.qtyField = new Ext.form.NumberField(qtyFieldConfig);
         
         this.items = [{
@@ -57,6 +56,16 @@ PMS.Storage.Assets.Movement = Ext.extend(xlib.form.FormPanel, {
             fieldLabel: 'В наличии',
             name: 'qty'
         },  this.qtyField];
+
+        if (!this.isIncome) {
+            this.receiverCombo = new xlib.Acl.Accounts.Combo({
+                fieldLabel: 'Получатель',
+                name: 'reciever_id',
+                hiddenName: 'reciever_id',
+                URL: link('storage', 'index', 'get-accounts')
+            });
+            this.items.push(this.receiverCombo);
+        }
         
         PMS.Storage.Assets.Movement.superclass.initComponent.apply(this, arguments);
         
@@ -93,12 +102,18 @@ PMS.Storage.Assets.Movement = Ext.extend(xlib.form.FormPanel, {
         
         this.w.disable();
         
+        var params = { 
+            asset_id: this.record.get('id'),
+            qty: this.qtyField.getValue()
+        };
+        
+        if (!this.isIncome) {
+            params.reciever_id = this.receiverCombo.getValue();
+        }
+        
         Ext.Ajax.request({
            url: this.URL,
-           params: { 
-                asset_id: this.record.get('id'),
-                qty: this.qtyField.getValue()
-           },
+           params: params,
            success: function(res) {
                 var responseText = Ext.decode(res.responseText);
                 if (!responseText || !responseText.success) {

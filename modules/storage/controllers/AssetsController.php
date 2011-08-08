@@ -130,10 +130,11 @@ class Storage_AssetsController extends OSDN_Controller_Action
     {
         $asset_id = $this->_getParam('asset_id');
         $qty = $this->_getParam('qty');
+        $reciever_id = $this->_getParam('reciever_id');
         if ($qty > 0) {
             $qty = -$qty;
         }
-        $response = $this->_class->assetQtyUpdate($asset_id, $qty);
+        $response = $this->_class->assetQtyUpdate($asset_id, $qty, $reciever_id);
         if ($response->isSuccess()) {
             $this->view->success = true;
             $this->view->id = $response->id;

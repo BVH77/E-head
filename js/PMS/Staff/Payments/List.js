@@ -4,9 +4,7 @@ PMS.Staff.Payments.List = Ext.extend(Ext.grid.GridPanel, {
 
     title:  'Список выплат',
     
-    listURL:    link('staff', 'payments', 'get-list'),
-    
-    deleteURL:  link('staff', 'payments', 'delete'),
+    listURL: link('staff', 'payments', 'get-list'),
     
     personId: null,
     
@@ -50,35 +48,12 @@ PMS.Staff.Payments.List = Ext.extend(Ext.grid.GridPanel, {
                         );
                     }
                 },
-                {name: 'value', type: 'int'} 
+                {name: 'value', type: 'int'}, 
+                {name: 'paid', type: 'int'} 
             ]
         });
         
         this.sm = new Ext.grid.RowSelectionModel();
-        
-        var actions = new xlib.grid.Actions({
-            autoWidth: true,
-            items: [{
-                text: 'Редактировать',
-                iconCls: 'edit',
-                hidden: !acl.isUpdate('staff'),
-                handler: this.onUpdate,
-                scope: this
-            }, {
-                text: 'Удалить',
-                iconCls: 'delete',
-                hidden: !acl.isUpdate('staff'),
-                handler: this.onDelete,
-                scope: this
-            }, '-', {
-                text: 'Добавить',
-                iconCls: 'add',
-                hidden: !acl.isUpdate('staff'),
-                handler: this.onAdd,
-                scope: this
-            }],
-            scope: this
-        });
         
         this.colModel = new Ext.grid.ColumnModel({
             defaultSortable: true,
@@ -94,20 +69,31 @@ PMS.Staff.Payments.List = Ext.extend(Ext.grid.GridPanel, {
                 renderer: function(value, metaData, record, rowIndex, colIndex, store) {
                     return Ext.util.Format.number(value, '0,000.00').replace(/,/g, ' ');
                 }
+            }, {
+                header: 'Распределено (руб.)',
+                dataIndex: 'paid',
+                align: 'right',
+                width: 140,
+                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                    return Ext.util.Format.number(value, '0,000.00').replace(/,/g, ' ');
+                }
+            }, {
+                header: 'Остаток (руб.)',
+                // dataIndex: 'value' - 'paid',
+                align: 'right',
+                width: 140,
+                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                    value = record.get('value') - record.get('paid'); 
+                    return Ext.util.Format.number(value, '0,000.00').replace(/,/g, ' ');
+                }
             }]
         });
                 
-        this.plugins = [actions];
-        
         this.bbar = new xlib.PagingToolbar({
             store: this.ds
         });
         
         PMS.Staff.Payments.List.superclass.initComponent.apply(this, arguments);
-        
-        if (this.permissions) {
-            this.on('rowdblclick', this.onUpdate, this);
-        }
     },
     
     onAdd: function(b, e) {
@@ -118,45 +104,6 @@ PMS.Staff.Payments.List = Ext.extend(Ext.grid.GridPanel, {
         
         formPanel.getForm().on('saved', function() {
             this.getStore().reload();
-        }, this);
-    },
-    
-    onUpdate: function(g, rowIndex) {
-        
-        var record = g.getStore().getAt(rowIndex);
-        
-        var formPanel = new PMS.Staff.Payments.Form({
-            record: record
-        });
-        
-        formPanel.getForm().on('saved', function() {
-            this.getStore().reload();
-        }, this);
-    },
-    
-    onDelete: function(g, rowIndex) {
-        
-        var record = g.getStore().getAt(rowIndex);
-        var id = parseInt(record.get('id'));
-        
-        xlib.Msg.confirm('Вы уверены?', function() {
-            
-            Ext.Ajax.request({
-                url: this.deleteURL,
-                params: {
-                    id: id
-                },
-                callback: function(options, success, response) {
-                    var res = xlib.decode(response.responseText);
-                    if (true == success && res && true == res.success) {
-                        g.getStore().reload();
-                        return;
-                    }
-                    xlib.Msg.error('Ошибка при удалении.');
-                },
-                scope: this
-            });
-            
         }, this);
     }
 });
