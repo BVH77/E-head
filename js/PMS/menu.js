@@ -40,35 +40,18 @@ PMS.Menu = function(params) {
 	        });
 	    }
 	}, {
-	    text: 'Контрагенты',
+        text: 'Заказчики',
+        hidden: !acl.isView('customers'),
 	    iconCls: 'customers-icon',
-	    menu: [{
-	        text: 'Заказчики',
-	        iconCls: 'customers-icon',
-	        hidden: !acl.isView('customers'),
-	        handler: function() {
-	            PMS.System.Layout.getTabPanel().add({
-	                title: 'Заказчики',
-	                iconCls: 'customers-icon',
-	                entity: 'customers',
-	                xtype: 'PMS.ContragentsListAbstract',
-	                id: 'PMS.Customers.List'
-	            });
-	        }
-	    }, {
-	        text: 'Поставщики',
-	        iconCls: 'suppliers-icon',
-	        hidden: !acl.isView('suppliers'),
-	        handler: function() {
-	            PMS.System.Layout.getTabPanel().add({
-	                title: 'Поставщики',
-	                iconCls: 'suppliers-icon',
-	                entity: 'suppliers',
-	                xtype: 'PMS.ContragentsListAbstract',
-	                id: 'PMS.Suppliers.List'
-	            });
-	        }
-	    }]
+        handler: function() {
+            PMS.System.Layout.getTabPanel().add({
+                title: 'Заказчики',
+                iconCls: 'customers-icon',
+                entity: 'customers',
+                xtype: 'PMS.ContragentsListAbstract',
+                id: 'PMS.Customers.List'
+            });
+        }
 	}, {
 	    text: 'Планы',
 	    iconCls: 'prod_schd-icon',
@@ -184,7 +167,7 @@ PMS.Menu = function(params) {
 	}, '-', {
 	    text: 'Мониторинг автотранспорта',
 	    iconCls: 'suppliers-icon',
-        hidden: !(acl.isView('admin') && enableMap),
+        hidden: !(acl.isView('map') && enableMap),
         handler: function() {
             var win = window.open(link('admin', 'map', 'open', {}, 'html'));
             (function(){
