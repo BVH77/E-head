@@ -143,14 +143,18 @@ class PMS_Storage_Assets
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
-    public function assetQtyUpdate($asset_id, $qty)
+    public function assetQtyUpdate($asset_id, $qty, $reciever_id = null)
     {
         $response = new OSDN_Response();
 
         $validator = new OSDN_Validate_Id();
         if (!$validator->isValid($asset_id)) {
             return $response->addStatus(new PMS_Status(
-                PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'asset_id'));
+        }
+        if ($reciever_id !== null && !$validator->isValid($reciever_id)) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'reciever_id'));
         }
 
         $validator = new Zend_Validate_Int();
@@ -161,10 +165,13 @@ class PMS_Storage_Assets
 
         $historyTable = new PMS_Storage_History_Table();
 
-        $id = $historyTable->insert(array(
-            'asset_id'  => $asset_id,
-            'qty'       => $qty
-        ));
+        $data = array(
+            'asset_id'      => $asset_id,
+            'qty'           => $qty,
+            'sender_id'     => $reciever_id !== null ? OSDN_Accounts_Prototype::getId() : null,
+            'reciever_id'   => $reciever_id !== null ? $reciever_id : OSDN_Accounts_Prototype::getId()
+        );
+        $id = $historyTable->insert($data);
         if (!$id) {
             return $response->addStatus(new PMS_Status(PMS_Status::ADD_FAILED));
         }
