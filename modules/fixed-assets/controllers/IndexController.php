@@ -1,28 +1,28 @@
 <?php
 
-class Orders_SuppliersController extends OSDN_Controller_Action
+class FixedAssets_IndexController extends OSDN_Controller_Action
 {
 	/**
 	 * @var PMS_class
 	 */
 	protected $_class;
-	
+
 	public function init()
 	{
-		$this->_class = new PMS_Suppliers();
+		$this->_class = new PMS_FixedAssets();
 		parent::init();
 	}
-	
+
     public function permission(OSDN_Controller_Action_Helper_Acl $acl)
     {
-        $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->suppliers);
+        $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->admin);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-list');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');
     }
-    
+
 	public function getListAction()
     {
     	$response = $this->_class->getList($this->_getAllParams());
@@ -34,7 +34,7 @@ class Orders_SuppliersController extends OSDN_Controller_Action
     		$this->_collectErrors($response);
     	}
     }
-    
+
     public function getAction()
     {
     	$response = $this->_class->get($this->_getParam('id'));
@@ -45,7 +45,7 @@ class Orders_SuppliersController extends OSDN_Controller_Action
     	   $this->_collectErrors($response);
     	}
     }
-    
+
     public function addAction()
     {
     	$response = $this->_class->add($this->_getAllParams());
@@ -56,7 +56,7 @@ class Orders_SuppliersController extends OSDN_Controller_Action
     	   $this->_collectErrors($response);
     	}
     }
-    
+
     public function updateAction()
     {
     	$response = $this->_class->update($this->_getAllParams());
@@ -66,7 +66,7 @@ class Orders_SuppliersController extends OSDN_Controller_Action
     	   $this->_collectErrors($response);
     	}
     }
-    
+
     public function deleteAction()
     {
     	$response = $this->_class->delete($this->_getParam('id'));

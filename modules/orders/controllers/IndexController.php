@@ -32,13 +32,6 @@ class Orders_IndexController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-notes');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add-note');
-
-        $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->suppliers);
-        $acl->isAllowed(OSDN_Acl_Privilege::VIEW,   'get-suppliers');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'attach-supplier');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'remove-supplier');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'check-supplier');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update-supplier');
     }
 
 	public function getListAction()
@@ -166,74 +159,6 @@ class Orders_IndexController extends OSDN_Controller_Action
         }
         $this->view->data = $response->getRowset();
         $this->view->success = true;
-    }
-
-    // -------------------------------------------------------------------------
-
-    public function getSuppliersAction()
-    {
-    	$suppliers = new PMS_Suppliers();
-        $response = $suppliers->getByOrderId($this->_getParam('orderId'));
-        if ($response->isSuccess()) {
-            $this->view->success = true;
-            $this->view->suppliers = $response->getRowset();
-        } else {
-           $this->_collectErrors($response);
-        }
-    }
-
-    public function attachSupplierAction()
-    {
-        $suppliers = new PMS_Suppliers();
-        $response = $suppliers->attach(
-            $this->_getParam('supplier_id'),
-            $this->_getParam('order_id')
-        );
-        if ($response->isSuccess()) {
-            $this->view->success = true;
-        } else {
-           $this->_collectErrors($response);
-        }
-    }
-
-    public function removeSupplierAction()
-    {
-        $suppliers = new PMS_Suppliers();
-        $response = $suppliers->remove($this->_getParam('id'));
-        if ($response->isSuccess()) {
-            $this->view->success = true;
-        } else {
-           $this->_collectErrors($response);
-        }
-    }
-
-    public function checkSupplierAction()
-    {
-        $suppliers = new PMS_Suppliers();
-        $response = $suppliers->check(
-            intval($this->_getParam('id')),
-            intval($this->_getParam('success'))
-        );
-        if ($response->isSuccess()) {
-            $this->view->success = true;
-        } else {
-           $this->_collectErrors($response);
-        }
-    }
-
-    public function updateSupplierAction()
-    {
-        $suppliers = new PMS_Suppliers();
-        $response = $suppliers->updateByOrdersSuppliersId(array(
-            'id'   => $this->_getParam('id'),
-            'cost' => $this->_getParam('cost'),
-            'note' => $this->_getParam('note')
-        ));
-        if ($response->isSuccess()) {
-            $this->view->success = true;
-        } else {
-           $this->_collectErrors($response);
-        }
     }
 
     // --------------------------------------------------

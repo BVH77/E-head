@@ -48,7 +48,7 @@ PMS.Menu = function(params) {
                 title: 'Заказчики',
                 iconCls: 'customers-icon',
                 entity: 'customers',
-                xtype: 'PMS.ContragentsListAbstract',
+                xtype: 'PMS.Customers.List',
                 id: 'PMS.Customers.List'
             });
         }
@@ -151,6 +151,17 @@ PMS.Menu = function(params) {
                 iconCls: 'customers-icon',
                 xtype: 'PMS.Staff.Layout',
                 id: 'PMS.Staff.Layout'
+            });
+        } 
+	}, {
+	    text: 'Основные средства',
+	    iconCls: 'archive-icon',
+        hidden: !acl.isView('admin'),
+        handler: function() {
+            PMS.System.Layout.getTabPanel().add({
+                iconCls: 'archive-icon',
+                xtype: 'PMS.FixedAssets.List',
+                id: 'PMS.FixedAssets.List'
             });
         } 
 	}, {

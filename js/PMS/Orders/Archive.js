@@ -55,7 +55,6 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
 	            {name: 'created', type: 'date', dateFormat: xlib.date.DATE_TIME_FORMAT_SERVER},
 	            {name: 'creator_id'},
 	            {name: 'creator_name'},
-	            {name: 'suppliers'},
 	            {name: 'archive_date', type: 'date', dateFormat: xlib.date.DATE_TIME_FORMAT_SERVER},
 	            {name: 'invoice_number'},
 	            {name: 'invoice_date', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},

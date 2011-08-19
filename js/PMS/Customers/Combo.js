@@ -15,6 +15,8 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
     fieldLabel: 'Заказчик',
 	
     updatePermissions: acl.isUpdate('customers'),
+
+    loadURL: link('orders', 'customers', 'get-list'),
     
     editable: false,
 	
@@ -35,7 +37,7 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
     initComponent: function() {
         
         this.store = new Ext.data.JsonStore({
-            url: link('orders', 'customers', 'get-list'),
+            url: this.loadURL,
             root: 'data',
             sortInfo: {
                 field: 'name',
@@ -52,9 +54,8 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
             qtip: 'Добавить заказчика',
             handler: function(e, node) {
                 this.collapse();
-                var f = new PMS.ContragentsFormAbstract({
+                var f = new PMS.Customers.Form({
                     permissions: this.updatePermissions,
-                    entity: 'customers',
                     listeners: {
                         saved: function(id) {
                             this.setValue(id);
@@ -79,10 +80,9 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
                 this.collapse();
                 var value = this.getValue();
                 if (value > 0) {
-                    var f = new PMS.ContragentsFormAbstract({
+                    var f = new PMS.Customers.Form({
                         sid: value,
                         permissions: this.updatePermissions,
-                        entity: 'customers',
                         listeners: {
                             saved: function(id) {
                                 this.store.reload();
@@ -102,4 +102,4 @@ PMS.Customers.Combo = Ext.extend(xlib.form.ComboTrigger, {
     }
 });
 
-Ext.reg('pms.customers.combo', PMS.Customers.Combo);
+Ext.reg('PMS.Customers.Combo', PMS.Customers.Combo);

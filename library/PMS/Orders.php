@@ -230,19 +230,9 @@ class PMS_Orders
 
         $status = null;
         try {
-        	$suppliers = new PMS_Suppliers();
             $files = new PMS_Files();
         	$rows = $select->query()->fetchAll();
         	foreach ($rows as &$data) {
-	            $resp = $suppliers->getByOrderId($data['id']);
-	            if ($resp->isSuccess()) {
-	                $rowset = $resp->getRowset();
-	            } else {
-	                $data['suppliers_errors'] = $resp->getStatusCollection();
-	                $rowset = array();
-	            }
-	            $data['suppliers'] = $rowset;
-
 	            $resp = $files->getAll($data['id']);
 	            if ($resp->isSuccess()) {
 	                $rowset = $resp->getRowset();
@@ -289,20 +279,8 @@ class PMS_Orders
         $select->where('o.id = ?', $id);
         $status = null;
         try {
-        	$suppliers = new PMS_Suppliers();
             $files = new PMS_Files();
-
         	$row = $select->query()->fetch();
-
-            $resp = $suppliers->getByOrderId($id);
-            if ($resp->isSuccess()) {
-                $rowset = $resp->getRowset();
-            } else {
-                $row['suppliers_errors'] = $resp->getStatusCollection();
-                $rowset = array();
-            }
-            $row['suppliers'] = $rowset;
-
             $resp = $files->getAll($id);
             if ($resp->isSuccess()) {
                 $rowset = $resp->getRowset();
@@ -311,7 +289,6 @@ class PMS_Orders
                 $rowset = array();
             }
             $row['files'] = $rowset;
-
             $response->setRow($row);
             $status = PMS_Status::OK;
         } catch (Exception $e) {

@@ -30,7 +30,7 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
     initComponent: function() {
 
         this.items = [{
-        	xtype: 'pms.customers.combo',
+        	xtype: 'PMS.Customers.Combo',
         	disabled: !acl.isUpdate('customers'),
         	anchor: '-1'
         }, {

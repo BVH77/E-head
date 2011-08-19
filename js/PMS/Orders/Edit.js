@@ -84,13 +84,6 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         if (acl.isView('orders', 'production')) this.tabPanel.add(this.formProduction);
         if (acl.isView('orders', 'mount')) this.tabPanel.add(this.formMount);
         
-        if (acl.isView('suppliers')) {
-            this.suppliers = new PMS.Orders.Edit.Suppliers({
-                orderId: this.orderId
-            }); 
-            this.tabPanel.add(this.suppliers);
-        }
-        
         if (acl.isView('orders', 'files')) {
             this.files = new PMS.Orders.Files({
                 autoHeight: true,
@@ -154,7 +147,6 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
     
     loadData: function(record) {
         this.getForm().loadRecord(record);
-        this.suppliers.loadData(record.data);
         this.files.loadData(record.data);
     },
     

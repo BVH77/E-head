@@ -1,25 +1,23 @@
 <?php
 
-class PMS_Files
+class PMS_FixedAssets_Files
 {
-	protected $_tableFunctions = null;
-
     public function __construct()
     {
-        $this->_table = new PMS_Files_Table_Files();
+        $this->_table = new PMS_FixedAssets_Files_Table();
     }
 
-    public function getAll($orderId)
+    public function getAll($itemId)
     {
     	$response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
-        if (!$validate->isValid($orderId)) {
+        if (!$validate->isValid($itemId)) {
             return $response->addStatus(new PMS_Status(
-                PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'itemId'));
         }
         try {
             $response->setRowset($this->_table->fetchAll(
-            	array('order_id = ?' => $orderId))->toArray());
+            	array('item_id = ?' => $itemId))->toArray());
             $status = PMS_Status::OK;
         } catch (Exception $e) {
             $status = PMS_Status::DATABASE_ERROR;
@@ -30,13 +28,13 @@ class PMS_Files
         return $response->addStatus(new PMS_Status($status));
     }
 
-    public function upload($orderId, $file)
+    public function upload($itemId, $file)
     {
     	$response = new OSDN_Response();
         $validate = new OSDN_Validate_Id();
-        if (!$validate->isValid($orderId)) {
+        if (!$validate->isValid($itemId)) {
             $response->addStatus(new PMS_Status(
-                PMS_Status::INPUT_PARAMS_INCORRECT, 'orderId'));
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'itemId'));
             return $response;
         }
         if ($file['error'] > 0) {
@@ -46,12 +44,12 @@ class PMS_Files
         }
         $filenameArray = split('\.', $file['name']);
         $ext = array_pop($filenameArray);
-       	$filename = uniqid() . '.' . $ext;
+       	$filename = 'fixed_assets_' . uniqid() . '.' . $ext;
        	$filepath = FILES_DIR . '/' . $filename;
         try {
         	if (move_uploaded_file($file['tmp_name'], $filepath)) {
 	            $this->_table->insert(array(
-	               'order_id'      => $orderId,
+	               'item_id'       => $itemId,
 	               'filename'      => $filename,
 	               'is_photo'      => getimagesize($filepath) ? 1 : 0,
 	               'description'   => join(' ', $filenameArray)

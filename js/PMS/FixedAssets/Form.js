@@ -1,6 +1,6 @@
-Ext.ns('PMS');
+Ext.ns('PMS.FixedAssets');
 
-PMS.ContragentsFormAbstract = Ext.extend(xlib.form.FormPanel, {
+PMS.FixedAssets.Form = Ext.extend(xlib.form.FormPanel, {
     
 	sid: null,
     
@@ -8,30 +8,53 @@ PMS.ContragentsFormAbstract = Ext.extend(xlib.form.FormPanel, {
     
     resizable: false,
     
-    entity: null,
-	
+    loadURL: link('fixed-assets', 'index', 'get'),
+    
+    addURL: link('fixed-assets', 'index', 'add'),
+    
+    updateURL: link('fixed-assets', 'index', 'update'),
+    
+    region: 'center',
+    
     initComponent: function() {
         
         this.items = [{
             name: 'id',
             xtype: 'hidden'
         }, {
+            name: 'inventory_number',
+            fieldLabel: 'Инвентарный №',
+            xtype: 'numberfield',
+			allowBlank: true
+        }, {
             name: 'name',
-            fieldLabel: 'Название',
+            fieldLabel: 'Наименование',
             xtype: 'textfield',
-            sortable: true,
+			allowBlank: false
+        }, {
+            name: 'qty',
+            fieldLabel: 'Количество',
+            xtype: 'numberfield',
+			allowBlank: false
+        }, {
+            name: 'price',
+            fieldLabel: 'Стоимость',
+            xtype: 'numberfield',
 			allowBlank: false
         }, {
             name: 'description',
             xtype: 'textarea',
             fieldLabel: 'Описание',
-            sortable: true,
             allowBlank: true
+        }, {
+            fieldLabel: 'Ответственный',
+            xtype: 'PMS.Staff.Combo',
+			allowBlank: false
         }];
         
         this.on('render', this.loadData, this, {delay: 50});
                 
-        PMS.ContragentsFormAbstract.superclass.initComponent.apply(this, arguments);
+        PMS.FixedAssets.Form.superclass.initComponent.apply(this, arguments);
 
         this.addEvents('saved');
     },
@@ -39,13 +62,11 @@ PMS.ContragentsFormAbstract = Ext.extend(xlib.form.FormPanel, {
     onSave: function() {
         if (this.getForm().isValid()) {
             var params = {};
-            var serverAction = 'add';
             if (this.sid) {
             	params['id'] = this.sid;
-    			serverAction = 'update';
             }
             this.getForm().submit({
-                url: link('orders', this.entity, serverAction),
+                url: this.sid ? this.updateURL : this.addURL,
                 waitMsg: 'Запись...',
                 params: params,
                 success: function(f, action) {
@@ -67,10 +88,21 @@ PMS.ContragentsFormAbstract = Ext.extend(xlib.form.FormPanel, {
     
     showInWindow: function(cfg) {
         var w = new Ext.Window(Ext.apply({
+            layout: 'border',
             labelWidth: 80,
             width: 400,
-            autoHeight: true,
-            items: [this],
+            height: this.sid ? 470 : 270,
+            defaults: {
+                border: false
+            },
+            items: [this, {
+                region: 'south',
+                cls: 'x-border-top',
+                height: this.sid ? 200 : 0,
+                itemId: this.sid,
+                xtype: this.sid ? 'PMS.FixedAssets.Files' : 'panel'
+            }],
+            modal: true,
             buttons: [
                 {text: 'Сохранить', handler: this.onSave.createDelegate(this)}, 
                 {text: 'Отменить', handler: function() {w.close();}}
@@ -83,7 +115,7 @@ PMS.ContragentsFormAbstract = Ext.extend(xlib.form.FormPanel, {
     loadData: function() {
     	if (this.sid) {
 	        this.load({
-	            url: link('orders', this.entity, 'get'),
+	            url: this.loadURL,
 	            params: {id: this.sid},
 	            waitMsg: 'Загрузка...',
 	            success: function(form, options) {this.fireEvent('load');},
@@ -95,4 +127,4 @@ PMS.ContragentsFormAbstract = Ext.extend(xlib.form.FormPanel, {
     onFailure: Ext.emptyFn
 });
 
-Ext.reg('PMS.ContragentsFormAbstract', PMS.ContragentsFormAbstract);
+Ext.reg('PMS.FixedAssets.Form', PMS.FixedAssets.Form);

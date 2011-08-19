@@ -1,11 +1,9 @@
-Ext.ns('PMS');
+Ext.ns('PMS.FixedAssets');
 
-PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
+PMS.FixedAssets.List = Ext.extend(Ext.grid.GridPanel, {
     
-    entity: null,
+    title: 'Основные средства',
     
-    actions: [],
-	
     autoScroll: true,
     
     border: false,
@@ -18,19 +16,40 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
     
     viewConfig: {autoFill: true},
 	
+    loadURL: link('fixed-assets', 'index', 'get-list'),
+    
+    deleteURL: link('fixed-assets', 'index', 'delete'),
+    
+    permissions: acl.isUpdate('admin'),
+    
     initComponent: function() {
         
         this.autoExpandColumn = Ext.id();
         
         this.cm = new Ext.grid.ColumnModel([{
-            header: '№',
-            width: 40,
-            dataIndex: 'id',
+            header: 'Инвентарный №',
+            width: 100,
+            dataIndex: 'inventory_number',
             sortable: true
         }, {
             width: 200,
-            header: 'Название',
+            header: 'Наименование',
             dataIndex: 'name',
+            sortable: true
+        }, {
+            width: 100,
+            header: 'Количество',
+            dataIndex: 'qty',
+            sortable: true
+        }, {
+            width: 100,
+            header: 'Стоимость',
+            dataIndex: 'price',
+            sortable: true
+        }, {
+            width: 200,
+            header: 'Ответственный',
+            dataIndex: 'staff_name',
             sortable: true
         }, {
             id: this.autoExpandColumn,
@@ -43,7 +62,7 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
         this.sm = new Ext.grid.RowSelectionModel({singleSelect: true});
 
         this.ds = new Ext.data.JsonStore({
-	        url: link('orders', this.entity, 'get-list'),
+	        url: this.loadURL,
 	        totalProperty: 'totalCount',
             autoLoad: true,
 	        remoteSort: true,
@@ -54,7 +73,11 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
             },
 	        fields: [
 	            {name: 'id'},
+	            {name: 'inventory_number'},
 	            {name: 'name'},
+	            {name: 'qty'},
+	            {name: 'price'},
+	            {name: 'staff_name'},
                 {name: 'description'}
 	        ]
 	    });
@@ -66,36 +89,30 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
             	text: 'Добавить',
             	iconCls: 'add',
             	handler: this.add.createDelegate(this),
-                hidden: !acl.isUpdate(this.entity)
+                hidden: !this.permissions
             }]
         });
         
         var actions = [{
-            text: 'Добавить нового',
+            text: 'Добавить',
             iconCls: 'add',
             handler: this.add.createDelegate(this),
-            hidden: !acl.isUpdate(this.entity)
+            hidden: !this.permissions
         }, '-', {
             text: 'Редактировать',
             iconCls: 'edit',
             handler: this.edit.createDelegate(this),
-            hidden: !acl.isUpdate(this.entity)
+            hidden: !this.permissions
         }, {
             text: 'Удалить',
             iconCls: 'delete',
             handler: this.onDelete,
-            hidden: !acl.isUpdate(this.entity)
+            hidden: !this.permissions
         }];
-        
-        if (Ext.isArray(this.actions) && !Ext.isEmpty(this.actions)) {
-            this.actions = this.actions.concat(actions);
-        } else {
-            this.actions = actions;
-        }
         
         var actionsPlugin = new xlib.grid.Actions({
 	        autoWidth: true,
-	        items: this.actions
+	        items: actions
 	    });
 	    
 	    this.plugins = [new Ext.grid.GridFilters({
@@ -105,9 +122,9 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
             ]}
         ), actionsPlugin];
         
-        PMS.ContragentsListAbstract.superclass.initComponent.apply(this, arguments);
+        PMS.FixedAssets.List.superclass.initComponent.apply(this, arguments);
 		
-        if (acl.isUpdate(this.entity)) {
+        if (this.permissions) {
             this.on('rowdblclick', this.onRowdblclick, this);
         }
     },
@@ -117,16 +134,15 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
     },
    
     add: function(g, rowIndex) {
-		var form = new PMS.ContragentsFormAbstract({permissions: true, entity: this.entity});
+		var form = new PMS.FixedAssets.Form({permissions: this.permissions});
 		var w = form.showInWindow({title: 'Добавление'});
 		form.on('saved', function() {this.getStore().reload(); w.close();}, this);
 		w.show();
 	},
 	
 	edit: function(g, rowIndex) {
-		var form = new PMS.ContragentsFormAbstract({
-            permissions: acl.isUpdate(this.entity),
-            entity: this.entity,
+		var form = new PMS.FixedAssets.Form({
+            permissions: this.permissions,
 			sid: this.getStore().getAt(rowIndex).get('id')
 		});
         var w = form.showInWindow({title: 'Редактирование'});
@@ -142,20 +158,11 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
             fn: function(b) {
                 if ('yes' == b) {
                     Ext.Ajax.request({
-                        url: link('orders', g.entity, 'delete'),
-                        success: function(res){
+                        url: g.deleteURL,
+                        success: function(res) {
                             var errors = Ext.decode(res.responseText).errors;
                             if (errors) {
-                                var msg;
-                                switch (errors[0].code) {
-                                    case -20:
-                                        msg = 'Невозможно удалить. ' +
-                                            'Субъект связан с одним или более заказами.'
-                                        break;
-                                    default:
-                                        msg = errors[0].msg;
-                                }
-                                xlib.Msg.error(msg);
+                                xlib.Msg.error(errors[0].msg);
                                 return;
                             }
                             g.getStore().reload();
@@ -170,4 +177,4 @@ PMS.ContragentsListAbstract = Ext.extend(Ext.grid.GridPanel, {
     } 
 });
 
-Ext.reg('PMS.ContragentsListAbstract', PMS.ContragentsListAbstract);
+Ext.reg('PMS.FixedAssets.List', PMS.FixedAssets.List);
