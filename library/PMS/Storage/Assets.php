@@ -209,7 +209,7 @@ class PMS_Storage_Assets
         $select = $this->_table->getAdapter()->select()
         ->from(array('sh' => 'storage_history', array('id', 'order_id', 'qty', 'created')))
         ->joinLeft(array('ac' => 'accounts'),
-            'sh.account_id=ac.id', array('account_name' => 'ac.name'))
+            'sh.reciever_id=ac.id', array('account_name' => 'ac.name'))
         ->where('asset_id = ?', $id);
 
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select);
