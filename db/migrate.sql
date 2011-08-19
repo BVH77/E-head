@@ -67,7 +67,7 @@ DROP TABLE IF EXISTS `suppliers`;
 
 CREATE TABLE `fixed_assets` (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`inventory_number` INT NULL ,
+`inventory_number` VARCHAR( 255 ) NULL ,
 `name` VARCHAR( 255 ) NOT NULL ,
 `qty` INT NOT NULL ,
 `price` INT NOT NULL ,

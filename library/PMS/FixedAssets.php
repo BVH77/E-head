@@ -13,7 +13,7 @@ class PMS_FixedAssets
     {
         $f = new OSDN_Filter_Input(array(
         ), array(
-            'inventory_number' => array('int', 'allowEmpty' => true),
+            'inventory_number' => array(array('StringLength', 0, 255), 'allowEmpty' => true),
             'name' => array(array('StringLength', 1, 255), 'presence' => 'required'),
             'qty' => array('int', 'presence' => 'required'),
             'price' => array('int', 'presence' => 'required'),
@@ -45,7 +45,7 @@ class PMS_FixedAssets
         $f = new OSDN_Filter_Input(array(
         ), array(
             'id' => array('int', 'presence' => 'required'),
-            'inventory_number' => array('int', 'allowEmpty' => true),
+            'inventory_number' => array(array('StringLength', 0, 255), 'allowEmpty' => true),
             'name' => array(array('StringLength', 1, 255), 'presence' => 'required'),
             'qty' => array('int', 'presence' => 'required'),
             'price' => array('int', 'presence' => 'required'),

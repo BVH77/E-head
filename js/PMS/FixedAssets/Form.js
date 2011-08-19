@@ -24,7 +24,7 @@ PMS.FixedAssets.Form = Ext.extend(xlib.form.FormPanel, {
         }, {
             name: 'inventory_number',
             fieldLabel: 'Инвентарный №',
-            xtype: 'numberfield',
+            xtype: 'textfield',
 			allowBlank: true
         }, {
             name: 'name',
