@@ -115,9 +115,11 @@ class Storage_AssetsController extends OSDN_Controller_Action
 
     public function incomeAction()
     {
-        $asset_id = $this->_getParam('asset_id');
         $qty = $this->_getParam('qty');
-        $response = $this->_class->assetQtyUpdate($asset_id, $qty);
+        $asset_id = $this->_getParam('asset_id');
+        $order_id = $this->_getParam('order_id');
+        $order_id = intval($order_id) > 0 ? intval($order_id) : null;
+        $response = $this->_class->assetQtyUpdate($asset_id, $qty, $order_id);
         if ($response->isSuccess()) {
             $this->view->success = true;
             $this->view->id = $response->id;
@@ -128,13 +130,16 @@ class Storage_AssetsController extends OSDN_Controller_Action
 
     public function outgoAction()
     {
-        $asset_id = $this->_getParam('asset_id');
         $qty = $this->_getParam('qty');
+        $asset_id = $this->_getParam('asset_id');
+        $order_id = $this->_getParam('order_id');
+        $order_id = intval($order_id) > 0 ? intval($order_id) : null;
         $reciever_id = $this->_getParam('reciever_id');
+        $reciever_id = intval($reciever_id) > 0 ? intval($reciever_id) : null;
         if ($qty > 0) {
             $qty = -$qty;
         }
-        $response = $this->_class->assetQtyUpdate($asset_id, $qty, $reciever_id);
+        $response = $this->_class->assetQtyUpdate($asset_id, $qty, $order_id, $reciever_id);
         if ($response->isSuccess()) {
             $this->view->success = true;
             $this->view->id = $response->id;

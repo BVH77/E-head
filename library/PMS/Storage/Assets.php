@@ -141,7 +141,7 @@ class PMS_Storage_Assets
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 
-    public function assetQtyUpdate($asset_id, $qty, $reciever_id = null)
+    public function assetQtyUpdate($asset_id, $qty, $order_id = null, $reciever_id = null)
     {
         $response = new OSDN_Response();
 
@@ -149,6 +149,10 @@ class PMS_Storage_Assets
         if (!$validator->isValid($asset_id)) {
             return $response->addStatus(new PMS_Status(
                 PMS_Status::INPUT_PARAMS_INCORRECT, 'asset_id'));
+        }
+        if ($order_id !== null && !$validator->isValid($order_id)) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'order_id'));
         }
         if ($reciever_id !== null && !$validator->isValid($reciever_id)) {
             return $response->addStatus(new PMS_Status(
@@ -166,6 +170,7 @@ class PMS_Storage_Assets
         $data = array(
             'asset_id'      => $asset_id,
             'qty'           => $qty,
+            'order_id'      => intval($order_id) > 0 ? intval($order_id) : null,
             'sender_id'     => $reciever_id !== null ? OSDN_Accounts_Prototype::getId() : null,
             'reciever_id'   => $reciever_id !== null ? $reciever_id : OSDN_Accounts_Prototype::getId()
         );

@@ -58,6 +58,7 @@ PMS.Storage.Assets.Movement = Ext.extend(xlib.form.FormPanel, {
         },  this.qtyField];
 
         if (!this.isIncome) {
+        /*
             this.receiverCombo = new xlib.Acl.Accounts.Combo({
                 fieldLabel: 'Получатель',
                 name: 'reciever_id',
@@ -65,6 +66,15 @@ PMS.Storage.Assets.Movement = Ext.extend(xlib.form.FormPanel, {
                 URL: link('storage', 'index', 'get-accounts')
             });
             this.items.push(this.receiverCombo);
+        */
+            this.orderField = new Ext.form.NumberField({
+                fieldLabel: '№ заказа',
+                name: 'order_id',
+                allowDecimals: false,
+                allowNegative: false
+            });
+            
+            this.items.push(this.orderField);
         }
         
         PMS.Storage.Assets.Movement.superclass.initComponent.apply(this, arguments);
@@ -108,7 +118,8 @@ PMS.Storage.Assets.Movement = Ext.extend(xlib.form.FormPanel, {
         };
         
         if (!this.isIncome) {
-            params.reciever_id = this.receiverCombo.getValue();
+            //params.reciever_id = this.receiverCombo.getValue();
+            params.order_id = this.orderField.getValue();
         }
         
         Ext.Ajax.request({
