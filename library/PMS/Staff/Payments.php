@@ -76,6 +76,39 @@ class PMS_Staff_Payments
         return $response->addStatus(new PMS_Status($status));
     }
 
+    public function update(array $params)
+    {
+        $response = new OSDN_Response();
+
+        $f = new OSDN_Filter_Input(array(
+            'id'        => 'Int',
+            'staff_id'  => 'Int',
+            'value'     => 'Int',
+            '*'         => 'StringTrim'
+        ), array(
+            'id'        => array(array('Id'), 'presence' => 'required'),
+            'date'      => array(array('StringLength', 1, 10), 'presence' => 'required'),
+            'staff_id'  => array('Id'),
+            'value'     => array('Id', 'allowEmpty' => false, 'presence' => 'required')
+        ), $params);
+        $response->addInputStatus($f);
+        if ($response->hasNotSuccess()) {
+            return $response;
+        }
+
+        try {
+            $this->_table->updateByPk($f->getData(), $f->id);
+            $status = PMS_Status::OK;
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            $status = PMS_Status::DATABASE_ERROR;
+        }
+
+        return $response->addStatus(new PMS_Status($status));
+    }
+
     public function recalculate()
     {
         $response = new OSDN_Response();

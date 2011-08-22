@@ -22,6 +22,18 @@ PMS.Staff.Payments.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.autoExpandColumn = Ext.id();
         
+        this.plugins = [new xlib.grid.Actions({
+            autoWidth: true,
+            items: [{
+                text: 'Редактировать',
+                iconCls: 'edit',
+                hidden: !acl.isUpdate('staff'),
+                handler: this.onUpdate,
+                scope: this
+            }],
+            scope: this
+        })];
+        
         this.ds = new Ext.data.JsonStore({
             url: this.listURL,
             remoteSort: true,
@@ -94,6 +106,19 @@ PMS.Staff.Payments.List = Ext.extend(Ext.grid.GridPanel, {
         });
         
         PMS.Staff.Payments.List.superclass.initComponent.apply(this, arguments);
+    },
+    
+    onUpdate: function(g, rowIndex) {
+        
+        var record = g.getStore().getAt(rowIndex);
+        
+        var formPanel = new PMS.Staff.Payments.Form({
+            record: record
+        });
+        
+        formPanel.getForm().on('saved', function() {
+            this.getStore().reload();
+        }, this);
     },
     
     onAdd: function(b, e) {

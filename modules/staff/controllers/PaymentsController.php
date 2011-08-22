@@ -19,6 +19,7 @@ class Staff_PaymentsController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-list');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'recalculate');
     }
 
@@ -54,6 +55,16 @@ class Staff_PaymentsController extends OSDN_Controller_Action
     	} else {
     	   $this->_collectErrors($response);
     	}
+    }
+
+    public function updateAction()
+    {
+        $response = $this->_class->update($this->_getAllParams());
+        if ($response->isSuccess()) {
+            $this->view->success = true;
+        } else {
+           $this->_collectErrors($response);
+        }
     }
 
     public function recalculateAction()
