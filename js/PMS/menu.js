@@ -116,6 +116,13 @@ PMS.Menu = function(params) {
             handler: function() {
                  window.open(link('storage', 'report', 'index', {}, 'html'));
             }
+        }, {
+            text: 'Основные средства',
+            iconCls: 'work_schd-icon',
+            hidden: !acl.isView('admin'),
+            handler: function() {
+                 window.open(link('fixed-assets', 'report', 'index', {}, 'html'));
+            }
         }]
 	}, '-', {
 	    text: 'Склад',
