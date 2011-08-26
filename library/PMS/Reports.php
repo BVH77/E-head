@@ -282,6 +282,7 @@ class PMS_Reports
         $tableOrders    = $this->_tableOrders->getTableName();
         $rowsMerged     = array();
         $rowStructure   = array(
+            'customer_id'   => 0,
             'summ_success'  => 0,
             'summ_added'    => 0,
             'failed_count'  => 0,
@@ -316,6 +317,7 @@ class PMS_Reports
         // Parse result rows into one merged array
         foreach ($rows as $row) {
             $rowsMerged[$row['customer_id']] = $rowStructure;
+            $rowsMerged[$row['customer_id']]['customer_id'] = $row['customer_id'];
             $rowsMerged[$row['customer_id']]['name'] = $row['name'];
             $rowsMerged[$row['customer_id']]['summ_success'] = $row['value'];
         }
@@ -345,10 +347,11 @@ class PMS_Reports
 
         // Parse result rows into one merged array
         foreach ($rows as $row) {
-            if (isset($rowsMerged[$row['creator_id']])) {
+            if (isset($rowsMerged[$row['customer_id']])) {
                 $rowsMerged[$row['customer_id']]['summ_added'] = $row['value'];
             } else {
                 $rowsMerged[$row['customer_id']] = $rowStructure;
+                $rowsMerged[$row['customer_id']]['customer_id'] = $row['customer_id'];
                 $rowsMerged[$row['customer_id']]['name'] = $row['name'];
                 $rowsMerged[$row['customer_id']]['summ_added'] = $row['value'];
             }
@@ -386,6 +389,7 @@ class PMS_Reports
                 $rowsMerged[$row['customer_id']]['failed_count'] = $row['value'];
             } else {
                 $rowsMerged[$row['customer_id']] = $rowStructure;
+                $rowsMerged[$row['customer_id']]['customer_id'] = $row['customer_id'];
                 $rowsMerged[$row['customer_id']]['name'] = $row['name'];
                 $rowsMerged[$row['customer_id']]['failed_count'] = $row['value'];
             }
