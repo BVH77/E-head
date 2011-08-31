@@ -77,7 +77,7 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
             listeners: {click: {fn: this.showFile, scope: this, buffer: 200}}
         });
         
-        if (this.allowEdit) {
+        if (this.allowEdit || acl.isUpdate('admin')) {
             if (acl.isUpdate('orders', 'files')) {
                 menu = new Ext.menu.Menu({
                     items: [{
@@ -97,7 +97,7 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
                     menu.showAt(e.getXY());
                 });
             }
-            if (acl.isUpdate('orders', 'files')) {
+            if (acl.isUpdate('orders', 'files') || acl.isUpdate('admin')) {
                 this.tbar = ['->', {
                     text: 'Добавить',
                     iconCls: 'add',
