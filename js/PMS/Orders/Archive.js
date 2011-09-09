@@ -60,6 +60,7 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
 	            {name: 'invoice_date', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
 	            {name: 'act_number'},
 	            {name: 'act_date', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
+                {name: 'created', type: 'date', dateFormat: xlib.date.DATE_TIME_FORMAT_SERVER},
 	            {name: 'files'}
 	        ]
 	    });
@@ -129,7 +130,8 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
 	        filters: [
 	            {type: 'string',  dataIndex: 'customer'},
 	            {type: 'string',  dataIndex: 'address'},
-    	        {type: 'date',  dataIndex: 'success_date_fact', dateFormat: 'Y-m-d'}
+    	        {type: 'date',  dataIndex: 'success_date_fact', dateFormat: 'Y-m-d'},
+                {type: 'date',  dataIndex: 'created', dateFormat: 'Y-m-d'}
 	    ]});
         
 	    var actionsPlugin = new xlib.grid.Actions({
@@ -219,6 +221,12 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
             width: 120,
             sortable: true,
             dataIndex: 'creator_name'
+        }, {
+            header: 'Добавлено',
+            width: 70,
+            sortable: true,
+            renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
+            dataIndex: 'created'
         }];
         
         PMS.Orders.Archive.superclass.initComponent.apply(this, arguments);
