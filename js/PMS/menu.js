@@ -129,6 +129,17 @@ PMS.Menu = function(params) {
 	    iconCls: 'suppliers-icon',
         hidden: !acl.isView('storage'),
 	    menu: [{
+            text: 'Основные средства',
+            iconCls: 'archive-icon',
+            hidden: !acl.isView('admin'),
+            handler: function() {
+                PMS.System.Layout.getTabPanel().add({
+                    iconCls: 'archive-icon',
+                    xtype: 'PMS.FixedAssets.List',
+                    id: 'PMS.FixedAssets.List'
+                });
+            }
+        }, {
 	        text: 'Наличие ТМЦ',
 	        iconCls: 'suppliers-icon',
 	        handler: function() {
@@ -158,17 +169,6 @@ PMS.Menu = function(params) {
                 iconCls: 'customers-icon',
                 xtype: 'PMS.Staff.Layout',
                 id: 'PMS.Staff.Layout'
-            });
-        } 
-	}, {
-	    text: 'Основные средства',
-	    iconCls: 'archive-icon',
-        hidden: !acl.isView('admin'),
-        handler: function() {
-            PMS.System.Layout.getTabPanel().add({
-                iconCls: 'archive-icon',
-                xtype: 'PMS.FixedAssets.List',
-                id: 'PMS.FixedAssets.List'
             });
         } 
 	}, {
