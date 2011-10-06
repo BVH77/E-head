@@ -683,6 +683,8 @@ CREATE TABLE `staff` (
     `pay_period` ENUM( 'hour', 'day', 'month' ) NOT NULL ,
     `pay_rate` INT UNSIGNED NOT NULL ,
     `cv_file` VARCHAR( 250 ) NULL,
+    `archive` tinyint(1) unsigned NOT NULL default '0',
+    `archive_date` date default NULL,
     INDEX ( category_id )
 ) ENGINE = InnoDB ;
 
