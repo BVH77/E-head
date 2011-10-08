@@ -100,6 +100,7 @@ class OSDN_Acl_Permission
     {
         $validate = new OSDN_Validate_Id();
         $response = new OSDN_Response();
+
         if (!$validate->isValid($roleId)) {
             return $response->addStatus(new OSDN_Acl_Status(
                 OSDN_Acl_Status::INPUT_PARAMS_INCORRECT, 'role_id'));
@@ -129,7 +130,7 @@ class OSDN_Acl_Permission
             $id = $this->_tablePermission->insert(array(
                 'role_id'       => $roleId,
                 'resource_id'   => $resourceId,
-                'privilege_id'     => $privilegeId
+                'privilege_id'  => $privilegeId
             ));
 
             if (false !== $id) {
@@ -140,6 +141,13 @@ class OSDN_Acl_Permission
             }
             $response->addStatus(new OSDN_Acl_Status($status));
             return $response;
+        }
+
+        // Prevent to remove admin permissions for yourself
+        $rg = OSDN_Acl_Resource_Generator::getInstance();
+        if (OSDN_Accounts_Prototype::getRoleId() == $roleId
+            && $rg->get('admin') == $resourceId) {
+            return $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::FAILURE));
         }
 
         $this->_deletePermission($roleId, $resourceId, $privilegeId);

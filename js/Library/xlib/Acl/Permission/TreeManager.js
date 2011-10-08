@@ -47,6 +47,7 @@ xlib.Acl.Permission.TreeManager.prototype = {
             success: function(response) {
                 var res = xlib.decode(response.responseText);
                 if (res.success !== true) {
+                    el.dom.checked = !checked;
                     return;
                 }
                 if (!checked) {
