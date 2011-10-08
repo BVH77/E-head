@@ -46,6 +46,7 @@ PMS.Notice.Form = Ext.extend(xlib.form.FormPanel, {
                 items: [{
                     xtype: 'xlib.form.combobox',
                     fieldLabel: 'Тип',
+                    anchor: '90%',
                     name: 'type',
                     mode: 'local',
                     displayField: 'name',

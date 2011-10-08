@@ -29,10 +29,17 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             var today = new Date();
             var sdf = record.get('success_date_fact');
             var sdp = record.get('success_date_planned');
+            
             var psp = record.get('production_start_planned');
             var psf = record.get('production_start_fact');
             var pep = record.get('production_end_planned');
             var pef = record.get('production_end_fact');
+            
+            var prsp = record.get('print_start_planned');
+            var prsf = record.get('print_start_fact');
+            var prep = record.get('print_end_planned');
+            var pref = record.get('print_end_fact');
+            
             var msp = record.get('mount_start_planned');
             var msf = record.get('mount_start_fact');
             var mep = record.get('mount_end_planned');
@@ -42,9 +49,14 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                 return 'x-row-success';
             }
             
-            if (!Ext.isDate(sdp) || psp > sdp || pep > sdp || msp > sdp || mep > sdp) {
+            if (parseInt(record.get('conflict')) == 1) {
                 return 'x-row-error';
             }
+            
+//            if ( !Ext.isDate(sdp) || psp > sdp || pep > sdp 
+//            || prsp > sdp || prep > sdp || msp > sdp || mep > sdp) {
+//                return 'x-row-error';
+//            }
             
 //            if ((parseInt(record.get('production')) > 0 && Ext.isEmpty(psp))
 //            || (parseInt(record.get('production')) > 0 && Ext.isEmpty(pep))
@@ -83,10 +95,15 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
 	            {name: 'description'},
 	            {name: 'mount'},
 	            {name: 'production'},
+	            {name: 'print'},
 	            {name: 'production_start_planned', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
 	            {name: 'production_start_fact', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
 	            {name: 'production_end_planned', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
 	            {name: 'production_end_fact', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
+	            {name: 'print_start_planned', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
+	            {name: 'print_start_fact', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
+	            {name: 'print_end_planned', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
+	            {name: 'print_end_fact', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
 	            {name: 'mount_start_planned', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
 	            {name: 'mount_start_fact', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
 	            {name: 'mount_end_planned', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
@@ -94,6 +111,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
 	            {name: 'success_date_planned', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
 	            {name: 'success_date_fact', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
 	            {name: 'cost'},
+	            {name: 'conflict'},
 	            {name: 'advanse'},
 	            {name: 'created', type: 'date', dateFormat: xlib.date.DATE_TIME_FORMAT_SERVER},
 	            {name: 'creator_id'},
@@ -141,8 +159,6 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.menuUsers = new Ext.menu.Menu({
             defaults: {
-                group: 'users',
-                checked: false,
                 scope: this,
                 handler: this.onChangeUser
             },
@@ -286,6 +302,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.getSelectionModel().on('rowselect', function(sm, rowIndex, record) {
             this.fireEvent('orderselect', record);
+            console.log('rowselect');
         }, this);
 		
         if (acl.isUpdate('admin')) {

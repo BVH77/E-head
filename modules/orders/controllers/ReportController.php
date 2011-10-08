@@ -18,8 +18,9 @@ class Orders_ReportController extends OSDN_Controller_Action
     public function permission(OSDN_Controller_Action_Helper_Acl $acl)
     {
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->orders);
-        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'schedule-mount');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'schedule-production');
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'schedule-print');
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'schedule-mount');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'planning');
 
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->reports);
@@ -41,6 +42,17 @@ class Orders_ReportController extends OSDN_Controller_Action
     public function scheduleProductionAction()
     {
     	$response = $this->_reports->generateSchedule('production');
+    	if ($response->isSuccess()) {
+	    	$this->view->data = $response->data;
+	        $this->view->content = $this->view->render('report/schedule.phtml');
+    	} else {
+    		$this->_collectErrors($response);
+    	}
+    }
+
+    public function schedulePrintAction()
+    {
+    	$response = $this->_reports->generateSchedule('print');
     	if ($response->isSuccess()) {
 	    	$this->view->data = $response->data;
 	        $this->view->content = $this->view->render('report/schedule.phtml');

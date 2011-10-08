@@ -26,6 +26,10 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
             scope: this
         });
         
+        this.formPrint = new PMS.Orders.Edit.Print({
+            scope: this
+        });
+        
         this.formMount = new PMS.Orders.Edit.Mount({
     	   scope: this
         });
@@ -66,6 +70,12 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
             });
         }, this);
         
+        this.formInfo.on('printChecked', function(v) {
+            this.formPrint.cascade(function(cmp) {
+                cmp.setDisabled(!v);
+            });
+        }, this);
+        
         this.formInfo.on('mountChecked', function(v) {
             this.formMount.cascade(function(cmp) {
                 cmp.setDisabled(!v);
@@ -82,6 +92,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
     enableTabs: function() {
         
         if (acl.isView('orders', 'production')) this.tabPanel.add(this.formProduction);
+        if (acl.isView('orders', 'print')) this.tabPanel.add(this.formPrint);
         if (acl.isView('orders', 'mount')) this.tabPanel.add(this.formMount);
         
         if (acl.isView('orders', 'files')) {
@@ -95,7 +106,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         }
         
         this.notes = new PMS.Orders.Edit.Notes({
-            height: 313,
+            height: 333,
             permissions: this.permissions,
             orderId: this.orderId,
             listeners: {
@@ -155,7 +166,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         this.wind = new Ext.Window(Ext.apply({
             title: this.orderId ? 'Заказ № ' + this.orderId : 'Новый заказ',
             width: 700,
-            height: 400,
+            height: 420,
             layout: 'fit',
             resizable: false,
             modal: true,

@@ -19,10 +19,13 @@ class PMS_Reports
     public function generateSchedule($type)
     {
         $response = new OSDN_Response();
-        if ($type != 'mount' && $type != 'production') {
+
+        $types = array('production', 'print', 'mount');
+        if (!in_array($type, $types)) {
             return $response->addStatus(new PMS_Status(
                 PMS_Status::INPUT_PARAMS_INCORRECT, 'type'));
         }
+
     	$date = date_create();
     	$select = $this->_tableOrders->getAdapter()->select();
     	$select->from(array('o' => $this->_tableOrders->getTableName()),
@@ -75,7 +78,7 @@ class PMS_Reports
             ->joinLeft(array('c' => $this->_tableCustomers->getTableName()),
                       'o.customer_id=c.id', array('customer_name' => 'name'))
             ->where('success_date_fact IS NULL')
-            ->where('production = 1')
+            ->where('(production = 1 OR print = 1)')
             ->order('success_date_planned');
     	try {
             $orders = $select->query()->fetchAll();
@@ -426,6 +429,7 @@ class PMS_Reports
         foreach ($orders as $order) {
             $sdp = $order['success_date_planned'];
             $order['success_date_planned'] = empty($sdp) ? false : new Zend_Date($sdp);
+
             $psp = $order['production_start_planned'];
             $order['production_start_planned'] = empty($psp) ? false : new Zend_Date($psp);
             $psf = $order['production_start_fact'];
@@ -434,6 +438,16 @@ class PMS_Reports
             $order['production_end_planned'] = empty($pep) ? false : new Zend_Date($pep);
             $pef = $order['production_end_fact'];
             $order['production_end_fact'] = empty($pef) ? false : new Zend_Date($pef);
+
+            $prsp = $order['print_start_planned'];
+            $order['print_start_planned'] = empty($prsp) ? false : new Zend_Date($prsp);
+            $prsf = $order['print_start_fact'];
+            $order['print_start_fact'] = empty($prsf) ? false : new Zend_Date($prsf);
+            $prep = $order['print_end_planned'];
+            $order['print_end_planned'] = empty($prep) ? false : new Zend_Date($prep);
+            $pref = $order['print_end_fact'];
+            $order['print_end_fact'] = empty($pref) ? false : new Zend_Date($pref);
+
             $msp = $order['mount_start_planned'];
             $order['mount_start_planned'] = empty($msp) ? false : new Zend_Date($msp);
             $msf = $order['mount_start_fact'];
@@ -468,10 +482,17 @@ class PMS_Reports
     private function getDay($order, $date)
     {
         $sdp = $order['success_date_planned'];
+
         $psp = $order['production_start_planned'];
         $psf = $order['production_start_fact'];
         $pep = $order['production_end_planned'];
         $pef = $order['production_end_fact'];
+
+        $prsp = $order['print_start_planned'];
+        $prsf = $order['print_start_fact'];
+        $prep = $order['print_end_planned'];
+        $pref = $order['print_end_fact'];
+
         $msp = $order['mount_start_planned'];
         $msf = $order['mount_start_fact'];
         $mep = $order['mount_end_planned'];
@@ -490,6 +511,21 @@ class PMS_Reports
             } else {
                 if ($date <= $pef && $date >= $psp) {
                     return 'planning_production late';
+                }
+            }
+        }
+
+        if ($prsp && $prep) {
+            if ($date >= $prsp && $date <= $prep) {
+                return 'planning_print';
+            }
+            if ($pref === false) {
+                if ($date <= $today && $date >= $prsp) {
+                    return 'planning_print late';
+                }
+            } else {
+                if ($date <= $pref && $date >= $prsp) {
+                    return 'planning_print late';
                 }
             }
         }

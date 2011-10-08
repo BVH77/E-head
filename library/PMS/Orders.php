@@ -164,8 +164,10 @@ class PMS_Orders
             '*', 'conflict' => 'IF(success_date_planned IS NULL'
             . ' OR success_date_planned < production_start_planned'
             . ' OR success_date_planned < production_end_planned'
+            . ' OR success_date_planned < print_start_planned'
+            . ' OR success_date_planned < print_end_planned'
             . ' OR success_date_planned < mount_start_planned'
-            . ' OR success_date_planned < mount_end_planned, 0, 1)',
+            . ' OR success_date_planned < mount_end_planned, 1, 0)',
             'success' => 'IF(success_date_fact IS NULL, 0, 1)'));
         $select->joinLeft(array(
             'u' => $accounts->getTableName()),
@@ -196,6 +198,14 @@ class PMS_Orders
             $select->where('production = 1');
         }
 
+        // Hide orders with print disabled
+        if ($acl->isAllowed(
+            OSDN_Acl_Resource_Generator::getInstance()->orders->hideprint,
+            OSDN_Acl_Privilege::VIEW)
+        ) {
+            $select->where('print = 1');
+        }
+
         // Hide orders with mountage disabled
         if ($acl->isAllowed(
             OSDN_Acl_Resource_Generator::getInstance()->orders->hidemount,
@@ -220,7 +230,7 @@ class PMS_Orders
         	default:
         }
         $select->order('success');
-        $select->order('conflict');
+        $select->order('conflict DESC');
         //$select->order('success_date_fact');
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select,
             array('o.id' => 'id', 'address', 'success_date_fact', 'success_date_planned',

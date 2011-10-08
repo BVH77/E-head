@@ -47,9 +47,7 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
                     fieldLabel: 'Сдача (план)',
                     disabled: !acl.isUpdate('orders', 'success', 'planned'),
                     anchor: 0
-                }]
-            }, {
-                items: [{
+                }, {
                     name: 'success_date_fact',
                     hiddenName: 'success_date_fact',
                     xtype: 'xlib.form.DateField',
@@ -57,10 +55,8 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
                     disabled: !acl.isUpdate('orders', 'success', 'fact'),
                     anchor: 0
                 }]
-            }]
-        }, {
-        	items: [{
-        		items: [{
+            }, {
+                items: [{
         			xtype: 'checkbox',
         			fieldLabel: 'Производство',
         			boxLabel: 'вкл./выкл.',
@@ -75,9 +71,22 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
         				this.fireEvent('productionChecked', status);
 	                }, 
                     scope: this
-        		}]
-        	}, {
-        		items: [{
+                }, {
+                    xtype: 'checkbox',
+                    fieldLabel: 'Печать',
+                    boxLabel: 'вкл./выкл.',
+                    name: 'print',
+                    inputValue: 1,
+                    checked: true,
+                    hidden: !acl.isView('orders', 'print'),
+                    hideLabel: !acl.isView('orders', 'print'),
+                    disabled: !acl.isUpdate('orders', 'print'),
+                    anchor: 0,
+                    handler: function(cb, status) {
+                        this.fireEvent('printChecked', status);
+                    }, 
+                    scope: this
+                }, {
         			xtype: 'checkbox',
         			fieldLabel: 'Монтаж',
         			boxLabel: 'вкл./выкл.',
@@ -92,26 +101,6 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
         				this.fireEvent('mountChecked', status);
 	                }, 
                     scope: this
-        		}]
-        	}]
-        }, {
-            hidden: !acl.isView('orders', 'cost'),
-            items: [{
-                items: [{
-                    name: 'cost',
-                    xtype: 'numberfield',
-                    fieldLabel: 'Стоимость',
-                    disabled: !acl.isUpdate('orders', 'cost'),
-                    anchor: 0,
-                    minValue: 1
-                }]
-            }, {
-                items: [{
-                    name: 'advanse',
-                    xtype: 'numberfield',
-                    fieldLabel: 'Аванс',
-                    disabled: !acl.isUpdate('orders', 'cost'),
-                    anchor: 0
                 }]
             }]
         }, {
@@ -120,10 +109,31 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
         	fieldLabel: 'Описание',
         	height: 160,
         	disabled: !acl.isUpdate('orders', 'description')
+        }, {
+        	items: [{
+        		items: [{
+                    name: 'cost',
+                    xtype: 'numberfield',
+                    hidden: !acl.isView('orders', 'cost'),
+                    fieldLabel: 'Стоимость',
+                    disabled: !acl.isUpdate('orders', 'cost'),
+                    anchor: 0,
+                    minValue: 1
+        		}]
+        	}, {
+        		items: [{
+                    name: 'advanse',
+                    xtype: 'numberfield',
+                    hidden: !acl.isView('orders', 'cost'),
+                    fieldLabel: 'Аванс',
+                    disabled: !acl.isUpdate('orders', 'cost'),
+                    anchor: 0
+        		}]
+        	}]
         }];
         
         PMS.Orders.Edit.Info.superclass.initComponent.apply(this, arguments);
         
-        this.addEvents('productionChecked', 'mountChecked');
+        this.addEvents('productionChecked', 'printChecked', 'mountChecked');
     }
 });

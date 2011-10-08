@@ -64,6 +64,18 @@ PMS.Orders.Info = Ext.extend(Ext.grid.GridPanel, {
     	if (acl.isView('orders', 'production', 'end_fact') && !!+(record.get('production'))) {
 	        data.push(['Конец пр-ва (факт)', dateFormt(record.get('production_end_fact'))]);
     	}
+    	if (acl.isView('orders', 'print', 'start_planned') && !!+(record.get('print'))) {
+	        data.push(['Начало печати (план)', dateFormt(record.get('print_start_planned'))]);
+    	}
+    	if (acl.isView('orders', 'print', 'start_fact') && !!+(record.get('print'))) {
+	        data.push(['Начало печати (факт)', dateFormt(record.get('print_start_fact'))]);
+    	}
+    	if (acl.isView('orders', 'print', 'end_planned') && !!+(record.get('print'))) {
+	        data.push(['Конец печати (план)', dateFormt(record.get('print_end_planned'))]);
+    	}
+    	if (acl.isView('orders', 'print', 'end_fact') && !!+(record.get('print'))) {
+	        data.push(['Конец печати (факт)', dateFormt(record.get('print_end_fact'))]);
+    	}
     	if (acl.isView('orders', 'mount', 'start_planned') && !!+(record.get('mount'))) {
 	        data.push(['Начало монтажа (план)', dateFormt(record.get('mount_start_planned'))]);
     	}

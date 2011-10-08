@@ -91,4 +91,18 @@ CREATE TABLE IF NOT EXISTS `fixed_assets_files` (
 
 ALTER TABLE `fixed_assets_files` ADD FOREIGN KEY (`item_id`) REFERENCES `fixed_assets` (`id`) ON DELETE CASCADE ;
 
+ALTER TABLE `orders` 
+    ADD `print` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' AFTER `production`,
+    ADD `print_start_planned` DATE NULL DEFAULT NULL AFTER `production_end_fact` ,
+    ADD `print_start_fact` DATE NULL DEFAULT NULL AFTER `print_start_planned` ,
+    ADD `print_end_planned` DATE NULL DEFAULT NULL AFTER `print_start_fact` ,
+    ADD `print_end_fact` DATE NULL DEFAULT NULL AFTER `print_end_planned` ;
+
+UPDATE `acl_resources` SET `title` = 'Печать' WHERE `name` = 'print';
+UPDATE `acl_resources` SET `title` = 'Начало (план)' WHERE `name` = 'start_planned';
+UPDATE `acl_resources` SET `title` = 'Начало (факт)' WHERE `name` = 'start_fact';
+UPDATE `acl_resources` SET `title` = 'Конец (план)' WHERE `name` = 'end_planned';
+UPDATE `acl_resources` SET `title` = 'Конец (факт)' WHERE `name` = 'end_fact';
+UPDATE `acl_resources` SET `title` = 'Скрывать заказы без печати' WHERE `name` = 'hideprint';
+
 -- apllied on quarant

@@ -64,6 +64,13 @@ PMS.Menu = function(params) {
 	            window.open('/orders/report/schedule-production');
 	        }
 	    }, {
+	        text: 'План печатных работ',
+	        iconCls: 'prod_schd-icon',
+            hidden: !acl.isView('orders', 'print'),
+            handler: function() {
+	            window.open('/orders/report/schedule-print');
+	        }
+	    }, {
 	        text: 'План монтажных работ',
 	        iconCls: 'mount_schd-icon',
             hidden: !acl.isView('orders', 'mount'),
