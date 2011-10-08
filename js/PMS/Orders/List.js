@@ -302,7 +302,6 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.getSelectionModel().on('rowselect', function(sm, rowIndex, record) {
             this.fireEvent('orderselect', record);
-            console.log('rowselect');
         }, this);
 		
         if (acl.isUpdate('admin')) {
