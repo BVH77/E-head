@@ -105,4 +105,13 @@ UPDATE `acl_resources` SET `title` = 'Конец (план)' WHERE `name` = 'end
 UPDATE `acl_resources` SET `title` = 'Конец (факт)' WHERE `name` = 'end_fact';
 UPDATE `acl_resources` SET `title` = 'Скрывать заказы без печати' WHERE `name` = 'hideprint';
 
+UPDATE `acl_roles` SET `alias` = 'admin' WHERE `name` = 'Директор';
+UPDATE `acl_roles` SET `alias` = 'guest' WHERE `name` = 'Гости';
+UPDATE `acl_roles` SET `alias` = 'manager' WHERE `name` = 'Менеджер';
+UPDATE `acl_roles` SET `alias` = 'production' WHERE `name` = 'Производство';
+UPDATE `acl_roles` SET `alias` = 'mount' WHERE `name` = 'Монтаж';
+UPDATE `acl_roles` SET `alias` = 'bookkeeper' WHERE `name` = 'Бухгалтер';
+UPDATE `acl_roles` SET `alias` = 'store' WHERE `name` = 'Кладовщик';
+UPDATE `acl_roles` SET `alias` = 'print' WHERE `name` = 'Печать';
+
 -- apllied on quarant

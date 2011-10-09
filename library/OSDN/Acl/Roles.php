@@ -7,11 +7,24 @@ class OSDN_Acl_Roles
      *
      * @var OSDN_Acl_Table_Roles
      */
-    protected $_tableRoles;
+    protected $_table;
 
     public function __construct()
     {
-        $this->_tableRoles = new OSDN_Acl_Table_Roles();
+        $this->_table = new OSDN_Acl_Table_Roles();
+    }
+
+
+    /**
+     * Resolve role ID by alias
+     *
+     * @param string $alias
+     * @return int $id || false
+     */
+    public function alias2id($alias)
+    {
+        $row = $this->_table->fetchRow(array('alias' => $alias));
+        return is_null($row) ? false : $row->id;
     }
 
     /**
@@ -27,7 +40,7 @@ class OSDN_Acl_Roles
     public function fetchRoles()
     {
         $response = new OSDN_Response();
-        $rowset = $this->_tableRoles->fetchAll()->toArray();
+        $rowset = $this->_table->fetchAll()->toArray();
         $response->setRowset($rowset);
         return $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::OK));
     }
@@ -48,7 +61,7 @@ class OSDN_Acl_Roles
             return $response;
         }
 
-        $row = $this->_tableRoles->findOne($id);
+        $row = $this->_table->findOne($id);
         if (!empty($row)) {
             $row = $row->toArray();
         }
@@ -74,7 +87,7 @@ class OSDN_Acl_Roles
             return $response;
         }
 
-        $affectedRows = $this->_tableRoles->updateByPk(array(
+        $affectedRows = $this->_table->updateByPk(array(
             'name'  => $name
         ), $id);
         $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::retrieveAffectedRowStatus($affectedRows)));
@@ -92,7 +105,7 @@ class OSDN_Acl_Roles
     public function createRole($name)
     {
         $response = new OSDN_Response();
-        $id = $this->_tableRoles->insert(array(
+        $id = $this->_table->insert(array(
             'name'  => $name
         ));
         $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::OK));
@@ -115,7 +128,7 @@ class OSDN_Acl_Roles
             return $response;
         }
 
-        $affectedRows = $this->_tableRoles->deleteByPk($id);
+        $affectedRows = $this->_table->deleteByPk($id);
         $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::retrieveAffectedRowStatus($affectedRows)));
         return $response;
     }
@@ -147,7 +160,7 @@ class OSDN_Acl_Roles
 
         unset($data['id']);
 
-        $affectedRows = $this->_tableRoles->updateByPk($data, $id);
+        $affectedRows = $this->_table->updateByPk($data, $id);
         $response->addStatus(new OSDN_Acl_Status(OSDN_Acl_Status::retrieveAffectedRowStatus($affectedRows)));
         return $response;
     }

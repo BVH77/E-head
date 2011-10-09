@@ -224,10 +224,12 @@ class Orders_IndexController extends OSDN_Controller_Action
     	$persons = array();
 
     	$accounts = new OSDN_Accounts();
+    	$roles = new OSDN_Acl_Roles();
 
     	// check if order have a production
-    	if ($order['production'] == 1) {
-	    	$response = $accounts->fetchByRole(4); // 4 = production
+    	$roleId = $roles->alias2id('production');
+    	if ($order['production'] == 1 && $roleId) {
+	    	$response = $accounts->fetchByRole($roleId);
 	    	if ($response->isSuccess()) {
 	            $rows = $response->getRowset();
 	    		foreach ($rows as $row) {
@@ -238,9 +240,24 @@ class Orders_IndexController extends OSDN_Controller_Action
 	    	}
     	}
 
-    	// check if order have a moutage
-        if ($order['mount'] == 1) {
-	    	$response = $accounts->fetchByRole(5); // 5 = mount
+    	// check if order have a print
+    	$roleId = $roles->alias2id('print');
+    	if ($order['print'] == 1 && $roleId) {
+	    	$response = $accounts->fetchByRole($roleId);
+	    	if ($response->isSuccess()) {
+	            $rows = $response->getRowset();
+	    		foreach ($rows as $row) {
+	    			if ($currentPerson->email != $row['email'] && $row['active'] == 1) {
+	                    $persons[] = array('email' => $row['email'], 'name' => $row['name']);
+	    			}
+	    		}
+	    	}
+    	}
+
+    	// check if order have a mount
+    	$roleId = $roles->alias2id('mount');
+        if ($order['mount'] == 1 && $roleId) {
+	    	$response = $accounts->fetchByRole($roleId);
 	    	if ($response->isSuccess()) {
 	            $rows = $response->getRowset();
 	            foreach ($rows as $row) {
@@ -250,17 +267,22 @@ class Orders_IndexController extends OSDN_Controller_Action
 	    		}
 	    	}
         }
-    	$response = $accounts->fetchByRole(1); // 1 = director
-    	if ($response->isSuccess()) {
-    	    $rows = $response->getRowset();
-            foreach ($rows as $row) {
-                if ($row['email'] != $currentPerson->email && $row['active'] == 1) {
-                    $persons[] = array('email' => $row['email'], 'name' => $row['name']);
-                }
-    		}
-    	}
-    	if ($currentPerson->role_id != 3) { // 3 = manager
-    		$creator_id = $order['creator_id'];
+
+        $roleId = $roles->alias2id('admin');
+        if ($roleId) {
+        	$response = $accounts->fetchByRole($roleId);
+        	if ($response->isSuccess()) {
+        	    $rows = $response->getRowset();
+                foreach ($rows as $row) {
+                    if ($row['email'] != $currentPerson->email && $row['active'] == 1) {
+                        $persons[] = array('email' => $row['email'], 'name' => $row['name']);
+                    }
+        		}
+        	}
+        }
+
+		$creator_id = $order['creator_id'];
+    	if ($currentPerson->role_id != $creator_id) {
     		$response = $accounts->fetchAccount($creator_id);
     		if ($response->isSuccess()) {
 	            $row = $response->rowset;
@@ -301,23 +323,27 @@ class Orders_IndexController extends OSDN_Controller_Action
     private function sendEmailOrderSuccess($orderId)
     {
     	$accounts = new OSDN_Accounts();
-    	$response = $accounts->fetchByRole(7); // 7 = bookkeepers
-    	if ($response->isSuccess()) {
-	    	$config = Zend_Registry::get('config');
-	    	$server = $config->mail->SMTP;
-	        $mail = new Zend_Mail('UTF-8');
-	        $rows = $response->getRowset();
-            foreach ($rows as $row) {
-                $mail->addTo($row['email'], $row['name']);
-    		}
-	        $mail->setFrom($config->mail->from->address, $config->mail->from->caption);
-	        $mail->setSubject("Выполнен заказ №$orderId");
-	        $mail->setBodyHtml("Подробности здесь: http://$server/?id=$orderId");
-	        try {
-	            @$mail->send();
-	        } catch (Exception $e) {
-	            //echo $e->getMessage();
-	        }
+    	$roles = new OSDN_Acl_Roles();
+    	$roleId = $roles->alias2id('bookkeeper');
+    	if ($roleId) {
+        	$response = $accounts->fetchByRole($roleId);
+        	if ($response->isSuccess()) {
+    	    	$config = Zend_Registry::get('config');
+    	    	$server = $config->mail->SMTP;
+    	        $mail = new Zend_Mail('UTF-8');
+    	        $rows = $response->getRowset();
+                foreach ($rows as $row) {
+                    $mail->addTo($row['email'], $row['name']);
+        		}
+    	        $mail->setFrom($config->mail->from->address, $config->mail->from->caption);
+    	        $mail->setSubject("Выполнен заказ №$orderId");
+    	        $mail->setBodyHtml("Подробности здесь: http://$server/?id=$orderId");
+    	        try {
+    	            @$mail->send();
+    	        } catch (Exception $e) {
+    	            //echo $e->getMessage();
+    	        }
+        	}
     	}
     }
 }

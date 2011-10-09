@@ -220,4 +220,11 @@ class IndexController extends OSDN_Controller_Action
         $this->view->success = true;
         header('Location: /');
     }
+
+    public function testdateAction()
+    {
+        $this->disableRender(true);
+        $date = Zend_Date::now()->addDay(1)->get('dd.MM.YYYY');
+        echo $date;
+    }
 }
