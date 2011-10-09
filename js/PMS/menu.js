@@ -207,6 +207,21 @@ PMS.Menu = function(params) {
             window.open('http://print.e-head.ru');
         } 
 	}, '->', {
+        tooltip: 'Информация о релизе',
+	    iconCls: 'info-icon',
+        handler: function() {
+            new Ext.Window({
+                title: 'Информация о релизе',
+                width: 600,
+                bodyStyle: {background: 'white'},
+                padding: 10,
+                height: 400,
+                modal: true,
+                autoScroll: true,
+                autoLoad: link('default', 'index', 'changes', {}, 'html')
+            }).show();
+        } 
+	}, {
 		text: 'Учебник',
         iconCls: 'work_schd-icon',
         handler: function() {

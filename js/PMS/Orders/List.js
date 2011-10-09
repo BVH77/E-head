@@ -128,7 +128,23 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
 	            {type: 'string',  dataIndex: 'address'},
     	        {type: 'date',  dataIndex: 'success_date_planned', dateFormat: 'Y-m-d'},
     	        {type: 'date',  dataIndex: 'success_date_fact', dateFormat: 'Y-m-d'},
-    	        {type: 'date',  dataIndex: 'created', dateFormat: 'Y-m-d'}
+    	        {type: 'date',  dataIndex: 'created', dateFormat: 'Y-m-d'},
+    	        {
+                    type: 'list', 
+                    dataIndex: 'creator_id', 
+                    phpMode: true,
+                    labelField: 'name',
+                    store: new Ext.data.JsonStore({
+                        url: this.loadUsersURL,
+                        baseParams: {roleId: 0},
+                        root: 'data',
+                        fields: [
+                            {name: 'id'},
+                            {name: 'name'},
+                            {name: 'login'}
+                        ]
+                    })
+                }
 	    ]});
 	    
         var onDelete = function(g, rowIndex) {
@@ -294,7 +310,10 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             header: 'Менеджер',
             width: 120,
             sortable: true,
-            dataIndex: 'creator_name'
+            dataIndex: 'creator_id',
+            renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                return record.get('creator_name');
+            }
         }];
         PMS.Orders.List.superclass.initComponent.apply(this, arguments);
         

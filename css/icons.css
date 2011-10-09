@@ -40,3 +40,7 @@
     background-image:url(/images/check-out_16x16.gif) !important;
     background-repeat: no-repeat;
 }
+
+.info-icon {
+    background-image:url(/images/information-balloon.png) !important;
+}

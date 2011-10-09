@@ -68,29 +68,32 @@ Ext.grid.filter.ListFilter = Ext.extend(Ext.grid.filter.Filter, {
 	},
 	
 	onMenuLoad: function() {
-		if(!this.loaded) {
-			if(this.options) {
+        if (!this.loaded) {
+			if (this.options) {
 				this.store.loadData(this.options);
-      } else {
-				this.store.load();
-      }
+            } else {
+			 this.store.load();
+            }
 		}
 	},
 	
 	onLoad: function(store, records) {
-		var visible = this.menu.isVisible();
+
+        var visible = this.menu.isVisible();
 		this.menu.hide(false);
 		
 		this.menu.removeAll();
 		
 		var gid = this.single ? Ext.id() : null;
-		for(var i=0, len=records.length; i<len; i++) {
+        
+		for (var i=0, len=records.length; i<len; i++) {
+            
 			var item = new Ext.menu.CheckItem({
 				text: records[i].get(this.labelField), 
 				group: gid, 
 				checked: this.value.indexOf(records[i].id) > -1,
 				hideOnClick: false
-      });
+            });
 			
 			item.itemId = records[i].id;
 			item.on('checkchange', this.checkChange, this);
@@ -101,9 +104,9 @@ Ext.grid.filter.ListFilter = Ext.extend(Ext.grid.filter.Filter, {
 		this.setActive(this.isActivatable());
 		this.loaded = true;
 		
-		if(visible) {
+		if (visible) {
 			this.menu.show(); //Adaptor will re-invoke with previous arguments
-    }
+        }
 	},
 	
 	checkChange: function(item, checked) {
