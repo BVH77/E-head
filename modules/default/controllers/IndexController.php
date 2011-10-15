@@ -212,6 +212,8 @@ class IndexController extends OSDN_Controller_Action
 
     public function migrateAction()
     {
+        die();
+        /*
         set_time_limit(36000);
         $this->disableRender(true);
         $table = new PMS_Orders_Table_Orders();
@@ -291,5 +293,6 @@ class IndexController extends OSDN_Controller_Action
         //$table->getAdapter()->query('DELETE FROM orders_src ORDER BY id LIMIT 50');
         echo 'Done.<br/>';
         echo '</pre>';
+        */
     }
 }
