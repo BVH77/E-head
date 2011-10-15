@@ -197,17 +197,6 @@ class IndexController extends OSDN_Controller_Action
     }
 
     /**
-     * Destroy account session and redirect on base site url.
-     *
-     * @todo Very often we got an error the
-     *  Warning: session_destroy() [function.session-destroy]:
-     *  Session object destruction failed in D:\www\CATALOQUE\library\Zend\Session.php on line 676
-     *
-     * Try fix in future release
-     *  PHP bug: http://bugs.php.net/bug.php?id=29419&edit=1
-     *  current PHP version:
-     *      PHP Version 5.2.6
-     *      May 2 2008 18:01:20
      */
     public function logoutAction()
     {
@@ -221,10 +210,86 @@ class IndexController extends OSDN_Controller_Action
         header('Location: /');
     }
 
-    public function testdateAction()
+    public function migrateAction()
     {
+        set_time_limit(36000);
         $this->disableRender(true);
-        $date = Zend_Date::now()->addDay(1)->get('dd.MM.YYYY');
-        echo $date;
+        $table = new PMS_Orders_Table_Orders();
+        $tableFiles = new PMS_Files_Table_Files();
+        $tableNotes = new PMS_Orders_Table_Notes();
+
+        $select = $table->getAdapter()->select();
+        $select->from('orders_src'); //->limit(50, 0)->order('id');
+        $rows = $select->query()->fetchAll();
+
+        echo '<pre>';
+        echo 'Start.<br/>';
+
+        foreach ($rows as $row) {
+
+            $data = array(
+                'customer_id'          =>  $row['customer_id'],
+                'address'              =>  $row['address'],
+                'description'          =>  $row['description'],
+                'cost'                 =>  $row['cost'],
+                'advanse'              =>  $row['advanse'],
+                'mount'                =>  0,
+                'production'           =>  0,
+                'print'                =>  1,
+                'print_start_planned'  =>  $row['production_start_planned'],
+                'print_start_fact'     =>  $row['production_start_fact'],
+                'print_end_planned'    =>  $row['production_end_planned'],
+                'print_end_fact'       =>  $row['production_end_fact'],
+                'success_date_planned' =>  $row['success_date_planned'],
+                'success_date_fact'    =>  $row['success_date_fact'],
+                'created'              =>  $row['created'],
+                'creator_id'           =>  $row['creator_id'],
+                'archive'              =>  $row['archive']
+            );
+
+            $newID = $table->insert($data);
+            if (!$newID) {
+                echo 'Error! id ' . $row['id'] . '<br/>';
+                continue;
+            }
+
+            $select->reset();
+            $select->from('files_src')->where('order_id = ?', $row['id']);
+            $files = $select->query()->fetchAll();
+
+            if (!empty($files)) {
+                foreach ($files as $f) {
+                    $tableFiles->insert(array(
+                        'order_id'      => $newID,
+                        'filename'      => $f['filename'],
+                        'description'   => $f['description'],
+                        'is_photo'      => $f['is_photo'],
+                        'original_name' => $f['original_name']
+                    ));
+                }
+            }
+            $select->reset();
+            $select->from('notes_src')->where('order_id = ?', $row['id']);
+            $notes = $select->query()->fetchAll();
+
+            if (!empty($notes)) {
+                foreach ($notes as $n) {
+                    $tableNotes->insert(array(
+                        'order_id'  => $newID,
+                        'name'      => $n['name'],
+                        'text'      => $n['text'],
+                        'time'      => $n['time']
+                    ));
+                }
+            }
+
+            echo 'ID: ' . $row['id']
+                . ' Files: ' . count($files)
+                . ' Notes: ' . count($notes)
+                . '<br/>' . str_repeat('-', 40) . '<br/>' ;
+        }
+        //$table->getAdapter()->query('DELETE FROM orders_src ORDER BY id LIMIT 50');
+        echo 'Done.<br/>';
+        echo '</pre>';
     }
 }

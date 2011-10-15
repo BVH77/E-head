@@ -8,15 +8,17 @@ class PMS_Orders_Table_Notes extends OSDN_Db_Table_Abstract
      * @var string
      */
     protected $_name = 'notes';
-    
+
     /**
      * @param array $data
      * @return int|boolean  last_inserted_id | false if exception
      */
     public function insert(array $data)
     {
-        $currentPerson = OSDN_Accounts_Prototype::getInformation();
-        $data['name'] = $currentPerson->name;
+        if (empty($data['name'])) {
+            $currentPerson = OSDN_Accounts_Prototype::getInformation();
+            $data['name'] = $currentPerson->name;
+        }
         return parent::insert($data);
     }
 }
