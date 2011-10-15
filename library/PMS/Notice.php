@@ -42,7 +42,8 @@ class PMS_Notice
             ->joinLeft(array('d' => 'notice_dst'),
                 $this->_table->getAdapter()->quoteInto(
                     'd.notice_id=n.id AND d.account_id = ?', $currentAccountId), array(
-                    'new'  => new Zend_Db_Expr('IF(d.date IS NULL,1,0)')
+                    'new'  => new Zend_Db_Expr('IF(d.date IS NULL
+                                                AND d.account_id IS NOT NULL,1,0)')
                 )
             )
             ->where('n.id = ?', $id)
@@ -91,18 +92,21 @@ class PMS_Notice
             ->joinLeft(array('d1' => 'notice_dst'),
                 $this->_table->getAdapter()->quoteInto(
                     'd1.notice_id=n.id AND d1.account_id = ?', $currentAccountId), array(
-                    'new'  => new Zend_Db_Expr('IF(d1.date IS NULL,1,0)')
+                    'new'  => new Zend_Db_Expr('IF(d1.date IS NULL
+                                                AND d1.account_id IS NOT NULL,1,0)')
                 )
             )
             ->group('n.id');
 
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select,
             array('type', 'account_name', 'date'));
+        $plugin->setSqlCalcFoundRows(true);
         $plugin->parse($params);
+
         try {
             $rows = $select->query()->fetchAll();
             $response->setRowset($rows);
-            $response->totalCount = $plugin->getTotalCount();
+            $response->totalCount = $plugin->getTotalCountSql();
             $status = PMS_Status::OK;
         } catch (Exception $e) {
             if (OSDN_DEBUG) {

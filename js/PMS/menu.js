@@ -199,13 +199,13 @@ PMS.Menu = function(params) {
                 win.location.href = 'http://my.gdemoi.ru/map.php';
             }).defer(2000);
         } 
-	}, {
-	    text: 'Принт-база',
-	    iconCls: 'prod_schd-icon',
-        hidden: !(enableMap),
-        handler: function() {
-            window.open('http://print.e-head.ru');
-        } 
+//	}, {
+//	    text: 'Принт-база',
+//	    iconCls: 'prod_schd-icon',
+//        hidden: !(enableMap),
+//        handler: function() {
+//            window.open('http://print.e-head.ru');
+//        } 
 	}, '->', {
         tooltip: 'Информация о релизе',
 	    iconCls: 'info-icon',
