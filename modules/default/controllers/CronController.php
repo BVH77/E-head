@@ -6,7 +6,7 @@ class CronController extends OSDN_Controller_Action
     {
         $this->disableRender(true);
 
-        $date = Zend_Date::now()->addDay(1)->get(dd.MM.YYYY);
+        $date = Zend_Date::now()->addDay(1)->get('dd.MM.YYYY');
         $config = Zend_Registry::get('config');
         $server = $config->mail->SMTP;
 
