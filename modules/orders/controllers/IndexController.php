@@ -228,7 +228,6 @@ class Orders_IndexController extends OSDN_Controller_Action
 
     	// check if order have a production
     	$roleId = $roles->alias2id('production');
-    	var_dump($roleId);
     	if ($order['production'] == 1 && $roleId) {
 	    	$response = $accounts->fetchByRole($roleId);
 	    	if ($response->isSuccess()) {
@@ -315,7 +314,7 @@ class Orders_IndexController extends OSDN_Controller_Action
                 break;
         }
         try {
-            $mail->send();
+            @$mail->send();
         } catch (Exception $e) {
             //echo $e->getMessage();
         }
