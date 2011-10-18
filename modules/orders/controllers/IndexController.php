@@ -215,8 +215,6 @@ class Orders_IndexController extends OSDN_Controller_Action
 	        }
         }
 
-        echo $order['created'];
-
         $orderAddress = $order['address'];
         $customer = $order['customer_name'];
 
@@ -229,7 +227,7 @@ class Orders_IndexController extends OSDN_Controller_Action
     	$roles = new OSDN_Acl_Roles();
 
     	// check if order have a production
-    	$roleId = $roles->alias2id('production');
+    	echo $roleId = $roles->alias2id('production');
     	if ($order['production'] == 1 && $roleId) {
 	    	$response = $accounts->fetchByRole($roleId);
 	    	if ($response->isSuccess()) {
