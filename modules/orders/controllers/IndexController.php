@@ -227,7 +227,8 @@ class Orders_IndexController extends OSDN_Controller_Action
     	$roles = new OSDN_Acl_Roles();
 
     	// check if order have a production
-    	echo $roleId = $roles->alias2id('production');
+    	$roleId = $roles->alias2id('production');
+    	var_dump($roleId);
     	if ($order['production'] == 1 && $roleId) {
 	    	$response = $accounts->fetchByRole($roleId);
 	    	if ($response->isSuccess()) {
