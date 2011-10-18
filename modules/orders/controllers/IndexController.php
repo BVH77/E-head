@@ -205,6 +205,8 @@ class Orders_IndexController extends OSDN_Controller_Action
         	return;
         }
 
+        echo $order['created'];
+
         // check if order is younger than 1 hour, when return - no message
         if ($type == 'updated') {
 	        $now = new Zend_Date();
