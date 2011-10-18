@@ -23,7 +23,7 @@ class OSDN_Acl_Roles
      */
     public function alias2id($alias)
     {
-        $row = $this->_table->fetchRow(array('alias' => $alias));
+        $row = $this->_table->fetchRow(array('alias = ?' => $alias));
         return is_null($row) ? false : $row->id;
     }
 
