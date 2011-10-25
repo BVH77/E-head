@@ -36,7 +36,9 @@ class OSDN_Acl_Table_Permission extends OSDN_Db_Table_Abstract
         $select = $this->_db->select()
             ->from(
                 array('resources' => OSDN_Db_Table_Abstract::getDefaultPrefix() . 'acl_resources'),
-                array('id', 'text' => 'title', 'qtip' => 'name')
+                array('id', 'qtip' => 'name',
+                    'text' => new Zend_Db_Expr("IF(LENGTH(`resources`.`title`),`resources`.`title`,`resources`.`name`)")
+                )
            )
            ->joinLeft(
                 array('permissions' => $this->getTableName()),
