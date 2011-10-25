@@ -13,7 +13,6 @@ ALTER TABLE `staff_payments` ADD CONSTRAINT `staff_payments_ibfk_1` FOREIGN KEY 
 
 ALTER TABLE `staff` ADD `archive` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0', ADD `archive_date` DATE NULL ;
 
-
 DROP TABLE IF EXISTS `staff_vacations`;
 CREATE TABLE IF NOT EXISTS `staff_vacations` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -56,7 +55,6 @@ ALTER TABLE `storage_history`
   ADD CONSTRAINT `request` FOREIGN KEY (`request_id`) REFERENCES `storage_requests` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `sender` FOREIGN KEY (`sender_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `reciever` FOREIGN KEY (`reciever_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL;
-  
 
 ALTER TABLE `staff_hr` ADD `paid` INT( 10 ) UNSIGNED NOT NULL ;
 
@@ -65,19 +63,21 @@ UPDATE `acl_resources` SET `title` = 'Мониторинг автотрансп�
 DROP TABLE IF EXISTS `orders_suppliers`;
 DROP TABLE IF EXISTS `suppliers`;
 
+DROP TABLE IF EXISTS `fixed_assets`;
 CREATE TABLE `fixed_assets` (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`inventory_number` VARCHAR( 255 ) NULL ,
-`name` VARCHAR( 255 ) NOT NULL ,
-`qty` INT NOT NULL ,
-`price` INT NOT NULL ,
-`staff_id` INT UNSIGNED NULL ,
-`description` TEXT NOT NULL ,
-INDEX ( `staff_id` )
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  `inventory_number` VARCHAR( 255 ) NULL ,
+  `name` VARCHAR( 255 ) NOT NULL ,
+  `qty` INT NOT NULL ,
+  `price` INT NOT NULL ,
+  `staff_id` INT UNSIGNED NULL ,
+  `description` TEXT NOT NULL ,
+  INDEX ( `staff_id` )
 ) ENGINE = InnoDB;
 
 ALTER TABLE `fixed_assets` ADD FOREIGN KEY ( `staff_id` ) REFERENCES `staff` (`id`) ON DELETE SET NULL ;
 
+DROP TABLE IF EXISTS `fixed_assets_files`;
 CREATE TABLE IF NOT EXISTS `fixed_assets_files` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `item_id` int(11) unsigned NOT NULL default '0',
@@ -90,6 +90,9 @@ CREATE TABLE IF NOT EXISTS `fixed_assets_files` (
 ) ENGINE=InnoDB ;
 
 ALTER TABLE `fixed_assets_files` ADD FOREIGN KEY (`item_id`) REFERENCES `fixed_assets` (`id`) ON DELETE CASCADE ;
+
+
+-- apllied on quarant & demo
 
 ALTER TABLE `orders` 
     ADD `print` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' AFTER `production`,

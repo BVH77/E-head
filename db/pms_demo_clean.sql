@@ -492,50 +492,6 @@ CREATE TABLE IF NOT EXISTS `orders` (
 -- Дамп данных таблицы `orders`
 -- 
 
-
--- --------------------------------------------------------
-
--- 
--- Структура таблицы `orders_suppliers`
--- 
-
-DROP TABLE IF EXISTS `orders_suppliers`;
-CREATE TABLE IF NOT EXISTS `orders_suppliers` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `order_id` int(11) unsigned NOT NULL,
-  `supplier_id` int(11) unsigned NOT NULL,
-  `success` tinyint(1) NOT NULL,
-  `date` date NOT NULL,
-  `cost` int(11) default NULL,
-  `note` text,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `order_id-supplier_id` (`order_id`,`supplier_id`),
-  KEY `supplier_id` (`supplier_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
--- 
--- Дамп данных таблицы `orders_suppliers`
--- 
-
-
--- --------------------------------------------------------
-
--- 
--- Структура таблицы `suppliers`
--- 
-
-DROP TABLE IF EXISTS `suppliers`;
-CREATE TABLE IF NOT EXISTS `suppliers` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `name` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- 
--- Дамп данных таблицы `suppliers`
--- 
-
 -- --------------------------------------------------------
 
 -- 
@@ -601,13 +557,17 @@ INSERT INTO `storage_measures` (`name`) VALUES
 DROP TABLE IF EXISTS `storage_requests`; 
 CREATE TABLE `storage_requests` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `asset_id` INT UNSIGNED NOT NULL ,
-    `account_id` INT UNSIGNED NOT NULL,
+    `name` VARCHAR( 250 ) NULL DEFAULT NULL ,
+    `measure` VARCHAR( 250 ) NULL DEFAULT NULL ,
+    `asset_id` INT UNSIGNED NULL DEFAULT NULL ,
+    `account_id` INT UNSIGNED NOT NULL ,
+    `order_id` INT UNSIGNED NULL DEFAULT NULL ,
     `qty` REAL NOT NULL ,
     `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     `request_on` DATE NOT NULL ,
     INDEX ( `asset_id`), 
-    INDEX ( `account_id` )
+    INDEX ( `account_id` ),
+    INDEX ( `order_id` )
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -696,10 +656,98 @@ CREATE TABLE `staff_hr` (
     `value` INT UNSIGNED NOT NULL ,
     `pay_period` ENUM( 'hour', 'day', 'month' ) NOT NULL ,
     `pay_rate` INT UNSIGNED NOT NULL ,
+    `paid` INT( 10 ) UNSIGNED NOT NULL ,
     INDEX ( `staff_id` ),
     INDEX ( `date` ),
     UNIQUE `hr` ( `staff_id`, `date` ) 
 ) ENGINE = InnoDB ;
+
+--
+-- Структура таблицы `staff_payments`
+--
+
+DROP TABLE IF EXISTS `staff_payments`;
+CREATE TABLE IF NOT EXISTS `staff_payments` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `staff_id` int(10) unsigned NOT NULL,
+  `date` date NOT NULL,
+  `value` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `staff_id` (`staff_id`),
+  KEY `date` (`date`)
+) ENGINE=InnoDB ;
+
+--
+-- Структура таблицы `staff_vacations`
+--
+
+DROP TABLE IF EXISTS `staff_vacations`;
+CREATE TABLE IF NOT EXISTS `staff_vacations` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `staff_id` int(10) unsigned NOT NULL,
+  `from` date NOT NULL,
+  `to` date NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `staff_id` (`staff_id`)
+) ENGINE=InnoDB ;
+
+--
+-- Структура таблицы `storage_history`
+--
+
+DROP TABLE IF EXISTS `storage_history`;
+CREATE TABLE IF NOT EXISTS `storage_history` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `asset_id` int(10) unsigned NOT NULL,
+  `order_id` int(11) unsigned DEFAULT NULL,
+  `request_id` int(11) unsigned default NULL,
+  `qty` int(11) NOT NULL,
+  `unit_price` DOUBLE( 10, 2 ) NOT NULL,
+  `created` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `sender_id` int unsigned DEFAULT NULL,
+  `reciever_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `asset_id` (`asset_id`),
+  KEY `order_id` (`order_id`),
+  KEY `sender_id` (`sender_id`),
+  KEY `reciever_id` (`reciever_id`)
+) ENGINE=InnoDB ;
+
+--
+-- Структура таблицы `fixed_assets`
+--
+
+DROP TABLE IF EXISTS `fixed_assets`;
+CREATE TABLE `fixed_assets` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  `inventory_number` VARCHAR( 255 ) NULL ,
+  `name` VARCHAR( 255 ) NOT NULL ,
+  `qty` INT NOT NULL ,
+  `price` INT NOT NULL ,
+  `staff_id` INT UNSIGNED NULL ,
+  `description` TEXT NOT NULL ,
+INDEX ( `staff_id` )
+) ENGINE = InnoDB;
+
+--
+-- Структура таблицы `fixed_assets_files`
+--
+
+DROP TABLE IF EXISTS `fixed_assets_files`;
+CREATE TABLE IF NOT EXISTS `fixed_assets_files` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `item_id` int(11) unsigned NOT NULL default '0',
+  `filename` varchar(255) NOT NULL default '',
+  `description` varchar(255) default NULL,
+  `is_photo` tinyint(1) unsigned NOT NULL default '0',
+  `original_name` varchar(255) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `item_id` (`item_id`)
+) ENGINE=InnoDB ;
+
+
+
+-- ***
 
 -- 
 -- Constraints for dumped tables
@@ -725,10 +773,6 @@ ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`creator_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `accounts` (`id`),
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`);
-
-ALTER TABLE `orders_suppliers`
-  ADD CONSTRAINT `orders_suppliers_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE RESTRICT,
-  ADD CONSTRAINT `orders_suppliers_ibfk_2` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE;
 
 ALTER TABLE `storage_requests` 
   ADD FOREIGN KEY ( `asset_id` ) REFERENCES `storage_assets` (`id`) ON DELETE RESTRICT ;
@@ -756,5 +800,27 @@ ALTER TABLE `staff_hr`
     
 ALTER TABLE `staff` 
     ADD FOREIGN KEY ( `category_id` ) REFERENCES `staff_categories` (`id`) ON DELETE RESTRICT ;
+
+ALTER TABLE `staff_payments` 
+    ADD CONSTRAINT `staff_payments_ibfk_1` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`) ON DELETE CASCADE ;
+
+ALTER TABLE `staff_vacations` 
+    ADD CONSTRAINT `staff_vacations_ibfk_1` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`) ON DELETE CASCADE ;
+
+ALTER TABLE `storage_requests` 
+    ADD FOREIGN KEY ( `order_id` ) REFERENCES `orders` (`id`) ON DELETE SET NULL ;
+
+ALTER TABLE `storage_history`
+  ADD CONSTRAINT `asset` FOREIGN KEY (`asset_id`) REFERENCES `storage_assets` (`id`),
+  ADD CONSTRAINT `order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `request` FOREIGN KEY (`request_id`) REFERENCES `storage_requests` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `sender` FOREIGN KEY (`sender_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `reciever` FOREIGN KEY (`reciever_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL ;
+
+ALTER TABLE `fixed_assets` 
+    ADD FOREIGN KEY ( `staff_id` ) REFERENCES `staff` (`id`) ON DELETE SET NULL ;
+
+ALTER TABLE `fixed_assets_files` 
+    ADD FOREIGN KEY (`item_id`) REFERENCES `fixed_assets` (`id`) ON DELETE CASCADE ;
 
 SET FOREIGN_KEY_CHECKS=1;
