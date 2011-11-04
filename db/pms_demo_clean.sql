@@ -358,11 +358,12 @@ CREATE TABLE IF NOT EXISTS `acl_roles` (
 -- Дамп данных таблицы `acl_roles`
 -- 
 
-INSERT INTO `acl_roles` (`id`, `name`, `alias`) VALUES (1, 'Директор', NULL),
-(3, 'Менеджер', NULL),
-(4, 'Производство', NULL),
-(5, 'Монтаж', NULL),
-(7, 'Бухгалтер', NULL);
+INSERT INTO `acl_roles` (`id`, `name`, `alias`) VALUES 
+(1, 'Директор', 'admin'),
+(3, 'Менеджер', 'manager'),
+(4, 'Производство', 'production'),
+(5, 'Монтаж', 'mount'),
+(7, 'Бухгалтер', 'bookkeeper');
 
 -- --------------------------------------------------------
 
