@@ -26,6 +26,7 @@ class Orders_ReportController extends OSDN_Controller_Action
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->reports);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'managers');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'customers');
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'customers-list');
     }
 
     public function scheduleMountAction()
@@ -100,6 +101,18 @@ class Orders_ReportController extends OSDN_Controller_Action
     	if ($response->isSuccess()) {
 	    	$this->view->data = $response->data;
 	        $this->view->content = $this->view->render('report/staff.phtml');
+    	} else {
+    		$this->_collectErrors($response);
+    	}
+    }
+
+    public function customersListAction()
+    {
+        $customers = new PMS_Customers();
+    	$response = $customers->getList($this->_getAllParams());
+    	if ($response->isSuccess()) {
+	    	$this->view->data = $response->getRowset();
+	        $this->view->content = $this->view->render('report/customers-list.phtml');
     	} else {
     		$this->_collectErrors($response);
     	}
