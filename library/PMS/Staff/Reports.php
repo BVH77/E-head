@@ -35,7 +35,7 @@ class PMS_Staff_Reports
                 'summ_total'    => '(0)',
                 'pays_total'    => '(0)'
             )
-        )->where('archive = 0');
+        )->where('archive = 0')->order('name');
 
         try {
             $rows = $select->query()->fetchAll();
