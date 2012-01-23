@@ -325,7 +325,7 @@ class PMS_Reports
             $rowsMerged[$row['customer_id']]['summ_success'] = $row['value'];
         }
 
-        // Get total summ of added orders by account for given period
+        // Get total summ of unfinished orders by account for given period
         $select->reset()->from(array('o' => $tableOrders),
             array('value' => new Zend_Db_Expr('SUM(cost)'), 'customer_id')
         )
