@@ -504,7 +504,7 @@ CREATE TABLE `storage_assets` (
     `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `name` VARCHAR( 250 ) NOT NULL ,
     `measure` VARCHAR( 50 ) NULL DEFAULT NULL,
-    `qty` INT( 11 ) UNSIGNED NULL,
+    `qty` INT( 11 ) UNSIGNED NOT NULL DEFAULT 0,
     `unit_price` DOUBLE( 10, 2 ) NOT NULL,
     `checked` TINYINT( 1 ) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
