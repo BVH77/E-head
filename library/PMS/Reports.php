@@ -337,6 +337,7 @@ class PMS_Reports
         }
         if (!empty($f->end)) {
             $select->where('created <= ?', $f->end);
+            $select->where('(success_date_fact IS NULL OR success_date_fact >= ?)', $f->start);
         }
 
         try {
