@@ -71,6 +71,7 @@ class PMS_Staff
         $f = new OSDN_Filter_Input(array(
             'category_id'   => 'Int',
             'pay_rate'      => 'Int',
+            'del_file'      => 'Int',
             '*'             => 'StringTrim'
         ), array(
             'category_id'   => array('Id', 'presence' => 'required'),
@@ -129,13 +130,13 @@ class PMS_Staff
 
         $f = new OSDN_Filter_Input(array(
             'id'            => 'Int',
-            //'category_id'   => 'Int',
             'pay_rate'      => 'Int',
+            'del_file'      => 'Int',
             '*'             => 'StringTrim'
         ), array(
             'id'            => array('Id', 'presence' => 'required'),
-            //'category_id'   => array('Id', 'presence' => 'required'),
             'pay_period'    => array(array('InArray', self::$PAY_PERIODS), 'presence' => 'required'),
+            'del_file'    => array(array('InArray', array(0,1)), 'presence' => 'required'),
             'name'          => array(array('StringLength', 0, 250), 'presence' => 'required'),
             'function'      => array(array('StringLength', 0, 250), 'presence' => 'required'),
             'hire_date'     => array(array('StringLength', 0, 10), 'presence' => 'required')
@@ -148,39 +149,61 @@ class PMS_Staff
             return $response;
         }
 
-        $file = $_FILES['cv_file'];
+        if (!empty($_FILES['cv_file'])) {
 
-        if ($file['error'] != UPLOAD_ERR_NO_FILE) {
+            $file = $_FILES['cv_file'];
 
-            if ($file['error'] > 0) {
-                $response->addStatus(new PMS_Status(
-                    PMS_Status::INPUT_PARAMS_INCORRECT, 'file'));
-                return $response;
+            if ($_FILES['cv_file']['error'] != UPLOAD_ERR_NO_FILE) {
+
+                if ($file['error'] > 0) {
+                    $response->addStatus(new PMS_Status(
+                        PMS_Status::INPUT_PARAMS_INCORRECT, 'file'));
+                    return $response;
+                }
+
+                $resp = $this->get($f->id);
+                if ($resp->hasNotSuccess()) {
+                    return $response->importStatuses($resp->getStatusCollection());
+                }
+                $row = $resp->getRow();
+
+                $filenameArray = split('\.', $file['name']);
+                $ext = array_pop($filenameArray);
+                $filename = uniqid() . '.' . $ext;
+                $filepath = FILES_DIR . DIRECTORY_SEPARATOR . $filename;
+
+                if (move_uploaded_file($file['tmp_name'], $filepath)) {
+                    $data = $f->getData();
+                    $data['cv_file'] = $filename;
+                    $f->setData($data);
+                    if (!empty($row['cv_file'])
+                    && is_file(FILES_DIR . DIRECTORY_SEPARATOR . $row['cv_file'])) {
+                        unlink(FILES_DIR . DIRECTORY_SEPARATOR . $row['cv_file']);
+                    }
+                } else {
+                    return $response->addStatus(new PMS_Status(PMS_Status::FAILURE));
+                }
             }
 
+        } elseif ($f->del_file == 1) {
+
             $resp = $this->get($f->id);
+
             if ($resp->hasNotSuccess()) {
                 return $response->importStatuses($resp->getStatusCollection());
             }
             $row = $resp->getRow();
 
-            $filenameArray = split('\.', $file['name']);
-            $ext = array_pop($filenameArray);
-            $filename = uniqid() . '.' . $ext;
-            $filepath = FILES_DIR . DIRECTORY_SEPARATOR . $filename;
-
-            if (move_uploaded_file($file['tmp_name'], $filepath)) {
+            if (!empty($row['cv_file'])
+            && is_file(FILES_DIR . DIRECTORY_SEPARATOR . $row['cv_file'])) {
+                unlink(FILES_DIR . DIRECTORY_SEPARATOR . $row['cv_file']);
                 $data = $f->getData();
-                $data['cv_file'] = $filename;
+                $data['cv_file'] = null;
                 $f->setData($data);
-                if (!empty($row['cv_file'])
-                && is_file(FILES_DIR . DIRECTORY_SEPARATOR . $row['cv_file'])) {
-                    unlink(FILES_DIR . DIRECTORY_SEPARATOR . $row['cv_file']);
-                }
-            } else {
-                return $response->addStatus(new PMS_Status(PMS_Status::FAILURE));
             }
+
         }
+
         $rows = $this->_table->updateByPk($f->getData(), $f->id);
         $status = PMS_Status::retrieveAffectedRowStatus($rows);
         return $response->addStatus(new PMS_Status($status));
