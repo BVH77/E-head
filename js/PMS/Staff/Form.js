@@ -82,25 +82,50 @@ PMS.Staff.Form = Ext.extend(xlib.form.FormPanel, {
                 }]
             }]
         }, {
-            xtype: 'fileuploadfield',
-            fieldLabel: 'Резюме',
-            name: 'cv_file',
-            buttonText: '',
-            allowBlank: true,
-            buttonCfg: {
-                iconCls: 'x-form-file-btn-icon'
-            }
+            layout: 'column',
+            border: false,
+            columns: 2,
+            defaults: {
+                border: false,
+                layout: 'form'
+            },
+            items: [{
+                columnWidth: .8,
+                items: [{
+                    xtype: 'fileuploadfield',
+                    fieldLabel: 'Резюме',
+                    name: 'cv_file',
+                    buttonText: '',
+                    anchor: '100%',
+                    allowBlank: true,
+                    buttonCfg: {
+                        iconCls: 'x-form-file-btn-icon'
+                    }
+                }]
+            }, {
+                columnWidth: .2,
+                labelWidth: 10,
+                items: [{
+                    xtype: 'checkbox',
+                    boxLabel: 'Удалить резюме',
+                    name: 'del_file',
+                    inputValue: 1,
+                    disabled: !this.permissions,
+                    handler: this.onDelFile,
+                    scope: this
+                }]
+            }]
         }, {
             layout: 'column',
             border: false,
-            columns: 3,
+            columns: 2,
             defaults: {
                 border: false,
                 layout: 'form',
                 anchor: '100%'
             },
             items: [{
-                columnWidth: .85,
+                columnWidth: .82,
                 items: [{
                     xtype: 'displayfield',
                     fieldLabel: 'Категория',
@@ -109,7 +134,7 @@ PMS.Staff.Form = Ext.extend(xlib.form.FormPanel, {
                     submitValue: false
                 }]
             }, {
-                columnWidth: .15,
+                columnWidth: .18,
                 items: [{
                     text: 'Сменить категорию',
                     xtype: 'button',
@@ -185,6 +210,19 @@ PMS.Staff.Form = Ext.extend(xlib.form.FormPanel, {
         });
         
         return w;
+    },
+    
+    onDelFile: function(field, state) {
+        var cvField = this.getForm().findField('cv_file');
+        
+        if (state) {
+            cvField.oldValue = cvField.getValue();
+            cvField.setValue('');
+            cvField.disable();
+        } else {
+            cvField.setValue(cvField.oldValue);
+            cvField.enable();
+        }
     },
     
     onChangeCategory: function() {
