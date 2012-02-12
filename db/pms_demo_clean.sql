@@ -566,6 +566,8 @@ CREATE TABLE `storage_requests` (
     `qty` REAL NOT NULL ,
     `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     `request_on` DATE NOT NULL ,
+    `processed` INT( 1 ) NOT NULL DEFAULT '0', 
+    `description` TEXT NULL DEFAULT NULL,
     INDEX ( `asset_id`), 
     INDEX ( `account_id` ),
     INDEX ( `order_id` )
