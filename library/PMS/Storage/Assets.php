@@ -9,6 +9,25 @@ class PMS_Storage_Assets
         $this->_table = new PMS_Storage_Assets_Table();
     }
 
+    public function get($id)
+    {
+        $response = new OSDN_Response();
+
+        $id = intval($id);
+        if ($id == 0) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
+        }
+
+        $row = $this->getById($id);
+        if (!$row) {
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+        }
+
+        $response->setRow($row);
+        return $response->addStatus(new PMS_Status(PMS_Status::OK));
+    }
+
     public function getList($params)
     {
         $response = new OSDN_Response();
@@ -233,5 +252,10 @@ class PMS_Storage_Assets
             $status = PMS_Status::DATABASE_ERROR;
         }
         return $response->addStatus(new PMS_Status($status));
+    }
+
+    public function getById($id)
+    {
+        return $this->_table->findOne($id);
     }
 }

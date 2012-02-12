@@ -97,8 +97,8 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
                     menu.showAt(e.getXY());
                 });
             }
-            if (acl.isUpdate('orders', 'files') || acl.isUpdate('admin')) {
-                this.tbar = ['->', {
+            if (acl.isUpdate('orders', 'files') && this.allowEdit) {
+                this.tbar = [{
                     text: 'Добавить',
                     iconCls: 'add',
                     handler: this.onUpload,

@@ -1,8 +1,8 @@
-Ext.ns('PMS.Storage.Requests');
+Ext.ns('PMS.Orders.Requests');
 
-PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
+PMS.Orders.Requests.List = Ext.extend(Ext.grid.GridPanel, {
 
-    title:      'Заявки на снабжение',
+    title:      'Снабжение',
     
     listURL:    link('storage', 'requests', 'get-list'),
     
@@ -12,9 +12,13 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
     
     deleteURL:  link('storage', 'requests', 'delete'),
     
+    orderId: null,
+    
+    border: false,
+    
     loadMask: true,
-
-    permissions: acl.isView('storage'),
+    
+    permissions: acl.isView('orders'),
     
     viewConfig: {
         
@@ -32,22 +36,29 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
                 return 'x-row-expired';
             }
         }
-        
     },
     
     initComponent: function() {
+        
+        if (!this.orderId) {
+            throw 'orderId not specified!';
+        }
         
         this.autoExpandColumn = Ext.id();
         
         this.ds = new Ext.data.JsonStore({
             url: this.listURL,
-            autoLoad: true,
             remoteSort: true,
             root: 'data',
             id: 'id',
             sortInfo: {
                 field: 'request_on',
                 direction: 'ASC'
+            },
+            baseParams: {
+                'filter[0][field]': 'order_id',
+                'filter[0][data][type]': 'string',
+                'filter[0][data][value]': this.orderId
             },
             totalProperty: 'totalCount',
             fields: ['account_name', 'name', 'measure', 'description', 
@@ -74,7 +85,40 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.sm = new Ext.grid.RowSelectionModel();
         
-        var actions = new xlib.grid.Actions({
+        this.columns = [{
+            header: 'Заявка на дату',
+            dataIndex: 'request_on',
+            renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
+            sortable: true,
+            width: 120
+        }, {
+            header: 'Наименование',
+            dataIndex: 'name',
+            sortable: true,
+            id: this.autoExpandColumn
+        }, {
+            header: 'Кол-во',
+            dataIndex: 'qty',
+            sortable: true,
+            width: 50
+        }, {
+            header: 'Ед. изм.',
+            dataIndex: 'measure',
+            sortable: true,
+            width: 50
+        }, {
+            header: 'Автор заявки',
+            dataIndex: 'account_name',
+            sortable: true,
+            width: 150
+        }, {
+            header: 'Дата подачи',
+            dataIndex: 'created',
+            sortable: true,
+            width: 150
+        }];
+        
+        this.plugins = [new xlib.grid.Actions({
             autoWidth: true,
             items: [{
                 text: 'Смотреть',
@@ -106,62 +150,24 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
                     } : false;
             }],
             scope: this
-        })
-        
-        this.columns = [{
-            header: 'Заявка на дату',
-            dataIndex: 'request_on',
-            renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
-            sortable: true,
-            width: 100
-        }, {
-            header: 'Наименование',
-            dataIndex: 'name',
-            sortable: true,
-            id: this.autoExpandColumn
-        }, {
-            header: 'Количество',
-            dataIndex: 'qty',
-            sortable: true,
-            width: 100
-        }, {
-            header: 'Ед. измерения',
-            dataIndex: 'measure',
-            sortable: true,
-            width: 100
-        }, {
-            header: 'Автор заявки',
-            dataIndex: 'account_name',
-            sortable: true,
-            width: 150
-        }, {
-            header: 'Дата подачи',
-            dataIndex: 'created',
-            sortable: true,
-            width: 150
-        }, {
-            header: 'К заказу №',
-            dataIndex: 'order_id',
-            sortable: true,
-            width: 80
-        }];
-        
-        this.filtersPlugin = new Ext.grid.GridFilters({
-            filters: [{type: 'string',  dataIndex: 'name'}]
-        });
-        
-        this.plugins = [actions, this.filtersPlugin];
+        })];
 
         this.tbar = new Ext.Toolbar({
             items: [new Ext.Toolbar.Button({
+                iconCls: 'x-tbar-loading',
+                tooltip: 'Обновить',
+                handler: function() {
+                    this.getStore().reload();
+                },
+                scope: this
+            }), new Ext.Toolbar.Button({
                 text: 'Добавить заявку',
                 iconCls: 'add',
                 hidden: !this.permissions,
                 tooltip: 'Добавить заявку',
                 handler: this.onAdd,
                 scope: this
-            }), ' ', this.filtersPlugin.getSearchField({width: 400}), ' '
-            ],
+            }), ' ', ' '],
             plugins: [new xlib.Legend.Plugin({
                 items: [{
                     color: '#99FF99',
@@ -177,18 +183,13 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
             scope: this
         });
         
-        this.bbar = new xlib.PagingToolbar({
-            plugins: [this.filtersPlugin],
-            store: this.ds
-        });
-        
-        PMS.Storage.Requests.List.superclass.initComponent.apply(this, arguments);
+        PMS.Orders.Requests.List.superclass.initComponent.apply(this, arguments);
         
         this.on('rowdblclick', this.onView, this);
     },
     
     onView: function(g, rowIndex) {
-        var formPanel = new PMS.Storage.Requests.Form({readOnly: true}),
+        var formPanel = new PMS.Orders.Requests.Form({readOnly: true, orderId: this.orderId}),
             record = g.getStore().getAt(rowIndex),
             w = this.getWindow(formPanel, this.updateURL, this.getStore(), record.get('id'));
         w.show();
@@ -196,21 +197,19 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
     },
     
     onAdd: function(b, e) {
-        
         if (!this.permissions) {
             return;
         }
-        var formPanel = new PMS.Storage.Requests.Form(),
+        var formPanel = new PMS.Orders.Requests.Form({orderId: this.orderId}),
             w = this.getWindow(formPanel, this.addURL, this.getStore(), false);
         w.show();
     },
     
     onUpdate: function(g, rowIndex) {
-        
         if (!this.permissions) {
             return;
         }
-        var formPanel = new PMS.Storage.Requests.Form(),
+        var formPanel = new PMS.Orders.Requests.Form({orderId: this.orderId}),
             record = g.getStore().getAt(rowIndex),
             w = this.getWindow(formPanel, this.updateURL, this.getStore(), record.get('id'));
         w.show();
@@ -218,9 +217,7 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
     },
     
     onDelete: function(g, rowIndex) {
-        
         var record = g.getStore().getAt(rowIndex);
-        
         xlib.Msg.confirm('Вы уверены?', function() {
             Ext.Ajax.request({
                 url: this.deleteURL,
@@ -243,7 +240,7 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
     // Private functions 
     
     isLocked: function(record) {
-        return (record.get('processed') > 0) || (record.get('order_id') > 0);
+        return record.get('processed') > 0;
     },
     
     getWindow: function(formPanel, url, store, id) {
@@ -252,26 +249,6 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
         
         if (id > 0) {
             record = store.getById(id);
-        }
-        
-        if (record != undefined 
-        && !(record.get('processed') > 0) 
-        && !(record.get('out_of_stock') > 0) 
-        && formPanel.readOnly) {
-            
-            buttons.push({
-                text: 'Обработать заявку',
-                handler: function() {
-                    
-                    formPanel.on('processed', function() {
-                        w.close();
-                        store.reload();
-                    });
-                    
-                    formPanel.onProcess();
-                }
-            });
-            
         }
         
         if (record != undefined && this.isLocked(record) || formPanel.readOnly) {
@@ -330,4 +307,4 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
     }
 });
 
-Ext.reg('PMS.Storage.Requests.List', PMS.Storage.Requests.List);
+Ext.reg('PMS.Orders.Requests.List', PMS.Orders.Requests.List);

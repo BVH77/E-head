@@ -86,6 +86,8 @@
         <script src="/js/PMS/Orders/Edit/Print.js"/>
         <script src="/js/PMS/Orders/Edit/Mount.js"/>
         <script src="/js/PMS/Orders/Edit/Notes.js"/>
+        <script src="/js/PMS/Orders/Requests/List.js"/>
+        <script src="/js/PMS/Orders/Requests/Form.js"/>
         
         <script src="/js/PMS/FixedAssets/List.js"/>
         <script src="/js/PMS/FixedAssets/Files.js"/>

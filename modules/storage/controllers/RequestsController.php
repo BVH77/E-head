@@ -21,6 +21,7 @@ class Storage_RequestsController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'process');
     }
 
 	public function getListAction()
@@ -70,6 +71,16 @@ class Storage_RequestsController extends OSDN_Controller_Action
     public function deleteAction()
     {
     	$response = $this->_class->delete($this->_getParam('id'));
+    	if ($response->isSuccess()) {
+    	    $this->view->success = true;
+    	} else {
+    	   $this->_collectErrors($response);
+    	}
+    }
+
+    public function processAction()
+    {
+    	$response = $this->_class->process($this->_getParam('id'));
     	if ($response->isSuccess()) {
     	    $this->view->success = true;
     	} else {

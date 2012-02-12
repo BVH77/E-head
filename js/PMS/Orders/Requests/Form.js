@@ -1,12 +1,12 @@
-Ext.ns('PMS.Storage.Requests');
+Ext.ns('PMS.Orders.Requests');
 
-PMS.Storage.Requests.Form = Ext.extend(xlib.form.FormPanel, {
+PMS.Orders.Requests.Form = Ext.extend(xlib.form.FormPanel, {
     
-    permissions: acl.isView('storage'),
-    
-    processURL: link('storage', 'requests', 'process'),
+    permissions: acl.isView('orders'),
     
     labelWidth: 100,
+    
+    orderId: null,
     
     readOnly: false,
     
@@ -15,6 +15,10 @@ PMS.Storage.Requests.Form = Ext.extend(xlib.form.FormPanel, {
     },
     
     initComponent: function() {
+        
+        if (!this.orderId) {
+            throw 'orderId not specified!';
+        }
         
         this.items = [{
             xtype: 'hidden',
@@ -48,7 +52,6 @@ PMS.Storage.Requests.Form = Ext.extend(xlib.form.FormPanel, {
                     iconCls: 'prod_schd-icon',
                     text: 'Выбор',
                     style: 'padding-left: 22px;',
-                    id: 'choiceButton',
                     handler: this.onChoice,
                     scope: this
                 }]
@@ -126,7 +129,12 @@ PMS.Storage.Requests.Form = Ext.extend(xlib.form.FormPanel, {
                     xtype: 'displayfield',
                     fieldLabel: 'К заказу №',
                     name: 'order_id',
+                    value: this.orderId,
                     anchor: '95%'
+                }, {
+                    xtype: 'hidden',
+                    name: 'order_id',
+                    value: this.orderId
                 }]
             }, {
                 columnWidth: .55,
@@ -147,7 +155,7 @@ PMS.Storage.Requests.Form = Ext.extend(xlib.form.FormPanel, {
             allowBlank: true
         }];
         
-        PMS.Storage.Requests.Form.superclass.initComponent.apply(this, arguments);
+        PMS.Orders.Requests.Form.superclass.initComponent.apply(this, arguments);
         
         this.processName.defer(150, this);
         
@@ -157,7 +165,7 @@ PMS.Storage.Requests.Form = Ext.extend(xlib.form.FormPanel, {
     },
     
     // Private functions 
-    
+
     setReadOnly: function() {
         
         Ext.each(this.findByType('menuitem'), function(item) {
@@ -223,7 +231,9 @@ PMS.Storage.Requests.Form = Ext.extend(xlib.form.FormPanel, {
     processName: function() {
         
         var assetField = this.getForm().findField('asset_id');
-        if (null === assetField || !(assetField.getValue() > 0)) {
+        if (null === assetField 
+        || Ext.isEmpty(assetField.getValue()) 
+        || 0 === parseInt(assetField.getValue())) {
             return;
         }
                 
@@ -235,58 +245,5 @@ PMS.Storage.Requests.Form = Ext.extend(xlib.form.FormPanel, {
         nameField.disable();
         measureField.disable();
         measureField.hideTriggerItem('btn0');
-    },
-    
-        
-    onProcess: function() {
-        
-        var id      = this.getForm().findField('id').getValue(),
-            assetId = this.getForm().findField('asset_id').getValue()
-            errText = 'Невозможно обработать заявку. ',
-            errText1 = 'ТМЦ отсутствует на складе.',
-            errText2 = 'Недостаточное количество ТМЦ на складе.';
-        
-            
-        if (!(assetId) > 0) {
-            xlib.Msg.error(errText + errText1);
-            return;
-        }
-        
-        Ext.Ajax.request({
-            url: this.processURL,
-            params: {id: id},
-            callback: function (options, success, response) {
-                
-                var res = xlib.decode(response.responseText);
-                
-                if (true == success && res && true == res.success) {
-                    this.fireEvent('processed');
-                    return;
-                }
-                
-                if (true == success && res && true != res.success 
-                    && !Ext.isEmpty(res.errors)) {
-                    
-                    switch (res.errors[0].code) {
-                        
-                        case -101:
-                            xlib.Msg.error(errText + errText1);
-                            break;
-                            
-                        case -102:
-                            xlib.Msg.error(errText + errText2);
-                            break;
-                            
-                        default:
-                    }
-                    return;
-                }
-                
-                xlib.Msg.error('Невозможно обработать заявку. Ошибка на сервере.');
-            },
-            scope: this
-        });
-
     }
-    
 });
