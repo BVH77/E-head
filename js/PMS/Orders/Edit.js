@@ -14,6 +14,8 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
     
     permissions: acl.isUpdate('orders'),
     
+    allowEditFiles: false,
+    
     border: false,
     
     padding: 0,
@@ -111,7 +113,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         if (acl.isView('orders', 'files')) {
             this.files = new PMS.Orders.Files({
                 autoHeight: true,
-                allowEdit: this.permissions,
+                allowEdit: this.allowEditFiles || this.permissions,
                 orderId: this.orderId, 
                 border: false
             });

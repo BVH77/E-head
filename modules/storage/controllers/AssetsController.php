@@ -32,7 +32,7 @@ class Storage_AssetsController extends OSDN_Controller_Action
     {
     	$response = $this->_class->getList($this->_getAllParams());
     	if ($response->isSuccess()) {
-    		$this->view->succces = true;
+    		$this->view->success = true;
     	    $this->view->data = $response->getRowset();
     	    $this->view->totalCount = $response->totalCount;
     	} else {
@@ -106,7 +106,7 @@ class Storage_AssetsController extends OSDN_Controller_Action
     {
         $response = $this->_class->getHistoryByAssetId($this->_getAllParams());
         if ($response->isSuccess()) {
-            $this->view->succces = true;
+            $this->view->success = true;
             $this->view->data = $response->getRowset();
         } else {
             $this->_collectErrors($response);

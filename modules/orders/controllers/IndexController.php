@@ -38,7 +38,7 @@ class Orders_IndexController extends OSDN_Controller_Action
     {
     	$response = $this->_class->getList($this->_getAllParams());
     	if ($response->isSuccess()) {
-    		$this->view->succces = true;
+    		$this->view->success = true;
     	    $this->view->data = $response->getRowset();
     	    $this->view->totalCount = $response->totalCount;
     	} else {
@@ -101,7 +101,7 @@ class Orders_IndexController extends OSDN_Controller_Action
     {
         $response = $this->_class->getList($this->_getAllParams(), array(), 1);
         if ($response->isSuccess()) {
-            $this->view->succces = true;
+            $this->view->success = true;
             $this->view->data = $response->getRowset();
             $this->view->totalCount = $response->totalCount;
         } else {

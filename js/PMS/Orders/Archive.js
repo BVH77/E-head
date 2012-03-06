@@ -70,7 +70,8 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
             if (record) {
                 var editForm = new PMS.Orders.Edit({
                     record: record,
-                    permissions: false
+                    permissions: false,
+                    allowEditFiles: true
                 }).showInWindow();
             }
         };

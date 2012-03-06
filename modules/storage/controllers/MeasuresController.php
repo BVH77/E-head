@@ -25,7 +25,7 @@ class Storage_MeasuresController extends OSDN_Controller_Action
     {
     	$response = $this->_class->getAll();
     	if ($response->isSuccess()) {
-    		$this->view->succces = true;
+    		$this->view->success = true;
     	    $this->view->data = $response->getRowset();
     	} else {
     		$this->_collectErrors($response);
