@@ -264,6 +264,57 @@ class PMS_Orders
         return $response->addStatus(new PMS_Status($status));
     }
 
+    public function getArchiveList(array $params)
+    {
+        $response = new OSDN_Response();
+        $select = $this->_table->getAdapter()->select();
+        $accounts = new OSDN_Accounts_Table_Accounts();
+        $customers = new PMS_Customers_Table_Customers();
+        $select->from(array('o' => $this->_table->getTableName()))
+        ->joinLeft(array(
+            'u' => $accounts->getTableName()),
+            'o.creator_id=u.id',
+            array('creator_name' => 'u.name')
+        )
+        ->join(array(
+            'c' => $customers->getTableName()),
+            'o.customer_id=c.id',
+            array('customer_name' => 'c.name')
+        )
+        ->where('archive = 1');
+
+        $plugin = new OSDN_Db_Plugin_Select($this->_table, $select,
+            array('o.id' => 'id', 'address', 'success_date_fact', 'success_date_planned',
+                'created', 'creator_id', 'creator_name', 'customer_name', 'archive_date')
+        );
+        $plugin->parse($params);
+
+        $status = null;
+        try {
+            $files = new PMS_Files();
+            $rows = $select->query()->fetchAll();
+            foreach ($rows as &$data) {
+                $resp = $files->getAll($data['id']);
+                if ($resp->isSuccess()) {
+                    $rowset = $resp->getRowset();
+                } else {
+                    $data['files_errors'] = $resp->getStatusCollection();
+                    $rowset = array();
+                }
+                $data['files'] = $rowset;
+            }
+            $response->setRowset($rows);
+            $response->totalCount = $plugin->getTotalCount();
+            $status = PMS_Status::OK;
+        } catch (Exception $e) {
+            $status = PMS_Status::DATABASE_ERROR;
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+        }
+        return $response->addStatus(new PMS_Status($status));
+    }
+
     public function get($id)
     {
         $response = new OSDN_Response();

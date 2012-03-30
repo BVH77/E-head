@@ -99,7 +99,7 @@ class Orders_IndexController extends OSDN_Controller_Action
 
     public function getArchiveListAction()
     {
-        $response = $this->_class->getList($this->_getAllParams(), array(), 1);
+        $response = $this->_class->getArchiveList($this->_getAllParams());
         if ($response->isSuccess()) {
             $this->view->success = true;
             $this->view->data = $response->getRowset();
