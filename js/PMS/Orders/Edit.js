@@ -112,7 +112,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         
         if (acl.isView('orders', 'files')) {
             this.files = new PMS.Orders.Files({
-                autoHeight: true,
+                height: 305,
                 allowEdit: this.allowEditFiles || this.permissions,
                 orderId: this.orderId, 
                 border: false
