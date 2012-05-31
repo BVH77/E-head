@@ -143,14 +143,6 @@ class PMS_Reports
             return $response;
         }
 
-        $acl = OSDN_Accounts_Prototype::getAcl();
-
-        // Show only info by this account for managers
-        $userId = ($acl->isAllowed(
-            OSDN_Acl_Resource_Generator::getInstance()->orders->owncheck,
-            OSDN_Acl_Privilege::VIEW)
-        ) ? OSDN_Accounts_Prototype::getId() : false;
-
         $tableOrders    = $this->_tableOrders->getTableName();
         $tableAccounts  = $this->_tableAccounts->getTableName();
         $rowsMerged     = array();
@@ -167,9 +159,6 @@ class PMS_Reports
             array('value' => new Zend_Db_Expr('SUM(cost)'), 'creator_id')
         )
         ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name');
-        if ($userId) {
-            $select->where('creator_id = ?', $userId);
-        }
         $select->where('success_date_fact IS NOT NULL');
 
         if (!empty($f->start)) {
@@ -202,9 +191,6 @@ class PMS_Reports
             array('value' => new Zend_Db_Expr('SUM(cost)'), 'creator_id')
         )
         ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name');
-        if ($userId) {
-            $select->where('creator_id = ?', $userId);
-        }
 
         if (!empty($f->start)) {
             $select->where('created >= ?', $f->start);
@@ -240,9 +226,6 @@ class PMS_Reports
             array('value'  => new Zend_Db_Expr('COUNT(*)'), 'creator_id')
         )
         ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name');
-        if ($userId) {
-            $select->where('creator_id = ?', $userId);
-        }
         $select->where('success_date_fact IS NULL')
         ->orWhere('success_date_fact IS NOT NULL
             AND success_date_planned < success_date_fact');
@@ -265,6 +248,13 @@ class PMS_Reports
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
 
+        // Show only info by this account for managers
+        $acl = OSDN_Accounts_Prototype::getAcl();
+        $userId = ($acl->isAllowed(
+            OSDN_Acl_Resource_Generator::getInstance()->orders->owncheck,
+            OSDN_Acl_Privilege::VIEW)
+        ) ? OSDN_Accounts_Prototype::getId() : false;
+
         // Parse result rows into one merged array
         foreach ($rows as $row) {
             if (isset($rowsMerged[$row['creator_id']])) {
@@ -273,6 +263,9 @@ class PMS_Reports
                 $rowsMerged[$row['creator_id']] = $rowStructure;
                 $rowsMerged[$row['creator_id']]['name'] = $row['name'];
                 $rowsMerged[$row['creator_id']]['failed_count'] = $row['value'];
+            }
+            if ($userId && $userId != $rowsMerged[$row['creator_id']]) {
+                unset($rowsMerged[$row['creator_id']]);
             }
         }
 
