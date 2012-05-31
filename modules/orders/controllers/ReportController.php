@@ -22,9 +22,9 @@ class Orders_ReportController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'schedule-print');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'schedule-mount');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'planning');
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'managers');
 
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->reports);
-        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'managers');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'customers');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'customers-list');
     }

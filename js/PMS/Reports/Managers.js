@@ -2,7 +2,7 @@ Ext.ns('PMS.Reports');
 
 PMS.Reports.Managers = Ext.extend(xlib.form.FormPanel, {
     
-    permissions: acl.isView('reports'),
+    permissions: acl.isView('orders'),
     
     labelWidth: 60,
     
@@ -44,7 +44,7 @@ PMS.Reports.Managers = Ext.extend(xlib.form.FormPanel, {
             items: [this],
             buttons: [{
                 text: 'Сгенерировать',
-                handler: acl.isView('reports') ? function() {
+                handler: acl.isView('orders') ? function() {
                     if (this.getForm().isValid()) {
                         window.open(link('orders', 'report', 'managers', {
                             start: this.periodStart.getHiddenValue(), 

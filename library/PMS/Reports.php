@@ -143,6 +143,14 @@ class PMS_Reports
             return $response;
         }
 
+        $acl = OSDN_Accounts_Prototype::getAcl();
+
+        // Show only info by this account for managers
+        $userId = ($acl->isAllowed(
+            OSDN_Acl_Resource_Generator::getInstance()->orders->owncheck,
+            OSDN_Acl_Privilege::VIEW)
+        ) ? OSDN_Accounts_Prototype::getId() : false;
+
         $tableOrders    = $this->_tableOrders->getTableName();
         $tableAccounts  = $this->_tableAccounts->getTableName();
         $rowsMerged     = array();
@@ -158,9 +166,11 @@ class PMS_Reports
         $select->reset()->from(array('o' => $tableOrders),
             array('value' => new Zend_Db_Expr('SUM(cost)'), 'creator_id')
         )
-        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name')
-        ->where('success_date_fact IS NOT NULL')
-        ->group('creator_id');
+        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name');
+        if ($userId) {
+            $select->where('creator_id = ?', $userId);
+        }
+        $select->where('success_date_fact IS NOT NULL');
 
         if (!empty($f->start)) {
             $select->where('success_date_fact >= ?', $f->start);
@@ -168,6 +178,8 @@ class PMS_Reports
         if (!empty($f->end)) {
             $select->where('success_date_fact <= ?', $f->end);
         }
+
+        $select->group('creator_id');
 
         try {
             $rows = $select->query()->fetchAll();
@@ -189,8 +201,10 @@ class PMS_Reports
         $select->reset()->from(array('o' => $tableOrders),
             array('value' => new Zend_Db_Expr('SUM(cost)'), 'creator_id')
         )
-        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name')
-        ->group('creator_id');
+        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name');
+        if ($userId) {
+            $select->where('creator_id = ?', $userId);
+        }
 
         if (!empty($f->start)) {
             $select->where('created >= ?', $f->start);
@@ -198,6 +212,8 @@ class PMS_Reports
         if (!empty($f->end)) {
             $select->where('created <= ?', $f->end);
         }
+
+        $select->group('creator_id');
 
         try {
             $rows = $select->query()->fetchAll();
@@ -223,11 +239,13 @@ class PMS_Reports
         $select->reset()->from(array('o' => $tableOrders),
             array('value'  => new Zend_Db_Expr('COUNT(*)'), 'creator_id')
         )
-        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name')
-        ->where('success_date_fact IS NULL')
+        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name');
+        if ($userId) {
+            $select->where('creator_id = ?', $userId);
+        }
+        $select->where('success_date_fact IS NULL')
         ->orWhere('success_date_fact IS NOT NULL
-            AND success_date_planned < success_date_fact')
-        ->group('creator_id');
+            AND success_date_planned < success_date_fact');
 
         if (!empty($f->start)) {
             $select->where('success_date_planned >= ?', $f->start);
@@ -235,6 +253,8 @@ class PMS_Reports
         if (!empty($f->end)) {
             $select->where('success_date_planned <= ?', $f->end);
         }
+
+        $select->group('creator_id');
 
         try {
             $rows = $select->query()->fetchAll();
@@ -257,7 +277,7 @@ class PMS_Reports
         }
 
         $response->data = array(
-            'rows'  => array_values($rowsMerged),
+            'summary'  => array_values($rowsMerged),
             'start' => $f->start,
             'end'   => $f->end
         );

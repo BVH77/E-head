@@ -14,7 +14,7 @@
         echo !$date ? '' : $date->format(OSDN_DATE_DISPLAY_FORMAT);
     ?>
 </h3>
-
+<?php if (!empty($this->data['summary'])): ?>
 <table cellspacing="0" cellpadding="5" border="1">
     <tr valign="bottom" align="center">
         <td><b>Менеджер</b></td>
@@ -22,7 +22,7 @@
         <td><b>Сумма добавленных заказов <br /> Рубль РФ</b></td>
         <td><b>Количество <br />просроченных заказов</b></td>
     </tr>
-        <?php foreach ($this->data['rows'] as $row) :?>
+        <?php foreach ($this->data['summary'] as $row) :?>
             <tr>
                 <td><?=$row['name']?></td>
                 <td align="right"><?=$row['summ_success']?>,00</td>
@@ -31,5 +31,6 @@
             </tr>
         <?php endforeach;?>
 </table>
+<?php endif; ?>
 </center>
 
