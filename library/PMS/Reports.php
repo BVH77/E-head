@@ -248,13 +248,6 @@ class PMS_Reports
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
 
-        // Show only info by this account for managers
-        $acl = OSDN_Accounts_Prototype::getAcl();
-        $userId = ($acl->isAllowed(
-            OSDN_Acl_Resource_Generator::getInstance()->orders->owncheck,
-            OSDN_Acl_Privilege::VIEW)
-        ) ? OSDN_Accounts_Prototype::getId() : false;
-
         // Parse result rows into one merged array
         foreach ($rows as $row) {
             if (isset($rowsMerged[$row['creator_id']])) {
@@ -264,8 +257,20 @@ class PMS_Reports
                 $rowsMerged[$row['creator_id']]['name'] = $row['name'];
                 $rowsMerged[$row['creator_id']]['failed_count'] = $row['value'];
             }
-            if ($userId && $userId != $rowsMerged[$row['creator_id']]) {
-                unset($rowsMerged[$row['creator_id']]);
+        }
+
+        // Show only info by this account for managers
+        $acl = OSDN_Accounts_Prototype::getAcl();
+        $userId = ($acl->isAllowed(
+            OSDN_Acl_Resource_Generator::getInstance()->orders->owncheck,
+            OSDN_Acl_Privilege::VIEW)
+        ) ? OSDN_Accounts_Prototype::getId() : false;
+
+        if ($userId) {
+            foreach ($rowsMerged as $key => $value) {
+                if ($userId != $key) {
+                    unset($rowsMerged[$key]);
+                }
             }
         }
 
