@@ -199,6 +199,16 @@ PMS.Menu = function(params) {
                 win.location.href = 'http://my.gdemoi.ru/map.php';
             }).defer(2000);
         } 
+	}, '-', {
+	    text: 'Нормативные документы',
+	    iconCls: 'prod_schd-icon',
+        menu: [{
+            text: 'Положение о функциональном взаимодействии и персональной ответственности руководителей исполнительных подразделений ООО «Гарант конструкции»',
+            iconCls: 'work_schd-icon',
+            handler: function() {
+                window.open('/docs/doc1.doc');
+            }
+        }]
 //	}, {
 //	    text: 'Принт-база',
 //	    iconCls: 'prod_schd-icon',
