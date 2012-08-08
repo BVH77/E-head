@@ -207,14 +207,14 @@ PMS.Menu = function(params) {
             iconCls: 'work_schd-icon',
             handler: function() {
                 new Ext.Window({
-                    title: 'Информация о релизе',
-                    width: 900,
+                    title: 'Положение о функциональном взаимодействии и персональной ответственности руководителей исполнительных подразделений ООО «Гарант конструкции»',
+                    width: 1000,
                     bodyStyle: {background: 'white'},
                     padding: 10,
                     height: 600,
                     modal: true,
                     autoScroll: true,
-                    autoLoad: '/docs/doc1.htm'
+                    autoLoad: '/docs/doc01.htm'
                 }).show();
                 //window.open('/docs/doc1.doc');
             }
