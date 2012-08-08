@@ -206,7 +206,17 @@ PMS.Menu = function(params) {
             text: 'Положение о функциональном взаимодействии и персональной ответственности руководителей исполнительных подразделений ООО «Гарант конструкции»',
             iconCls: 'work_schd-icon',
             handler: function() {
-                window.open('/docs/doc1.doc');
+                new Ext.Window({
+                    title: 'Информация о релизе',
+                    width: 900,
+                    bodyStyle: {background: 'white'},
+                    padding: 10,
+                    height: 600,
+                    modal: true,
+                    autoScroll: true,
+                    autoLoad: '/docs/doc1.htm'
+                }).show();
+                //window.open('/docs/doc1.doc');
             }
         }]
 //	}, {
