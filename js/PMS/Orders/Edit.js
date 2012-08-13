@@ -97,6 +97,19 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         if (acl.isView('orders', 'print')) this.tabPanel.add(this.formPrint);
         if (acl.isView('orders', 'mount')) this.tabPanel.add(this.formMount);
         
+        this.budget = new PMS.Orders.Budget.List({
+            layout: 'fit',
+            orderId: this.orderId,
+            height: 330,
+            listeners: {
+                render: function(obj) {
+                    obj.getStore().load();
+                },
+                scope: this
+            }
+        });
+        this.tabPanel.add(this.budget);
+        
         this.requests = new PMS.Orders.Requests.List({
             autoHeight: true,
             permissions: this.permissions,
@@ -132,19 +145,6 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
             }
         });
         this.tabPanel.add(this.notes);
-        
-        this.budget = new PMS.Orders.Budget.List({
-            layout: 'fit',
-            orderId: this.orderId,
-            height: 330,
-            listeners: {
-                render: function(obj) {
-                    obj.getStore().load();
-                },
-                scope: this
-            }
-        });
-        this.tabPanel.add(this.budget);
     },
     
     onSave: function() {
