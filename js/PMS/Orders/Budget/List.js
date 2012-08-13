@@ -92,20 +92,14 @@ PMS.Orders.Budget.List = Ext.extend(Ext.grid.GridPanel, {
                 dataIndex: 'price',
                 align: 'right',
                 width: 80,
-                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-                    return Ext.util.Format.number(value, '0,000.00').replace(/,/g, ' ') + ' р.';
-                }
+                renderer: this.moneyRenderer
             }, {
                 header: 'Сумма',
                 dataIndex: 'summ',
                 align: 'right',
+                summaryType: 'sum',
                 width: 100,
-                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-                    var qty = record.get('qty'),
-                        price = record.get('price'),
-                        v = qty * price;  
-                    return Ext.util.Format.number(v, '0,000.00').replace(/,/g, ' ') + ' р.';
-                }
+                renderer: this.moneyRenderer
             }, {
                 header: 'Наценка (коэффициент)',
                 tooltip: 'Наценка (коэффициент)',
@@ -119,15 +113,9 @@ PMS.Orders.Budget.List = Ext.extend(Ext.grid.GridPanel, {
                 header: 'Стоимость',
                 dataIndex: 'total',
                 align: 'right',
+                summaryType: 'sum',
                 width: 100,
-                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-                    var qty = record.get('qty'),
-                        price = record.get('price'),
-                        margin = record.get('margin'),
-                        v = qty * price * margin;  
-                    return Ext.util.Format.number(v, '0,000.00').replace(/,/g, ' ') + ' р.';
-                    return Ext.util.Format.number(value, '0,000.00').replace(/,/g, ' ') + ' р.';
-                }
+                renderer: this.moneyRenderer
             }]
         });
         
@@ -147,7 +135,7 @@ PMS.Orders.Budget.List = Ext.extend(Ext.grid.GridPanel, {
                 scope: this
             }],
             scope: this
-        })];
+        }), new Ext.ux.grid.GroupSummary()];
 
         this.tbar = new Ext.Toolbar({
             items: [{
@@ -175,20 +163,46 @@ PMS.Orders.Budget.List = Ext.extend(Ext.grid.GridPanel, {
             scope: this
         });
         
+        this.bottomTpl = new Ext.XTemplate(
+            '<div align="right"><b><font color="blue">' +
+            'Общая сумма: <font color="red">{summ}</font> ' +
+            'Общая стоимость: <font color="red">{total}</font>' +
+            '</font></b></div>' +
+            '<font color="red">Просьба указывать в наименованиях:</font> <br/>' +
+            'Параметры спецтехники (тоннажность/длина стрелы), ' +
+            'город и километраж до объекта, ' +
+            'кол-во человек в бригаде и чел/час.'
+        );
+        
         this.bbar = new Ext.Panel({
             cls: 'x-border-top',
             padding: 5,
             border: false,
-            height: 40,
-            html: '<font color=red>Просьба указывать в наименованиях:</font> <br/>' +
-                'Параметры спецтехники (тоннажность/длина стрелы), ' +
-                'город и километраж до объекта, ' +
-                'кол-во человек в бригаде и чел/час.'
+            height: 55,
+            html: this.bottomTpl.apply(['', ''])
         });
         
         PMS.Orders.Budget.List.superclass.initComponent.apply(this, arguments);
         
+        this.getStore().on('load', function(store) {
+            
+            var grand_summ = 0, grand_total = 0;
+            
+            store.each(function(record) {
+                this.calc(record);
+                grand_summ = grand_summ + record.get('summ'); 
+                grand_total = grand_total + record.get('total'); 
+            }, this);
+            
+            this.getBottomToolbar().update(this.bottomTpl.apply({
+                summ: this.moneyRenderer(grand_summ), 
+                total: this.moneyRenderer(grand_total)
+            }));
+            
+        }, this);
+        
         this.on('rowdblclick', this.onUpdate, this);
+        
     },
     
     onGroups: function(b, e) {
@@ -303,5 +317,18 @@ PMS.Orders.Budget.List = Ext.extend(Ext.grid.GridPanel, {
         });
         
         return w;
+    },
+    
+    moneyRenderer: function(value, metaData, record, rowIndex, colIndex, store) {
+        return Ext.util.Format.number(value, '0,000.00').replace(/,/g, ' ') + ' р.';
+    },
+    
+    calc: function(record) {
+        var qty = record.get('qty'),
+            price = record.get('price'),
+            margin = record.get('margin');
+            
+            record.set('summ', qty * price);
+            record.set('total', qty * price * margin);
     }
 });

@@ -36,6 +36,8 @@
         
         <style href="/js/Library/extjs/ux/form/FileUploadField.css"/>
         <script src="/js/Library/extjs/ux/form/FileUploadField.js"/>
+        
+        <script src="/js/Library/extjs/ux/grid/GroupSummary.js"/>
         <!-- Ext ux -->
         
 		<!-- ================ xlib ================ -->
