@@ -132,6 +132,19 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
             }
         });
         this.tabPanel.add(this.notes);
+        
+        this.budget = new PMS.Orders.Budget.List({
+            layout: 'fit',
+            orderId: this.orderId,
+            height: 330,
+            listeners: {
+                render: function(obj) {
+                    obj.getStore().load();
+                },
+                scope: this
+            }
+        });
+        this.tabPanel.add(this.budget);
     },
     
     onSave: function() {
