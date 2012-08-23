@@ -12,6 +12,12 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
     
     orderId: null,
     
+    productionEnabled: false,
+    
+    printEnabled: false,
+    
+    mountEnabled: false,
+    
     permissions: acl.isUpdate('orders'),
     
     allowEditFiles: false,
@@ -33,7 +39,8 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         });
         
         this.formMount = new PMS.Orders.Edit.Mount({
-    	   scope: this
+            height: 333,
+    	    scope: this
         });
         
         this.tabPanel = new Ext.TabPanel({
@@ -67,21 +74,27 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         this.addEvents('add', 'saved', 'load');
         
         this.formInfo.on('productionChecked', function(v) {
-            this.formProduction.cascade(function(cmp) {
-                cmp.setDisabled(!v);
-            });
+            if (this.formProduction) {
+                this.formProduction.cascade(function(cmp) {
+                    cmp.setDisabled(!v);
+                });
+            }
         }, this);
         
         this.formInfo.on('printChecked', function(v) {
-            this.formPrint.cascade(function(cmp) {
-                cmp.setDisabled(!v);
-            });
+            if (this.formPrint) {
+                this.formPrint.cascade(function(cmp) {
+                    cmp.setDisabled(!v);
+                });
+            }
         }, this);
         
         this.formInfo.on('mountChecked', function(v) {
-            this.formMount.cascade(function(cmp) {
-                cmp.setDisabled(!v);
-            });
+            if (this.formMount) {
+                this.formMount.cascade(function(cmp) {
+                    cmp.setDisabled(!v);
+                });
+            }
         }, this);
         
         if (this.record) {
@@ -93,32 +106,21 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
     
     enableTabs: function() {
         
+        this.formMount.orderId = this.orderId;
+        
         if (acl.isView('orders', 'production')) this.tabPanel.add(this.formProduction);
         if (acl.isView('orders', 'print')) this.tabPanel.add(this.formPrint);
         if (acl.isView('orders', 'mount')) this.tabPanel.add(this.formMount);
-        
-        this.budget = new PMS.Orders.Budget.List({
-            layout: 'fit',
-            orderId: this.orderId,
-            height: 330,
-            listeners: {
-                render: function(obj) {
-                    obj.getStore().load();
-                },
-                scope: this
-            }
-        });
-        this.tabPanel.add(this.budget);
         
         this.requests = new PMS.Orders.Requests.List({
             autoHeight: true,
             permissions: this.permissions,
             orderId: this.orderId,
             listeners: {
-        		render: function(obj) {
-                	obj.store.load();
-        		},
-        		scope: this
+                render: function(obj) {
+                    obj.store.load();
+                },
+                scope: this
             }
         })
         this.tabPanel.add(this.requests);

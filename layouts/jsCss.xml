@@ -89,14 +89,11 @@
         <script src="/js/PMS/Orders/Edit/Mount.js"/>
         <script src="/js/PMS/Orders/Edit/Notes.js"/>
         
+        <script src="/js/PMS/Orders/Edit/MountBudgetForm.js"/>
+        <script src="/js/PMS/Orders/Edit/MountBudgetView.js"/>
+        
         <script src="/js/PMS/Orders/Requests/List.js"/>
         <script src="/js/PMS/Orders/Requests/Form.js"/>
-        
-        <script src="/js/PMS/Orders/Budget/Groups.js"/>
-        <script src="/js/PMS/Orders/Budget/GroupForm.js"/>
-        <script src="/js/PMS/Orders/Budget/GroupCombo.js"/>
-        <script src="/js/PMS/Orders/Budget/Form.js"/>
-        <script src="/js/PMS/Orders/Budget/List.js"/>
         
         <script src="/js/PMS/FixedAssets/List.js"/>
         <script src="/js/PMS/FixedAssets/Files.js"/>

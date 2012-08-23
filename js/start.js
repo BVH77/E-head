@@ -115,7 +115,9 @@ Ext.onReady(function(){
                 id: 'PMS.Staff.Layout'
         });
         
+        new PMS.Orders.Budget.Form({orderId: 1});
         */
+        
         
         PMS.System.Layout.doLayout();
         

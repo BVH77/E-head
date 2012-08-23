@@ -16,7 +16,7 @@ PMS.Orders.Edit.Production = Ext.extend(Ext.Panel, {
     
     defaults: {
         layout: 'form',
-        columnWidth: .5,
+        columnWidth: .4,
         border: false
     },
     

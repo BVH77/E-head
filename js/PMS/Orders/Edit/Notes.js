@@ -72,7 +72,6 @@ PMS.Orders.Edit.Notes = Ext.extend(Ext.Panel, {
                 msg: 'Загрузка...', 
                 store: this.store
             });
-            this.show();
         }, this, {delay: 50});
     },
         
