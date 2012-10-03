@@ -6,15 +6,11 @@ class PMS_Orders_Budget
 
     public function __construct()
     {
-        $this->_table = new PMS_Orders_Budget_Table_Budget();
+        $this->_table = new PMS_Orders_Budget_Table();
     }
 
     public function save(array $params)
     {
-//        echo '<pre>';
-//        print_r($params);
-//        echo '</pre>';
-//        die;
 
         $f = new OSDN_Filter_Input(array(
             'id'            => 'int',

@@ -108,10 +108,17 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         
         this.formMount.orderId = this.orderId;
         
-        if (acl.isView('orders', 'production')) this.tabPanel.add(this.formProduction);
-        if (acl.isView('orders', 'print')) this.tabPanel.add(this.formPrint);
-        if (acl.isView('orders', 'mount')) this.tabPanel.add(this.formMount);
+        if (acl.isView('orders', 'production')) {
+            this.tabPanel.add(this.formProduction);
+        }
+        if (acl.isView('orders', 'print')) {
+            this.tabPanel.add(this.formPrint);
+        }
+        if (acl.isView('orders', 'mount')) {
+            this.tabPanel.add(this.formMount);
+        }
         
+        /*
         this.requests = new PMS.Orders.Requests.List({
             autoHeight: true,
             permissions: this.permissions,
@@ -124,6 +131,22 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
             }
         })
         this.tabPanel.add(this.requests);
+        */
+        
+        if (acl.isView('orders', 'payments')) {
+            this.payments = new PMS.Orders.Payments.List({
+                autoHeight: true,
+                permissions: this.permissions,
+                orderId: this.orderId,
+                listeners: {
+                    render: function(obj) {
+                        obj.store.load();
+                    },
+                    scope: this
+                }
+            });
+            this.tabPanel.add(this.payments);
+        }
         
         if (acl.isView('orders', 'files')) {
             this.files = new PMS.Orders.Files({
