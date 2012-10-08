@@ -16,6 +16,116 @@ class PMS_Reports
         $this->_tableCustomers = new PMS_Customers_Table_Customers();
     }
 
+    public function generatePayments()
+    {
+        $response = new OSDN_Response();
+
+        $table = new PMS_Orders_Payments_Table();
+
+        // Fetch managers
+        $select = $table->getAdapter()->select();
+        $select->from(array('p' => $table->getTableName()), array())
+            ->joinLeft(array('o' => $this->_tableOrders->getTableName()),
+                'p.order_id=o.id', array('creator_id')
+            )
+            ->joinLeft(array('a' => $this->_tableAccounts->getTableName()),
+                'o.creator_id=a.id', array('creator_name' => 'a.name')
+            )
+            ->where('o.archive != 1')
+            ->group('o.creator_id');
+
+        // Show only info by this account for managers
+        $acl = OSDN_Accounts_Prototype::getAcl();
+        if ($acl->isAllowed(
+            OSDN_Acl_Resource_Generator::getInstance()->orders->owncheck,
+            OSDN_Acl_Privilege::VIEW)
+        ) {
+            $select->where('o.creator_id = ?', OSDN_Accounts_Prototype::getId());
+        }
+
+        try {
+            $list = $select->query()->fetchAll();
+        } catch (Exception $e) {
+           if (OSDN_DEBUG) {
+                throw $e;
+            }
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+        }
+
+
+        // Fetch orders
+        foreach($list as &$user) {
+
+            $select = $table->getAdapter()->select();
+            $select->from(array('p' => $table->getTableName()), array('order_id'))
+                ->joinLeft(array('o' => $this->_tableOrders->getTableName()),
+                    'p.order_id=o.id', array('address')
+                )
+                ->joinLeft(array('c' => $this->_tableCustomers->getTableName()),
+                    'o.customer_id=c.id', array('customer' => 'c.name')
+                )
+                ->where('o.archive != 1')
+                ->where('o.creator_id = ?', $user['creator_id'])
+                ->group('p.order_id');
+
+            try {
+                $orders = $select->query()->fetchAll();
+            } catch (Exception $e) {
+               if (OSDN_DEBUG) {
+                    throw $e;
+                }
+                return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+            }
+
+            // Fetch payments
+            foreach($orders as &$order) {
+
+                $select = $table->getAdapter()->select();
+                $select->from($table->getTableName())->where('order_id = ?', $order['order_id']);
+
+                try {
+                    $payments = $select->query()->fetchAll();
+                } catch (Exception $e) {
+                   if (OSDN_DEBUG) {
+                        throw $e;
+                    }
+                    return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+                }
+
+                $order['payments'] = $payments;
+            }
+
+            $user['orders'] = $orders;
+        }
+
+        // Fetch dates
+        $select = $table->getAdapter()->select();
+        $select->from(array('p' => $table->getTableName()), array('date'))
+            ->joinLeft(array('o' => $this->_tableOrders->getTableName()),
+                'p.order_id=o.id', array()
+            )
+            ->where('o.archive != 1')
+            ->order('p.date')
+            ->group('p.date');
+
+        try {
+            $datesList = $select->query()->fetchAll();
+        } catch (Exception $e) {
+           if (OSDN_DEBUG) {
+                throw $e;
+            }
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+        }
+
+        $dates = array();
+        foreach($datesList as $date) {
+            $dates[] = $date['date'];
+        }
+
+        $response->data = array('list' => $list, 'dates' => $dates);
+        return $response->addStatus(new PMS_Status(PMS_Status::OK));
+    }
+
     public function generateSchedule($type)
     {
         $response = new OSDN_Response();

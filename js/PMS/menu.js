@@ -1,9 +1,5 @@
 Ext.ns('PMS');
 
-PMS.menuMessage = function() {
-    xlib.Msg.info('Модуль доступен в платных тарифах'); 
-}
-
 PMS.Menu = function(params) {
     
     params = params || {};
@@ -108,6 +104,13 @@ PMS.Menu = function(params) {
             hidden: !acl.isView('reports'),
             handler: function() {
                 new PMS.Reports.Customers();
+            }
+        }, {
+            text: 'Платежи',
+            iconCls: 'work_schd-icon',
+            hidden: !acl.isView('orders', 'payments'),
+            handler: function() {
+                 window.open(link('orders', 'report', 'payments', {}, 'html'));
             }
         }, {
             text: 'Кадры',
@@ -216,16 +219,8 @@ PMS.Menu = function(params) {
                     autoScroll: true,
                     autoLoad: '/docs/doc01.htm'
                 }).show();
-                //window.open('/docs/doc1.doc');
             }
         }]
-//	}, {
-//	    text: 'Принт-база',
-//	    iconCls: 'prod_schd-icon',
-//        hidden: !(enableMap),
-//        handler: function() {
-//            window.open('http://print.e-head.ru');
-//        } 
 	}, '->', {
         tooltip: 'Информация о релизе',
 	    iconCls: 'info-icon',

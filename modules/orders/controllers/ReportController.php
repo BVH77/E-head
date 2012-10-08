@@ -27,6 +27,9 @@ class Orders_ReportController extends OSDN_Controller_Action
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->reports);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'customers');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'customers-list');
+
+        $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->orders->payments);
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'payments');
     }
 
     public function scheduleMountAction()
@@ -116,5 +119,16 @@ class Orders_ReportController extends OSDN_Controller_Action
     	} else {
     		$this->_collectErrors($response);
     	}
+    }
+
+    public function paymentsAction()
+    {
+        $response = $this->_reports->generatePayments();
+        if ($response->isSuccess()) {
+            $this->view->data = $response->data;
+            $this->view->content = $this->view->render('report/payments.phtml');
+        } else {
+            $this->_collectErrors($response);
+        }
     }
 }
