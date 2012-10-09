@@ -129,7 +129,7 @@ PMS.Menu = function(params) {
         }, {
             text: 'Основные средства',
             iconCls: 'work_schd-icon',
-            hidden: !acl.isView('admin'),
+            hidden: !acl.isView('storage'),
             handler: function() {
                  window.open(link('fixed-assets', 'report', 'index', {}, 'html'));
             }
@@ -205,6 +205,7 @@ PMS.Menu = function(params) {
 	}, '-', {
 	    text: 'Нормативные документы',
 	    iconCls: 'prod_schd-icon',
+        hidden: !(acl.isView('map') && enableMap),
         menu: [{
             text: 'Положение о функциональном взаимодействии и персональной ответственности руководителей исполнительных подразделений ООО «Гарант конструкции»',
             iconCls: 'work_schd-icon',
