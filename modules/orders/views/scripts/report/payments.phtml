@@ -90,7 +90,9 @@
     $today->setTime(0,0,0);
 
     foreach ($payments as $p) {
+
         if ($p['date'] == $date) {
+
             $class = '';
             $status = intval($p['status']);
 
@@ -104,8 +106,7 @@
                 case 3: $class = 'x-row-paymentdelayed'; break;
             }
             return '<td align="right" class="' . $class . '">' . $p['summ'] . '&nbsp;р.</td>';
-        } else {
-            return '<td>&nbsp;</td>';
         }
     }
+    return '<td>&nbsp;</td>';
 } ?>
