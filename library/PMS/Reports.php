@@ -59,7 +59,7 @@ class PMS_Reports
             $select = $table->getAdapter()->select();
             $select->from(array('p' => $table->getTableName()), array('order_id'))
                 ->joinLeft(array('o' => $this->_tableOrders->getTableName()),
-                    'p.order_id=o.id', array('address')
+                    'p.order_id=o.id', array('address', 'cost')
                 )
                 ->joinLeft(array('c' => $this->_tableCustomers->getTableName()),
                     'o.customer_id=c.id', array('customer' => 'c.name')

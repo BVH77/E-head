@@ -33,19 +33,22 @@
 <h3>ГРАФИК ПЛАТЕЖЕЙ</h3>
 </center>
 <?php if (!empty($this->data['list']) && !empty($this->data['dates'])): ?>
-<?php $totalSums = array_fill_keys($this->data['dates'], 0); ?>
+<?php $totalCost = $totalPayed = $totalRest = 0; ?>
 <table cellspacing="0" cellpadding="5" border="1">
     <tr valign="middle" align="center" style="background-color: #CDF7E0;">
         <td rowspan="2"><b>Менеджер</b></td>
         <td rowspan="2"><b>Заказчик (адрес)</b></td>
         <td rowspan="2"><b>№ заказа</b></td>
         <td colspan="<?=count($this->data['dates'])?>"><b>Платежи</b></td>
-        <td rowspan="2"><b>Сумма</b></td>
+        <td colspan="3"><b>Сводка</b></td>
     </tr>
     <tr style="background-color: #CDF7E0;">
         <?php foreach ($this->data['dates'] as $date): ?>
             <td><b><?=date_create($date)->format('d.m.Y')?></b></td>
         <?php endforeach;?>
+        <td><b>Стоимость</b></td>
+        <td><b>Оплачено</b></td>
+        <td><b>Остаток</b></td>
     </tr>
         <?php foreach ($this->data['list'] as $row): ?>
             <?php foreach ($row['orders'] as $i => $order): ?>
@@ -60,26 +63,38 @@
                     } ?>
                     <td align="right">
                         <?php
+                            echo number_format($order['cost'], 2, '.', '') . '&nbsp;р.';
+                            $totalCost += $order['cost'];
+                        ?>
+                    </td>
+                    <td align="right">
+                        <?php
                             $summ = 0;
                             foreach ($order['payments'] as $p) {
-                                $summ += $p['summ'];
-                                $totalSums[$p['date']] += $p['summ'];
+                                if ($p['status'] == 1) {
+                                    $summ += $p['summ'];
+                                }
                             }
-                        echo number_format($summ, 2, '.', '') . '&nbsp;р.';
+                            echo number_format($summ, 2, '.', '') . '&nbsp;р.';
+                            $totalPayed += $summ;
+                        ?>
+                    </td>
+                    <td align="right">
+                        <?php
+                            $rest = intVal($order['cost']) - $summ;
+                            $totalRest += $rest;
+                            echo number_format($rest, 2, '.', '') . '&nbsp;р.';
                         ?>
                     </td>
                 </tr>
             <?php endforeach;?>
-            <tr><td colspan="<?=4+count($this->data['dates'])?>" style="background-color: black;"></td></tr>
+            <tr><td colspan="<?=6+count($this->data['dates'])?>" style="background-color: black;"></td></tr>
         <?php endforeach;?>
         <tr align="right">
-            <td colspan="3"><b>ИТОГО:</b></td>
-            <?php $summ = 0; ?>
-            <?php foreach ($totalSums as $ts): ?>
-                <?php $summ += $ts; ?>
-                <td><?=number_format($ts, 2, '.', '')?>&nbsp;р.</td>
-            <?php endforeach;?>
-            <td style="background-color: yellow;"><?=number_format($summ, 2, '.', '')?>&nbsp;р.</td>
+            <td colspan="<?=3+count($this->data['dates'])?>"><b>ИТОГО:</b></td>
+            <td><?=number_format($totalCost, 2, '.', '')?>&nbsp;р.</td>
+            <td><?=number_format($totalPayed, 2, '.', '')?>&nbsp;р.</td>
+            <td style="background-color: yellow;"><?=number_format($totalRest, 2, '.', '')?>&nbsp;р.</td>
         </tr>
 </table>
 <?php endif; ?>
