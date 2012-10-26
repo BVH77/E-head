@@ -18,16 +18,16 @@
 }
 
 .x-row-waiting {
-    background: #99CC00;
+    background: #FFFF80;
 }
 .x-row-payed {
-    background: #FF8080;
+    background: #99CC00;
 }
 .x-row-confirmwaiting {
     background: #C0C0C0;
 }
 .x-row-paymentdelayed {
-    background: #FF0000;
+    background: #FF8080;
 }
 
 .x-border-top {

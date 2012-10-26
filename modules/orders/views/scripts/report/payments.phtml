@@ -3,30 +3,39 @@
 </pre>
 
 <style>
+body {
+    font-size: small;
+}
+.address {
+    width: 150px;
+    height: 20px;
+    overflow: hidden;
+    display: block;
+    cursor: help;
+}
 .square {
     border: 1px solid grey;
     width: 20px;
 }
 .x-row-waiting {
-    background: #99CC00;
+    background: #FFFF80;
 }
 .x-row-payed {
-    background: #FF8080;
+    background: #99CC00;
 }
 .x-row-confirmwaiting {
     background: #C0C0C0;
 }
 .x-row-paymentdelayed {
-    background: #FF0000;
+    background: #FF8080;
 }
 </style>
 
 <table id="legend" cellspacing="0" cellpadding="0" border="0"><tr>
 <td><b>Условные обозначения:&nbsp;</b></td>
-<td class="square x-row-waiting">&nbsp;</td><td>&nbsp;Ожидается&nbsp;</td>
 <td class="square x-row-payed">&nbsp;</td><td>&nbsp;Оплачено&nbsp;</td>
-<td class="square x-row-confirmwaiting">&nbsp;</td><td>&nbsp;Ждем подтверждения&nbsp;</td>
-<td class="square x-row-paymentdelayed">&nbsp;</td><td>&nbsp;Задерживается оплата&nbsp;</td>
+<td class="square x-row-waiting">&nbsp;</td><td>&nbsp;Ожидается&nbsp;</td>
+<td class="square x-row-paymentdelayed">&nbsp;</td><td>&nbsp;Задерживается&nbsp;</td>
 </tr></table>
 
 <center>
@@ -52,11 +61,12 @@
     </tr>
         <?php foreach ($this->data['list'] as $row): ?>
             <?php foreach ($row['orders'] as $i => $order): ?>
-                <tr valign="middle">
+                <tr valign="top">
                 <?php if ($i == 0): ?>
                     <td rowspan="<?=count($row['orders'])?>"><?=$row['creator_name']?></td>
                 <?php endif;?>
-                    <td><?=$order['customer']?> (<?=$order['address']?>)</td>
+                    <?php $address = $order['customer'] .' (' . $order['address'] . ')'; ?>
+                    <td><span class="address" title="<?=$address?>"><?=$address?></span></td>
                     <td><?=$order['order_id']?></td>
                     <?php foreach ($this->data['dates'] as $date) {
                         echo generatePaymentCell($date, $order['payments']);

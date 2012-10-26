@@ -144,16 +144,13 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
             plugins: [new xlib.Legend.Plugin({
                 items: [{
                     color: '#99CC00',
+                    text: 'Оплачено'
+                }, {
+                    color: '#FFFF80',
                     text: 'Ожидается'
                 }, {
                     color: '#FF8080',
-                    text: 'Оплачено'
-                }, {
-                    color: '#C0C0C0',
-                    text: 'Ждем подтверждения'
-                }, {
-                    color: '#FF0000',
-                    text: 'Задерживается оплата'
+                    text: 'Задерживается'
                 }]
             })],
             scope: this
