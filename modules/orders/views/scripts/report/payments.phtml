@@ -111,33 +111,25 @@ body {
 </table>
 <?php endif; ?>
 
-<?php function generatePaymentCell($date, $payments) {
+<?php
+function generatePaymentCell($date, $payments) {
 
-    $out = '&nbsp';
+    $out = '&nbsp;';
+    $class = '';
     $today = date_create();
     $today->setTime(0,0,0);
-    $currentDate = date_create($date);
+    $isDelayed = $today > date_create($date);
 
     foreach ($payments as $p) {
-
-        $class = ($today == $currentDate) ? 'todaycell ' : '';
-
         if ($p['date'] == $date) {
-
-            $status = intval($p['status']);
-
-            if (($today > $currentDate) && $status != 1) {
-                $status = 3;
-            };
-
-            switch($status) {
-                case 0: $class .= 'x-row-waiting'; break;
-                case 1: $class .= 'x-row-payed'; break;
-                case 2: $class .= 'x-row-confirmwaiting'; break;
-                case 3: $class .= 'x-row-paymentdelayed'; break;
-            }
             $out = $p['summ'] . '&nbsp;р.';
+            $status = intVal($p['status']);
+            $class = ($status) ? 'x-row-payed' : 'x-row-waiting';
+            if ($isDelayed && !$status) {
+                $class = 'x-row-paymentdelayed';
+            }
         }
     }
     return '<td align="right" class="' . $class . '">' . $out . '</td>';
-} ?>
+}
+?>

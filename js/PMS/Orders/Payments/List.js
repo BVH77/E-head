@@ -87,18 +87,13 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
             header: 'Сумма',
             dataIndex: 'summ',
             sortable: false,
-            width: 100,
+            width: 150,
             align: 'right',
             renderer: function(v) {
                 return parseFloat(v).toFixed(2) + ' р.';
             }
         }, {
-            header: 'Статус',
-            dataIndex: 'status',
-            renderer: function(v) {
-                return this.statuses.getById(parseInt(v)).get('name');
-            },
-            scope: this,
+            dataIndex: '',
             sortable: false,
             id: this.autoExpandColumn
         }];
