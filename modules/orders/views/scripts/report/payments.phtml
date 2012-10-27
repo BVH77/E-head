@@ -29,6 +29,9 @@ body {
 .x-row-paymentdelayed {
     background: #FF8080;
 }
+.todaycell {
+    border: dashed grey;
+}
 </style>
 
 <table id="legend" cellspacing="0" cellpadding="0" border="0"><tr>
@@ -110,27 +113,31 @@ body {
 
 <?php function generatePaymentCell($date, $payments) {
 
+    $out = '&nbsp';
     $today = date_create();
     $today->setTime(0,0,0);
+    $currentDate = date_create($date);
 
     foreach ($payments as $p) {
 
+        $class = ($today == $currentDate) ? 'todaycell ' : '';
+
         if ($p['date'] == $date) {
 
-            $class = '';
             $status = intval($p['status']);
 
-            if (($today > date_create($date)) && $status != 1) {
+            if (($today > $currentDate) && $status != 1) {
                 $status = 3;
             };
+
             switch($status) {
-                case 0: $class = 'x-row-waiting'; break;
-                case 1: $class = 'x-row-payed'; break;
-                case 2: $class = 'x-row-confirmwaiting'; break;
-                case 3: $class = 'x-row-paymentdelayed'; break;
+                case 0: $class .= 'x-row-waiting'; break;
+                case 1: $class .= 'x-row-payed'; break;
+                case 2: $class .= 'x-row-confirmwaiting'; break;
+                case 3: $class .= 'x-row-paymentdelayed'; break;
             }
-            return '<td align="right" class="' . $class . '">' . $p['summ'] . '&nbsp;р.</td>';
+            $out = $p['summ'] . '&nbsp;р.';
         }
     }
-    return '<td>&nbsp;</td>';
+    return '<td align="right" class="' . $class . '">' . $out . '</td>';
 } ?>
