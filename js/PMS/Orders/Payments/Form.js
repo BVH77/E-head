@@ -4,7 +4,7 @@ PMS.Orders.Payments.Form = Ext.extend(xlib.form.FormPanel, {
     
     permissions: acl.isView('orders', 'payments'),
     
-    labelWidth: 50,
+    labelWidth: 70,
     
     orderId: null,
     
@@ -36,14 +36,17 @@ PMS.Orders.Payments.Form = Ext.extend(xlib.form.FormPanel, {
             hiddenName: 'date'
         }, {
             xtype: 'numberfield',
-            fieldLabel: 'Сумма',
+            fieldLabel: 'Сумма (р.)',
             name: 'summ',
             allowBlank: false,
             validator: function(value) {
                 return value > 0 ? true : 'Значение должно быть больше нуля';
             }
         }, {
-            xtype: 'PMS.Orders.Payments.StatusCombo'
+            xtype: 'checkbox',
+            fieldLabel: 'Оплачено',
+            name: 'status',
+            inputValue: 1
         }];
         
         PMS.Orders.Payments.Form.superclass.initComponent.apply(this, arguments);

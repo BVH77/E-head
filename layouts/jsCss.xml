@@ -92,8 +92,6 @@
         <script src="/js/PMS/Orders/Edit/MountBudgetForm.js"/>
         <script src="/js/PMS/Orders/Edit/MountBudgetView.js"/>
         
-        <script src="/js/PMS/Orders/Payments/Status.js"/>
-        <script src="/js/PMS/Orders/Payments/StatusCombo.js"/>
         <script src="/js/PMS/Orders/Payments/Form.js"/>
         <script src="/js/PMS/Orders/Payments/List.js"/>
         

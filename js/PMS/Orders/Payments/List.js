@@ -69,8 +69,6 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
         
         this.sm = new Ext.grid.RowSelectionModel();
         
-        this.statuses = new PMS.Orders.Payments.Status();
-        
         this.columns = [{
             header: 'Дата',
             dataIndex: 'date',
@@ -197,7 +195,7 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
         var w = new Ext.Window({
             title: 'Платёж',
             resizable: false,
-            width: 250,
+            width: 200,
             modal: true,
             items: [formPanel],
             buttons: [{
