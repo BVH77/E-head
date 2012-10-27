@@ -45,7 +45,6 @@ body {
 <?php $totalCost = $totalPayed = $totalRest = 0; ?>
 <table cellspacing="0" cellpadding="5" border="1">
     <tr valign="middle" align="center" style="background-color: #CDF7E0;">
-        <td rowspan="2"><b>Менеджер</b></td>
         <td rowspan="2"><b>Заказчик (адрес)</b></td>
         <td rowspan="2"><b>№ заказа</b></td>
         <td colspan="<?=count($this->data['dates'])?>"><b>Платежи</b></td>
@@ -60,11 +59,11 @@ body {
         <td><b>Остаток</b></td>
     </tr>
         <?php foreach ($this->data['list'] as $row): ?>
+            <tr><td colspan="<?=5+count($this->data['dates'])?>" style="background-color: silver;">
+                Менеджер: <b><?=$row['creator_name']?></b>
+            </td></tr>
             <?php foreach ($row['orders'] as $i => $order): ?>
-                <tr valign="top">
-                <?php if ($i == 0): ?>
-                    <td rowspan="<?=count($row['orders'])?>"><?=$row['creator_name']?></td>
-                <?php endif;?>
+                <tr>
                     <?php $address = $order['customer'] .' (' . $order['address'] . ')'; ?>
                     <td><span class="address" title="<?=$address?>"><?=$address?></span></td>
                     <td><?=$order['order_id']?></td>
@@ -98,10 +97,10 @@ body {
                     </td>
                 </tr>
             <?php endforeach;?>
-            <tr><td colspan="<?=6+count($this->data['dates'])?>" style="background-color: black;"></td></tr>
         <?php endforeach;?>
+        <tr><td colspan="<?=5+count($this->data['dates'])?>" style="background-color: silver;"></td></tr>
         <tr align="right">
-            <td colspan="<?=3+count($this->data['dates'])?>"><b>ИТОГО:</b></td>
+            <td colspan="<?=2+count($this->data['dates'])?>"><b>ИТОГО:</b></td>
             <td><?=number_format($totalCost, 2, '.', '')?>&nbsp;р.</td>
             <td><?=number_format($totalPayed, 2, '.', '')?>&nbsp;р.</td>
             <td style="background-color: yellow;"><?=number_format($totalRest, 2, '.', '')?>&nbsp;р.</td>
