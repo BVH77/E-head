@@ -25,19 +25,13 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
         getRowClass: function (record) {
             
             var s = parseInt(record.get('status')),
-                date = new Date(record.get('date')),
-                today = (new Date()).clearTime(); 
+                isDelayed = (new Date()).clearTime() > new Date(record.get('date'));
             
-            if (date < today && s != 1) {
-                s = 3;
+            if (isDelayed && !s) {
+                return 'x-row-paymentdelayed'
             }
-                
-            switch(s) {
-                case 0: return 'x-row-waiting';
-                case 1: return 'x-row-payed';
-                case 2: return 'x-row-confirmwaiting';
-                case 3: return 'x-row-paymentdelayed';
-            }
+            
+            return !!s ? 'x-row-payed' : 'x-row-waiting'; 
         }
     },
     
