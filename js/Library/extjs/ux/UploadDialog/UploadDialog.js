@@ -394,7 +394,8 @@ Ext.ux.UploadDialog.Dialog = function(config){
 
     var default_config = {
         border: false,
-        /*width: 450,
+        /*
+         width: 600,
          height: 300,
          minWidth: 450,
          minHeight: 300,

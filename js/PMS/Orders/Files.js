@@ -157,7 +157,6 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
             modal: true,
             width: 400,
             height: 200,
-            autoScroll: true,
             layout: 'fit',
             items:[new Ext.ux.UploadDialog.Dialog({
                 url: this.uploadURL,
