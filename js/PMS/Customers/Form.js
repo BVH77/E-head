@@ -26,6 +26,30 @@ PMS.Customers.Form = Ext.extend(xlib.form.FormPanel, {
             sortable: true,
 			allowBlank: false
         }, {
+            name: 'address',
+            fieldLabel: 'Адрес',
+            xtype: 'textfield',
+            sortable: true,
+			allowBlank: false
+        }, {
+            name: 'fio',
+            fieldLabel: 'ФИО',
+            xtype: 'textfield',
+            sortable: true,
+			allowBlank: false
+        }, {
+            name: 'phone',
+            fieldLabel: 'Телефон',
+            xtype: 'textfield',
+            sortable: true,
+			allowBlank: false
+        }, {
+            name: 'email',
+            fieldLabel: 'Email',
+            xtype: 'textfield',
+            sortable: true,
+			allowBlank: false
+        }, {
             name: 'description',
             xtype: 'textarea',
             fieldLabel: 'Описание',

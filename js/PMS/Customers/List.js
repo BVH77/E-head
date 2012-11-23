@@ -37,6 +37,26 @@ PMS.Customers.List = Ext.extend(Ext.grid.GridPanel, {
             dataIndex: 'name',
             sortable: true
         }, {
+            width: 200,
+            header: 'Адрес',
+            dataIndex: 'address',
+            sortable: true
+        }, {
+            width: 200,
+            header: 'ФИО',
+            dataIndex: 'fio',
+            sortable: true
+        }, {
+            width: 200,
+            header: 'Телефон',
+            dataIndex: 'phone',
+            sortable: true
+        }, {
+            width: 200,
+            header: 'Email',
+            dataIndex: 'email',
+            sortable: true
+        }, {
             id: this.autoExpandColumn,
             header: 'Описание',
             dataIndex: 'description'
@@ -59,6 +79,10 @@ PMS.Customers.List = Ext.extend(Ext.grid.GridPanel, {
 	        fields: [
 	            {name: 'id'},
 	            {name: 'name'},
+	            {name: 'address'},
+	            {name: 'fio'},
+	            {name: 'phone'},
+	            {name: 'email'},
                 {name: 'description'}
 	        ]
 	    });
