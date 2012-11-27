@@ -39,7 +39,7 @@ PMS.Customers.List = Ext.extend(Ext.grid.GridPanel, {
         }, {
             width: 200,
             header: 'Адрес',
-            dataIndex: 'address',
+            dataIndex: 'c_address',
             sortable: true
         }, {
             width: 200,
@@ -79,7 +79,7 @@ PMS.Customers.List = Ext.extend(Ext.grid.GridPanel, {
 	        fields: [
 	            {name: 'id'},
 	            {name: 'name'},
-	            {name: 'address'},
+	            {name: 'c_address'},
 	            {name: 'fio'},
 	            {name: 'phone'},
 	            {name: 'email'},

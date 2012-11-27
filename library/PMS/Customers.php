@@ -14,7 +14,7 @@ class PMS_Customers
         $f = new OSDN_Filter_Input(array(
         ), array(
             'name'      => array(array('StringLength', 1, 255), 'presence' => 'required'),
-            'address'   => array(array('StringLength', 1, 255), 'presence' => 'required'),
+            'c_address' => array(array('StringLength', 1, 255), 'presence' => 'required'),
             'fio'       => array(array('StringLength', 1, 255), 'presence' => 'required'),
             'phone'     => array(array('StringLength', 1, 255), 'presence' => 'required'),
             'email'     => array(array('StringLength', 1, 255), 'presence' => 'required')
@@ -45,7 +45,7 @@ class PMS_Customers
         ), array(
             'id'          => array('int', 'presence' => 'required'),
             'name'      => array(array('StringLength', 1, 255), 'presence' => 'required'),
-            'address'   => array(array('StringLength', 1, 255), 'presence' => 'required'),
+            'c_address' => array(array('StringLength', 1, 255), 'presence' => 'required'),
             'fio'       => array(array('StringLength', 1, 255), 'presence' => 'required'),
             'phone'     => array(array('StringLength', 1, 255), 'presence' => 'required'),
             'email'     => array(array('StringLength', 1, 255), 'presence' => 'required')
