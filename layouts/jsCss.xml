@@ -95,6 +95,8 @@
         <script src="/js/PMS/Orders/Payments/Form.js"/>
         <script src="/js/PMS/Orders/Payments/List.js"/>
         
+        <script src="/js/PMS/Orders/Edit/Expences.js"/>
+        
         <script src="/js/PMS/Orders/Requests/List.js"/>
         <script src="/js/PMS/Orders/Requests/Form.js"/>
         
