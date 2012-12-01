@@ -93,15 +93,18 @@ PMS.Orders.Edit.Expences = Ext.extend(Ext.grid.GridPanel, {
         }];
         
         var totalSumm = new Ext.form.DisplayField({value: '0.00'});
-        this.bbar = [{
-            xtype: 'button',
-            iconCls: 'x-tbar-loading',
-            tooltip: 'Обновить',
-            handler: function() {
-                this.getStore().reload();
-            },
-            scope: this
-        }, '->', 'Итого: ', ' ', totalSumm, ' р.'];
+        this.bbar = new Ext.Toolbar({
+            style: 'color: red;',
+            items: [{
+                xtype: 'button',
+                iconCls: 'x-tbar-loading',
+                tooltip: 'Обновить',
+                handler: function() {
+                    this.getStore().reload();
+                },
+                scope: this
+            }, '->', '<b>ИТОГО:</b> ', ' ', totalSumm, ' р.']
+        });
         
         PMS.Orders.Edit.Expences.superclass.initComponent.apply(this, arguments);
         
