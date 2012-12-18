@@ -193,7 +193,7 @@ PMS.Menu = function(params) {
             });
         } 
 	}, '-', {
-	    text: 'Мониторинг автотранспорта',
+	    text: 'Мониторинг АТ',
 	    iconCls: 'suppliers-icon',
         hidden: !(acl.isView('map') && enableMap),
         handler: function() {
@@ -236,6 +236,14 @@ PMS.Menu = function(params) {
                 autoScroll: true,
                 autoLoad: link('default', 'index', 'changes', {}, 'html')
             }).show();
+        } 
+	}, {
+        xtype: 'button',
+        cls: 'x-btn-text-icon',
+        tooltip: 'Звонок в техподдержку',
+	    icon: '/images/Skype-icon.png',
+        handler: function() {
+            window.location.href = 'skype:e-head_support?call';
         } 
 	}, {
 		text: 'Учебник',
