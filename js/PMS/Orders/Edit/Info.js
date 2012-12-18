@@ -21,7 +21,7 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
         layout: 'column',
         columns: 2,
         defaults: {
-			columnWidth: .5,
+            columnWidth: .5,
             border: false,
             layout: 'form'
         }
@@ -40,6 +40,7 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
             disabled: !acl.isUpdate('orders', 'address')
         }, {
             items: [{
+                columnWidth: .4,
                 items: [{
                     name: 'success_date_planned',
                     hiddenName: 'success_date_planned',
@@ -56,51 +57,79 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
                     anchor: 0
                 }]
             }, {
+                columnWidth: .6,
+                layout: 'column',
+                columns: 2,
+                defaults: {
+                    labelWidth: 100,
+                    columnWidth: .5,
+                    border: false,
+                    layout: 'form'
+                },
                 items: [{
-        			xtype: 'checkbox',
-        			fieldLabel: 'Производство',
-        			boxLabel: 'вкл./выкл.',
-        			name: 'production',
-                    inputValue: 1,
-                    checked: true,
-        			hidden: !acl.isView('orders', 'production'),
-        			hideLabel: !acl.isView('orders', 'production'),
-        			disabled: !acl.isUpdate('orders', 'production'),
-        			anchor: 0,
-        			handler: function(cb, status) {
-        				this.fireEvent('productionChecked', status);
-	                }, 
-                    scope: this
+                    items: [{
+            			xtype: 'checkbox',
+            			fieldLabel: 'Производство',
+            			boxLabel: 'вкл./выкл.',
+            			name: 'production',
+                        inputValue: 1,
+                        checked: true,
+            			hidden: !acl.isView('orders', 'production'),
+            			hideLabel: !acl.isView('orders', 'production'),
+            			disabled: !acl.isUpdate('orders', 'production'),
+            			anchor: 0,
+            			handler: function(cb, status) {
+            				this.fireEvent('productionChecked', status);
+    	                }, 
+                        scope: this
+                    }, {
+            			xtype: 'checkbox',
+            			fieldLabel: 'Монтаж',
+            			boxLabel: 'вкл./выкл.',
+            			name: 'mount',
+                        inputValue: 1,
+                        checked: true,
+            			hidden: !acl.isView('orders', 'mount'),
+            			hideLabel: !acl.isView('orders', 'mount'),
+            			disabled: !acl.isUpdate('orders', 'mount'),
+            			anchor: 0,
+            			handler: function(cb, status) {
+            				this.fireEvent('mountChecked', status);
+    	                }, 
+                        scope: this
+                    }]
                 }, {
-                    xtype: 'checkbox',
-                    fieldLabel: 'Печать',
-                    boxLabel: 'вкл./выкл.',
-                    name: 'print',
-                    inputValue: 1,
-                    checked: true,
-                    hidden: !acl.isView('orders', 'print'),
-                    hideLabel: !acl.isView('orders', 'print'),
-                    disabled: !acl.isUpdate('orders', 'print'),
-                    anchor: 0,
-                    handler: function(cb, status) {
-                        this.fireEvent('printChecked', status);
-                    }, 
-                    scope: this
-                }, {
-        			xtype: 'checkbox',
-        			fieldLabel: 'Монтаж',
-        			boxLabel: 'вкл./выкл.',
-        			name: 'mount',
-                    inputValue: 1,
-                    checked: true,
-        			hidden: !acl.isView('orders', 'mount'),
-        			hideLabel: !acl.isView('orders', 'mount'),
-        			disabled: !acl.isUpdate('orders', 'mount'),
-        			anchor: 0,
-        			handler: function(cb, status) {
-        				this.fireEvent('mountChecked', status);
-	                }, 
-                    scope: this
+                    items: [{
+                        xtype: 'checkbox',
+                        fieldLabel: 'Печать',
+                        boxLabel: 'вкл./выкл.',
+                        name: 'print',
+                        inputValue: 1,
+                        checked: true,
+                        hidden: !acl.isView('orders', 'print'),
+                        hideLabel: !acl.isView('orders', 'print'),
+                        disabled: !acl.isUpdate('orders', 'print'),
+                        anchor: 0,
+                        handler: function(cb, status) {
+                            this.fireEvent('printChecked', status);
+                        }, 
+                        scope: this
+                    }, {
+            			xtype: 'checkbox',
+            			fieldLabel: 'Доставка',
+            			boxLabel: 'вкл./выкл.',
+            			name: 'delivery',
+                        inputValue: 1,
+                        checked: true,
+            			hidden: !acl.isView('orders', 'delivery'),
+            			hideLabel: !acl.isView('orders', 'delivery'),
+            			disabled: !acl.isUpdate('orders', 'delivery'),
+            			anchor: 0,
+            			handler: function(cb, status) {
+            				this.fireEvent('deliveryChecked', status);
+    	                }, 
+                        scope: this
+                    }]
                 }]
             }]
         }, {

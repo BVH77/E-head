@@ -38,6 +38,10 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
             scope: this
         });
         
+        this.formDelivery = new PMS.Orders.Edit.Delivery({
+            scope: this
+        });
+        
         this.formMount = new PMS.Orders.Edit.Mount({
             height: 333,
     	    scope: this
@@ -97,6 +101,14 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
             }
         }, this);
         
+        this.formInfo.on('deliveryChecked', function(v) {
+            if (this.formDelivery) {
+                this.formDelivery.cascade(function(cmp) {
+                    cmp.setDisabled(!v);
+                });
+            }
+        }, this);
+        
         if (this.record) {
             this.orderId = this.record.get('id');
             this.enableTabs();
@@ -116,6 +128,9 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         }
         if (acl.isView('orders', 'mount')) {
             this.tabPanel.add(this.formMount);
+        }
+        if (acl.isView('orders', 'delivery')) {
+            this.tabPanel.add(this.formDelivery);
         }
         
         this.expences = new PMS.Orders.Edit.Expences({
@@ -228,7 +243,7 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
         
         this.wind = new Ext.Window(Ext.apply({
             title: this.orderId ? 'Заказ № ' + this.orderId : 'Новый заказ',
-            width: 700,
+            width: 800,
             height: 420,
             layout: 'fit',
             resizable: false,

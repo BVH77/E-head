@@ -336,7 +336,13 @@ INSERT INTO `acl_resources` (`id`, `name`, `title`, `parent_id`) VALUES (50, 'ad
 (152, 'storage', 'Склад', NULL),
 (153, 'notice', 'Приказы и объявления', NULL),
 (154, 'reports', 'Отчёты', NULL),
-(155, 'staff', 'Кадры', NULL);
+(155, 'staff', 'Кадры', NULL),
+(156, 'payments', 'Платежи', 123),
+(157, 'delivery', 'Доставка', 123),
+(158, 'start_planned', 'Начало (план)', 157),
+(159, 'start_fact', 'Начало (факт)', 157),
+(160, 'end_planned', 'Конец (план)', 157),
+(161, 'end_fact', 'Конец (факт)', 157);
 
 -- --------------------------------------------------------
 
@@ -365,7 +371,8 @@ INSERT INTO `acl_roles` (`id`, `name`, `alias`) VALUES
 (5, 'Монтаж', 'mount'),
 (7, 'Бухгалтер', 'bookkeeper'),
 (8, 'Кладовщик', 'store'),
-(9, 'Печать', 'print');
+(9, 'Печать', 'print'),
+(10, 'Доставка', 'delivery');
 
 -- --------------------------------------------------------
 
@@ -467,6 +474,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `mount` tinyint(1) unsigned NOT NULL default '1',
   `production` tinyint(1) unsigned NOT NULL default '1',
   `print` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+  `delivery` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
   `production_start_planned` date default NULL,
   `production_start_fact` date default NULL,
   `production_end_planned` date default NULL,
@@ -479,6 +487,10 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `mount_start_fact` date default NULL,
   `mount_end_planned` date default NULL,
   `mount_end_fact` date default NULL,
+  `delivery_start_planned` date default NULL,
+  `delivery_start_fact` date default NULL,
+  `delivery_end_planned` date default NULL,
+  `delivery_end_fact` date default NULL,
   `success_date_planned` date default NULL,
   `success_date_fact` date default NULL,
   `cost` int(10) unsigned default NULL,
@@ -755,7 +767,80 @@ CREATE TABLE IF NOT EXISTS `fixed_assets_files` (
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB ;
 
+DROP TABLE IF EXISTS `orders_payments`;
+CREATE TABLE IF NOT EXISTS `orders_payments` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `order_id` int(10) unsigned NOT NULL,
+  `date` date NOT NULL,
+  `summ` double(10,2) NOT NULL,
+  `status` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+DROP TABLE IF EXISTS `orders_budget`;
+CREATE TABLE IF NOT EXISTS `orders_budget` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `order_id` int(10) unsigned NOT NULL,
+  `f1_qty` varchar(255) default NULL,
+  `f1_price` varchar(255) default NULL,
+  `f2_dest` varchar(255) default NULL,
+  `f2_distance` varchar(255) default NULL,
+  `f2_qty` varchar(255) default NULL,
+  `f2_price` varchar(255) default NULL,
+  `f3_transport` varchar(255) default NULL,
+  `f3_people` varchar(255) default NULL,
+  `f3_qty` varchar(255) default NULL,
+  `f3_price` varchar(255) default NULL,
+  `f4_people` varchar(255) default NULL,
+  `f4_days` varchar(255) default NULL,
+  `f4_qty` varchar(255) default NULL,
+  `f4_price` varchar(255) default NULL,
+  `f5_people` varchar(255) default NULL,
+  `f5_days` varchar(255) default NULL,
+  `f5_qty` varchar(255) default NULL,
+  `f5_price` varchar(255) default NULL,
+  `f6_params` varchar(255) default NULL,
+  `f6_qty` varchar(255) default NULL,
+  `f6_price` varchar(255) default NULL,
+  `f7_params` varchar(255) default NULL,
+  `f7_qty` varchar(255) default NULL,
+  `f7_price` varchar(255) default NULL,
+  `f8_people` varchar(255) default NULL,
+  `f8_days` varchar(255) default NULL,
+  `f8_qty` varchar(255) default NULL,
+  `f8_price` varchar(255) default NULL,
+  `f9_params` varchar(255) default NULL,
+  `f9_qty` varchar(255) default NULL,
+  `f9_price` varchar(255) default NULL,
+  `f10_qty` varchar(255) default NULL,
+  `f10_price` varchar(255) default NULL,
+  `f11_dest` varchar(255) default NULL,
+  `f11_distance` varchar(255) default NULL,
+  `f11_qty` varchar(255) default NULL,
+  `f11_price` varchar(255) default NULL,
+  `f12_people` varchar(255) default NULL,
+  `f12_days` varchar(255) default NULL,
+  `f12_qty` varchar(255) default NULL,
+  `f12_price` varchar(255) default NULL,
+  `f13_people` varchar(255) default NULL,
+  `f13_days` varchar(255) default NULL,
+  `f13_qty` varchar(255) default NULL,
+  `f13_price` varchar(255) default NULL,
+  `f14_qty` varchar(255) default NULL,
+  `f14_price` varchar(255) default NULL,
+  `f15_descr` varchar(255) default NULL,
+  `f15_qty` varchar(255) default NULL,
+  `f15_price` varchar(255) default NULL,
+  `f16_descr` varchar(255) default NULL,
+  `f16_qty` varchar(255) default NULL,
+  `f16_price` varchar(255) default NULL,
+  `f17_descr` varchar(255) default NULL,
+  `f17_qty` varchar(255) default NULL,
+  `f17_price` varchar(255) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- ***
 
@@ -832,5 +917,11 @@ ALTER TABLE `fixed_assets`
 
 ALTER TABLE `fixed_assets_files` 
     ADD FOREIGN KEY (`item_id`) REFERENCES `fixed_assets` (`id`) ON DELETE CASCADE ;
+
+ALTER TABLE `orders_payments`
+  ADD CONSTRAINT `order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
+
+TER TABLE `orders_budget`
+  ADD CONSTRAINT `orders_budget_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;  
 
 SET FOREIGN_KEY_CHECKS=1;
