@@ -14,6 +14,8 @@ PMS.Staff.Payments.Form = Ext.extend(xlib.form.FormPanel, {
     
     personId: null,
     
+    labelWidth: 80,
+    
     initComponent: function() {
         
         this.items = [{
@@ -32,6 +34,12 @@ PMS.Staff.Payments.Form = Ext.extend(xlib.form.FormPanel, {
             allowDecimals: false,
             allowNegative: false,
             allowBlank: false
+        }, {
+            xtype: 'textarea',
+            fieldLabel: 'Комментарий',
+            name: 'comment',
+            anchor: '100%',
+            allowBlank: true
         }];
         
         PMS.Staff.Payments.Form.superclass.initComponent.apply(this, arguments);

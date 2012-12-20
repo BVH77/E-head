@@ -14,6 +14,10 @@ PMS.Staff.Payments.List = Ext.extend(Ext.grid.GridPanel, {
 
     defaultSortable: true,
     
+    viewConfig: {
+        scrollOffset: 28
+    },
+    
     initComponent: function() {
         
         if (!this.personId) {
@@ -61,7 +65,8 @@ PMS.Staff.Payments.List = Ext.extend(Ext.grid.GridPanel, {
                     }
                 },
                 {name: 'value', type: 'int'}, 
-                {name: 'paid', type: 'int'} 
+                {name: 'paid', type: 'int'},
+                'comment'
             ]
         });
         
@@ -72,32 +77,36 @@ PMS.Staff.Payments.List = Ext.extend(Ext.grid.GridPanel, {
             columns: [{
                 header: 'Дата',
                 dataIndex: 'date',
-                width: 140
+                width: 80
             }, {
                 header: 'Сумма (руб.)',
                 dataIndex: 'value',
+                width: 100,
                 align: 'right',
-                id: this.autoExpandColumn,
                 renderer: function(value, metaData, record, rowIndex, colIndex, store) {
                     return Ext.util.Format.number(value, '0,000.00').replace(/,/g, ' ');
                 }
             }, {
                 header: 'Распределено (руб.)',
                 dataIndex: 'paid',
+                width: 100,
                 align: 'right',
-                width: 140,
                 renderer: function(value, metaData, record, rowIndex, colIndex, store) {
                     return Ext.util.Format.number(value, '0,000.00').replace(/,/g, ' ');
                 }
             }, {
                 header: 'Остаток (руб.)',
                 // dataIndex: 'value' - 'paid',
+                width: 100,
                 align: 'right',
-                width: 140,
                 renderer: function(value, metaData, record, rowIndex, colIndex, store) {
                     value = record.get('value') - record.get('paid'); 
                     return Ext.util.Format.number(value, '0,000.00').replace(/,/g, ' ');
                 }
+            }, {
+                header: 'Комментарий',
+                dataIndex: 'comment',
+                id: this.autoExpandColumn
             }]
         });
                 

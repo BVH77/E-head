@@ -53,7 +53,8 @@ class PMS_Staff_Payments
         ), array(
             'date'      => array(array('StringLength', 1, 10), 'presence' => 'required'),
             'staff_id'  => array('Id', 'allowEmpty' => false, 'presence' => 'required'),
-            'value'     => array('Id', 'allowEmpty' => false, 'presence' => 'required')
+            'value'     => array('Id', 'allowEmpty' => false, 'presence' => 'required'),
+            'comment'   => array(array('StringLength', 0, 255))
         ), $params);
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
@@ -89,7 +90,8 @@ class PMS_Staff_Payments
             'id'        => array(array('Id'), 'presence' => 'required'),
             'date'      => array(array('StringLength', 1, 10), 'presence' => 'required'),
             'staff_id'  => array('Id'),
-            'value'     => array('Id', 'allowEmpty' => false, 'presence' => 'required')
+            'value'     => array('Id', 'allowEmpty' => false, 'presence' => 'required'),
+            'comment'   => array(array('StringLength', 0, 255))
         ), $params);
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
