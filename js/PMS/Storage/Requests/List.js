@@ -106,7 +106,7 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
                     } : false;
             }],
             scope: this
-        })
+        });
         
         this.columns = [{
             header: 'Заявка на дату',
