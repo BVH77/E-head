@@ -25,7 +25,18 @@ PMS.Menu = function(params) {
 	        }
 	    }
 	}, ' ', ' ', ' ', ' ', ' ', {
-	    text: 'Архив заказов',
+	    text: 'Задачи',
+	    iconCls: 'work_schd-icon',
+	    hidden: !acl.isView('archive'),
+	    handler: function() {
+	        PMS.System.Layout.getTabPanel().add({
+	            iconCls: 'work_schd-icon',
+	            xtype: 'PMS.Organizer.List',
+	            id: 'PMS.Organizer.List'
+	        });
+	    }
+	}, {
+		text: 'Архив заказов',
 	    iconCls: 'archive-icon',
 	    hidden: !acl.isView('archive'),
 	    handler: function() {
