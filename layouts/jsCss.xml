@@ -157,6 +157,7 @@
         
         <script src="/js/PMS/Organizer/List.js"/>
         <script src="/js/PMS/Organizer/Form.js"/>
+        <script src="/js/PMS/Organizer/Manager.js"/>
         
         <!-- Modules -->
         

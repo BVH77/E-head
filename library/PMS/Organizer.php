@@ -199,4 +199,28 @@ class PMS_Organizer
         }
         return $response->addStatus(new PMS_Status($status));
     }
+
+    /**
+     * @return int - number of active tasks for current user
+     */
+    public function getActiveTasksCount()
+    {
+        $response = new OSDN_Response();
+        $accounts = new OSDN_Accounts_Table_Accounts();
+        $select = $this->_table->getAdapter()->select();
+
+        $select->from($this->_table->getTableName(), 'count(*)');
+        $select->where('account_id = ?', OSDN_Accounts_Prototype::getId());
+        $select->where('closed IS NULL');
+        try {
+            $response->count = $select->query()->fetchColumn(0);
+            $status = PMS_Status::OK;
+        } catch (Exception $e) {
+            $status = PMS_Status::DATABASE_ERROR;
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+        }
+        return $response->addStatus(new PMS_Status($status));
+    }
 }

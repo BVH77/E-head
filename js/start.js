@@ -127,5 +127,7 @@ Ext.onReady(function(){
                 new PMS.Notice.Reader().show().loadData(item);
             });
         }
+        
+        new PMS.Organizer.Manager();
     });
 });

@@ -27,6 +27,7 @@ PMS.Menu = function(params) {
 	}, ' ', ' ', ' ', ' ', ' ', {
 	    text: 'Задачи',
 	    iconCls: 'work_schd-icon',
+        id: 'Organizer-Button',
 	    hidden: !acl.isView('organizer'),
 	    handler: function() {
 	        PMS.System.Layout.getTabPanel().add({
