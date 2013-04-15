@@ -21,7 +21,8 @@ Ext.onReady(function(){
     Ext.form.FieldSet.prototype.stateful = false;
     
     Ext.ns('xlib.date');
-    xlib.date.TIME_FORMAT = 'H:i';
+    xlib.date.TIME_FORMAT = 'H:i:s';
+    xlib.date.TIME_WITHOUT_SECONDS_FORMAT = 'H:i';
     xlib.date.DATE_FORMAT = 'd-m-Y';
     xlib.date.DATE_WEEK_FORMAT = 'd-m-Y, l';
     xlib.date.DATE_TIME_WITHOUT_SECONDS_FORMAT = 'd-m-Y H:i';

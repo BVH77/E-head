@@ -6,11 +6,15 @@ PMS.Organizer.List = Ext.extend(Ext.grid.GridPanel, {
     
     listURL:    link('organizer', 'index', 'get-list'),
     
+    getURL:     link('organizer', 'index', 'get'),
+    
     addURL:     link('organizer', 'index', 'add'),
     
     updateURL:  link('organizer', 'index', 'update'),
     
     deleteURL:  link('organizer', 'index', 'delete'),
+    
+    closeTaskURL: link('organizer', 'index', 'close-task'),
     
     loadMask: true,
 
@@ -20,16 +24,8 @@ PMS.Organizer.List = Ext.extend(Ext.grid.GridPanel, {
         
         getRowClass: function (record) {
             
-            if (record.get('success') > 0) { 
-                return 'x-row-success';
-            }
-            
-            if (record.get('out_of_stock') > 0) { 
-                return 'x-row-error';
-            }
-            
-            if (record.get('request_on') < new Date()) { 
-                return 'x-row-expired';
+            if (!Ext.isEmpty(record.get('closed'))) { 
+                return 'x-row-closed';
             }
         }
         
@@ -42,18 +38,13 @@ PMS.Organizer.List = Ext.extend(Ext.grid.GridPanel, {
         this.ds = new Ext.data.JsonStore({
             url: this.listURL,
             autoLoad: true,
-            remoteSort: true,
             root: 'data',
             id: 'id',
-            sortInfo: {
-                field: 'ondate',
-                direction: 'DESC'
-            },
             totalProperty: 'totalCount',
             fields: ['text', 'account_name',
                 {name: 'id', type: 'int'},
-                {name: 'ondate', type: 'date', dateFormat: xlib.date.DATE_TIME_FORMAT_SERVER},
-                {name: 'ontime', type: 'date', dateFormat: xlib.date.DATE_TIME_FORMAT_SERVER},
+                {name: 'ondate', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
+                {name: 'ontime', type: 'date', dateFormat: xlib.date.TIME_FORMAT},
                 {name: 'account_id', type: 'int'},
                 {
                     name: 'created', 
@@ -67,7 +58,7 @@ PMS.Organizer.List = Ext.extend(Ext.grid.GridPanel, {
                     }
                 },
                 {
-                    name: 'success', 
+                    name: 'closed', 
                     type: 'date', 
                     dateFormat: xlib.date.DATE_TIME_FORMAT_SERVER,
                     convert: function(v, record) {
@@ -84,16 +75,30 @@ PMS.Organizer.List = Ext.extend(Ext.grid.GridPanel, {
         
         var actions = new xlib.grid.Actions({
             autoWidth: true,
-            items: [{
-                text: 'Выполнено',
-                iconCls: 'edit',
-                handler: this.onSuccess,
-                scope: this
-            }, {
-                text: 'Редактировать',
-                iconCls: 'edit',
-                handler: this.onUpdate,
-                scope: this
+            items: [function (g, rowIndex, e) {
+                
+                var record = g.getStore().getAt(rowIndex);
+                
+                return Ext.isEmpty(record.get('closed')) ? {
+                        text: 'Выполнено',
+                        iconCls: 'check',
+                        hidden: !g.permissions,
+                        handler: g.onCloseTask,
+                        scope: g
+                    } : false;
+                    
+            }, function (g, rowIndex, e) {
+                
+                var record = g.getStore().getAt(rowIndex);
+                
+                return Ext.isEmpty(record.get('closed')) ? {
+                        text: 'Редактировать',
+                        iconCls: 'edit',
+                        hidden: !g.permissions,
+                        handler: g.onUpdate,
+                        scope: g
+                    } : false;
+                    
             }, {
                 text: 'Удалить',
                 iconCls: 'delete',
@@ -106,31 +111,30 @@ PMS.Organizer.List = Ext.extend(Ext.grid.GridPanel, {
         this.columns = [{
             header: 'Дата/время',
             dataIndex: 'ondate',
-            renderer: xlib.dateRenderer(xlib.date.DATE_TIME_FORMAT),
-            sortable: true,
-            width: 200
+            renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                var date = record.get('ondate');
+                var time = record.get('ontime');
+                var out = date.format(xlib.date.DATE_FORMAT) 
+                    + ' ' + time.format(xlib.date.TIME_WITHOUT_SECONDS_FORMAT);
+                return out;
+            },
+            width: 100
         }, {
             header: 'Текст',
             dataIndex: 'text',
-            sortable: true,
             id: this.autoExpandColumn
         }, {
             header: 'Исполнитель',
             dataIndex: 'account_name',
             hidden: !acl.isView('admin'),
-            sortable: true,
             width: 150
         }, {
             header: 'Создана',
             dataIndex: 'created',
-            hidden: !acl.isView('admin'),
-            sortable: true,
             width: 150
         }, {
             header: 'Закрыта',
-            dataIndex: 'success',
-            hidden: !acl.isView('admin'),
-            sortable: true,
+            dataIndex: 'closed',
             width: 150
         }];
         
@@ -144,7 +148,7 @@ PMS.Organizer.List = Ext.extend(Ext.grid.GridPanel, {
             items: [new Ext.Toolbar.Button({
                 text: 'Добавить задачу',
                 iconCls: 'add',
-                hidden: acl.isView('admin'),
+                hidden: !acl.isUpdate('organizer'),
                 tooltip: 'Добавить задачу',
                 handler: this.onAdd,
                 scope: this
@@ -168,11 +172,25 @@ PMS.Organizer.List = Ext.extend(Ext.grid.GridPanel, {
         w.show();
     },
     
-    onSuccess: function(b, e) {
+    onCloseTask: function(g, rowIndex) {
     	
-//        var formPanel = new PMS.Organizer.Form(),
-//            w = this.getWindow(formPanel, this.addURL, this.getStore(), false);
-//        w.show();
+        var record = g.getStore().getAt(rowIndex);
+        
+        Ext.Ajax.request({
+            url: this.closeTaskURL,
+            params: {
+                id: record.get('id')
+            },
+            callback: function (options, success, response) {
+                var res = xlib.decode(response.responseText);
+                if (true == success && res && true == res.success) {
+                    g.getStore().reload();
+                    return;
+                }
+                xlib.Msg.error('Ошибка при закрытии задачи.');
+            },
+            scope: this
+        });
     },
     
     onUpdate: function(g, rowIndex) {

@@ -7,6 +7,11 @@
     width: 75px;
 }
 
+.x-row-closed div {
+    color: grey;
+    text-decoration: line-through !important;
+}
+
 .x-row-expired {
     background: #FFFF99;
 }
