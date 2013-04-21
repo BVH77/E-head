@@ -2,79 +2,85 @@ Ext.ns('PMS.Organizer');
 
 PMS.Organizer.Manager = Ext.extend(Ext.Component, {
 
-    ActiveTasksCount: 0,
+    firstRun: true,
     
     initComponent: function() {
         
-        this.getActiveTasksCount(function(count) {
-            
-            if (count > 0) {
-                this.getWindow(new PMS.Organizer.List({
-                    title: false
-                })).show();
-            }
-            
-            this.updateButton(count);
-        });
-        
         PMS.Organizer.Manager.superclass.initComponent.apply(this, arguments);
-        
         
         // Periodic check tasks & update button  
         Ext.TaskMgr.start({
-            run: function() {
-                this.getActiveTasksCount(this.updateButton);
-            },
+            run: this.getActiveTasks,
             scope: this,
             interval: 60000 // = 1 munute
         });
     },
     
-    getActiveTasksCount: function(f) {
+    getActiveTasks: function() {
     	
         Ext.Ajax.request({
-            url: link('organizer', 'index', 'get-active-tasks-count'),
-            callback: function(options, success, response) {
-                var res = xlib.decode(response.responseText);
-                if (true == success && res && true == res.success) {
-                    f.call(this, res.count);
-                }
-            },
+            url: link('organizer', 'index', 'get-active-tasks'),
+            callback: this.processTasks,
             scope: this
         });
     },
     
-    updateButton: function(count) {
+    processTasks: function(options, success, response) {
         
-        var b = Ext.getCmp('Organizer-Button');
+        var result = xlib.decode(response.responseText);
+        if (true != success || true != result.success) {
+            return;
+        }
+                
+        var b = Ext.getCmp('Organizer-Button'),
+            count = result.totalCount || 0;
         
         if (b && b.setText) {
-            var text = (b.srctext || 'Задачи') 
-                     + ' <font color="red"><b>' + (count || 0) + '</b></font>';
-            b.setText(text); 
+            b.setText('Задачи <font color="red"><b>' + count + '</b></font>'); 
         }
-    },
-    
-    getWindow: function(content) {
-         
-        var w = new Ext.Window({
-            title: 'Мои задачи',
-            border: false,
-            width: 700,
-            height: 500,
-            modal: true,
-            layout: 'fit',
-            items: [content],
-            buttons: [{
-                text: 'Закрыть',
-                handler: function() {
-                    w.close();
-                }
-            }]
-        });
         
-        return w;
+        if (count == 0) return;
+        
+        var msgArray = [],
+            nearestTasks = [],
+            now = new Date(),
+            dateMargin = 1000 * 60 * 5; // = 5 minutes
+            
+        Ext.each(result.data, function(r) {
+            
+            var dateString = Ext.util.Format.date(
+                r.ondate + ' ' + r.ontime,
+                xlib.date.DATE_FORMAT_SERVER + ' ' + xlib.date.TIME_FORMAT
+            ),
+            msg = dateString + ' ' + r.text,
+            rDate = new Date(dateString);
+            
+            // skip feature tasks
+            if (rDate.clearTime(true) > now.clearTime(true)) return true;
+            
+            if (rDate.getTime() < now.getTime()) {
+                msg = '<font color="red">' + msg + '</font>';
+            }
+            
+            msgArray.push(msg);
+            
+            // search for nearest task
+            var dateSub = Math.abs(now.getTime() - rDate.getTime());
+            if (dateSub < dateMargin) {
+                nearestTasks.push(msg);
+            }
+            
+        }, this);
+        
+        if (this.firstRun && msgArray.length) {
+            Ext.Msg.alert('Задачи на сегодня', msgArray.join('<br />'));
+            this.firstRun = false;
+        } else if (nearestTasks.length) {
+            Ext.Msg.alert('Задача', nearestTasks.join('<br />'));
+        }
+        
     }
+    
 });
 
 Ext.reg('PMS.Organizer.Manager', PMS.Organizer.Manager);

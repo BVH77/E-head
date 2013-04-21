@@ -7,9 +7,12 @@
     width: 75px;
 }
 
-.x-row-closed div {
+.x-row-task-closed div {
     color: grey;
     text-decoration: line-through !important;
+}
+.x-row-task-expired div {
+    color: red;
 }
 
 .x-row-expired {

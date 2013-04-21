@@ -22,10 +22,18 @@ PMS.Organizer.List = Ext.extend(Ext.grid.GridPanel, {
     
     viewConfig: {
         
-        getRowClass: function (record) {
+        getRowClass: function(record) {
             
             if (!Ext.isEmpty(record.get('closed'))) { 
-                return 'x-row-closed';
+                return 'x-row-task-closed';
+            }
+            
+            var recordDate = record.get('ondate')
+              .add(Date.HOUR, record.get('ontime').getHours()) 
+              .add(Date.MINUTE, record.get('ontime').getMinutes()); 
+
+            if (recordDate.getTime() < (new Date()).getTime()) { 
+                return 'x-row-task-expired';
             }
         }
         

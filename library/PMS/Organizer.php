@@ -203,17 +203,19 @@ class PMS_Organizer
     /**
      * @return int - number of active tasks for current user
      */
-    public function getActiveTasksCount()
+    public function getActiveTasks()
     {
         $response = new OSDN_Response();
         $accounts = new OSDN_Accounts_Table_Accounts();
         $select = $this->_table->getAdapter()->select();
 
-        $select->from($this->_table->getTableName(), 'count(*)');
+        $select->from($this->_table->getTableName());
         $select->where('account_id = ?', OSDN_Accounts_Prototype::getId());
         $select->where('closed IS NULL');
+        $plugin = new OSDN_Db_Plugin_Select($this->_table, $select);
         try {
-            $response->count = $select->query()->fetchColumn(0);
+            $response->setRowset($select->query()->fetchAll());
+            $response->totalCount = $plugin->getTotalCount();
             $status = PMS_Status::OK;
         } catch (Exception $e) {
             $status = PMS_Status::DATABASE_ERROR;

@@ -17,7 +17,7 @@ class Organizer_IndexController extends OSDN_Controller_Action
     {
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->organizer);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-list');
-        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-active-tasks-count');
+        $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get-active-tasks');
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
@@ -25,12 +25,13 @@ class Organizer_IndexController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'close-task');
     }
 
-	public function getActiveTasksCountAction()
+	public function getActiveTasksAction()
     {
-    	$response = $this->_class->getActiveTasksCount();
+    	$response = $this->_class->getActiveTasks();
     	if ($response->isSuccess()) {
     		$this->view->success = true;
-    	    $this->view->count = $response->count;
+    	    $this->view->data = $response->getRowset();
+    	    $this->view->totalCount = $response->totalCount;
     	} else {
     		$this->_collectErrors($response);
     	}
