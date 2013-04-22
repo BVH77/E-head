@@ -12,12 +12,11 @@ PMS.Organizer.Manager = Ext.extend(Ext.Component, {
         Ext.TaskMgr.start({
             run: this.getActiveTasks,
             scope: this,
-            interval: 60000 // = 1 munute
+            interval: 6000 // = 1 munute
         });
     },
     
     getActiveTasks: function() {
-    	
         Ext.Ajax.request({
             url: link('organizer', 'index', 'get-active-tasks'),
             callback: this.processTasks,
@@ -48,13 +47,9 @@ PMS.Organizer.Manager = Ext.extend(Ext.Component, {
             
         Ext.each(result.data, function(r) {
             
-            var dateString = Ext.util.Format.date(
-                r.ondate + ' ' + r.ontime,
-                xlib.date.DATE_FORMAT_SERVER + ' ' + xlib.date.TIME_FORMAT
-            ),
-            msg = dateString + ' ' + r.text,
-            rDate = new Date(dateString);
-            
+            var rDate = new Date((r.ondate).replace(/-/g, '/') + ' ' + r.ontime);
+            var msg = rDate.format(xlib.date.DATE_TIME_WITHOUT_SECONDS_FORMAT) + ' ' + r.text;
+        
             // skip feature tasks
             if (rDate.clearTime(true) > now.clearTime(true)) return true;
             
