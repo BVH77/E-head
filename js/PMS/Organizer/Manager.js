@@ -12,7 +12,7 @@ PMS.Organizer.Manager = Ext.extend(Ext.Component, {
         Ext.TaskMgr.start({
             run: this.getActiveTasks,
             scope: this,
-            interval: 6000 // = 1 munute
+            interval: 60000 // = 1 munute
         });
     },
     
