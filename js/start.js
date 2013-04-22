@@ -128,6 +128,6 @@ Ext.onReady(function(){
             });
         }
         
-        new PMS.Organizer.Manager();
+        //new PMS.Organizer.Manager();
     });
 });
