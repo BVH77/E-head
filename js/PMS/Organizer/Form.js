@@ -41,7 +41,7 @@ PMS.Organizer.Form = Ext.extend(xlib.form.FormPanel, {
 		            name: 'ontime',
 		            value: newDate
 	        	}]
-	        }],
+	        }]
         }, {
             xtype: 'textarea',
             anchor: '100% 100%',
