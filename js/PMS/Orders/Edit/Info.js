@@ -146,8 +146,7 @@ PMS.Orders.Edit.Info = Ext.extend(Ext.Panel, {
                     hidden: !acl.isView('orders', 'cost'),
                     fieldLabel: 'Стоимость',
                     disabled: !acl.isUpdate('orders', 'cost'),
-                    anchor: 0,
-                    minValue: 1
+                    anchor: 0
         		}]
         	}, {
         		items: [{
