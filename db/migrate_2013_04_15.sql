@@ -18,3 +18,4 @@ ALTER TABLE `organizer`
 SET FOREIGN_KEY_CHECKS=1;
 
 ALTER TABLE  `storage_assets` ADD  `hidden` TINYINT( 1 ) NOT NULL DEFAULT  '0';
+
