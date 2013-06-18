@@ -19,6 +19,9 @@
 .check {
     background-image:url(/images/ok_16x16.gif) !important;
 }
+.showhide {
+    background-image:url(/images/showhide.png) !important;
+}
 
 .check-box-checked {
 	width: 19px; 

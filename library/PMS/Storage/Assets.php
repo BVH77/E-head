@@ -43,6 +43,15 @@ class PMS_Storage_Assets
                 ),
             null);
         }
+
+        if (!isset($params['Xfilter'])) {
+            $params['Xfilter'] = 'false';
+        }
+
+        if ($params['Xfilter'] === 'false') {
+            $select->where('hidden = 0');
+        }
+
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select);
         $plugin->setSqlCalcFoundRows(true);
         $plugin->parse($params);
@@ -137,6 +146,30 @@ class PMS_Storage_Assets
         }
         // TODO: check relations
         $this->_table->deleteByPk($id);
+        return $response->addStatus(new PMS_Status(PMS_Status::OK));
+    }
+
+    public function hide($id)
+    {
+        $id = intval($id);
+        $response = new OSDN_Response();
+        if ($id == 0) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
+        }
+        $this->_table->updateByPk(array('hidden' => 1), $id);
+        return $response->addStatus(new PMS_Status(PMS_Status::OK));
+    }
+
+    public function unhide($id)
+    {
+        $id = intval($id);
+        $response = new OSDN_Response();
+        if ($id == 0) {
+            return $response->addStatus(new PMS_Status(
+                PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
+        }
+        $this->_table->updateByPk(array('hidden' => 0), $id);
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 

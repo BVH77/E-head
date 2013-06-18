@@ -16,3 +16,5 @@ CREATE TABLE IF NOT EXISTS `organizer` (
 ALTER TABLE `organizer`
   ADD CONSTRAINT `organizer_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`);
 SET FOREIGN_KEY_CHECKS=1;
+
+ALTER TABLE  `storage_assets` ADD  `hidden` TINYINT( 1 ) NOT NULL DEFAULT  '0';

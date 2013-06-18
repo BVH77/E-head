@@ -22,6 +22,8 @@ class Storage_AssetsController extends OSDN_Controller_Action
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'hide');
+        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'unhide');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'check');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'reset-checks');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'income');
@@ -75,6 +77,26 @@ class Storage_AssetsController extends OSDN_Controller_Action
     public function deleteAction()
     {
     	$response = $this->_class->delete($this->_getParam('id'));
+    	if ($response->isSuccess()) {
+    	    $this->view->success = true;
+    	} else {
+    	   $this->_collectErrors($response);
+    	}
+    }
+
+    public function hideAction()
+    {
+    	$response = $this->_class->hide($this->_getParam('id'));
+    	if ($response->isSuccess()) {
+    	    $this->view->success = true;
+    	} else {
+    	   $this->_collectErrors($response);
+    	}
+    }
+
+    public function unhideAction()
+    {
+    	$response = $this->_class->unhide($this->_getParam('id'));
     	if ($response->isSuccess()) {
     	    $this->view->success = true;
     	} else {

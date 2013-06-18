@@ -14,6 +14,10 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
     
     deleteURL: link('storage', 'assets', 'delete'),
     
+    hideURL: link('storage', 'assets', 'hide'),
+    
+    unhideURL: link('storage', 'assets', 'unhide'),
+    
     checkURL: link('storage', 'assets', 'check'),
     
     resetChecksURL: link('storage', 'assets', 'reset-checks'),
@@ -25,6 +29,15 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
     permissions: acl.isUpdate('storage'),
     
     readOnly: false,
+    
+    viewConfig: {
+    
+        getRowClass: function(record) {
+            if (parseInt(record.get('hidden')) == 1) {
+                return 'x-item-disabled';
+            }
+        }
+    },
     
     initComponent: function() {
         
@@ -71,7 +84,7 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             root: 'data',
             id: 'id',
             totalProperty: 'totalCount',
-            fields: ['id', 'name', 'measure', 'qty', 'unit_price', 'checked']
+            fields: ['id', 'name', 'measure', 'qty', 'unit_price', 'checked', 'hidden']
         });
         
         this.filtersPlugin = new Ext.grid.GridFilters({
@@ -130,12 +143,21 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
                     hidden: !this.permissions,
                     handler: this.onUpdate,
                     scope: this
-                }, {
-                    text: 'Удалить',
-                    iconCls: 'delete',
-                    hidden: !this.permissions,
-                    handler: this.onDelete,
-                    scope: this
+                }, function(g, rowIndex) {
+                    var isHidden = parseInt(g.getStore().getAt(rowIndex).get('hidden'));
+                    return {
+                        text: (isHidden == 1) ? 'Отобразить' : 'Скрыть',
+                        iconCls: 'showhide',
+                        hidden: !g.permissions,
+                        handler: g.onHide,
+                        scope: g
+                    }
+//                }, {
+//                    text: 'Удалить',
+//                    iconCls: 'delete',
+//                    hidden: !this.permissions,
+//                    handler: this.onDelete,
+//                    scope: this
                 }],
                 scope: this
             });
@@ -172,6 +194,15 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             
         }
      
+        this.tbar.push({
+            text: 'Отобразить скрытые',
+            enableToggle: true,
+            iconCls: 'showhide',
+            qtip: 'Скрыть / отобразить скрытые позиции',
+            handler: this.onFilter,
+            scope: this
+        });
+        
         PMS.Storage.Assets.List.superclass.initComponent.apply(this, arguments);
         
         if (!this.title) {
@@ -330,6 +361,40 @@ PMS.Storage.Assets.List = Ext.extend(Ext.grid.GridPanel, {
             
         }, this);
         
+    },
+    
+    onHide: function(g, rowIndex) {
+        
+        var record = g.getStore().getAt(rowIndex),
+            isHidden = parseInt(record.get('hidden')),
+            id = parseInt(record.get('id'));
+        
+        Ext.Ajax.request({
+           url: (isHidden == 1) ? this.unhideURL : this.hideURL,
+           params: { 
+                id: record.get('id')
+           },
+           success: function(res) {
+                var errors = Ext.decode(res.responseText).errors;
+                if (errors) {
+                    xlib.Msg.error(errors[0].msg);
+                    this.el.unmask();
+                    return;
+                }
+                this.getStore().reload();
+            },
+            failure: function() {
+                xlib.Msg.error('Ошибка связи с сервером.');
+                this.el.unmask();
+            },
+            scope: this
+        });
+        
+    },
+    
+    onFilter: function(b) {
+        this.getStore().baseParams = {Xfilter: b.pressed};
+        this.getStore().load();
     },
     
     loadList: function(categoryId, categoryName) {
