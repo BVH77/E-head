@@ -197,8 +197,8 @@ class OSDN_Accounts
 
         $select = $this->_tableAccounts->getAdapter()->select()
             ->from($this->_tableAccounts->getTableName(), array('id', 'name', 'login'))
-            ->where('active', 1)
-            ->where('role_id', MANAGER_ROLE);
+            ->where('active = ?', 1)
+            ->where('role_id = ?', MANAGER_ROLE);
 
             echo $select->assemble();
 
