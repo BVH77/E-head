@@ -200,8 +200,6 @@ class OSDN_Accounts
             ->where('active = ?', 1)
             ->where('role_id = ?', MANAGER_ROLE);
 
-            echo $select->assemble();
-
         try {
             $rowset = $select->query()->fetchAll();
             $response->setRowset($rowset);
