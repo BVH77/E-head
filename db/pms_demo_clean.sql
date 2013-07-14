@@ -1,22 +1,31 @@
 -- phpMyAdmin SQL Dump
--- version 2.8.2.4
+-- version 3.5.1
 -- http://www.phpmyadmin.net
--- 
--- Хост: localhost:3306
--- Время создания: Окт 18 2010 г., 23:34
--- Версия сервера: 5.0.32
--- Версия PHP: 5.2.6
+--
+-- Хост: localhost
+-- Время создания: Июл 15 2013 г., 01:10
+-- Версия сервера: 5.0.32-Debian_7etch10-log
+-- Версия PHP: 5.2.12-0.dotdeb.0
 
 SET FOREIGN_KEY_CHECKS=0;
--- 
--- БД: `pms_demo`
--- 
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- База данных: `pms_demo`
+--
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Структура таблицы `accounts`
--- 
+--
 
 DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE IF NOT EXISTS `accounts` (
@@ -34,17 +43,18 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   KEY `fk_role_id` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
--- 
+--
 -- Дамп данных таблицы `accounts`
--- 
+--
 
-INSERT INTO `accounts` (`id`, `login`, `password`, `role_id`, `name`, `email`, `phone`, `state`, `active`) VALUES (1, 'admin', 0x6264346432626130613063633164313539393237313534303666373534313231, 1, 'Администратор', 'admin@e-head.ru', '', NULL, 1);
+INSERT INTO `accounts` (`id`, `login`, `password`, `role_id`, `name`, `email`, `phone`, `state`, `active`) VALUES
+(1, 'admin', 'bd4d2ba0a0cc1d15992715406f754121', 1, 'Администратор', 'admin@e-head.ru', '', NULL, 1);
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Структура таблицы `acl_permissions`
--- 
+--
 
 DROP TABLE IF EXISTS `acl_permissions`;
 CREATE TABLE IF NOT EXISTS `acl_permissions` (
@@ -58,11 +68,12 @@ CREATE TABLE IF NOT EXISTS `acl_permissions` (
   KEY `fk_resource_id` (`resource_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1599 ;
 
--- 
+--
 -- Дамп данных таблицы `acl_permissions`
--- 
+--
 
-INSERT INTO `acl_permissions` (`id`, `role_id`, `resource_id`, `privilege_id`) VALUES (1094, 1, 50, 1),
+INSERT INTO `acl_permissions` (`id`, `role_id`, `resource_id`, `privilege_id`) VALUES
+(1094, 1, 50, 1),
 (1095, 1, 50, 2),
 (1096, 1, 50, 3),
 (1097, 1, 50, 4),
@@ -146,6 +157,14 @@ INSERT INTO `acl_permissions` (`id`, `role_id`, `resource_id`, `privilege_id`) V
 (1578, 1, 149, 2),
 (1579, 1, 149, 3),
 (1580, 1, 149, 4),
+(1591, 1, 152, 1),
+(1592, 1, 152, 3),
+(1593, 1, 153, 1),
+(1594, 1, 153, 3),
+(1595, 1, 154, 1),
+(1596, 1, 154, 3),
+(1597, 1, 155, 1),
+(1598, 1, 155, 3),
 (1249, 3, 123, 1),
 (1119, 3, 123, 2),
 (1250, 3, 123, 3),
@@ -278,21 +297,13 @@ INSERT INTO `acl_permissions` (`id`, `role_id`, `resource_id`, `privilege_id`) V
 (1588, 7, 146, 3),
 (1519, 7, 147, 1),
 (1523, 7, 148, 1),
-(1565, 7, 149, 1),
-(1591, 1, 152, 1),
-(1592, 1, 152, 3),
-(1593, 1, 153, 1),
-(1594, 1, 153, 3),
-(1595, 1, 154, 1),
-(1596, 1, 154, 3),
-(1597, 1, 155, 1),
-(1598, 1, 155, 3);
+(1565, 7, 149, 1);
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Структура таблицы `acl_resources`
--- 
+--
 
 DROP TABLE IF EXISTS `acl_resources`;
 CREATE TABLE IF NOT EXISTS `acl_resources` (
@@ -303,13 +314,14 @@ CREATE TABLE IF NOT EXISTS `acl_resources` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`,`parent_id`),
   KEY `fk_parent_id` (`parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=156 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=163 ;
 
--- 
+--
 -- Дамп данных таблицы `acl_resources`
--- 
+--
 
-INSERT INTO `acl_resources` (`id`, `name`, `title`, `parent_id`) VALUES (50, 'admin', 'Администрирование', NULL),
+INSERT INTO `acl_resources` (`id`, `name`, `title`, `parent_id`) VALUES
+(50, 'admin', 'Администрирование', NULL),
 (123, 'orders', 'Заказы', NULL),
 (126, 'cost', 'Стоимость', 123),
 (129, 'address', 'Адрес', 123),
@@ -342,13 +354,14 @@ INSERT INTO `acl_resources` (`id`, `name`, `title`, `parent_id`) VALUES (50, 'ad
 (158, 'start_planned', 'Начало (план)', 157),
 (159, 'start_fact', 'Начало (факт)', 157),
 (160, 'end_planned', 'Конец (план)', 157),
-(161, 'end_fact', 'Конец (факт)', 157);
+(161, 'end_fact', 'Конец (факт)', 157),
+(162, 'organizer', NULL, NULL);
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Структура таблицы `acl_roles`
--- 
+--
 
 DROP TABLE IF EXISTS `acl_roles`;
 CREATE TABLE IF NOT EXISTS `acl_roles` (
@@ -358,13 +371,13 @@ CREATE TABLE IF NOT EXISTS `acl_roles` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `alias` (`alias`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
--- 
+--
 -- Дамп данных таблицы `acl_roles`
--- 
+--
 
-INSERT INTO `acl_roles` (`id`, `name`, `alias`) VALUES 
+INSERT INTO `acl_roles` (`id`, `name`, `alias`) VALUES
 (1, 'Директор', 'admin'),
 (3, 'Менеджер', 'manager'),
 (4, 'Производство', 'production'),
@@ -376,9 +389,9 @@ INSERT INTO `acl_roles` (`id`, `name`, `alias`) VALUES
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Структура таблицы `customers`
--- 
+--
 
 DROP TABLE IF EXISTS `customers`;
 CREATE TABLE IF NOT EXISTS `customers` (
@@ -388,16 +401,11 @@ CREATE TABLE IF NOT EXISTS `customers` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- 
--- Дамп данных таблицы `customers`
--- 
-
-
 -- --------------------------------------------------------
 
--- 
+--
 -- Структура таблицы `files`
--- 
+--
 
 DROP TABLE IF EXISTS `files`;
 CREATE TABLE IF NOT EXISTS `files` (
@@ -411,16 +419,48 @@ CREATE TABLE IF NOT EXISTS `files` (
   KEY `order_id` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- 
--- Дамп данных таблицы `files`
--- 
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `fixed_assets`
+--
+
+DROP TABLE IF EXISTS `fixed_assets`;
+CREATE TABLE IF NOT EXISTS `fixed_assets` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `inventory_number` varchar(255) default NULL,
+  `name` varchar(255) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `staff_id` int(10) unsigned default NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `staff_id` (`staff_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
--- 
+--
+-- Структура таблицы `fixed_assets_files`
+--
+
+DROP TABLE IF EXISTS `fixed_assets_files`;
+CREATE TABLE IF NOT EXISTS `fixed_assets_files` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `item_id` int(11) unsigned NOT NULL default '0',
+  `filename` varchar(255) NOT NULL default '',
+  `description` varchar(255) default NULL,
+  `is_photo` tinyint(1) unsigned NOT NULL default '0',
+  `original_name` varchar(255) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `languages`
--- 
+--
 
 DROP TABLE IF EXISTS `languages`;
 CREATE TABLE IF NOT EXISTS `languages` (
@@ -431,17 +471,18 @@ CREATE TABLE IF NOT EXISTS `languages` (
   UNIQUE KEY `abbreviation` (`abbreviation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- 
+--
 -- Дамп данных таблицы `languages`
--- 
+--
 
-INSERT INTO `languages` (`id`, `abbreviation`, `caption`) VALUES (1, 'en', 'English');
+INSERT INTO `languages` (`id`, `abbreviation`, `caption`) VALUES
+(1, 'en', 'English');
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Структура таблицы `notes`
--- 
+--
 
 DROP TABLE IF EXISTS `notes`;
 CREATE TABLE IF NOT EXISTS `notes` (
@@ -454,16 +495,47 @@ CREATE TABLE IF NOT EXISTS `notes` (
   KEY `order_id` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- 
--- Дамп данных таблицы `notes`
--- 
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `notice`
+--
+
+DROP TABLE IF EXISTS `notice`;
+CREATE TABLE IF NOT EXISTS `notice` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `type` enum('объявление','приказ') NOT NULL,
+  `is_personal` tinyint(1) NOT NULL default '0',
+  `text` text NOT NULL,
+  `account_id` int(10) unsigned NOT NULL,
+  `date` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`),
+  KEY `account_id` (`account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
--- 
+--
+-- Структура таблицы `notice_dst`
+--
+
+DROP TABLE IF EXISTS `notice_dst`;
+CREATE TABLE IF NOT EXISTS `notice_dst` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `notice_id` int(10) unsigned NOT NULL,
+  `account_id` int(10) unsigned NOT NULL,
+  `date` timestamp NULL default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `notice_account` (`notice_id`,`account_id`),
+  KEY `notice_id` (`notice_id`),
+  KEY `account_id` (`account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `orders`
--- 
+--
 
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `orders` (
@@ -473,8 +545,8 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `description` text,
   `mount` tinyint(1) unsigned NOT NULL default '1',
   `production` tinyint(1) unsigned NOT NULL default '1',
-  `print` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
-  `delivery` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+  `print` tinyint(1) unsigned NOT NULL default '1',
+  `delivery` tinyint(1) unsigned NOT NULL default '1',
   `production_start_planned` date default NULL,
   `production_start_fact` date default NULL,
   `production_end_planned` date default NULL,
@@ -508,275 +580,11 @@ CREATE TABLE IF NOT EXISTS `orders` (
   KEY `customer_id` (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- 
--- Дамп данных таблицы `orders`
--- 
-
--- --------------------------------------------------------
-
--- 
--- Структура таблицы `storage_assets`
--- 
-
-DROP TABLE IF EXISTS `storage_assets`;
-CREATE TABLE `storage_assets` (
-    `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `name` VARCHAR( 250 ) NOT NULL ,
-    `measure` VARCHAR( 50 ) NULL DEFAULT NULL,
-    `qty` INT( 11 ) UNSIGNED NOT NULL DEFAULT 0,
-    `unit_price` DOUBLE( 10, 2 ) NOT NULL,
-    `checked` TINYINT( 1 ) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET=utf8;
-
--- 
--- Дамп данных таблицы `storage_assets`
--- 
-
--- --------------------------------------------------------
-
--- 
--- Структура таблицы `storage_categories`
--- 
-
-DROP TABLE IF EXISTS `storage_categories`;
-CREATE TABLE `storage_categories` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `name` VARCHAR( 250 ) NOT NULL ,
-    `parent_id` INT UNSIGNED NULL DEFAULT NULL ,
-    INDEX ( `parent_id` )
-) ENGINE = InnoDB DEFAULT CHARSET=utf8;
-
--- 
--- Дамп данных таблицы `storage_categories`
--- 
-
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `storage_measures`
+-- Структура таблицы `orders_budget`
 --
-DROP TABLE IF EXISTS `storage_measures`;
-CREATE TABLE IF NOT EXISTS `storage_measures` (
-  `name` varchar(50) NOT NULL,
-  PRIMARY KEY  (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `storage_measures`
---
-
-INSERT INTO `storage_measures` (`name`) VALUES 
-    ('кв.м'), ('кг'), ('куб.м'), ('л'), ('м'), ('шт.');
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `storage_requests`
---
-
-DROP TABLE IF EXISTS `storage_requests`; 
-CREATE TABLE `storage_requests` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `name` VARCHAR( 250 ) NULL DEFAULT NULL ,
-    `measure` VARCHAR( 250 ) NULL DEFAULT NULL ,
-    `asset_id` INT UNSIGNED NULL DEFAULT NULL ,
-    `account_id` INT UNSIGNED NOT NULL ,
-    `order_id` INT UNSIGNED NULL DEFAULT NULL ,
-    `qty` REAL NOT NULL ,
-    `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-    `request_on` DATE NOT NULL ,
-    `processed` INT( 1 ) NOT NULL DEFAULT '0', 
-    `description` TEXT NULL DEFAULT NULL,
-    INDEX ( `asset_id`), 
-    INDEX ( `account_id` ),
-    INDEX ( `order_id` )
-) ENGINE = InnoDB DEFAULT CHARSET=utf8;
-
---
--- Структура таблицы `storage_assets_categories`
---
-
-DROP TABLE IF EXISTS `storage_assets_categories`;
-CREATE TABLE `storage_assets_categories` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `asset_id` INT UNSIGNED NOT NULL ,
-    `category_id` INT UNSIGNED NOT NULL ,
-    INDEX ( `asset_id` ), 
-    INDEX (`category_id` ),
-    UNIQUE `pair` ( `asset_id` , `category_id` )
-) ENGINE = InnoDB;
-
---
--- Структура таблицы `notice`
---
-
-DROP TABLE IF EXISTS `notice`; 
-CREATE TABLE `notice` (
-    `id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `type` ENUM( 'объявление', 'приказ' ) NOT NULL ,
-    `is_personal` TINYINT( 1 ) NOT NULL DEFAULT '0' ,
-    `text` TEXT NOT NULL ,
-    `account_id` INT( 10 ) UNSIGNED NOT NULL ,
-    `date` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-    INDEX ( `account_id` )
-) ENGINE = InnoDB;
-
---
--- Структура таблицы `notice_dst`
---
-
-DROP TABLE IF EXISTS `notice_dst`; 
-CREATE TABLE `notice_dst` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `notice_id` INT UNSIGNED NOT NULL ,
-    `account_id` INT UNSIGNED NOT NULL ,
-    `date` TIMESTAMP NULL DEFAULT NULL ,
-    INDEX ( `notice_id` ) ,
-    INDEX ( `account_id` ),
-    UNIQUE `notice_account` ( `notice_id`, `account_id` ) 
-) ENGINE = InnoDB ;
-
---
--- Структура таблицы `staff`
---
-
-DROP TABLE IF EXISTS `staff`; 
-CREATE TABLE `staff` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `category_id` INT UNSIGNED NOT NULL ,
-    `name` VARCHAR( 250 ) NOT NULL ,
-    `function` VARCHAR( 250 ) NOT NULL ,
-    `hire_date` DATE NOT NULL ,
-    `pay_period` ENUM( 'hour', 'day', 'month' ) NOT NULL ,
-    `pay_rate` INT UNSIGNED NOT NULL ,
-    `cv_file` VARCHAR( 250 ) NULL,
-    `archive` tinyint(1) unsigned NOT NULL default '0',
-    `archive_date` date default NULL,
-    INDEX ( category_id )
-) ENGINE = InnoDB ;
-
---
--- Структура таблицы `staff_categories`
---
-
-DROP TABLE IF EXISTS `staff_categories`; 
-CREATE TABLE `staff_categories` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `name` VARCHAR( 250 ) NOT NULL ,
-    `parent_id` INT UNSIGNED NULL DEFAULT NULL
-) ENGINE = InnoDB ;
-
---
--- Структура таблицы `staff_hr`
---
-
-DROP TABLE IF EXISTS `staff_hr`;
-CREATE TABLE `staff_hr` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `staff_id` INT UNSIGNED NOT NULL ,
-    `date` DATE NOT NULL ,
-    `value` INT UNSIGNED NOT NULL ,
-    `pay_period` ENUM( 'hour', 'day', 'month' ) NOT NULL ,
-    `pay_rate` INT UNSIGNED NOT NULL ,
-    `paid` INT( 10 ) UNSIGNED NOT NULL ,
-    INDEX ( `staff_id` ),
-    INDEX ( `date` ),
-    UNIQUE `hr` ( `staff_id`, `date` ) 
-) ENGINE = InnoDB ;
-
---
--- Структура таблицы `staff_payments`
---
-
-DROP TABLE IF EXISTS `staff_payments`;
-CREATE TABLE IF NOT EXISTS `staff_payments` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `staff_id` int(10) unsigned NOT NULL,
-  `date` date NOT NULL,
-  `value` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `staff_id` (`staff_id`),
-  KEY `date` (`date`)
-) ENGINE=InnoDB ;
-
---
--- Структура таблицы `staff_vacations`
---
-
-DROP TABLE IF EXISTS `staff_vacations`;
-CREATE TABLE IF NOT EXISTS `staff_vacations` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `staff_id` int(10) unsigned NOT NULL,
-  `from` date NOT NULL,
-  `to` date NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `staff_id` (`staff_id`)
-) ENGINE=InnoDB ;
-
---
--- Структура таблицы `storage_history`
---
-
-DROP TABLE IF EXISTS `storage_history`;
-CREATE TABLE IF NOT EXISTS `storage_history` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `asset_id` int(10) unsigned NOT NULL,
-  `order_id` int(11) unsigned DEFAULT NULL,
-  `request_id` int(11) unsigned default NULL,
-  `qty` int(11) NOT NULL,
-  `unit_price` DOUBLE( 10, 2 ) NOT NULL,
-  `created` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `sender_id` int unsigned DEFAULT NULL,
-  `reciever_id` int unsigned DEFAULT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `asset_id` (`asset_id`),
-  KEY `order_id` (`order_id`),
-  KEY `sender_id` (`sender_id`),
-  KEY `reciever_id` (`reciever_id`)
-) ENGINE=InnoDB ;
-
---
--- Структура таблицы `fixed_assets`
---
-
-DROP TABLE IF EXISTS `fixed_assets`;
-CREATE TABLE `fixed_assets` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-  `inventory_number` VARCHAR( 255 ) NULL ,
-  `name` VARCHAR( 255 ) NOT NULL ,
-  `qty` INT NOT NULL ,
-  `price` INT NOT NULL ,
-  `staff_id` INT UNSIGNED NULL ,
-  `description` TEXT NOT NULL ,
-INDEX ( `staff_id` )
-) ENGINE = InnoDB;
-
---
--- Структура таблицы `fixed_assets_files`
---
-
-DROP TABLE IF EXISTS `fixed_assets_files`;
-CREATE TABLE IF NOT EXISTS `fixed_assets_files` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `item_id` int(11) unsigned NOT NULL default '0',
-  `filename` varchar(255) NOT NULL default '',
-  `description` varchar(255) default NULL,
-  `is_photo` tinyint(1) unsigned NOT NULL default '0',
-  `original_name` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `item_id` (`item_id`)
-) ENGINE=InnoDB ;
-
-DROP TABLE IF EXISTS `orders_payments`;
-CREATE TABLE IF NOT EXISTS `orders_payments` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `order_id` int(10) unsigned NOT NULL,
-  `date` date NOT NULL,
-  `summ` double(10,2) NOT NULL,
-  `status` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `order_id` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `orders_budget`;
 CREATE TABLE IF NOT EXISTS `orders_budget` (
@@ -842,102 +650,236 @@ CREATE TABLE IF NOT EXISTS `orders_budget` (
   KEY `order_id` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-DROP TABLE IF EXISTS `organizer`;
-CREATE TABLE IF NOT EXISTS `organizer` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `ondate` date NOT NULL,
-  `ontime` time NOT NULL,
-  `text` text NOT NULL,
-  `account_id` int(11) unsigned NOT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `closed` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `account_id` (`account_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1
+-- --------------------------------------------------------
 
--- ***
+--
+-- Структура таблицы `orders_payments`
+--
 
--- 
--- Constraints for dumped tables
--- 
+DROP TABLE IF EXISTS `orders_payments`;
+CREATE TABLE IF NOT EXISTS `orders_payments` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `order_id` int(10) unsigned NOT NULL,
+  `date` date NOT NULL,
+  `summ` double(10,2) NOT NULL,
+  `status` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `accounts`
-  ADD CONSTRAINT `accounts_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `acl_roles` (`id`);
+-- --------------------------------------------------------
 
-ALTER TABLE `acl_permissions`
-  ADD CONSTRAINT `acl_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `acl_roles` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `acl_permissions_ibfk_2` FOREIGN KEY (`resource_id`) REFERENCES `acl_resources` (`id`) ON DELETE CASCADE;
+--
+-- Структура таблицы `staff`
+--
 
-ALTER TABLE `acl_resources`
-  ADD CONSTRAINT `acl_resources_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `acl_resources` (`id`) ON DELETE CASCADE;
+DROP TABLE IF EXISTS `staff`;
+CREATE TABLE IF NOT EXISTS `staff` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `category_id` int(10) unsigned NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `function` varchar(250) NOT NULL,
+  `hire_date` date NOT NULL,
+  `pay_period` enum('hour','day','month') NOT NULL,
+  `pay_rate` int(10) unsigned NOT NULL,
+  `cv_file` varchar(250) default NULL,
+  `archive` tinyint(1) unsigned NOT NULL default '0',
+  `archive_date` date default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `category_id` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `files`
-  ADD CONSTRAINT `files_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
- 
-ALTER TABLE `notes`
-  ADD CONSTRAINT `notes_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
- 
-ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`creator_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `accounts` (`id`),
-  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`);
+-- --------------------------------------------------------
 
-ALTER TABLE `storage_requests` 
-  ADD FOREIGN KEY ( `asset_id` ) REFERENCES `storage_assets` (`id`) ON DELETE RESTRICT ;
+--
+-- Структура таблицы `staff_categories`
+--
 
-ALTER TABLE `storage_requests` 
-  ADD FOREIGN KEY ( `account_id` ) REFERENCES `accounts` (`id`) ON DELETE RESTRICT ;
+DROP TABLE IF EXISTS `staff_categories`;
+CREATE TABLE IF NOT EXISTS `staff_categories` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(250) NOT NULL,
+  `parent_id` int(10) unsigned default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `storage_assets_categories` 
-    ADD FOREIGN KEY ( `asset_id` ) REFERENCES `storage_assets` (`id`) ON DELETE CASCADE ;
-    
-ALTER TABLE `storage_assets_categories` 
-    ADD FOREIGN KEY ( `category_id` ) REFERENCES `storage_categories` (`id`) ON DELETE CASCADE ;
+-- --------------------------------------------------------
 
-ALTER TABLE `notice` 
-    ADD FOREIGN KEY ( `account_id` ) REFERENCES `accounts` (`id`) ON DELETE RESTRICT ;
+--
+-- Структура таблицы `staff_hr`
+--
 
-ALTER TABLE `notice_dst` 
-    ADD FOREIGN KEY ( `notice_id` ) REFERENCES `notice` (`id`) ON DELETE CASCADE ;
+DROP TABLE IF EXISTS `staff_hr`;
+CREATE TABLE IF NOT EXISTS `staff_hr` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `staff_id` int(10) unsigned NOT NULL,
+  `date` date NOT NULL,
+  `value` int(10) unsigned NOT NULL,
+  `pay_period` enum('hour','day','month') NOT NULL,
+  `pay_rate` int(10) unsigned NOT NULL,
+  `paid` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `hr` (`staff_id`,`date`),
+  KEY `staff_id` (`staff_id`),
+  KEY `date` (`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `notice_dst` 
-    ADD FOREIGN KEY ( `account_id` ) REFERENCES `accounts` (`id`) ON DELETE CASCADE ;
+-- --------------------------------------------------------
 
-ALTER TABLE `staff_hr` 
-    ADD FOREIGN KEY ( `staff_id` ) REFERENCES `staff` (`id`) ON DELETE CASCADE ;
-    
-ALTER TABLE `staff` 
-    ADD FOREIGN KEY ( `category_id` ) REFERENCES `staff_categories` (`id`) ON DELETE RESTRICT ;
+--
+-- Структура таблицы `staff_payments`
+--
 
-ALTER TABLE `staff_payments` 
-    ADD CONSTRAINT `staff_payments_ibfk_1` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`) ON DELETE CASCADE ;
+DROP TABLE IF EXISTS `staff_payments`;
+CREATE TABLE IF NOT EXISTS `staff_payments` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `staff_id` int(10) unsigned NOT NULL,
+  `date` date NOT NULL,
+  `value` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `staff_id` (`staff_id`),
+  KEY `date` (`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `staff_vacations` 
-    ADD CONSTRAINT `staff_vacations_ibfk_1` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`) ON DELETE CASCADE ;
+-- --------------------------------------------------------
 
-ALTER TABLE `storage_requests` 
-    ADD FOREIGN KEY ( `order_id` ) REFERENCES `orders` (`id`) ON DELETE SET NULL ;
+--
+-- Структура таблицы `staff_vacations`
+--
 
-ALTER TABLE `storage_history`
-  ADD CONSTRAINT `asset` FOREIGN KEY (`asset_id`) REFERENCES `storage_assets` (`id`),
-  ADD CONSTRAINT `order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `request` FOREIGN KEY (`request_id`) REFERENCES `storage_requests` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `sender` FOREIGN KEY (`sender_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `reciever` FOREIGN KEY (`reciever_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL ;
+DROP TABLE IF EXISTS `staff_vacations`;
+CREATE TABLE IF NOT EXISTS `staff_vacations` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `staff_id` int(10) unsigned NOT NULL,
+  `from` date NOT NULL,
+  `to` date NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `staff_id` (`staff_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `fixed_assets` 
-    ADD FOREIGN KEY ( `staff_id` ) REFERENCES `staff` (`id`) ON DELETE SET NULL ;
+-- --------------------------------------------------------
 
-ALTER TABLE `fixed_assets_files` 
-    ADD FOREIGN KEY (`item_id`) REFERENCES `fixed_assets` (`id`) ON DELETE CASCADE ;
+--
+-- Структура таблицы `storage_assets`
+--
 
-ALTER TABLE `orders_payments`
-  ADD CONSTRAINT `order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
+DROP TABLE IF EXISTS `storage_assets`;
+CREATE TABLE IF NOT EXISTS `storage_assets` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `name` varchar(250) NOT NULL,
+  `measure` varchar(50) default NULL,
+  `qty` int(11) unsigned NOT NULL default '0',
+  `unit_price` double(10,2) NOT NULL,
+  `checked` tinyint(1) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-TER TABLE `orders_budget`
-  ADD CONSTRAINT `orders_budget_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;  
+-- --------------------------------------------------------
 
- ALTER TABLE `organizer`
-  ADD CONSTRAINT `organizer_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`);
-  
+--
+-- Структура таблицы `storage_assets_categories`
+--
+
+DROP TABLE IF EXISTS `storage_assets_categories`;
+CREATE TABLE IF NOT EXISTS `storage_assets_categories` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `asset_id` int(10) unsigned NOT NULL,
+  `category_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `pair` (`asset_id`,`category_id`),
+  KEY `asset_id` (`asset_id`),
+  KEY `category_id` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `storage_categories`
+--
+
+DROP TABLE IF EXISTS `storage_categories`;
+CREATE TABLE IF NOT EXISTS `storage_categories` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(250) NOT NULL,
+  `parent_id` int(10) unsigned default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `parent_id` (`parent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `storage_history`
+--
+
+DROP TABLE IF EXISTS `storage_history`;
+CREATE TABLE IF NOT EXISTS `storage_history` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `asset_id` int(10) unsigned NOT NULL,
+  `order_id` int(11) unsigned default NULL,
+  `request_id` int(11) unsigned default NULL,
+  `qty` int(11) NOT NULL,
+  `unit_price` double(10,2) NOT NULL,
+  `created` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `sender_id` int(10) unsigned default NULL,
+  `reciever_id` int(10) unsigned default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `asset_id` (`asset_id`),
+  KEY `order_id` (`order_id`),
+  KEY `sender_id` (`sender_id`),
+  KEY `reciever_id` (`reciever_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `storage_measures`
+--
+
+DROP TABLE IF EXISTS `storage_measures`;
+CREATE TABLE IF NOT EXISTS `storage_measures` (
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY  (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `storage_measures`
+--
+
+INSERT INTO `storage_measures` (`name`) VALUES
+('кв.м'),
+('кг'),
+('куб.м'),
+('л'),
+('м'),
+('шт.');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `storage_requests`
+--
+
+DROP TABLE IF EXISTS `storage_requests`;
+CREATE TABLE IF NOT EXISTS `storage_requests` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(250) default NULL,
+  `measure` varchar(250) default NULL,
+  `asset_id` int(10) unsigned default NULL,
+  `account_id` int(10) unsigned NOT NULL,
+  `order_id` int(10) unsigned default NULL,
+  `qty` double NOT NULL,
+  `created` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `request_on` date NOT NULL,
+  `processed` int(1) NOT NULL default '0',
+  `description` text,
+  PRIMARY KEY  (`id`),
+  KEY `asset_id` (`asset_id`),
+  KEY `account_id` (`account_id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 SET FOREIGN_KEY_CHECKS=1;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
