@@ -14,7 +14,7 @@ class PMS_Orders
         ), array(
             'customer_id'           => array('Int', 'allowEmpty' => true),
             'address'               => array(array('StringLength', 1, 255)),
-            'description'           => array(array('StringLength', 0, 4096)),
+            'description'           => array(array('StringLength', 0, 65535)),
             'cost'                  => array(array('StringLength', 1, 255)),
             'advanse'               => array(array('StringLength', 1, 255)),
             'mount'                 => array('Int', 'allowEmpty' => true),
@@ -44,7 +44,7 @@ class PMS_Orders
             'id'                        => array('Int', 'presence' => 'required'),
             'customer_id'               => array('Int', 'allowEmpty' => true),
             'address'                   => array(array('StringLength', 1, 255)),
-            'description'               => array(array('StringLength', 0, 4096)),
+            'description'               => array(array('StringLength', 0, 65535)),
             'cost'                      => array(array('StringLength', 1, 255)),
             'advanse'                   => array(array('StringLength', 1, 255)),
             'mount'                     => array('Int', 'allowEmpty' => true),
