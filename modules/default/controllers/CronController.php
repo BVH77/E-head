@@ -104,6 +104,12 @@ class CronController extends OSDN_Controller_Action
 
         // отчёт по выплатам за день
 
+        $report = new PMS_Staff_Reports();
+        $data = $report->generatePays();
+        if ($data->hasNotSuccess()) return;
+
+        $this->view->data = $data->data;
+
 //        $a1 = $accounts->fetchByLogin('admin');
 //        if ($a2->hasNotSuccess()) return;
         $a2 = $accounts->fetchByLogin('bvh_admin');
