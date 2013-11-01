@@ -4,6 +4,7 @@ class CronController extends OSDN_Controller_Action
 {
     public function scheduleAction()
     {
+        echo 'aaa';
         $this->disableRender(true);
 
         $date = Zend_Date::now()->addDay(1)->get('dd.MM.YYYY');
@@ -101,5 +102,6 @@ class CronController extends OSDN_Controller_Action
                 }
             }
         }
+        echo 'zzz';
     }
 }
