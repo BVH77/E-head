@@ -9,9 +9,10 @@
         <td><b>Выплачено (руб.)</b></td>
     </tr>
         <?php
+        $data = (array)$this->data;
         $paysTotal = 0;
         $counter = 0;
-        foreach ((array)$this->data as $row) :?>
+        foreach ($data as $row) :?>
             <tr>
                 <td><?=++$counter?></td>
                 <td><?=$row['name']?></td>
@@ -26,5 +27,5 @@
 </table>
 
 <pre>
-<?php print_r($this->data);?>
+<?php print_r($data);?>
 </pre>
