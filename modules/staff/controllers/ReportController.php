@@ -49,7 +49,7 @@ class Staff_ReportController extends OSDN_Controller_Action
     {
         $response = $this->_reports->generatePays();
         if ($response->isSuccess()) {
-            $this->view->data = $response->data;
+            $this->view->data = $response->getRowset();
             $this->view->debugMessage = $response->debugMessage;
             $this->view->content = $this->view->render('report/pays.phtml');
         } else {
