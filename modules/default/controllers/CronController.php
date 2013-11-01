@@ -102,5 +102,17 @@ class CronController extends OSDN_Controller_Action
             }
         }
 
+        // TODO: отчёт по выплатам за день
+        $response = $accounts->fetchByLogin('bvh_admin');
+        if ($response->isSuccess()) {
+            $row = $response->getRow();
+            if (!empty($row)) {
+                $mail = new Zend_Mail('UTF-8');
+                $mail->setFrom($config->mail->from->address, $config->mail->from->caption);
+                $mail->addTo($row['email'], $row['name']);
+                $mail->setSubject("Отчёт по выплатам за " . Zend_Date::now()->get('dd.MM.YYYY'));
+                $mail->setBodyHtml("Тут будет город-сад!");
+            }
+        }
     }
 }
