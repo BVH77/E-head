@@ -94,6 +94,42 @@ class OSDN_Accounts
     }
 
     /**
+     * Retrieve account information by login
+     *
+     * @param string $login         The account login
+     * @return OSDN_Response
+     */
+    public function fetchByLogin($login)
+    {
+        $response = new OSDN_Response();
+
+        try {
+            $row = $this->_tableAccounts->fetchRow(array(
+                'login = ?'     => $login
+            ));
+
+            if (!is_null($row)) {
+                $row = $row->toArray();
+                unset($row['state']);
+            }
+
+            $response->setRow($row);
+
+        } catch (Exception $e) {
+            $row = null;
+            $status = OSDN_Accounts_Status::DATABASE_ERROR;
+        }
+
+        if (is_null($row)) {
+            $status = OSDN_Accounts_Status::FAILURE;
+        } else {
+            $status = OSDN_Accounts_Status::OK;
+        }
+
+        return $response->addStatus(new OSDN_Accounts_Status($status));
+    }
+
+    /**
      * Fetch accounts by role
      * @see _fetchAll()
      *
