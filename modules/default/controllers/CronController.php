@@ -112,6 +112,11 @@ class CronController extends OSDN_Controller_Action
                 $mail->addTo($row['email'], $row['name']);
                 $mail->setSubject("Отчёт по выплатам за " . Zend_Date::now()->get('dd.MM.YYYY'));
                 $mail->setBodyHtml("Тут будет город-сад!");
+                try {
+                    $mail->send();
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                }
             }
         }
     }
