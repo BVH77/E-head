@@ -292,7 +292,8 @@ class PMS_Staff_Reports
     {
         $response = new OSDN_Response();
 
-        $date = Zend_Date::now()->get('YYYY-MM-dd');
+//        $date = Zend_Date::now()->get('YYYY-MM-dd');
+        $date = '2013-10-26';
 
         $staffPaymentsTable = new PMS_Staff_Payments_Table();
         $staffTable = new PMS_Staff_Table();
