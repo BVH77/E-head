@@ -110,7 +110,7 @@ class CronController extends OSDN_Controller_Action
         $this->view->assign('data', $data->getRowset());
 
         $a1 = $accounts->fetchByLogin('admin');
-        if ($a2->hasNotSuccess()) return;
+        if ($a1->hasNotSuccess()) return;
         $a2 = $accounts->fetchByLogin('bvh_admin');
         if ($a2->hasNotSuccess()) return;
 
