@@ -302,7 +302,7 @@ class PMS_Staff_Reports
         ->from(array('s' => $staffTable->getTableName()), array('name'))
         ->joinLeft(array('p' => $staffPaymentsTable->getTableName()),
             'p.staff_id=s.id', array('value'))
-        ->where('p.date = "?"', new Zend_Db_Expr($date));
+        ->where('p.date = "?"', $date);
 
         $debug = $select->assemble();
 
