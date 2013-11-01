@@ -4,7 +4,6 @@ class CronController extends OSDN_Controller_Action
 {
     public function scheduleAction()
     {
-        echo 'aaa';
         $this->disableRender(true);
 
         $date = Zend_Date::now()->addDay(1)->get('dd.MM.YYYY');
@@ -65,7 +64,7 @@ class CronController extends OSDN_Controller_Action
                 $mail->setSubject("График печати на " . $date);
                 $mail->setBodyHtml("http://$server/orders/report/schedule-print");
                 try {
-                    $mail->send();
+                    echo $mail->send();
                 } catch (Exception $e) {
                     echo $e->getMessage();
                 }
@@ -102,6 +101,6 @@ class CronController extends OSDN_Controller_Action
                 }
             }
         }
-        echo 'zzz';
+
     }
 }
