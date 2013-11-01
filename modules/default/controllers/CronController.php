@@ -107,7 +107,6 @@ class CronController extends OSDN_Controller_Action
         $report = new PMS_Staff_Reports();
         $data = $report->generatePays();
         if ($data->hasNotSuccess()) return;
-
         $this->view->data = $data->data;
 
 //        $a1 = $accounts->fetchByLogin('admin');
