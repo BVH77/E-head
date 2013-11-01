@@ -287,4 +287,32 @@ class PMS_Staff_Reports
         );
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
+
+    public function generatePays()
+    {
+        $response = new OSDN_Response();
+
+        $date = Zend_Date::now()->get('YYYY-MM-dd');
+
+        $staffPaymentsTable = new PMS_Staff_Payments_Table();
+        $staffTable = new PMS_Staff_Table();
+
+        $select = $staffTable->getAdapter()->select()
+        ->from(array('s' => $staffTable->getTableName()), array('name'))
+        ->joinLeft(array('p' => $staffPaymentsTable->getTableName()),
+            'p.staff_id=s.id', array('value'))
+        ->where('p.date = "?"', new Zend_Db_Expr($date));
+
+        try {
+            $rows = $select->query()->fetchAll();
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+        }
+
+        $response->data = $rows;
+        return $response->addStatus(new PMS_Status(PMS_Status::OK));
+    }
 }

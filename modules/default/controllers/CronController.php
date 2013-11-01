@@ -102,22 +102,26 @@ class CronController extends OSDN_Controller_Action
             }
         }
 
-        // TODO: отчёт по выплатам за день
-        $response = $accounts->fetchByLogin('bvh_admin');
-        if ($response->isSuccess()) {
-            $row = $response->getRow();
-            if (!empty($row)) {
-                $mail = new Zend_Mail('UTF-8');
-                $mail->setFrom($config->mail->from->address, $config->mail->from->caption);
-                $mail->addTo($row['email'], $row['name']);
-                $mail->setSubject("Отчёт по выплатам за " . Zend_Date::now()->get('dd.MM.YYYY'));
-                $mail->setBodyHtml("Тут будет город-сад!");
-                try {
-                    $mail->send();
-                } catch (Exception $e) {
-                    echo $e->getMessage();
-                }
-            }
+        // отчёт по выплатам за день
+
+//        $a1 = $accounts->fetchByLogin('admin');
+//        if ($a2->hasNotSuccess()) return;
+        $a2 = $accounts->fetchByLogin('bvh_admin');
+        if ($a2->hasNotSuccess()) return;
+
+//        $r1 = $a1->getRow();
+        $r2 = $a2->getRow();
+
+        $mail = new Zend_Mail('UTF-8');
+        $mail->setFrom($config->mail->from->address, $config->mail->from->caption);
+//        $mail->addTo($r1['email'], $r1['name']);
+        $mail->addTo($r2['email'], $r2['name']);
+        $mail->setSubject("Отчёт по выплатам за " . Zend_Date::now()->get('dd.MM.YYYY'));
+        $mail->setBodyHtml($this->view->render('pays.phtml'));
+        try {
+            $mail->send();
+        } catch (Exception $e) {
+            echo $e->getMessage();
         }
     }
 }

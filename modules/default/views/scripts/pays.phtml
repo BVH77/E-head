@@ -1,0 +1,30 @@
+<h3>
+    Выплаты сотрудникам за <?=Zend_Date::now()->get('dd.MM.YYYY')?>
+</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+    <tr>
+        <td><b>№ п/п</b></td>
+        <td><b>Сотрудник</b></td>
+        <td><b>Выплачено (руб.)</b></td>
+    </tr>
+        <?php
+        $paysTotal = 0;
+        $counter = 0;
+        foreach ($this->data as $row) :?>
+            <tr>
+                <td><?=++$counter?></td>
+                <td><?=$row['name']?></td>
+                <td align="right"><?=$row['value']?>,00</td>
+            </tr>
+        <?php
+        $paysTotal = $paysTotal + $row['value'];
+        endforeach;?>
+    <tr><td colspan="2"><b>Итого:</b></td>
+        <td align="right"><b><?=$paysTotal?>,00</b>
+    </td></tr>
+</table>
+
+<pre>
+<?php //print_r($this->data);?>
+</pre>
