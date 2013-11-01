@@ -35,8 +35,7 @@ class CronController extends OSDN_Controller_Action
                 $mail->setSubject("График производства на " . $date);
                 $mail->setBodyHtml("http://$server/orders/report/schedule-production");
                 try {
-                    $m = $mail->send();
-                    print_r($m->getRecipients());
+                    $mail->send();
                 } catch (Exception $e) {
                     echo $e->getMessage();
                 }
