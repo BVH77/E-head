@@ -302,7 +302,7 @@ class PMS_Staff_Reports
         ->from(array('s' => $staffTable->getTableName()), array('name'))
         ->joinLeft(array('p' => $staffPaymentsTable->getTableName()),
             'p.staff_id=s.id', array('value'))
-        ->where('p.date = "?"', $date);
+        ->where('p.date = ?', $date);
 
         try {
             $rows = $select->query()->fetchAll();
