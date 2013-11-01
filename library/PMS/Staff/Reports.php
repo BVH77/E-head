@@ -314,6 +314,7 @@ class PMS_Staff_Reports
         }
 
         $response->setRowset($rows);
+        $response->debugMessage = $select->assemble();
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 }
