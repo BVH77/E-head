@@ -11,7 +11,7 @@
         <?php
         $paysTotal = 0;
         $counter = 0;
-        foreach ($this->data as $row) :?>
+        foreach ((array)$this->data as $row) :?>
             <tr>
                 <td><?=++$counter?></td>
                 <td><?=$row['name']?></td>
@@ -26,5 +26,5 @@
 </table>
 
 <pre>
-<?php //print_r($this->data);?>
+<?php print_r($this->data);?>
 </pre>
