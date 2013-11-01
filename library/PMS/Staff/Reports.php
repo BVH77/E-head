@@ -304,8 +304,6 @@ class PMS_Staff_Reports
             'p.staff_id=s.id', array('value'))
         ->where('p.date = "?"', $date);
 
-        $debug = $select->assemble();
-
         try {
             $rows = $select->query()->fetchAll();
         } catch (Exception $e) {
@@ -316,7 +314,6 @@ class PMS_Staff_Reports
         }
 
         $response->data = $rows;
-        $response->debug = $debug;
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 }
