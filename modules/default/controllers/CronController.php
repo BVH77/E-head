@@ -109,17 +109,17 @@ class CronController extends OSDN_Controller_Action
         if ($data->hasNotSuccess()) return;
         $this->view->assign('data', $data->getRowset());
 
-//        $a1 = $accounts->fetchByLogin('admin');
-//        if ($a2->hasNotSuccess()) return;
+        $a1 = $accounts->fetchByLogin('admin');
+        if ($a2->hasNotSuccess()) return;
         $a2 = $accounts->fetchByLogin('bvh_admin');
         if ($a2->hasNotSuccess()) return;
 
-//        $r1 = $a1->getRow();
+        $r1 = $a1->getRow();
         $r2 = $a2->getRow();
 
         $mail = new Zend_Mail('UTF-8');
         $mail->setFrom($config->mail->from->address, $config->mail->from->caption);
-//        $mail->addTo($r1['email'], $r1['name']);
+        $mail->addTo($r1['email'], $r1['name']);
         $mail->addTo($r2['email'], $r2['name']);
         $mail->setSubject("Отчёт по выплатам за " . Zend_Date::now()->get('dd.MM.YYYY'));
         $mail->setBodyHtml($this->view->render('pays.phtml'));
