@@ -313,7 +313,7 @@ class PMS_Staff_Reports
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
 
-        $response->data = $rows;
+        $response->setRowset($rows);
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
     }
 }
