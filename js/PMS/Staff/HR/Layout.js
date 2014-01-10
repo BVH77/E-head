@@ -4,7 +4,7 @@ PMS.Staff.HR.Layout = Ext.extend(Ext.Window, {
 	
     resizable: false,
     
-    width: 950,
+    width: 1000,
 
     height: 230,
     
