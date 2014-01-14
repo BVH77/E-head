@@ -92,7 +92,8 @@ if (OSDN_DEBUG) {
     $db->setProfiler($profiler);
 }
 
-$db->query('SET names utf8');
+$db->query('SET NAMES utf8');
+$db->query('SET CHARACTER SET utf8');
 
 // migration from 1.6 -> 1.7
 Zend_Locale::$compatibilityMode = false;
