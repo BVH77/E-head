@@ -250,6 +250,8 @@ class PMS_Orders
         );
         $plugin->parse($params);
 
+        die($select->assemble());
+
         $status = null;
         try {
             $files = new PMS_Files();
