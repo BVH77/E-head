@@ -306,6 +306,7 @@ class OSDN_Db_Plugin_Select
 						}
 
                         $collection[] = $this->_adapter->quoteInto($field . ' LIKE ?', '%' . $value . '%');
+                        die($value);
                     }
 
                     if (!empty($collection)) {
