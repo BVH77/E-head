@@ -250,7 +250,7 @@ class PMS_Orders
         );
         $plugin->parse($params);
 
-        die($select->assemble());
+//        die($select->assemble());
 
         $status = null;
         try {
