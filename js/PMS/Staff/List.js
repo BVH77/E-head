@@ -153,8 +153,7 @@ PMS.Staff.List = Ext.extend(Ext.grid.GridPanel, {
         this.filtersPlugin = new Ext.grid.GridFilters({
             filters: [
                 {type: 'string',  dataIndex: 'name'},
-                {type: 'string',  dataIndex: 'function'},
-                {type: 'string',  dataIndex: 'hire_date'}
+                {type: 'string',  dataIndex: 'function'}
             ]
         });
         
