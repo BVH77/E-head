@@ -57,7 +57,7 @@ Zend_Registry::set('config', $config);
 
 define('ADMIN_ROLE', 1);
 define('MANAGER_ROLE', 3);
-define('OSDN_DEBUG', (boolean) $config->debug);
+define('OSDN_DEBUG', true);// (boolean) $config->debug);
 define('MYSQL_DATE_TIME_FORMAT', 'Y-m-d H:i:s');
 define('MYSQL_DATE_FORMAT', 'Y-m-d');
 define('OSDN_DATE_TIME_FORMAT', 'YY-MM-DD HH:mm:ss');
@@ -85,12 +85,13 @@ Zend_Db_Table_Abstract::setDefaultMetadataCache($cacheCore);
 OSDN_Db_Table_Abstract::setDefaultPrefix($config->db->prefix);
 OSDN_Db_Table_Abstract::setDefaultSequence(true);
 Zend_Registry::set('db', $db);
-
+/*
 if (OSDN_DEBUG) {
     $profiler = new Zend_Db_Profiler_Firebug('All DB Queries');
     $profiler->setEnabled(true);
     $db->setProfiler($profiler);
 }
+*/
 
 $db->query('SET NAMES utf8');
 $db->query('SET CHARACTER SET utf8');
