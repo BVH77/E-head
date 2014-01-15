@@ -123,28 +123,28 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
         
 	    this.filtersPlugin = new Ext.grid.GridFilters({
 	        filters: [
-	            {type: 'string',  dataIndex: 'id'},
-	            {type: 'string',  dataIndex: 'customer'},
+//	            {type: 'string',  dataIndex: 'id'},
+//	            {type: 'string',  dataIndex: 'customer'},
 	            {type: 'string',  dataIndex: 'address'},
-    	        {type: 'date',  dataIndex: 'success_date_planned', dateFormat: 'Y-m-d'},
-    	        {type: 'date',  dataIndex: 'success_date_fact', dateFormat: 'Y-m-d'},
-    	        {type: 'date',  dataIndex: 'created', dateFormat: 'Y-m-d'},
-    	        {
-                    type: 'list', 
-                    dataIndex: 'creator_id', 
-                    phpMode: true,
-                    labelField: 'name',
-                    store: new Ext.data.JsonStore({
-                        url: this.loadUsersURL,
-                        baseParams: {roleId: 0},
-                        root: 'data',
-                        fields: [
-                            {name: 'id'},
-                            {name: 'name'},
-                            {name: 'login'}
-                        ]
-                    })
-                }
+//    	        {type: 'date',  dataIndex: 'success_date_planned', dateFormat: 'Y-m-d'},
+//    	        {type: 'date',  dataIndex: 'success_date_fact', dateFormat: 'Y-m-d'},
+//    	        {type: 'date',  dataIndex: 'created', dateFormat: 'Y-m-d'},
+//    	        {
+//                    type: 'list', 
+//                    dataIndex: 'creator_id', 
+//                    phpMode: true,
+//                    labelField: 'name',
+//                    store: new Ext.data.JsonStore({
+//                        url: this.loadUsersURL,
+//                        baseParams: {roleId: 0},
+//                        root: 'data',
+//                        fields: [
+//                            {name: 'id'},
+//                            {name: 'name'},
+//                            {name: 'login'}
+//                        ]
+//                    })
+//                }
 	    ]});
 	    
         var onDelete = function(g, rowIndex) {
