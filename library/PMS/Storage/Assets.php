@@ -93,7 +93,7 @@ class PMS_Storage_Assets
         $status = $id ? PMS_Status::OK : PMS_Status::FAILURE;
         $response->id = $id;
         if ($id && !empty($f->categories)) {
-            $categories = array_map('intval', split(',', $f->categories));
+            $categories = array_map('intval', explode(',', $f->categories));
             $ac = new PMS_Storage_Assets_Categories();
             $resp = $ac->setAssetCategories($id, $categories);
             if ($resp->hasNotSuccess()) {
@@ -126,7 +126,7 @@ class PMS_Storage_Assets
 
         $this->_table->updateByPk($f->getData(), $f->id);
         if (!empty($f->categories)) {
-            $categories = array_map('intval', split(',', $f->categories));
+            $categories = array_map('intval', explode(',', $f->categories));
             $ac = new PMS_Storage_Assets_Categories();
             $resp = $ac->setAssetCategories($f->id, $categories);
             if ($resp->hasNotSuccess()) {

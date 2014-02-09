@@ -98,7 +98,7 @@ class PMS_Staff
                 return $response;
             }
 
-            $filenameArray = split('\.', $file['name']);
+            $filenameArray = explode('.', $file['name']);
             $ext = array_pop($filenameArray);
             $filename = uniqid() . '.' . $ext;
             $filepath = FILES_DIR . DIRECTORY_SEPARATOR . $filename;
@@ -167,7 +167,7 @@ class PMS_Staff
                 }
                 $row = $resp->getRow();
 
-                $filenameArray = split('\.', $file['name']);
+                $filenameArray = explode('.', $file['name']);
                 $ext = array_pop($filenameArray);
                 $filename = uniqid() . '.' . $ext;
                 $filepath = FILES_DIR . DIRECTORY_SEPARATOR . $filename;

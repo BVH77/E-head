@@ -44,7 +44,7 @@ class PMS_Files
                 PMS_Status::INPUT_PARAMS_INCORRECT, 'file'));
             return $response;
         }
-        $filenameArray = split('\.', $file['name']);
+        $filenameArray = explode('.', $file['name']);
         $ext = array_pop($filenameArray);
        	$filename = uniqid() . '.' . $ext;
        	$filepath = FILES_DIR . '/' . $filename;
