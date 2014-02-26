@@ -130,9 +130,10 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
 	    this.filtersPlugin = new Ext.grid.GridFilters({
 	        filters: [
 	            {type: 'string',  dataIndex: 'customer'},
-	            {type: 'string',  dataIndex: 'address'},
-    	        {type: 'date',  dataIndex: 'success_date_fact', dateFormat: 'Y-m-d'},
-                {type: 'date',  dataIndex: 'created', dateFormat: 'Y-m-d'}
+	            {type: 'string',  dataIndex: 'address'}
+//                ,
+//    	        {type: 'date',  dataIndex: 'success_date_fact', dateFormat: 'Y-m-d'},
+//                {type: 'date',  dataIndex: 'created', dateFormat: 'Y-m-d'}
 	    ]});
         
 	    var actionsPlugin = new xlib.grid.Actions({
