@@ -129,6 +129,7 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
         
 	    this.filtersPlugin = new Ext.grid.GridFilters({
 	        filters: [
+                {type: 'string',  dataIndex: 'id'},
 	            {type: 'string',  dataIndex: 'customer'},
 	            {type: 'string',  dataIndex: 'address'}
 //                ,
