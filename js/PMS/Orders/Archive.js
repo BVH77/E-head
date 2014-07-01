@@ -173,7 +173,7 @@ PMS.Orders.Archive = Ext.extend(Ext.grid.GridPanel, {
 		this.columns = [{
             header: '№', 
             dataIndex: 'id',
-            width: 30,
+            width: 40,
             sortable: true
         }, {
             header: 'Заказчик', 
