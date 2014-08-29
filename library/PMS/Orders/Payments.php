@@ -108,9 +108,9 @@ class PMS_Orders_Payments
         if (!$validate->isValid($id)) {
             return $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
-        if (!$this->_checkRelations($id)) {
-            return $response->addStatus(new PMS_Status(PMS_Status::DELETE_FAILED));
-        }
+//        if (!$this->_checkRelations($id)) {
+//            return $response->addStatus(new PMS_Status(PMS_Status::DELETE_FAILED));
+//        }
         try {
             $affectedRows = $this->_table->deleteByPk($id);
             $status = PMS_Status::retrieveAffectedRowStatus($affectedRows);
