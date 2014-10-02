@@ -237,6 +237,7 @@ PMS.Menu = function(params) {
 	}, '->', {
         tooltip: 'Калькулятор',
 	    iconCls: 'calculator_icon',
+	    text: 'Калькулятор',
         handler: function() {
             new Ext.Window({
                 title: 'Калькулятор',
