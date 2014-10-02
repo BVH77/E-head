@@ -66,7 +66,6 @@ PMS.Storage.Assets.Edit.Layout = Ext.extend(Ext.Panel, {
                 resizable: false,
                 width: 600,
                 height: 400,
-                modal: true,
                 buttons: [{
                     text: Ext.isObject(this.record) ? 'Сохранить' : 'Добавить',
                     handler: this.saveData,

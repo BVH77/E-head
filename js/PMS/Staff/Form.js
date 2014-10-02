@@ -169,7 +169,6 @@ PMS.Staff.Form = Ext.extend(xlib.form.FormPanel, {
             hidden: false,
             width: 750,
             height: 200,
-            modal: true,
             items: [this],
             buttons: [{
                 text: 'Сохранить',
@@ -274,7 +273,6 @@ PMS.Staff.Form = Ext.extend(xlib.form.FormPanel, {
             layout: 'fit',
             width: 300,
             height: 400,
-            modal: true,
             items: [tree],
             buttons: [{
                 text: 'Выбрать',

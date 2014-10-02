@@ -2,8 +2,6 @@ Ext.namespace('xlib');
 
 xlib.PrintWindow = Ext.extend(Ext.Window, {
 
-    modal: true,
-    
     maximizable: true,
     
     width: 700,

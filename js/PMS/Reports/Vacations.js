@@ -40,7 +40,6 @@ PMS.Reports.Vacations = Ext.extend(xlib.form.FormPanel, {
             title: 'План отпусков сотрудников за период:',
             resizable: false,
             width: 200,
-            modal: true,
             items: [this],
             buttons: [{
                 text: 'Сгенерировать',

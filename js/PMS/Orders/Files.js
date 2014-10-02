@@ -137,7 +137,6 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
         
         var wind = new Ext.Window({
             title: record.get('description'),
-            modal: true,
             autoWidth: true,
             resizable: false,
             autoHeight: true,
@@ -154,7 +153,6 @@ PMS.Orders.Files = Ext.extend(Ext.Panel, {
     onUpload: function(button) {
         var uploadWin = new Ext.Window({
         	title: 'Передача файлов на сервер',
-            modal: true,
             width: 400,
             height: 200,
             layout: 'fit',

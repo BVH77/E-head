@@ -240,7 +240,6 @@ PMS.Organizer.List = Ext.extend(Ext.grid.GridPanel, {
             title: 'Новая задача',
             resizable: false,
             width: 500,
-            modal: true,
             items: [formPanel],
             buttons: [{
                 text: 'Сохранить',

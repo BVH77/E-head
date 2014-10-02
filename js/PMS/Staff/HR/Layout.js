@@ -8,8 +8,6 @@ PMS.Staff.HR.Layout = Ext.extend(Ext.Window, {
 
     height: 230,
     
-    modal: true,
-    
     hidden: false,
     
     layout: 'border',

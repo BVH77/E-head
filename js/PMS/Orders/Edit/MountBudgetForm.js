@@ -1625,7 +1625,6 @@ PMS.Orders.Edit.MountBudgetForm = Ext.extend(xlib.form.FormPanel, {
             width: 820,
             layout: 'fit',
             height: 600,
-            modal: true,
             items: [this],
             buttons: [{
                 text: 'Сохранить',

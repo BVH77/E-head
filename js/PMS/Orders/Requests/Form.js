@@ -187,7 +187,6 @@ PMS.Orders.Requests.Form = Ext.extend(xlib.form.FormPanel, {
             resizable: false,
             width: 900,
             height: 600,
-            modal: true,
             layout: 'fit',
             items: [assets],
             buttons: [{

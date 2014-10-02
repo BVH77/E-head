@@ -40,7 +40,6 @@ PMS.Reports.Customers = Ext.extend(xlib.form.FormPanel, {
             title: 'Отчёт о сотрудничестве за период:',
             resizable: false,
             width: 200,
-            modal: true,
             items: [this],
             buttons: [{
                 text: 'Сгенерировать',

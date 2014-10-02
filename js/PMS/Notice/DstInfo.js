@@ -65,7 +65,6 @@ PMS.Notice.DstInfo = Ext.extend(Ext.grid.GridPanel, {
             hidden: false,
             width: 400,
             height: 500,
-            modal: true,
             items: [this],
             buttons: [{
                 text: 'OK',

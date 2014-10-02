@@ -247,7 +247,6 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
             height: 420,
             layout: 'fit',
             resizable: false,
-            modal: true,
             items: [this]
         }, cfg || {}));
         
@@ -310,7 +309,6 @@ PMS.Orders.Edit = Ext.extend(xlib.form.FormPanel, {
             height: 125,
             layout: 'fit',
             resizable: false,
-            modal: true,
             items: [archiveForm],
             bbar: ['->', {
                 text: 'OK',

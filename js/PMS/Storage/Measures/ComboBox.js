@@ -61,7 +61,6 @@ PMS.Storage.Measures.ComboBox = Ext.extend(xlib.form.ComboTrigger, {
                     title: 'Добавление единицы измерения',
                     resizable: false,
                     width: 300,
-                    modal: true,
                     items: [formPanel],
                     buttons: [{
                         text: 'Сохранить',

@@ -164,7 +164,6 @@ PMS.Notice.Form = Ext.extend(xlib.form.FormPanel, {
             hidden: false,
             width: 800,
             height: 500,
-            modal: true,
             items: [this],
             buttons: [{
                 text: 'Сохранить',

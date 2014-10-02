@@ -72,7 +72,6 @@ PMS.Staff.Vacations.Form = Ext.extend(xlib.form.FormPanel, {
             resizable: false,
             hidden: false,
             width: 200,
-            modal: true,
             items: [this],
             buttons: [{
                 text: 'Сохранить',

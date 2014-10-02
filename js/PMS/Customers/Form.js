@@ -97,7 +97,6 @@ PMS.Customers.Form = Ext.extend(xlib.form.FormPanel, {
             width: 400,
             autoHeight: true,
             items: [this],
-            modal: true,
             buttons: [
                 {text: 'Сохранить', handler: this.onSave.createDelegate(this)}, 
                 {text: 'Отменить', handler: function() {w.close();}}

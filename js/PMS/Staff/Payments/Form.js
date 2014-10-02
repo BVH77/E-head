@@ -72,7 +72,6 @@ PMS.Staff.Payments.Form = Ext.extend(xlib.form.FormPanel, {
             resizable: false,
             hidden: false,
             width: 300,
-            modal: true,
             items: [this],
             buttons: [{
                 text: 'Сохранить',

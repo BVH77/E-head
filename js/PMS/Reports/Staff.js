@@ -40,8 +40,6 @@ PMS.Reports.Staff = Ext.extend(xlib.form.FormPanel, {
             title: 'Отчёт о зарплате сотрудников за период:',
             resizable: false,
             width: 200,
-            //height: 100,
-            modal: true,
             items: [this],
             buttons: [{
                 text: 'Сгенерировать',

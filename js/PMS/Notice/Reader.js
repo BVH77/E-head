@@ -16,8 +16,6 @@ PMS.Notice.Reader = Ext.extend(Ext.Window, {
     
     height: 500,
     
-    modal: true,
-    
     layout: 'fit',
     
     padding: 10,

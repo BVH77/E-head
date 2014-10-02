@@ -8,8 +8,6 @@ PMS.Staff.Vacations.Layout = Ext.extend(Ext.Window, {
 
     height: 500,
     
-    modal: true,
-    
     hidden: false,
     
     layout: 'border',

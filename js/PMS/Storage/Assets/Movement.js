@@ -84,7 +84,6 @@ PMS.Storage.Assets.Movement = Ext.extend(xlib.form.FormPanel, {
             title: this.isIncome ? 'Оприходование ТМЦ' : 'Выдача ТМЦ',
             resizable: false,
             width: 300,
-            modal: true,
             items: [this],
             buttons: [{
                 text: 'Сохранить',

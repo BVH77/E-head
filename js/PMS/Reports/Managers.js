@@ -40,7 +40,6 @@ PMS.Reports.Managers = Ext.extend(xlib.form.FormPanel, {
             title: 'Отчёт о деятельности менеджеров за период:',
             resizable: false,
             width: 200,
-            modal: true,
             items: [this],
             buttons: [{
                 text: 'Сгенерировать',

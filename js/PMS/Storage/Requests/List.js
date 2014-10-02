@@ -321,7 +321,6 @@ PMS.Storage.Requests.List = Ext.extend(Ext.grid.GridPanel, {
             title: 'Заявка на ТМЦ',
             resizable: false,
             width: 500,
-            modal: true,
             items: [formPanel],
             buttons: buttons
         });

@@ -196,7 +196,6 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
             title: 'Платёж',
             resizable: false,
             width: 200,
-            modal: true,
             items: [formPanel],
             buttons: [{
                 text: 'Сохранить',

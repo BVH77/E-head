@@ -171,7 +171,6 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
             title: 'Создание новой учётной записи',
             resizable: false,
             width: 300,
-            modal: true,
             items: [f],
             buttons: [{
                 text: 'Создать',

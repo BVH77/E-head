@@ -8,8 +8,6 @@ PMS.Staff.Payments.Layout = Ext.extend(Ext.Window, {
 
     height: 500,
     
-    modal: true,
-    
     hidden: false,
     
     layout: 'border',

@@ -228,7 +228,6 @@ PMS.Menu = function(params) {
                     bodyStyle: {background: 'white'},
                     padding: 10,
                     height: 600,
-                    modal: true,
                     autoScroll: true,
                     autoLoad: '/docs/doc01.htm'
                 }).show();
@@ -255,7 +254,6 @@ PMS.Menu = function(params) {
                 bodyStyle: {background: 'white'},
                 padding: 10,
                 height: 400,
-                modal: true,
                 autoScroll: true,
                 autoLoad: link('default', 'index', 'changes', {}, 'html')
             }).show();

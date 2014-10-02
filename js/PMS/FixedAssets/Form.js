@@ -102,7 +102,6 @@ PMS.FixedAssets.Form = Ext.extend(xlib.form.FormPanel, {
                 itemId: this.sid,
                 xtype: this.sid ? 'PMS.FixedAssets.Files' : 'panel'
             }],
-            modal: true,
             buttons: [
                 {text: 'Сохранить', handler: this.onSave.createDelegate(this)}, 
                 {text: 'Отменить', handler: function() {w.close();}}

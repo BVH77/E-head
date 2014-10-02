@@ -86,7 +86,6 @@ PMS.Storage.Measures.List = Ext.extend(Ext.grid.GridPanel, {
             title: 'Добавление единицы измерения',
             resizable: false,
             width: 300,
-            modal: true,
             items: [formPanel],
             buttons: [{
                 text: 'Сохранить',

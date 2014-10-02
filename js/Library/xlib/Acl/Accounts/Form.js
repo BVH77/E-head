@@ -45,7 +45,6 @@ xlib.Acl.Accounts.Form = Ext.extend(xlib.form.FormPanel, {
         var w = new Ext.Window({
             title: 'Редактирование учётной записи',
             resizable: false,
-            modal: true,
             width: 300,
             items: [this],
             buttons: [{

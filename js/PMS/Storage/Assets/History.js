@@ -104,7 +104,6 @@ PMS.Storage.Assets.History = Ext.extend(Ext.grid.GridPanel, {
             resizable: false,
             width: 600,
             height: 500,
-            modal: true,
             items: [this]
         }).show();
     }
