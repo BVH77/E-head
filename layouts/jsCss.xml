@@ -41,6 +41,9 @@
         <script src="/js/Library/extjs/ux/form/date-time-ux-debug.js"/>
         
         <script src="/js/Library/extjs/ux/grid/GroupSummary.js"/>
+
+		<style href="/js/Library/extjs/ux/Calculator/Calculator.css"/>
+		<script src="/js/Library/extjs/ux/Calculator/Calculator.js"/>
         <!-- Ext ux -->
         
 		<!-- ================ xlib ================ -->

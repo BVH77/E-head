@@ -1,0 +1,48 @@
+@CHARSET "UTF-8";
+.ux-calc { 
+    background: #EEEEEE; 
+} 
+
+.ux-calc-container { 
+    border: 1px solid #C7D8ED; 
+} 
+
+.ux-calc-container td { 
+    font-family: tahoma, arial, helvetica, sans-serif; 
+    font-size: 14px; 
+    line-height: 18px; 
+    border: 1px outset #C7D8ED; 
+} 
+
+.ux-calc-digit, .ux-calc-equals { 
+    font-weight: bold; 
+} 
+
+.ux-calc-operator, .ux-calc-equals { 
+    color: #0000FF; 
+} 
+
+.ux-calc-memory { 
+    color: #FF0000; 
+} 
+
+.ux-calc-memstore { 
+    border: 1px inset #C7D8ED !important; 
+    background-color: #D1D1D1; 
+} 
+
+.ux-calc-btn-hover { 
+    background: #C7D8ED; 
+    cursor: pointer; 
+} 
+
+.ux-calc-input { 
+    text-align: right; 
+} 
+
+.ux-calc-misc { } 
+.ux-calc-ok { } 
+
+.calculator_icon { 
+    background-image: url('/images/calculator.png') !important; 
+}

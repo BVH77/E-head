@@ -235,6 +235,16 @@ PMS.Menu = function(params) {
             }
         }]
 	}, '->', {
+        tooltip: 'Калькулятор',
+	    iconCls: 'calculator_icon',
+        handler: function() {
+            new Ext.Window({
+                title: 'Калькулятор',
+                iconCls: 'calculator_icon',
+                items: [new Ext.ux.Calculator()],
+            }).show();
+        } 
+	}, {
         tooltip: 'Информация о релизе',
 	    iconCls: 'info-icon',
         handler: function() {
