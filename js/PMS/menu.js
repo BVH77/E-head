@@ -238,11 +238,15 @@ PMS.Menu = function(params) {
 	    iconCls: 'calculator_icon',
 	    text: 'Калькулятор',
         handler: function() {
-            new Ext.Window({
-                title: 'Калькулятор',
-                iconCls: 'calculator_icon',
-                items: [new Ext.ux.Calculator()],
-            }).show();
+			var calc = Ext.getCmp('calculator') || new Ext.Window({
+	                title: 'Калькулятор',
+	                iconCls: 'calculator_icon',
+	                resizable: false,
+	                closeAction: 'hide',
+	                id: 'calculator',
+	                items: [new Ext.ux.Calculator()],
+	            });
+			calc.show().toFront();
         } 
 	}, {
         tooltip: 'Информация о релизе',

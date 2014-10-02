@@ -79,7 +79,7 @@ Ext.ux.Calculator = Ext.extend(Ext.Component, {
         this.standardDiv = el.createChild({tag: 'div', id: 'ux-calc-div-' + this.id, cls:'ux-calc', style: 'float: left;'}); 
          
         //create the table with all the correct css 
-        this.stTable = this.standardDiv.createChild({tag: 'table', cellspacing: 0, cellpadding: 0, width: 150, cls: 'ux-calc-container'}); 
+        this.stTable = this.standardDiv.createChild({tag: 'table', cellspacing: 0, cellpadding: 0, width: 300, cls: 'ux-calc-container'}); 
 
         //set the maxcolumns for later table creation 
         var maxCols = 5; 
@@ -111,7 +111,9 @@ Ext.ux.Calculator = Ext.extend(Ext.Component, {
         this.inputBox = new Ext.form.TextField({ 
             id: this.id, 
             name: this.id, 
-            width: 150, 
+            width: 300,
+            height: 45,
+            style: 'font-size: 36px;',
             readOnly: true, 
             cls: 'ux-calc-input', 
             value: '0' 
@@ -140,7 +142,7 @@ Ext.ux.Calculator = Ext.extend(Ext.Component, {
                 //set the options for the button (cell) 
                 cell.dom.id = btn[j].id || Ext.id(); 
                 cell.dom.innerHTML = btn[j].label; 
-                cell.dom.width = '30'; 
+                cell.dom.width = '60'; 
                 cell.dom.align = 'center'; 
                 cell.dom.valign = 'center'; 
 
