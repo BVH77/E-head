@@ -306,7 +306,7 @@ PMS.Menu = function(params) {
         tooltip: username + ' (' + rolename + ')',
         iconCls: 'exit-icon',
         handler: function() {
-            window.location.href = '/index/logout';
+            window.location.href = '/default/index/logout';
         }
     })];
 }
