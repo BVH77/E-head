@@ -13,7 +13,7 @@
         DEBUG = <?=$this->debug ? 'true' : 'false'; ?>;
         xlib.LoadingMask.show();
     </script>
-    <script src="/default/config/get-permissions" ></script>
+    <script src="/index.php/config/get-permissions" ></script>
 	<?=$this->IncludeJs($this->layoutPath . '/jsCss.xml'); ?>
     <?php if ($this->assemble): ?>
         <script type="text/javascript">
