@@ -16,7 +16,7 @@ class IndexController extends OSDN_Controller_Action
 
         if (!OSDN_Accounts_Prototype::isAuthenticated()) {
         	$assemble->path = $_SERVER['REQUEST_URI'];
-            $this->_redirect('/index.php/index/login');
+            $this->_redirect('/index/login');
         } elseif (isset($assemble->path)) {
         	$path = $assemble->path;
         	$assemble->unsetAll();
