@@ -42,7 +42,7 @@ Ext.onReady(function(){
     }
     
     Ext.Ajax.timeout = 3000000;
-    Ext.override(Ext.form.BasicForm, { timeout: Ext.Ajax.timeout });
+    Ext.override(Ext.form.BasicForm, { timeout: Ext.Ajax.timeout / 1000 });
     Ext.override(Ext.data.DataProxy, { timeout: Ext.Ajax.timeout });
     Ext.override(Ext.data.Connection, { timeout: Ext.Ajax.timeout });
     
