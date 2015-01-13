@@ -1,10 +1,11 @@
 AddDefaultCharset utf-8
 
-php_value upload_max_filesize 20M
-php_value post_max_size 20M
+php_value max_execution_time 3000
+php_value upload_max_filesize 50M
+php_value post_max_size 50M
 
-#php_value max_input_time 600
-#php_value memory_limit 100M
+php_value max_input_time -1
+php_value memory_limit 100M
 
 php_flag magic_quotes_gpc off
 php_flag register_globals off
