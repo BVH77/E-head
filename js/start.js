@@ -41,7 +41,8 @@ Ext.onReady(function(){
         };
     }
     
-    Ext.Ajax.on({
+    Ext.Ajax.timeout = 30000 * 100;
+	Ext.Ajax.on({
         requestexception: function(conn, response, options) {
             switch (response.status) {
                 case 401:
