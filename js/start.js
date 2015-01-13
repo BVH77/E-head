@@ -41,7 +41,7 @@ Ext.onReady(function(){
         };
     }
     
-    Ext.Ajax.prototype.timeout = 3000000;
+    Ext.Ajax.timeout = 3000000;
 	Ext.Ajax.on({
         requestexception: function(conn, response, options) {
             switch (response.status) {
