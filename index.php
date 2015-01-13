@@ -2,6 +2,7 @@
 //die('This resource is temporary unreachable.');
 
 ini_set('session.gc_maxlifetime', 28800);
+ini_set('max_execution_time', 28800);
 
 if (!empty($argv[1])) {
     $_SERVER['REQUEST_URI'] = $argv[1];
