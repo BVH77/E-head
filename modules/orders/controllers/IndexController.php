@@ -314,9 +314,9 @@ class Orders_IndexController extends OSDN_Controller_Action
                 break;
         }
         try {
-            @$mail->send();
+            $mail->send();
         } catch (Exception $e) {
-            //echo $e->getMessage();
+            echo $e->getMessage();
         }
     }
 
