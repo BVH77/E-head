@@ -2,13 +2,21 @@
 <?php //print_r($this->data); die();?>
 </pre>
 
-<center>
+<style>
+table {
+	border-spacing: 0;
+}
+td {
+	padding: 5px;
+}
+</style>
+<div align="center">
 <h3>Список клиентов</h3>
 
-<table cellspacing="0" cellpadding="5" border="1">
+<table border=1>
     <tr valign="bottom" align="center">
         <td><b>Наименование</b></td>
-        <td><b>Описание</td>
+        <td><b>Описание</b></td>
     </tr>
         <?php foreach ($this->data as $row) :?>
             <tr>
@@ -17,4 +25,4 @@
             </tr>
         <?php endforeach;?>
 </table>
-</center>
+</div>

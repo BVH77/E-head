@@ -6,9 +6,15 @@
 body {
     font-size: small;
 }
+table {
+	border-spacing: 0;
+}
+td {
+	padding: 5px;
+}
 .address {
     width: 150px;
-    height: 20px;
+    height: 15px;
     overflow: hidden;
     display: block;
     cursor: help;
@@ -28,7 +34,7 @@ body {
 }
 </style>
 
-<table id="legend" cellspacing="0" cellpadding="0" border="0"><tr>
+<table id="legend"><tr>
 <td><b>Условные обозначения:&nbsp;</b></td>
 <td class="square x-row-payed">&nbsp;</td><td>&nbsp;Оплачено&nbsp;</td>
 <td class="square x-row-waiting">&nbsp;</td><td>&nbsp;Ожидается&nbsp;</td>
@@ -40,7 +46,7 @@ body {
 </center>
 <?php if (!empty($this->data['list']) && !empty($this->data['dates'])): ?>
 <?php $totalCost = $totalPayed = $totalRest = 0; ?>
-<table cellspacing="0" cellpadding="5" border="1">
+<table border=1>
     <tr valign="middle" align="center" style="background-color: #CDF7E0;">
         <td rowspan="2"><b>Заказчик (адрес)</b></td>
         <td rowspan="2"><b>№ заказа</b></td>

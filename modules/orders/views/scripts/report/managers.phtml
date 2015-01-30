@@ -2,7 +2,15 @@
 <?php //print_r($this->data); die;?>
 </pre>
 
-<center>
+<style>
+table {
+	border-spacing: 0;
+}
+td {
+	padding: 5px;
+}
+</style>
+<div align="center">
 <h3>
     Отчёт о деятельности менеджеров за период
     с <?
@@ -15,7 +23,7 @@
     ?>
 </h3>
 <?php if (!empty($this->data['summary'])): ?>
-<table cellspacing="0" cellpadding="5" border="1">
+<table border=1>
     <tr valign="bottom" align="center">
         <td><b>Менеджер</b></td>
         <td><b>Сумма выполненных заказов <br /> Рубль РФ</b></td>
@@ -32,5 +40,4 @@
         <?php endforeach;?>
 </table>
 <?php endif; ?>
-</center>
-
+</div>

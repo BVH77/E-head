@@ -1,4 +1,18 @@
-<center><h3>
+<style>
+body {
+    font-size: 10pt;
+}
+
+table {
+	border-spacing: 0;
+	width: 300px;
+}
+
+td {
+	padding: 5px;
+}
+</style>
+<h3 align="center">
 План
 <?php if ($this->data['type'] == 'mount'): ?>
     монтажных
@@ -9,10 +23,10 @@
 <?php endif;?>
     работ на
     <?=date_format($this->data['date'], 'd-m-Y');?>
-</h3></center>
+</h3>
 <?php foreach ($this->data['orders'] as $order) :?>
     <div style="float: left; padding: 20px; height: 450px;">
-    <table cellspacing="0" cellpadding="5" border="1" width="300px">
+    <table border=1>
         <tr><td>Заказчик: <b><?=$order['customer_name']?></b></td></tr>
         <tr><td>Адрес заказа: <b><?=$order['address']?></b></td></tr>
         <tr valign="top"><td height="200px">Вид работ:</td></tr>
@@ -29,7 +43,7 @@
     </table>
     </div>
 <?php endforeach;?>
-<div style="clear: both;">
+<div style="clear: both;"></div>
 <pre>
 <?php //print_r($this->data['orders']);?>
 <?php //print_r($this->data['debug']);?>

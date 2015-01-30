@@ -3,6 +3,14 @@ body {
     font-size: 10pt;
 }
 
+table {
+	border-spacing: 0;
+}
+
+td {
+	padding: 5px;
+}
+
 .late:after {
     content: "!";
     font-weight: 700;
@@ -47,14 +55,12 @@ body {
     border: 0;
 }
 </style>
-<center>
-<h3>Сводный план работ на <?=$this->data['date']?></h3>
-</center>
+<h3 align="center">Сводный план работ на <?=$this->data['date']?></h3>
 <?php
     $date = new Zend_Date();
     $today = $date->toValue(Zend_Date::DAY_SHORT);
 ?>
-<table cellspacing="0" cellpadding="5" border="1">
+<table border="1">
     <?php foreach ($this->data['data'] as $monthNumber => $month) :?>
         <tr><td colspan="100" class="header"><?=$month['title']; ?></td></tr>
         <tr valign="bottom">
@@ -102,7 +108,7 @@ body {
 <?php endforeach;?>
 </table><br/><br/>
 
-<table cellspacing="0" cellpadding="5" border="1" style="border: none;">
+<table>
     <tr>
         <td class="planning_production" style="width: 20px;"></td>
         <td style="border: none;">- производство</td>

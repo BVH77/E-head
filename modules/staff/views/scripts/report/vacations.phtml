@@ -3,6 +3,14 @@ body {
     font-size: 10pt;
 }
 
+table {
+	border-spacing: 0;
+}
+
+td {
+	padding: 5px;
+}
+
 .day-off {
     border-color: black;
     border-style: dashed;
@@ -22,8 +30,8 @@ body {
     background-color: red;
 }
 </style>
-<center>
-<h3>
+
+<h3 align="center">
     План отпусков сотрудников за период
     с <?
         $startdate = new Zend_Date($this->data['start']);
@@ -34,9 +42,8 @@ body {
         echo $enddate->get(Zend_Date::DATES);
     ?>
 </h3>
-</center>
 
-<table cellspacing="0" cellpadding="5" border="1" width="100%">
+<table border="1">
     <tr>
         <td rowspan="2"><b>Сотрудник</b></td>
         <td rowspan="2"><b>Должность</b></td>
