@@ -1,5 +1,4 @@
-#Thu Oct 02 14:24:01 MSD 2014
 eclipse.preferences.version=1
 include_path=0;/e-head
-phpVersion=php5
+phpVersion=php5.4
 use_asp_tags_as_php=false
