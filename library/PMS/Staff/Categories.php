@@ -34,13 +34,8 @@ class PMS_Staff_Categories
     {
         $response = new OSDN_Response();
         
-        echo 'current role: ' .  OSDN_Accounts_Prototype::getRoleId() . '\n';
-        echo 'mount role: ' .  MOUNT_ROLE . '\n';
-        echo 'STAFF_CATEGORY_MOUNT: ' .  STAFF_CATEGORY_MOUNT . '\n';
-        echo 'sravnenie: ' .  (OSDN_Accounts_Prototype::getRoleId() == MOUNT_ROLE) . '\n';
-        
         // Show only mount category for store role
-        if (OSDN_Accounts_Prototype::getRoleId() == MOUNT_ROLE) {
+        if (OSDN_Accounts_Prototype::getRoleId() == STORE_ROLE) {
             $parent = STAFF_CATEGORY_MOUNT;
         }
         
