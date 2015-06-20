@@ -34,19 +34,18 @@ class PMS_Staff_Categories
     {
         $response = new OSDN_Response();
         
-        // Show only mount category for store role
-        if (OSDN_Accounts_Prototype::getRoleId() == STORE_ROLE) {
-            $parent = STAFF_CATEGORY_MOUNT;
-        }
-        
         $rowset = $this->_getChildNodes($parent);
         if (false === $rowset) {
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
 
+        // Show only mount category for store role
+        $isStaff = (OSDN_Accounts_Prototype::getRoleId() == STORE_ROLE);
+        
         // Form array for tree node
         $nodes = array();
         foreach ($rowset as $row) {
+            if ($isStaff && $row['id'] != STAFF_CATEGORY_MOUNT) continue;
             $nodes[] = array(
                 'id'        => $row['id'],
                 'text'      => $row['name']
