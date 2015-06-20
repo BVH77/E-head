@@ -33,6 +33,12 @@ class PMS_Staff_Categories
     public function getListByParent($parent = 0)
     {
         $response = new OSDN_Response();
+        
+        // Show only mount category for store role
+        if (OSDN_Accounts_Prototype::getRoleId() == MOUNT_ROLE) {
+            $parent = STAFF_CATEGORY_MOUNT;
+        }
+        
         $rowset = $this->_getChildNodes($parent);
         if (false === $rowset) {
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));

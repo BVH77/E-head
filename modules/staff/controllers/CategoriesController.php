@@ -17,6 +17,8 @@ class Staff_CategoriesController extends OSDN_Controller_Action
     {
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->staff);
         $acl->isAllowed(OSDN_Acl_Privilege::VIEW, 'get');
+        
+        $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->admin);
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'add');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'update');
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'delete');

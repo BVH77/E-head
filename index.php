@@ -57,7 +57,16 @@ date_default_timezone_set($config->ui->timezone);
 Zend_Registry::set('config', $config);
 
 define('ADMIN_ROLE', 1);
+define('GUEST_ROLE', 2);
 define('MANAGER_ROLE', 3);
+define('PRODUCTION_ROLE', 4);
+define('MOUNT_ROLE', 5);
+define('BOOKKEEPER_ROLE', 7);
+define('STORE_ROLE', 8);
+define('PRINT_ROLE', 9);
+
+define('STAFF_CATEGORY_MOUNT', 29);
+
 define('OSDN_DEBUG', true);// (boolean) $config->debug);
 define('MYSQL_DATE_TIME_FORMAT', 'Y-m-d H:i:s');
 define('MYSQL_DATE_FORMAT', 'Y-m-d');
