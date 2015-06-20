@@ -28,6 +28,12 @@ class PMS_Staff
         }
         $select->where('archive = ?', $archive);
 
+        // Show only mount category for store role
+        $isStaff = (OSDN_Accounts_Prototype::getRoleId() == STORE_ROLE);
+        if (OSDN_Accounts_Prototype::getRoleId() == STORE_ROLE) {
+            $select->where('category_id = ?', STAFF_CATEGORY_MOUNT);
+        }
+        
         $plugin = new OSDN_Db_Plugin_Select($this->_table, $select);
         $plugin->parse($params);
         try {
