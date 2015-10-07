@@ -59,6 +59,7 @@ class PMS_Orders
             'mount_start_fact'          => array(array('StringLength', 0, 10)),
             'mount_end_planned'         => array(array('StringLength', 0, 10)),
             'mount_end_fact'            => array(array('StringLength', 0, 10)),
+            'mount_budget'              => array(array('StringLength', 0, 255)),
             'print_start_planned'       => array(array('StringLength', 0, 10)),
             'print_start_fact'          => array(array('StringLength', 0, 10)),
             'print_end_planned'         => array(array('StringLength', 0, 10)),

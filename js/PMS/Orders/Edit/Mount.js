@@ -4,7 +4,7 @@ PMS.Orders.Edit.Mount = Ext.extend(Ext.Panel, {
     
     title: 'Монтаж',
     
-	layout: 'border',
+	layout: 'fit',
     
     border: false,
     
@@ -12,13 +12,13 @@ PMS.Orders.Edit.Mount = Ext.extend(Ext.Panel, {
 
     initComponent: function() {
 
-        this.southRegion = new PMS.Orders.Edit.MountBudgetView();
+        // this.southRegion = new PMS.Orders.Edit.MountBudgetView();
         
         this.items = [{
             region: 'center',
             border: false,
             layout: 'column',
-            columns: 3,
+            columns: 2,
             padding: 5,
             defaults: {
                 layout: 'form',
@@ -58,20 +58,25 @@ PMS.Orders.Edit.Mount = Ext.extend(Ext.Panel, {
                     disabled: !acl.isUpdate('orders', 'mount', 'end_fact')
                 }]
             }, {
-                columnWidth: .2,
                 items: [{
-                    xtype: 'button',
-                    text: 'Заполнить смету',
-                    disabled: !acl.isUpdate('orders', 'mount'),
-                    handler: this.editForm,
-                    scope: this
+                    name: 'mount_budget',
+                    xtype: 'numberfield',
+                    fieldLabel: 'Бюджет монтажа',
+                    disabled: !acl.isUpdate('orders', 'mount')
                 }]
+//                items: [{
+//                    xtype: 'button',
+//                    text: 'Заполнить смету',
+//                    disabled: !acl.isUpdate('orders', 'mount'),
+//                    handler: this.editForm,
+//                    scope: this
+//                }]
             }]
-        }, this.southRegion];
+        }]; //, this.southRegion];
         
         PMS.Orders.Edit.Mount.superclass.initComponent.apply(this, arguments);
         
-        this.on('activate', this.fillPanel, this);
+        // this.on('activate', this.fillPanel, this);
     },
     
     editForm: function() {

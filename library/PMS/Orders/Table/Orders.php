@@ -23,6 +23,7 @@ class PMS_Orders_Table_Orders extends OSDN_Db_Table_Abstract
         'mount_start_fact',
         'mount_end_planned',
         'mount_end_fact',
+        'mount_budget',
         'success_date_planned',
         'success_date_fact'
     );

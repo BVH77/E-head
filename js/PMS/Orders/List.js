@@ -110,6 +110,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
 	            {name: 'mount_end_fact', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
 	            {name: 'success_date_planned', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
 	            {name: 'success_date_fact', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
+	            {name: 'mount_budget'},
 	            {name: 'cost'},
 	            {name: 'conflict'},
 	            {name: 'advanse'},

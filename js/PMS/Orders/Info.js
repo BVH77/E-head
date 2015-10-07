@@ -94,6 +94,9 @@ PMS.Orders.Info = Ext.extend(Ext.grid.GridPanel, {
     	if (acl.isView('orders', 'success', 'fact')) {
 	        data.push(['Сдача (факт)', dateFormt(record.get('success_date_fact'))]);
         }
+    	if (acl.isView('orders', 'mount')) {
+    		data.push(['Бюджет монтажа', record.get('mount_budget')]);
+    	}
         if (acl.isView('orders', 'cost')) {
         	data.push(['Стоимость', record.get('cost')]);
         	data.push(['Аванс', record.get('advanse')]);
