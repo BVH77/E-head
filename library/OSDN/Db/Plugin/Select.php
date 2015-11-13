@@ -450,7 +450,7 @@ class OSDN_Db_Plugin_Select
         $s = clone $this->_selectStatement;
         $s->reset(Zend_Db_Select::COLUMNS);
         $s->reset(Zend_Db_Select::LIMIT_COUNT);
-        $s->reset(Zend_Db_Select::LIMIT_COUNT);
+        $s->reset(Zend_Db_Select::LIMIT_OFFSET);
         $s->reset(Zend_Db_Select::ORDER);
         $s->reset(Zend_Db_Select::GROUP);
 
