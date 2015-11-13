@@ -456,8 +456,6 @@ class OSDN_Db_Plugin_Select
 
         $s->columns(array('c' => new Zend_Db_Expr('COUNT(*)')));
         
-        //echo $s->assemble();
-
         try {
             $count = $s->query()->fetchColumn(0);
             return $count;
