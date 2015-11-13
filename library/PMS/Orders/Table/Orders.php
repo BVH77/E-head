@@ -15,6 +15,7 @@ class PMS_Orders_Table_Orders extends OSDN_Db_Table_Abstract
         'production_start_fact',
         'production_end_planned',
         'production_end_fact',
+        'production_budget',
         'print_start_planned',
         'print_start_fact',
         'print_end_planned',

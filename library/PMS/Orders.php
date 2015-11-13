@@ -55,6 +55,7 @@ class PMS_Orders
             'production_start_fact'     => array(array('StringLength', 0, 10)),
             'production_end_planned'    => array(array('StringLength', 0, 10)),
             'production_end_fact'       => array(array('StringLength', 0, 10)),
+            'production_budget'         => array(array('StringLength', 0, 255)),
             'mount_start_planned'       => array(array('StringLength', 0, 10)),
             'mount_start_fact'          => array(array('StringLength', 0, 10)),
             'mount_end_planned'         => array(array('StringLength', 0, 10)),

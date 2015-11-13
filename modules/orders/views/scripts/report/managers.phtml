@@ -1,5 +1,10 @@
 <pre>
-<?php //print_r($this->data); die;?>
+<?php //print_r($this->data); die;
+$currency = new Zend_Currency('ru_RU');
+$total_success = 0;
+$total_added = 0;
+$total_count = 0;
+?>
 </pre>
 
 <style>
@@ -31,13 +36,24 @@ td {
         <td><b>Количество <br />просроченных заказов</b></td>
     </tr>
         <?php foreach ($this->data['summary'] as $row) :?>
+        <?php
+            $total_success  += $row['summ_success'];
+            $total_added    += $row['summ_added'];
+            $total_count    += $row['failed_count'];
+        ?>
             <tr>
                 <td><?=$row['name']?></td>
-                <td align="right"><?=$row['summ_success']?>,00</td>
-                <td align="right"><?=$row['summ_added']?>,00</td>
+                <td align="right"><?=$currency->toCurrency($row['summ_success'])?></td>
+                <td align="right"><?=$currency->toCurrency($row['summ_added'])?></td>
                 <td align="right"><?=$row['failed_count']?></td>
             </tr>
         <?php endforeach;?>
+    <tr valign="bottom" align="right">
+        <td align="left"><b>ИТОГО</b></td>
+        <td><b><?=$currency->toCurrency($total_success)?></b></td>
+        <td><b><?=$currency->toCurrency($total_added)?></b></td>
+        <td><b><?=$total_count?></b></td>
+    </tr>
 </table>
 <?php endif; ?>
 </div>

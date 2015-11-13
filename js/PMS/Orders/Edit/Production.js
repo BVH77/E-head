@@ -54,6 +54,13 @@ PMS.Orders.Edit.Production = Ext.extend(Ext.Panel, {
                 fieldLabel: 'Конец - факт',
                 disabled: !acl.isUpdate('orders', 'production', 'end_fact')
             }]
+        }, {
+        	items: [{ 
+                name: 'production_budget',
+                xtype: 'numberfield',
+                fieldLabel: 'Бюджет производства',
+                disabled: !acl.isUpdate('orders', 'production')
+            }]
         }];
 
         PMS.Orders.Edit.Production.superclass.initComponent.apply(this, arguments);
