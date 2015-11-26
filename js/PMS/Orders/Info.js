@@ -9,7 +9,7 @@ PMS.Orders.Info = Ext.extend(Ext.grid.GridPanel, {
     hideHeaders: true,
     
     viewConfig: {
-    	scrollOffset: 21
+    	scrollOffset: 22
 	},
     
     initComponent: function() {
