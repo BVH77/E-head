@@ -21,7 +21,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
     autoLoadData: true,
     
     stripeRows: true,
-    
+        
     viewConfig: {
 	
         getRowClass: function(record) {
@@ -69,7 +69,8 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             if (Ext.isDate(sdp) && sdp < today) {
                 return 'x-row-expired';
             }
-        }
+        },
+    	scrollOffset: 22
     },
     
     initComponent: function() {
