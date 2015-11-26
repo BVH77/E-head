@@ -8,6 +8,10 @@ PMS.Orders.Info = Ext.extend(Ext.grid.GridPanel, {
     
     hideHeaders: true,
     
+    viewConfig: {
+    	scrollOffset: 20
+	},
+    
     initComponent: function() {
 	
 		this.sm = new Ext.grid.RowSelectionModel({singleSelect:true});
