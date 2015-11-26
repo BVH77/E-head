@@ -71,7 +71,7 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
             }
         },
     	
-        scrollOffset: 25
+        scrollOffset: 30
     },
     
     initComponent: function() {
