@@ -70,7 +70,8 @@ PMS.Orders.List = Ext.extend(Ext.grid.GridPanel, {
                 return 'x-row-expired';
             }
         },
-    	scrollOffset: 22
+    	
+        scrollOffset: 25
     },
     
     initComponent: function() {
