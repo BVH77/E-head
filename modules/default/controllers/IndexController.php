@@ -163,6 +163,21 @@ class IndexController extends OSDN_Controller_Action
                 return;
             }
         }
+        
+        // check is account active
+        $userModel = new OSDN_Accounts();
+        $userResponse = $userModel->fetchByLogin($login);
+       
+        if ($userResponse->hasNotSuccess()) {
+            $this->view->message = $errMes;
+            return;
+        }
+        
+        $userData = $userResponse->getRow(); 
+        if ('1' != $userData['role_id'] && '1' != $userData['active']) {
+            $this->view->message = $errMes;
+            return;
+        }
 
         // instance of stdClass
         $data = $authAdapter->getResultRowObject(null, 'password');
