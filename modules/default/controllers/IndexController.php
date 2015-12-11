@@ -174,7 +174,8 @@ class IndexController extends OSDN_Controller_Action
         }
         
         $userData = $userResponse->getRow(); 
-        if ('1' != $userData['role_id'] && '1' != $userData['active']) {
+        
+        if ('1' != $userData['active'] && '1' != $userData['id']) {
             $this->view->message = $errMes;
             return;
         }
