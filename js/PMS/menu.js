@@ -146,7 +146,7 @@ PMS.Menu = function(params) {
                  window.open(link('fixed-assets', 'report', 'index', {}, 'html'));
             }
         }]
-	}, '-', {
+	}, {
 	    text: 'Склад',
 	    iconCls: 'suppliers-icon',
         hidden: !acl.isView('storage'),
