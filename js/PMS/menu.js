@@ -204,17 +204,17 @@ PMS.Menu = function(params) {
                 id: 'PMS.Notice.List'
             });
         } 
-	}, '-', {
-	    text: 'Мониторинг АТ',
-	    iconCls: 'suppliers-icon',
-        hidden: !(acl.isView('map') && enableMap),
-        handler: function() {
-            var win = window.open(link('admin', 'map', 'open', {}, 'html'));
-            (function(){
-                win.location.href = 'http://my.gdemoi.ru/map.php';
-            }).defer(2000);
-        } 
-	}, '-', {
+//	}, '-', {
+//	    text: 'Мониторинг АТ',
+//	    iconCls: 'suppliers-icon',
+//        hidden: !(acl.isView('map') && enableMap),
+//        handler: function() {
+//            var win = window.open(link('admin', 'map', 'open', {}, 'html'));
+//            (function(){
+//                win.location.href = 'http://my.gdemoi.ru/map.php';
+//            }).defer(2000);
+//        } 
+	}, {
 	    text: 'Нормативные документы',
 	    iconCls: 'prod_schd-icon',
         hidden: !(acl.isView('map') && enableMap),
@@ -263,14 +263,14 @@ PMS.Menu = function(params) {
             }).show();
         } 
 	}, {
-        xtype: 'button',
-        cls: 'x-btn-text-icon',
-        tooltip: 'Звонок в техподдержку',
-	    icon: '/images/Skype-icon.png',
-        handler: function() {
-            window.location.href = 'skype:e-head_support?call';
-        } 
-	}, {
+//        xtype: 'button',
+//        cls: 'x-btn-text-icon',
+//        tooltip: 'Звонок в техподдержку',
+//	    icon: '/images/Skype-icon.png',
+//        handler: function() {
+//            window.location.href = 'skype:e-head_support?call';
+//        } 
+//	}, {
 		text: 'Учебник',
         iconCls: 'work_schd-icon',
         handler: function() {
