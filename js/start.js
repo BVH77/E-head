@@ -49,6 +49,7 @@ Ext.onReady(function(){
 	Ext.Ajax.on({
         requestexception: function(conn, response, options) {
             switch (response.status) {
+            
                 case 401:
                     alert("Авторизация истекла! \n Вы будете перенаправлены на страницу входа.");
                     window.location.reload();
