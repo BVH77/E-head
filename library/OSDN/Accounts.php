@@ -328,7 +328,8 @@ class OSDN_Accounts
             'email'     => $f->email,
             'phone'     => $f->phone,
             'name'      => $f->name,
-            'active'    => $f->active
+            'active'    => $f->active,
+            'rate'      => $f->rate
         ), $f->id);
 
         $response->affectedRows = $affectedRows;
@@ -373,7 +374,8 @@ class OSDN_Accounts
         $affectedRows = $this->_tableAccounts->updateByPk(array(
             'email' => $f->email,
             'phone' => $f->phone,
-            'name'  => $f->name
+            'name'  => $f->name,
+            'rate'  => $f->rate
         ), $f->id);
 
         $response->affectedRows = $affectedRows;
@@ -418,6 +420,9 @@ class OSDN_Accounts
 
             case 'active':
                 $fieldValidate = new OSDN_Validate_Boolean();
+                break;
+
+            case 'rate':
                 break;
 
             case 'phone':

@@ -268,7 +268,7 @@ class PMS_Reports
         $select->reset()->from(array('o' => $tableOrders),
             array('value' => new Zend_Db_Expr('SUM(cost)'), 'creator_id')
         )
-        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name');
+        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', array('name', 'rate'));
         $select->where('success_date_fact IS NOT NULL');
 
         if (!empty($f->start)) {
@@ -293,6 +293,7 @@ class PMS_Reports
         foreach ($rows as $row) {
             $rowsMerged[$row['creator_id']] = $rowStructure;
             $rowsMerged[$row['creator_id']]['name'] = $row['name'];
+            $rowsMerged[$row['creator_id']]['rate'] = $row['rate'];
             $rowsMerged[$row['creator_id']]['summ_success'] = $row['value'];
         }
 
@@ -300,7 +301,7 @@ class PMS_Reports
         $select->reset()->from(array('o' => $tableOrders),
             array('value' => new Zend_Db_Expr('SUM(cost)'), 'creator_id')
         )
-        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name');
+        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', array('name', 'rate'));
 
         if (!empty($f->start)) {
             $select->where('created >= ?', $f->start);
@@ -327,6 +328,7 @@ class PMS_Reports
             } else {
                 $rowsMerged[$row['creator_id']] = $rowStructure;
                 $rowsMerged[$row['creator_id']]['name'] = $row['name'];
+                $rowsMerged[$row['creator_id']]['rate'] = $row['rate'];
                 $rowsMerged[$row['creator_id']]['summ_added'] = $row['value'];
             }
         }
@@ -335,7 +337,7 @@ class PMS_Reports
         $select->reset()->from(array('o' => $tableOrders),
             array('value'  => new Zend_Db_Expr('COUNT(*)'), 'creator_id')
         )
-        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', 'name');
+        ->joinLeft(array('a' => $tableAccounts), 'o.creator_id=a.id', array('name', 'rate'));
         $select->where('success_date_fact IS NULL')
         ->orWhere('success_date_fact IS NOT NULL
             AND success_date_planned < success_date_fact');
@@ -365,6 +367,7 @@ class PMS_Reports
             } else {
                 $rowsMerged[$row['creator_id']] = $rowStructure;
                 $rowsMerged[$row['creator_id']]['name'] = $row['name'];
+                $rowsMerged[$row['creator_id']]['rate'] = $row['rate'];
                 $rowsMerged[$row['creator_id']]['failed_count'] = $row['value'];
             }
         }

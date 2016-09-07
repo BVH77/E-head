@@ -25,7 +25,7 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
             }, [
                 'id', 'name', 'email', 'phone', 
                 {name: 'active', type: 'boolean'},
-                'login'
+                'login', 'rate'
             ])
         });
         
@@ -89,6 +89,10 @@ xlib.Acl.Accounts.List = Ext.extend(Ext.grid.EditorGridPanel, {
             header: 'Телефон',
             dataIndex: 'phone',
             editor: new Ext.form.TextField()
+        }, {
+            header: 'Процентная ставка',
+            dataIndex: 'rate',
+            editor: new Ext.form.NumberField()
         }, 
         activeCheckColumn
         ];

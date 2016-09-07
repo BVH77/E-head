@@ -26,6 +26,10 @@ xlib.Acl.Accounts.Form = Ext.extend(xlib.form.FormPanel, {
             name: 'phone',
             allowBlank: true
         }, {
+            fieldLabel: 'Процентная ставка',
+            xtype: 'numberfield',
+            name: 'rate'
+        }, {
             fieldLabel: 'Активна',
             xtype: 'checkbox',
             name: 'active',
@@ -35,7 +39,7 @@ xlib.Acl.Accounts.Form = Ext.extend(xlib.form.FormPanel, {
         this.reader = this.initialConfig.reader = new Ext.data.JsonReader({
             root: 'rows'
         }, [
-            'login', 'name', 'email', 'phone', 'active'
+            'login', 'name', 'email', 'phone', 'active', 'rate'
         ]);
         
         xlib.Acl.Accounts.Form.superclass.initComponent.apply(this, arguments);
