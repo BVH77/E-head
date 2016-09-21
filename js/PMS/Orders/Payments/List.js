@@ -19,7 +19,7 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
     loadMask: true,
     
     permissions: acl.isView('orders', 'payments'),
-    
+    /*
     viewConfig: {
         
         getRowClass: function (record) {
@@ -34,7 +34,7 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
             return !!s ? 'x-row-payed' : 'x-row-waiting'; 
         }
     },
-    
+    */
     initComponent: function() {
         
         if (!this.orderId) {
@@ -61,22 +61,27 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
             fields: [
                 {name: 'id', type: 'int'},
                 {name: 'order_id', type: 'int'},
-                'summ', 
-                {name: 'status', type: 'int'},
-                {name: 'date', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER}
+                {name: 'date', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
+                {name: 'date_pay', type: 'date', dateFormat: xlib.date.DATE_FORMAT_SERVER},
+                'bill', 'summ', 'summ_pay' 
             ]
         });
         
         this.sm = new Ext.grid.RowSelectionModel();
         
         this.columns = [{
-            header: 'Дата',
+            header: 'Дата счёта',
             dataIndex: 'date',
             renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
             sortable: false,
             width: 120
         }, {
-            header: 'Сумма',
+            header: '№ счёта',
+            dataIndex: 'bill',
+            sortable: false,
+            id: this.autoExpandColumn
+        }, {
+            header: 'Сумма счёта',
             dataIndex: 'summ',
             sortable: false,
             width: 150,
@@ -85,9 +90,20 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
                 return parseFloat(v).toFixed(2) + ' р.';
             }
         }, {
-            dataIndex: '',
+            header: 'Дата оплаты',
+            dataIndex: 'date_pay',
+            renderer: xlib.dateRenderer(xlib.date.DATE_FORMAT),
             sortable: false,
-            id: this.autoExpandColumn
+            width: 120
+        }, {
+            header: 'Сумма оплаты',
+            dataIndex: 'summ_pay',
+            sortable: false,
+            width: 150,
+            align: 'right',
+            renderer: function(v) {
+                return parseFloat(v).toFixed(2) + ' р.';
+            }
         }];
         
         this.plugins = [new xlib.grid.Actions({
@@ -128,6 +144,7 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
                 handler: this.onAdd,
                 scope: this
             })],
+            /*
             plugins: [new xlib.Legend.Plugin({
                 items: [{
                     color: '#99CC00',
@@ -139,7 +156,8 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
                     color: '#FF8080',
                     text: 'Задерживается'
                 }]
-            })],
+            })], 
+            */
             scope: this
         });
         
@@ -148,9 +166,7 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
     
     onAdd: function(b, e) {
         
-        if (!this.permissions) {
-            return;
-        }
+        if (!this.permissions) return;
         
         var formPanel = new PMS.Orders.Payments.Form({orderId: this.orderId}),
             w = this.getWindow(formPanel, this.addURL, this.getStore(), false);
@@ -159,9 +175,8 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
     
     onUpdate: function(g, rowIndex) {
         
-        if (!this.permissions) {
-            return;
-        }
+        if (!this.permissions) return;
+        
         var formPanel = new PMS.Orders.Payments.Form({orderId: this.orderId}),
             record = g.getStore().getAt(rowIndex),
             w = this.getWindow(formPanel, this.updateURL, this.getStore(), record.get('id'));
@@ -195,7 +210,7 @@ PMS.Orders.Payments.List = Ext.extend(Ext.grid.GridPanel, {
         var w = new Ext.Window({
             title: 'Платёж',
             resizable: false,
-            width: 200,
+            width: 280,
             items: [formPanel],
             buttons: [{
                 text: 'Сохранить',

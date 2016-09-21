@@ -20,6 +20,11 @@ class PMS_Reports
     {
         $response = new OSDN_Response();
 
+        $response->data = array();
+        return $response->addStatus(new PMS_Status(PMS_Status::OK));
+        
+        /*
+        
         $table = new PMS_Orders_Payments_Table();
 
         // Fetch managers
@@ -124,6 +129,7 @@ class PMS_Reports
 
         $response->data = array('list' => $list, 'dates' => $dates);
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
+        */
     }
 
     public function generateSchedule($type)

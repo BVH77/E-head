@@ -43,9 +43,11 @@ class PMS_Orders_Payments
             '*'         => 'StringTrim'
         ), array(
             'order_id'  => array('Id', 'allowEmpty' => false, 'presence' => 'required'),
+            'bill'      => array(array('StringLength', 1, 255), 'presence' => 'required'),
             'date'      => array(array('StringLength', 1, 255), 'presence' => 'required'),
+            'date_pay'  => array(array('StringLength', 0, 255), 'allowEmpty' => true),
             'summ'      => array(array('StringLength', 1, 10), 'presence' => 'required'),
-            'status'     => array('Int', 'allowEmpty' => false, 'presence' => 'required')
+            'summ_pay'  => array(array('StringLength', 0, 10), 'allowEmpty' => true)
         ), $params);
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
@@ -79,9 +81,11 @@ class PMS_Orders_Payments
             '*'         => 'StringTrim'
         ), array(
             'order_id'  => array('Id', 'allowEmpty' => false, 'presence' => 'required'),
+            'bill'      => array(array('StringLength', 1, 255), 'presence' => 'required'),
             'date'      => array(array('StringLength', 1, 255), 'presence' => 'required'),
+            'date_pay'  => array(array('StringLength', 0, 255), 'allowEmpty' => true),
             'summ'      => array(array('StringLength', 1, 10), 'presence' => 'required'),
-            'status'     => array('Int', 'allowEmpty' => false, 'presence' => 'required')
+            'summ_pay'  => array(array('StringLength', 0, 10), 'allowEmpty' => true)
         ), $params);
         $response->addInputStatus($f);
         if ($response->hasNotSuccess()) {
@@ -108,9 +112,6 @@ class PMS_Orders_Payments
         if (!$validate->isValid($id)) {
             return $response->addStatus(new PMS_Status(PMS_Status::INPUT_PARAMS_INCORRECT, 'id'));
         }
-//        if (!$this->_checkRelations($id)) {
-//            return $response->addStatus(new PMS_Status(PMS_Status::DELETE_FAILED));
-//        }
         try {
             $affectedRows = $this->_table->deleteByPk($id);
             $status = PMS_Status::retrieveAffectedRowStatus($affectedRows);
