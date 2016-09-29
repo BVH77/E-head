@@ -20,7 +20,37 @@ class PMS_Reports
     {
         $response = new OSDN_Response();
 
-        $response->data = array();
+        $orders = array(
+            array(
+                'id'            => '1',
+                'customer'      => 'Aaaa',
+                'address'       => 'Bbbb',
+                'creator_name'  => 'Cccc',
+                'cost'          => '1000',
+                'advance'       => '100'
+            )
+        );
+        
+        $select = $this->_tableOrders->getAdapter()->select();
+        $select->from(array('o' => $this->_tableOrders->getTableName()), array('id', 'address', 'cost', 'advanse'))
+            ->joinLeft(array('a' => $this->_tableAccounts->getTableName()),
+                'o.creator_id=a.id', array('creator_name' => 'a.name')
+            )
+            ->joinLeft(array('c' => $this->_tableCustomers->getTableName()),
+                'o.customer_id=c.id', array('customer' => 'c.name')
+            )
+            ->where('o.archive != 1');
+        
+        try {
+            $orders = $select->query()->fetchAll();
+        } catch (Exception $e) {
+            if (OSDN_DEBUG) {
+                throw $e;
+            }
+            return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+        }
+            
+        $response->data = array('orders' => $orders);
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
         
         /*

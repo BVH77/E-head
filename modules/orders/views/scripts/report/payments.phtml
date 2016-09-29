@@ -43,30 +43,39 @@ td {
  -->
 <center>
 <h3>ПЛАТЕЖИ</h3>
-(в разработке)
+<h1>(в разработке)</h1>
 </center>
-<?php if (!empty($this->data['list']) && !empty($this->data['dates'])): ?>
+<?php if (!empty($this->data['orders'])): ?>
 <?php $totalCost = $totalPayed = $totalRest = 0; ?>
 <table border=1>
     <tr valign="middle" align="center" style="background-color: #CDF7E0;">
-        <td rowspan="2"><b>Заказчик (адрес)</b></td>
-        <td rowspan="2"><b>№ заказа</b></td>
-        <td colspan="<?=count($this->data['dates'])?>"><b>Платежи</b></td>
-        <td colspan="3"><b>Сводка</b></td>
-    </tr>
-    <tr style="background-color: #CDF7E0;">
-        <?php foreach ($this->data['dates'] as $date): ?>
-            <td><b><?=date_create($date)->format('d.m.Y')?></b></td>
-        <?php endforeach;?>
+        <td width="50"><b>№ заказа</b></td>
+        <td width="400"><b>Заказчик (адрес)</b></td>
+        <td><b>Менеджер</b></td>
         <td><b>Стоимость</b></td>
-        <td><b>Оплачено</b></td>
-        <td><b>Остаток</b></td>
+        <td><b>Аванс</b></td>
+        <td><b>Платежи</b></td>
     </tr>
-        <?php foreach ($this->data['list'] as $row): ?>
-            <tr><td colspan="<?=5+count($this->data['dates'])?>" style="background-color: silver;">
-                Менеджер: <b><?=$row['creator_name']?></b>
-            </td></tr>
-            <?php foreach ($row['orders'] as $i => $order): ?>
+    <?php foreach ($this->data['orders'] as $row): ?>
+        <tr>
+            <td><?=$row['id'] ?></td>
+            <td><?='<b>' . $row['customer'] .'</b> (' . $row['address'] . ')' ?></td>
+            <td><?=$row['creator_name'] ?></td>
+            <td align="right"><?=number_format($row['cost'], 2, '.', '') . '&nbsp;р.' ?></td>
+            <td align="right"><?=number_format($row['advanse'], 2, '.', '') . '&nbsp;р.' ?></td>
+            <td>
+                <?php if (!empty($row['payments'])): ?>
+                    <?php foreach ($row['payments'] as $payment): ?>
+                        <?=var_dump($payment) . '<br>' ?> 
+                    <?php endforeach;?>
+                <?php endif;?>
+            </td>
+        </tr>
+    <?php endforeach;?>
+<?php endif; ?>
+
+
+<?php /*
                 <tr>
                     <?php $address = $order['customer'] .' (' . $order['address'] . ')'; ?>
                     <td><span class="address" title="<?=$address?>"><?=$address?></span></td>
@@ -133,4 +142,5 @@ function generatePaymentCell($date, $payments) {
     }
     return '<td align="right" class="' . $class . '">' . $out . '</td>';
 }
+*/
 ?>
