@@ -61,8 +61,8 @@ td {
             <td><?=$row['id'] ?></td>
             <td><?='<b>' . $row['customer'] .'</b> (' . $row['address'] . ')' ?></td>
             <td><?=$row['creator_name'] ?></td>
-            <td align="right"><?=number_format($row['cost'], 2, '.', ' ') . '&nbsp;р.' ?></td>
-            <td align="right"><?=number_format($row['advanse'], 2, '.', ' ') . '&nbsp;р.' ?></td>
+            <td align="right"><?=number_format($row['cost'], 2, ',', ' ') . '&nbsp;р.' ?></td>
+            <td align="right"><?=number_format($row['advanse'], 2, ',', ' ') . '&nbsp;р.' ?></td>
             <td>
                 <?php if (!empty($row['payments'])): ?>
                     <?php foreach ($row['payments'] as $payment): ?>
