@@ -31,6 +31,7 @@ class PMS_Reports
             )
         );
         
+        // Fetch Orders
         $select = $this->_tableOrders->getAdapter()->select();
         $select->from(array('o' => $this->_tableOrders->getTableName()), array('id', 'address', 'cost', 'advanse'))
             ->joinLeft(array('a' => $this->_tableAccounts->getTableName()),
@@ -49,16 +50,33 @@ class PMS_Reports
             }
             return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
         }
+        
+        // Fetch Payments
+        $table = new PMS_Orders_Payments_Table();
+        
+        foreach($orders as &$order) {
+            $select = $table->getAdapter()->select();
+            $select->from($table->getTableName())->where('order_id = ?', $order['id']);
+            
+            try {
+                $payments = $select->query()->fetchAll();
+            } catch (Exception $e) {
+                if (OSDN_DEBUG) {
+                    throw $e;
+                }
+                return $response->addStatus(new PMS_Status(PMS_Status::DATABASE_ERROR));
+            }
+            
+            $order['payments'] = $payments;
+        }
             
         $response->data = array('orders' => $orders);
         return $response->addStatus(new PMS_Status(PMS_Status::OK));
         
         /*
         
-        $table = new PMS_Orders_Payments_Table();
 
         // Fetch managers
-        $select = $table->getAdapter()->select();
         $select->from(array('p' => $table->getTableName()), array())
             ->joinLeft(array('o' => $this->_tableOrders->getTableName()),
                 'p.order_id=o.id', array('creator_id')

@@ -1,5 +1,15 @@
 <pre>
-<?php //print_r($this->data); //die;?>
+<?php //print_r($this->data); //die;
+function df($date) {
+    if (empty($date)) return ''; 
+    $date = @date_create($date);
+    return !$date ? '' : $date->format(OSDN_DATE_DISPLAY_FORMAT);
+}
+function nf($summ) {
+    return number_format($summ, 2, ',', ' ') . '&nbsp;р.';
+}
+
+?>
 </pre>
 
 <style>
@@ -41,74 +51,100 @@ td {
 <td class="square x-row-paymentdelayed">&nbsp;</td><td>&nbsp;Задерживается&nbsp;</td>
 </tr></table>
  -->
-<center>
-<h3>ПЛАТЕЖИ</h3>
-<h1>(в разработке)</h1>
-</center>
+<center><h3>ПЛАТЕЖИ</h3></center>
 <?php if (!empty($this->data['orders'])): ?>
 <?php $totalCost = $totalPayed = $totalRest = 0; ?>
 <table border=1>
     <tr valign="middle" align="center" style="background-color: #CDF7E0;">
-        <td width="50"><b>№ заказа</b></td>
+        <td width="050"><b>№ заказа</b></td>
         <td width="400"><b>Заказчик (адрес)</b></td>
-        <td><b>Менеджер</b></td>
-        <td><b>Стоимость</b></td>
-        <td><b>Аванс</b></td>
-        <td><b>Платежи</b></td>
+        <td width="150"><b>Менеджер</b></td>
+        <td width="150"><b>Стоимость</b></td>
+        <td width="150"><b>Аванс</b></td>
+        <td width="150"><b>Оплачено</b></td>
+        <td><b>Счета</b></td>
     </tr>
     <?php foreach ($this->data['orders'] as $row): ?>
-        <tr>
+        <tr valign="top">
             <td><?=$row['id'] ?></td>
             <td><?='<b>' . $row['customer'] .'</b> (' . $row['address'] . ')' ?></td>
             <td><?=$row['creator_name'] ?></td>
-            <td align="right"><?=number_format($row['cost'], 2, ',', ' ') . '&nbsp;р.' ?></td>
-            <td align="right"><?=number_format($row['advanse'], 2, ',', ' ') . '&nbsp;р.' ?></td>
+            <td align="right"><?=nf($row['cost']) ?></td>
+            <td align="right"><?=nf($row['advanse']) ?></td>
+            <td align="right">
+                <?php 
+                    $total = 0; 
+                    if (!empty($row['payments'])) {
+                        foreach ($row['payments'] as $payment) {
+                            $total += $payment['summ_pay'];
+                        }
+                    }
+                    echo nf($total) 
+                ?>
+            </td>
             <td>
                 <?php if (!empty($row['payments'])): ?>
+                <table width="100%" border=1>
+                    <tr valign="middle" align="center" style="background-color: #cde7f7;">
+                        <td><b>Дата счёта</b></td>
+                        <td><b>№ счёта</b></td>
+                        <td><b>Сумма счёта</b></td>
+                        <td><b>Дата оплаты</b></td>
+                        <td><b>Сумма оплаты</b></td>
+                    </tr>
                     <?php foreach ($row['payments'] as $payment): ?>
-                        <?=var_dump($payment) . '<br>' ?> 
+                        <tr>
+                            <td align="right"><?=df($payment['date']) ?></td>
+                            <td align="right"><?=$payment['bill'] ?></td>
+                            <td align="right"><?=nf($payment['summ']) ?></td>
+                            <td align="right"><?=df($payment['date_pay']) ?></td>
+                            <td align="right"><?=nf($payment['summ_pay']) ?></td>
+                        </tr> 
                     <?php endforeach;?>
+                </table>
                 <?php endif;?>
             </td>
         </tr>
     <?php endforeach;?>
+</table>
 <?php endif; ?>
 
 
-<?php /*
-                <tr>
-                    <?php $address = $order['customer'] .' (' . $order['address'] . ')'; ?>
-                    <td><span class="address" title="<?=$address?>"><?=$address?></span></td>
-                    <td><?=$order['order_id']?></td>
-                    <?php foreach ($this->data['dates'] as $date) {
-                        echo generatePaymentCell($date, $order['payments']);
-                    } ?>
-                    <td align="right">
-                        <?php
-                            echo number_format($order['cost'], 2, '.', '') . '&nbsp;р.';
-                            $totalCost += $order['cost'];
-                        ?>
-                    </td>
-                    <td align="right">
-                        <?php
-                            $summ = 0;
-                            foreach ($order['payments'] as $p) {
-                                if ($p['status'] == 1) {
-                                    $summ += $p['summ'];
-                                }
+<?php 
+/*
+            <tr>
+                <?php $address = $order['customer'] .' (' . $order['address'] . ')'; ?>
+                <td><span class="address" title="<?=$address?>"><?=$address?></span></td>
+                <td><?=$order['order_id']?></td>
+                <?php foreach ($this->data['dates'] as $date) {
+                    echo generatePaymentCell($date, $order['payments']);
+                } ?>
+                <td align="right">
+                    <?php
+                        echo number_format($order['cost'], 2, '.', '') . '&nbsp;р.';
+                        $totalCost += $order['cost'];
+                    ?>
+                </td>
+                <td align="right">
+                    <?php
+                        $summ = 0;
+                        foreach ($order['payments'] as $p) {
+                            if ($p['status'] == 1) {
+                                $summ += $p['summ'];
                             }
-                            echo number_format($summ, 2, '.', '') . '&nbsp;р.';
-                            $totalPayed += $summ;
-                        ?>
-                    </td>
-                    <td align="right">
-                        <?php
-                            $rest = intVal($order['cost']) - $summ;
-                            $totalRest += $rest;
-                            echo number_format($rest, 2, '.', '') . '&nbsp;р.';
-                        ?>
-                    </td>
-                </tr>
+                        }
+                        echo number_format($summ, 2, '.', '') . '&nbsp;р.';
+                        $totalPayed += $summ;
+                    ?>
+                </td>
+                <td align="right">
+                    <?php
+                        $rest = intVal($order['cost']) - $summ;
+                        $totalRest += $rest;
+                        echo number_format($rest, 2, '.', '') . '&nbsp;р.';
+                    ?>
+                </td>
+            </tr>
             <?php endforeach;?>
         <?php endforeach;?>
         <tr><td colspan="<?=5+count($this->data['dates'])?>" style="background-color: silver;"></td></tr>
