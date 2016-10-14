@@ -257,6 +257,7 @@ class IndexController extends OSDN_Controller_Action
         foreach ($rows as $row) {
             if (file_exists(FILES_DIR . '/' . $row['filename'])) continue;
             $absentFiles[] = $row->toArray();
+            $tableFiles->deleteByPk($row['id']);
         }
     
         var_dump($absentFiles);
