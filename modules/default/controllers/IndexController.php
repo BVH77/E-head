@@ -230,16 +230,6 @@ class IndexController extends OSDN_Controller_Action
      * Specific maintance staff
      */
     
-    public function checkFilesAction()
-    {
-        $this->disableLayout(true);
-        $fileModel = new Xend_File();
-        $response = $fileModel->fetchAbsentFiles();
-        $data = $response->getRowset();
-        $this->view->data = $data;
-        $this->view->count = sizeof($data);
-    }
-    
     public function absentfilesAction()
     {
         $this->disableLayout(true);
@@ -263,25 +253,22 @@ class IndexController extends OSDN_Controller_Action
         var_dump($absentFiles);
     }
     
-    public function fetchLostFiles()
+    public function lostfilesAction()
     {
-        $response = new Xend_Response();
+        $this->disableLayout(true);
+        $this->disableRender(true);
+        
+        $tableFiles = new PMS_Files_Table_Files();
     
         try {
-            $records = $this->_table->fetchAllColumn(null, null, 'path');
-            $status = Xend_Accounts_Status::OK;
+            $records = $tableFiles->fetchAllColumn(null, null, 'filename');
         } catch (Exception $e) {
-            if (DEBUG) {
-                throw $e;
-            }
-            $status = Xend_Accounts_Status::DATABASE_ERROR;
-            return $response->addStatus(new Xend_Accounts_Status($status));
+            throw $e;
         }
     
-        $files = array_diff(scandir($this->default_dir), array('..', '.'));
+        $files = array_diff(scandir(FILES_DIR), array('..', '.'));
     
-        $response->setRowset(array_diff($files, $records));
-        return $response->addStatus(new Xend_Accounts_Status($status));
+        var_dump(array_diff($files, $records));
     }
     
     public function migrateAction()
