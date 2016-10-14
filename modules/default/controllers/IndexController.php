@@ -226,6 +226,63 @@ class IndexController extends OSDN_Controller_Action
         header('Location: /');
     }
 
+    /**
+     * Specific maintance staff
+     */
+    
+    public function checkFilesAction()
+    {
+        $this->disableLayout(true);
+        $fileModel = new Xend_File();
+        $response = $fileModel->fetchAbsentFiles();
+        $data = $response->getRowset();
+        $this->view->data = $data;
+        $this->view->count = sizeof($data);
+    }
+    
+    public function absentfilesAction()
+    {
+        $this->disableLayout(true);
+        $this->disableRender(true);
+        
+        $tableFiles = new PMS_Files_Table_Files();
+    
+        try {
+            $rows = $tableFiles->fetchAll();
+        } catch (Exception $e) {
+            throw $e;
+        }
+    
+        $absentFiles = array();
+        foreach ($rows as $row) {
+            if (file_exists(FILES_DIR . '/' . $row['filename'])) continue;
+            $absentFiles[] = $row->toArray();
+        }
+    
+        var_dump($absentFiles);
+    }
+    
+    public function fetchLostFiles()
+    {
+        $response = new Xend_Response();
+    
+        try {
+            $records = $this->_table->fetchAllColumn(null, null, 'path');
+            $status = Xend_Accounts_Status::OK;
+        } catch (Exception $e) {
+            if (DEBUG) {
+                throw $e;
+            }
+            $status = Xend_Accounts_Status::DATABASE_ERROR;
+            return $response->addStatus(new Xend_Accounts_Status($status));
+        }
+    
+        $files = array_diff(scandir($this->default_dir), array('..', '.'));
+    
+        $response->setRowset(array_diff($files, $records));
+        return $response->addStatus(new Xend_Accounts_Status($status));
+    }
+    
     public function migrateAction()
     {
         die();
