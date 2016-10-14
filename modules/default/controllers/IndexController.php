@@ -267,8 +267,13 @@ class IndexController extends OSDN_Controller_Action
         }
     
         $files = array_diff(scandir(FILES_DIR), array('..', '.'));
-    
-        var_dump(array_diff($files, $records));
+        $res = array_diff($files, $records);
+        
+        var_dump($res);
+        foreach ($res as $f) {
+            $p = FILES_DIR . '/' . $f;
+            if ( is_file($p) ) unlink($p);
+        }
     }
     
     public function migrateAction()
