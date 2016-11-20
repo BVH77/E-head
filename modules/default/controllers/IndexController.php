@@ -364,10 +364,12 @@ class IndexController extends OSDN_Controller_Action
     
     public function maildubravaAction() 
     {
+        $this->disableLayout(true);
+        $this->disableRender(true);
+        
         $name = 'Ботезат Виталий';
         $email = 'bvh.box@gmail.com';
         $pass = 'xxxx';
-        
         
         $mail = new Zend_Mail('UTF-8');
         $mail->setFrom('admin@dubrava.e-head.ru', 'Администрация НП "Дубрава у озера"');
