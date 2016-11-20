@@ -392,5 +392,6 @@ class IndexController extends OSDN_Controller_Action
         } catch (Exception $e) {
             echo $e->getMessage();
         }
+        echo 'Mail sent to ' . $name . ' [' . $email . ']<br/>';
     }
 }
