@@ -361,4 +361,36 @@ class IndexController extends OSDN_Controller_Action
         echo '</pre>';
         */
     }
+    
+    public function maildubravaAction() 
+    {
+        $name = 'Ботезат Виталий';
+        $email = 'bvh.box@gmail.com';
+        $pass = 'xxxx';
+        
+        
+        $mail = new Zend_Mail('UTF-8');
+        $mail->setFrom('admin@dubrava.e-head.ru', 'Администрация НП "Дубрава у озера"');
+        $mail->addTo($email, $name);
+        $mail->setSubject('Доступ к порталу НП "Дубрава у озера"');
+        $mail->setBodyHtml('<html><head><title>Портал НП "Дубрава у озера"</title></head><body>
+            <p>Здравствуйте, ' . $name  . '!</p>
+            <p>На портале НП "Дубрава у озера" для Вас создана учётная запись.</p><br/>
+            <p>Адрес: <a href="http://dubrava.e-head.ru/"><b>dubrava.e-head.ru</b></a></p>
+            <p>Имя пользователя: <b>' . $email  . '</b></p>
+            <p>Пароль: <b>' . $pass  . '</b></p><br/><br/>
+            <p>Такие же учётные данные используются для доступа на форум посёлка (раздел "Общение").</p><br/><br/>
+            <p>---</p>
+            <p>С уважением,</p>
+            <p>Администрация НП "Дубрава у озера"</p>
+            <p><a href="http://dubrava.e-head.ru/"><b>dubrava.e-head.ru</b></a></p>
+            <p>Email: pravlenie-2016@mail.ru</p>
+            <p>Телефон: +7 (496) 726-19-92</p>
+        </body></html>');
+        try {
+            $mail->send();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }
