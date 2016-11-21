@@ -367,6 +367,7 @@ class IndexController extends OSDN_Controller_Action
         $this->disableLayout(true);
         $this->disableRender(true);
         
+        /*   
         $file = file('users.csv');
         foreach ($file as $line) {
             
@@ -401,5 +402,6 @@ class IndexController extends OSDN_Controller_Action
         
             echo 'Mail sent to ' . $name . ' [' . $email . '] pass - ' . $pass . ' <br/>';
         }
+        */
     }
 }
