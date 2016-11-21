@@ -367,9 +367,13 @@ class IndexController extends OSDN_Controller_Action
         $this->disableLayout(true);
         $this->disableRender(true);
         
-        $name = 'Ботезат Виталий';
-        $email = 'bvh.box@gmail.com';
-        $pass = 'xxxx';
+        $file = file('users.csv');
+        foreach ($file as $line) {
+            
+            $data = explode(';', $line);
+            $name = $data[1];
+            $email = $data[0];
+            $pass = $data[2];
         
         $mail = new Zend_Mail('UTF-8');
         $mail->setFrom('admin@dubrava.e-head.ru', 'Администрация НП "Дубрава у озера"');
@@ -380,8 +384,8 @@ class IndexController extends OSDN_Controller_Action
             <p>На портале НП "Дубрава у озера" для Вас создана учётная запись.</p><br/>
             <p>Адрес: <a href="http://dubrava.e-head.ru/"><b>dubrava.e-head.ru</b></a></p>
             <p>Имя пользователя: <b>' . $email  . '</b></p>
-            <p>Пароль: <b>' . $pass  . '</b></p><br/><br/>
-            <p>Такие же учётные данные используются для доступа на форум посёлка (раздел "Общение").</p><br/><br/>
+            <p>Пароль: <b>' . $pass  . '</b></p><br/>
+            <p>Данные учётной записи можно сменить в разделе "Настройки" -> "Пользователи".</p><br/><br/>
             <p>---</p>
             <p>С уважением,</p>
             <p>Администрация НП "Дубрава у озера"</p>
@@ -394,6 +398,8 @@ class IndexController extends OSDN_Controller_Action
         } catch (Exception $e) {
             echo $e->getMessage();
         }
-        echo 'Mail sent to ' . $name . ' [' . $email . ']<br/>';
+        
+            echo 'Mail sent to ' . $name . ' [' . $email . '] pass - ' . $pass . ' <br/>';
+        }
     }
 }
