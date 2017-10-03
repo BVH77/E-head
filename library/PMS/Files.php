@@ -53,7 +53,7 @@ class PMS_Files
 	            $this->_table->insert(array(
 	               'order_id'      => $orderId,
 	               'filename'      => $filename,
-	               'is_photo'      => getimagesize($filepath) ? 1 : 0,
+	               'is_photo'      => ( $ext !== 'tif' && getimagesize($filepath) ) ? 1 : 0,
 	               'description'   => join(' ', $filenameArray)
 	            ));
 	            $status = PMS_Status::OK;
