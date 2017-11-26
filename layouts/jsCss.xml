@@ -164,6 +164,9 @@
         <script src="/js/PMS/Organizer/Form.js"/>
         <script src="/js/PMS/Organizer/Manager.js"/>
         
+        <script src="/js/PMS/Expenses/List.js"/>
+        <script src="/js/PMS/Expenses/Form.js"/>
+        
         <!-- Modules -->
         
         <script src="/js/PMS/menu.js"/>

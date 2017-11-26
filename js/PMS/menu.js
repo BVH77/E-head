@@ -204,6 +204,17 @@ PMS.Menu = function(params) {
                 id: 'PMS.Notice.List'
             });
         } 
+	}, {
+	    text: 'Затраты',
+	    iconCls: 'work_schd-icon',
+        hidden: !acl.isView('expenses'),
+        handler: function() {
+            PMS.System.Layout.getTabPanel().add({
+                iconCls: 'work_schd-icon',
+                xtype: 'PMS.Expenses.List',
+                id: 'PMS.Expenses.List'
+            });
+        } 
 //	}, '-', {
 //	    text: 'Мониторинг АТ',
 //	    iconCls: 'suppliers-icon',
