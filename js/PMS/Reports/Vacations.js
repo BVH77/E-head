@@ -49,6 +49,7 @@ PMS.Reports.Vacations = Ext.extend(xlib.form.FormPanel, {
                             start: this.periodStart.getHiddenValue(), 
                             end: this.periodEnd.getHiddenValue()
                         }, 'html'));
+                        w.close();
                     }
                 } : PMS.menuMessage,
                 scope: this
