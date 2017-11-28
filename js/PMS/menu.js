@@ -145,6 +145,13 @@ PMS.Menu = function(params) {
             handler: function() {
                  window.open(link('fixed-assets', 'report', 'index', {}, 'html'));
             }
+        }, {
+            text: 'Затраты',
+            iconCls: 'work_schd-icon',
+            hidden: !acl.isView('expenses'),
+            handler: function() {
+                new PMS.Reports.Expenses();
+            }
         }]
 	}, {
 	    text: 'Склад',

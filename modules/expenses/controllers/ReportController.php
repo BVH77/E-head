@@ -19,8 +19,6 @@ class Expenses_ReportController extends OSDN_Controller_Action
     {
         $acl->setResource(OSDN_Acl_Resource_Generator::getInstance()->expenses);
         $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'index');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'vacations');
-        $acl->isAllowed(OSDN_Acl_Privilege::UPDATE, 'pays');
     }
 
     public function indexAction()

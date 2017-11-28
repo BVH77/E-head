@@ -135,6 +135,7 @@
         <script src="/js/PMS/Reports/Customers.js"/>
         <script src="/js/PMS/Reports/Staff.js"/>
         <script src="/js/PMS/Reports/Vacations.js"/>
+        <script src="/js/PMS/Reports/Expenses.js"/>
         
         <script src="/js/PMS/Notice/List.js"/>
         <script src="/js/PMS/Notice/Form.js"/>
